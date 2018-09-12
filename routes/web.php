@@ -11,6 +11,10 @@
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+
+Route::group(['namespace' => 'Web'], function() {
+    Route::get('login',                       'LoginController@login')->name("login");
+    Route::group(['middleware' => 'login'], function() {
+        Route::get('/',               'HomeController@index')->name("shop_index");
+    });
 });
