@@ -10,9 +10,9 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="renderer" content="webkit">
     <meta http-equiv="Cache-Control" content="no-siteapp" />
-    <link rel="icon" type="image/png" href="i/favicon.png">
-    <link rel="apple-touch-icon-precomposed" href="i/app-icon72x72@2x.png">
-    <meta name="apple-mobile-web-app-title" content="Amaze UI" />
+    <!-- <link rel="icon" type="image/png" href="i/favicon.png"> -->
+    <!-- <link rel="apple-touch-icon-precomposed" href="i/app-icon72x72@2x.png"> -->
+    <!-- <meta name="apple-mobile-web-app-title" content="Amaze UI" /> -->
     <link rel="stylesheet" href="css/amazeui.min.css" />
     <link rel="stylesheet" href="css/admin.css">
     <link rel="stylesheet" href="css/app.css">
@@ -25,15 +25,14 @@
     <header class="am-topbar am-topbar-inverse admin-header">
         <div class="am-topbar-brand">
             <a href="javascript:;" class="tpl-logo">
-                <img src="img/logo.png" alt="">
+                <!-- <img src="img/logo.png" alt=""> -->
             </a>
         </div>
         <div class="am-icon-list tpl-header-nav-hover-ico am-fl am-margin-right">
 
         </div>
 
-        <button class="am-topbar-btn am-topbar-toggle am-btn am-btn-sm am-btn-success am-show-sm-only" data-am-collapse="{target: '#topbar-collapse'}"><span class="am-sr-only">导航切换</span> <span class="am-icon-bars"></span></button>
-
+      <!-- r -->
         <div class="am-collapse am-topbar-collapse" id="topbar-collapse">
 
             <ul class="am-nav am-nav-pills am-topbar-nav am-topbar-right admin-header-list tpl-header-list">
@@ -151,25 +150,22 @@
 
 
 
-    <div class="tpl-page-container tpl-page-header-fixed">
-
-
         <div class="tpl-left-nav tpl-left-nav-hover">
             <div class="tpl-left-nav-title">
-                Amaze UI 列表
+                商家管理平台
             </div>
             <div class="tpl-left-nav-list">
                 <ul class="tpl-left-nav-menu">
                     <li class="tpl-left-nav-item">
                         <a href="index.html" class="nav-link active">
                             <i class="am-icon-home"></i>
-                            <span>首页</span>
+                            <span>数据</span>
                         </a>
                     </li>
                     <li class="tpl-left-nav-item">
                         <a href="chart.html" class="nav-link tpl-left-nav-link-list">
                             <i class="am-icon-bar-chart"></i>
-                            <span>数据表</span>
+                            <span>我的客户</span>
                             <i class="tpl-left-nav-content tpl-badge-danger">
                12
              </i>
@@ -179,7 +175,7 @@
                     <li class="tpl-left-nav-item">
                         <a href="javascript:;" class="nav-link tpl-left-nav-link-list">
                             <i class="am-icon-table"></i>
-                            <span>表格</span>
+                            <span>营销</span>
                             <i class="am-icon-angle-right tpl-left-nav-more-ico am-fr am-margin-right"></i>
                         </a>
                         <ul class="tpl-left-nav-sub-menu">
@@ -217,7 +213,7 @@
                     <li class="tpl-left-nav-item">
                         <a href="javascript:;" class="nav-link tpl-left-nav-link-list">
                             <i class="am-icon-wpforms"></i>
-                            <span>表单</span>
+                            <span>广告</span>
                             <i class="am-icon-angle-right tpl-left-nav-more-ico am-fr am-margin-right tpl-left-nav-more-ico-rotate"></i>
                         </a>
                         <ul class="tpl-left-nav-sub-menu" style="display: block;">
@@ -227,7 +223,6 @@
                                     <span>Amaze UI 表单</span>
                                     <i class="am-icon-star tpl-left-nav-content-ico am-fr am-margin-right"></i>
                                 </a>
-
                                 <a href="form-line.html">
                                     <i class="am-icon-angle-right"></i>
                                     <span>线条表单</span>
@@ -235,25 +230,43 @@
                             </li>
                         </ul>
                     </li>
-
                     <li class="tpl-left-nav-item">
                         <a href="login.html" class="nav-link tpl-left-nav-link-list">
                             <i class="am-icon-key"></i>
-                            <span>登录</span>
+                            <span>商家信息</span>
 
                         </a>
+                    </li>
+                    <li class="tpl-left-nav-item">
+                        <a href="javascript:;" class="nav-link tpl-left-nav-link-list">
+                            <i class="am-icon-key"></i>
+                            <span>账号信息</span>
+                        </a>
+                        <ul class="tpl-left-nav-sub-menu" style="display: block;">
+                            <li>
+                                <a href="form-amazeui.html">
+                                    <i class="am-icon-angle-right"></i>
+                                    <span>账户详情</span>
+                                    <i class="am-icon-star tpl-left-nav-content-ico am-fr am-margin-right"></i>
+                                </a>
+                                <a href="form-line.html">
+                                    <i class="am-icon-angle-right"></i>
+                                    <span>提现</span>
+                                </a>
+                                <a href="form-line.html">
+                                    <i class="am-icon-angle-right"></i>
+                                    <span>积分</span>
+                                </a>
+                            </li>
+                        </ul>
                     </li>
                 </ul>
             </div>
         </div>
-
-
-
-
-
+    <div class="tpl-page-container tpl-page-header-fixed">
         <div class="tpl-content-wrapper">
             <div class="tpl-content-page-title">
-                Amaze UI 首页组件
+                商家管理平台
             </div>
             <ol class="am-breadcrumb">
                 <li><a href="#" class="am-icon-home">首页</a></li>

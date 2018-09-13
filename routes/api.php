@@ -19,6 +19,7 @@ use Illuminate\Http\Request;
 Route::group(['namespace' => 'Api'], function() {
     Route::group(['prefix'  => 'login'], function() {
         Route::post('/',               'LoginController@login');
-        Route::post('delete/image',         'ShopController@deleteImage');
+        Route::post('/sendCode',       'LoginController@sendCode');
+        Route::post('/code',           'LoginController@code');
     });
 });

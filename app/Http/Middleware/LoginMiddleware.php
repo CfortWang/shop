@@ -15,10 +15,10 @@ class LoginMiddleware
      */
     public function handle($request, Closure $next)
     {
-        if ($request->session()->has('buyer') === false && !$request->is('login')) {
-            return redirect()->route('login');
-        }
-
+        // if ($request->session()->has('buyer') === false) {
+        //     return redirect()->route('login');
+        // }
+        // dd($request->session()->get('buyer'));
         return $next($request);
     }
 }
