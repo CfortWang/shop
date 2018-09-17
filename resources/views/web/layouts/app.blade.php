@@ -41,24 +41,24 @@
                 <li class="tpl-left-nav-item">
                     <a href="javascript:;" class="nav-link active tpl-left-nav-link-list">
                         <i class="am-icon-pie-chart"></i>
-                        <span>数据</span>
+                        <span>@lang('app.data.title')</span>
                     </a>
                     <ul class="tpl-left-nav-sub-menu">
                         <li>
-                            <a href="table-font-list.html">
-                                <span>新增扫码用户</span>
+                            <a href="statistics/new.html">
+                                <span>@lang('app.data.new_scanned_code_customer')</span>
                             </a>
-                            <a href="table-font-list.html">
-                                <span>用户分析</span>
+                            <a href="statistics/analysis.html">
+                                <span>@lang('app.data.customer_analysis')</span>
                             </a>
-                            <a href="table-font-list.html">
-                                <span>活跃用户</span>
+                            <a href="statistics/active.html">
+                                <span>@lang('app.data.active_customer')</span>
                             </a>
-                            <a href="table-font-list.html">
-                                <span>沉默用户</span>
+                            <a href="statistics/silence.html">
+                                <span>@lang('app.data.silence')</span>
                             </a>
-                            <a href="table-font-list.html">
-                                <span>平均扫码频率</span>
+                            <a href="statistics/frequency.html">
+                                <span>@lang('app.data.frequency')</span>
                             </a>
                         </li>
                     </ul>
@@ -66,18 +66,18 @@
                 <li class="tpl-left-nav-item">
                     <a href="javascript:;" class="nav-link tpl-left-nav-link-list">
                         <i class="am-icon-user"></i>
-                        <span>我的客户</span>
+                        <span>@lang('app.customer.title')</span>
                     </a>
                     <ul class="tpl-left-nav-sub-menu">
                         <li>
-                            <a href="table-font-list.html">
-                                <span>扫码用户</span>
+                            <a href="customer.html">
+                                <span>@lang('app.customer.scanned')</span>
                             </a>
-                            <a href="table-font-list.html">
-                                <span>拼豆豆用户</span>
+                            <a href="customer/scanned.html">
+                                <span>@lang('app.customer.scanned')</span>
                             </a>
-                            <a href="table-font-list.html">
-                                <span>领取优惠券用户</span>
+                            <a href="customer/coupon.html">
+                                <span>@lang('app.customer.coupon')</span>
                             </a>
                         </li>
                     </ul>
@@ -85,18 +85,18 @@
                 <li class="tpl-left-nav-item">
                     <a href="javascript:;" class="nav-link tpl-left-nav-link-list">
                         <i class="am-icon-table"></i>
-                        <span>营销</span>
+                        <span>@lang('app.event.title')</span>
                     </a>
                     <ul class="tpl-left-nav-sub-menu">
                         <li>
-                            <a href="table-font-list.html">
-                                <span>拼豆豆</span>
+                            <a href="event/groupon.html">
+                                <span>@lang('app.event.groupon')</span>
                             </a>
-                            <a href="table-font-list.html">
-                                <span>优惠券</span>
+                            <a href="event/coupon.html">
+                                <span>@lang('app.event.coupon')</span>
                             </a>
-                            <a href="table-font-list.html">
-                                <span>消息通知</span>
+                            <a href="event/message.html">
+                                <span>@lang('app.event.message')</span>
                             </a>
                         </li>
                     </ul>
@@ -104,12 +104,12 @@
                 <li class="tpl-left-nav-item">
                     <a href="javascript:;" class="nav-link tpl-left-nav-link-list">
                         <i class="am-icon-money"></i>
-                        <span>广告</span>
+                        <span>@lang('app.advertisement.title')</span>
                     </a>
                     <ul class="tpl-left-nav-sub-menu" >
                         <li>
-                            <a href="form-amazeui.html">
-                                <span>广告设置</span>
+                            <a href="advertisement/setting.html">
+                                <span>@lang('app.advertisement.setting')</span>
                             </a>
                         </li>
                     </ul>
@@ -117,15 +117,15 @@
                 <li class="tpl-left-nav-item">
                     <a href="javascript:;" class="nav-link tpl-left-nav-link-list">
                         <i class="am-icon-shopping-bag"></i>
-                        <span>商家信息</span>
+                        <span>@lang('app.shop.title')</span>
                     </a>
                     <ul class="tpl-left-nav-sub-menu">
                         <li>
-                            <a href="form-amazeui.html">
-                                <span>基本信息</span>
+                            <a href="shop/info.html">
+                                <span>@lang('app.shop.info')</span>
                             </a>
-                            <a href="form-line.html">
-                                <span>喜豆码</span>
+                            <a href="shop/code.html">
+                                <span>@lang('app.shop.code')</span>
                             </a>
                         </li>
                     </ul>
@@ -133,18 +133,18 @@
                 <li class="tpl-left-nav-item">
                     <a href="javascript:;" class="nav-link tpl-left-nav-link-list">
                         <i class="am-icon-cog"></i>
-                        <span>账号信息</span>
+                        <span>@lang('app.account.title')</span>
                     </a>
                     <ul class="tpl-left-nav-sub-menu">
                         <li>
-                            <a href="form-amazeui.html">
-                                <span>账户详情</span>
+                            <a href="account.html">
+                                <span>@lang('app.account.detail')</span>
                             </a>
-                            <a href="form-line.html">
-                                <span>提现</span>
+                            <a href="account/cashout.html">
+                                <span>@lang('app.account.cashout')</span>
                             </a>
-                            <a href="form-line.html">
-                                <span>积分</span>
+                            <a href="account/point.html">
+                                <span>@lang('app.account.point')</span>
                             </a>
                         </li>
                     </ul>

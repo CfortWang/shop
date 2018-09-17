@@ -1,7 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Web;
-
+use App;
 use App\Http\Controllers\Controller;
 
 use Illuminate\Http\Request;
@@ -17,6 +17,7 @@ class HomeController extends Controller
 
   public function index()
   {
+    App::setLocale('zh');
     return view('web.contents.home.index',[
         'title' => 'Home page',
       ]);
