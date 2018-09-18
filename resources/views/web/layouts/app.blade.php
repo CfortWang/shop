@@ -70,13 +70,13 @@
                     </a>
                     <ul class="tpl-left-nav-sub-menu">
                         <li>
-                            <a href="customer.html">
+                            <a href="customer/scanned">
                                 <span>@lang('app.customer.scanned')</span>
                             </a>
-                            <a href="customer/scanned.html">
-                                <span>@lang('app.customer.scanned')</span>
+                            <a href="customer/groupon">
+                                <span>@lang('app.customer.groupon')</span>
                             </a>
-                            <a href="customer/coupon.html">
+                            <a href="customer/coupon">
                                 <span>@lang('app.customer.coupon')</span>
                             </a>
                         </li>
