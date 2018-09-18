@@ -1,309 +1,729 @@
 @extends('web.layouts.app')
 @section('content')
-<div class="row wrapper border-bottom white-bg page-heading">
-    <div class="col-lg-10">
-        <h2>@lang('cash/list.header.title')</h2>
-        <ol class="breadcrumb">
-            <li>
-                <a href="/">@lang('cash/list.header.depth1')</a>
-            </li>
-            <li>
-                <a href="{{ url('/cash/list') }}">@lang('cash/list.header.depth2')</a>
-            </li>
-        </ol>
-    </div>
-</div>
-<div class="wrapper wrapper-content animated fadeInRight">
-    <div class="row">
-        <div class="col-lg-12">
-            <div class="ibox float-e-margins">
-                <div class="ibox-title">
-                    <h5>@lang('cash/list.contents.title')</h5>
-                    <div class="ibox-tools">
-                        <a class="collapse-link">
-                            <i class="fa fa-chevron-up"></i>
+
+    <div class="tpl-page-container tpl-page-header-fixed">
+        <div class="tpl-content-wrapper">
+            <!--       <div class="tpl-content-page-title">
+                商家管理平台
+            </div>
+            <ol class="am-breadcrumb">
+                <li><a href="#" class="am-icon-home">首页</a></li>
+                <li><a href="#">分类</a></li>
+                <li class="am-active">内容</li>
+            </ol> -->
+            <div class="tpl-content-scope">
+                <div class="note note-info">
+                    <h3>11 UI 为移动而生
+                        <span class="close" data-close="note"></span>
+                    </h3>
+                    <p> Amaze UI 含近 20 个 CSS 组件、20 余 JS 组件，更有多个包含不同主题的 Web 组件，可快速构建界面出色、体验优秀的跨屏页面，大幅提升开发效率。</p>
+                    <p><span class="label label-danger">提示:</span> Amaze UI 关注中文排版，根据用户代理调整字体，实现更好的中文排版效果。
+                    </p>
+                </div>
+            </div>
+            <div class="row">
+                <div class="am-u-lg-3 am-u-md-6 am-u-sm-12">
+                    <div class="dashboard-stat blue">
+                        <div class="visual">
+                            <i class="am-icon-comments-o"></i>
+                        </div>
+                        <div class="details">
+                            <div class="number"> 1349 </div>
+                            <div class="desc"> 新消息 </div>
+                        </div>
+                        <a class="more" href="#"> 查看更多
+                            <i class="m-icon-swapright m-icon-white"></i>
                         </a>
                     </div>
                 </div>
-                <div class="ibox-content">
-                    <form id="form1">
-                    <div class="table-responsive">
-                        <table class="table table-striped table-bordered table-hover cash-list-table">
-                            <thead>
-                                <tr>
-                                    <th class="text-center">@lang('cash/list.table.title.Amount')</th>
-                                    <th class="text-center">@lang('cash/list.table.title.BuyerID')</th>
-                                    <th class="text-center">@lang('cash/list.table.title.Bank')</th>
-                                    <th class="text-center">@lang('cash/list.table.title.Holder')</th>
-                                    <th class="text-center">@lang('cash/list.table.title.Account')</th>  
-                                    <th class="text-center">@lang('cash/list.table.title.Register_Date')</th>
-                                    <th class="text-center">@lang('cash/list.table.title.status')</th>    
-                                </tr>
-                            </thead>                      
-                        </table>
-                    </div>            
-                    </form>  
-                    <div class="row">
-                        <div class="col-sm-12 text-right">
-                            <a class="btn btn-w-m btn-warning request-btn" href="" data-toggle="modal">@lang('cash/list.button.Cash_out')</a>
+                <div class="am-u-lg-3 am-u-md-6 am-u-sm-12">
+                    <div class="dashboard-stat red">
+                        <div class="visual">
+                            <i class="am-icon-bar-chart-o"></i>
                         </div>
-                    </div> 
+                        <div class="details">
+                            <div class="number"> 62% </div>
+                            <div class="desc"> 收视率 </div>
+                        </div>
+                        <a class="more" href="#"> 查看更多
+                            <i class="m-icon-swapright m-icon-white"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="am-u-lg-3 am-u-md-6 am-u-sm-12">
+                    <div class="dashboard-stat green">
+                        <div class="visual">
+                            <i class="am-icon-apple"></i>
+                        </div>
+                        <div class="details">
+                            <div class="number"> 653 </div>
+                            <div class="desc"> 苹果设备 </div>
+                        </div>
+                        <a class="more" href="#"> 查看更多
+                            <i class="m-icon-swapright m-icon-white"></i>
+                        </a>
+                    </div>
+                </div>
+                <div class="am-u-lg-3 am-u-md-6 am-u-sm-12">
+                    <div class="dashboard-stat purple">
+                        <div class="visual">
+                            <i class="am-icon-android"></i>
+                        </div>
+                        <div class="details">
+                            <div class="number"> 786 </div>
+                            <div class="desc"> 安卓设备 </div>
+                        </div>
+                        <a class="more" href="#"> 查看更多
+                            <i class="m-icon-swapright m-icon-white"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="am-u-md-6 am-u-sm-12 row-mb">
+                    <div class="tpl-portlet">
+                        <div class="tpl-portlet-title">
+                            <div class="tpl-caption font-green ">
+                                <i class="am-icon-cloud-download"></i>
+                                <span> Cloud 数据统计</span>
+                            </div>
+                            <div class="actions">
+                                <ul class="actions-btn">
+                                    <li class="red-on">昨天</li>
+                                    <li class="green">前天</li>
+                                    <li class="blue">本周</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!--此部分数据请在 js文件夹下中的 app.js 中的 “百度图表A” 处修改数据 插件使用的是 百度echarts-->
+                        <div class="tpl-echarts" id="tpl-echarts-A">
+                        </div>
+                    </div>
+                </div>
+                <div class="am-u-md-6 am-u-sm-12 row-mb">
+                    <div class="tpl-portlet">
+                        <div class="tpl-portlet-title">
+                            <div class="tpl-caption font-red ">
+                                <i class="am-icon-bar-chart"></i>
+                                <span> Cloud 动态资料</span>
+                            </div>
+                            <div class="actions">
+                                <ul class="actions-btn">
+                                    <li class="purple-on">昨天</li>
+                                    <li class="green">前天</li>
+                                    <li class="dark">本周</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="tpl-scrollable">
+                            <div class="number-stats">
+                                <div class="stat-number am-fl am-u-md-6">
+                                    <div class="title am-text-right"> Total </div>
+                                    <div class="number am-text-right am-text-warning"> 2460 </div>
+                                </div>
+                                <div class="stat-number am-fr am-u-md-6">
+                                    <div class="title"> Total </div>
+                                    <div class="number am-text-success"> 2460 </div>
+                                </div>
+                            </div>
+                            <table class="am-table tpl-table">
+                                <thead>
+                                    <tr class="tpl-table-uppercase">
+                                        <th>人员</th>
+                                        <th>余额</th>
+                                        <th>次数</th>
+                                        <th>效率</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td>
+                                            <img src="img/user01.png" alt="" class="user-pic">
+                                            <a class="user-name" href="###">禁言小张</a>
+                                        </td>
+                                        <td>￥3213</td>
+                                        <td>65</td>
+                                        <td class="font-green bold">26%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <img src="img/user02.png" alt="" class="user-pic">
+                                            <a class="user-name" href="###">Alex.</a>
+                                        </td>
+                                        <td>￥2635</td>
+                                        <td>52</td>
+                                        <td class="font-green bold">32%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <img src="img/user03.png" alt="" class="user-pic">
+                                            <a class="user-name" href="###">Tinker404</a>
+                                        </td>
+                                        <td>￥1267</td>
+                                        <td>65</td>
+                                        <td class="font-green bold">51%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <img src="img/user04.png" alt="" class="user-pic">
+                                            <a class="user-name" href="###">Arron.y</a>
+                                        </td>
+                                        <td>￥657</td>
+                                        <td>65</td>
+                                        <td class="font-green bold">73%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <img src="img/user05.png" alt="" class="user-pic">
+                                            <a class="user-name" href="###">Yves</a>
+                                        </td>
+                                        <td>￥3907</td>
+                                        <td>65</td>
+                                        <td class="font-green bold">12%</td>
+                                    </tr>
+                                    <tr>
+                                        <td>
+                                            <img src="img/user06.png" alt="" class="user-pic">
+                                            <a class="user-name" href="###">小黄鸡</a>
+                                        </td>
+                                        <td>￥900</td>
+                                        <td>65</td>
+                                        <td class="font-green bold">10%</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="row">
+                <div class="am-u-md-6 am-u-sm-12 row-mb">
+                    <div class="tpl-portlet">
+                        <div class="tpl-portlet-title">
+                            <div class="tpl-caption font-green ">
+                                <span>指派任务</span>
+                                <span class="caption-helper">16 件</span>
+                            </div>
+                            <div class="tpl-portlet-input">
+                                <div class="portlet-input input-small input-inline">
+                                    <div class="input-icon right">
+                                        <i class="am-icon-search"></i>
+                                        <input type="text" class="form-control form-control-solid" placeholder="搜索...">
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="wrapper" class="wrapper">
+                            <div id="scroller" class="scroller">
+                                <ul class="tpl-task-list">
+                                    <li>
+                                        <div class="task-checkbox">
+                                            <input type="hidden" value="1" name="test">
+                                            <input type="checkbox" class="liChild" value="2" name="test"> </div>
+                                        <div class="task-title">
+                                            <span class="task-title-sp"> Amaze UI Icon 组件目前使用了 Font Awesome </span>
+                                            <span class="label label-sm label-success">技术部</span>
+                                            <span class="task-bell">
+                                                <i class="am-icon-bell-o"></i>
+                                            </span>
+                                        </div>
+                                        <div class="task-config">
+                                            <div class="am-dropdown tpl-task-list-dropdown" data-am-dropdown>
+                                                <a href="###" class="am-dropdown-toggle tpl-task-list-hover "
+                                                    data-am-dropdown-toggle>
+                                                    <i class="am-icon-cog"></i> <span class="am-icon-caret-down"></span>
+                                                </a>
+                                                <ul class="am-dropdown-content tpl-task-list-dropdown-ul">
+                                                    <li>
+                                                        <a href="javascript:;">
+                                                            <i class="am-icon-check"></i> 保存 </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;">
+                                                            <i class="am-icon-pencil"></i> 编辑 </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;">
+                                                            <i class="am-icon-trash-o"></i> 删除 </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="task-checkbox">
+                                            <input type="hidden" value="1" name="test">
+                                            <input type="checkbox" class="liChild" value="2" name="test"> </div>
+                                        <div class="task-title">
+                                            <span class="task-title-sp"> 在 data-am-dropdown
+                                                里指定要适应到的元素，下拉内容的宽度会设置为该元素的宽度。当然可以直接在 CSS 里设置下拉内容的宽度。 </span>
+                                            <span class="label label-sm label-danger">运营</span>
+                                        </div>
+                                        <div class="task-config">
+                                            <div class="am-dropdown tpl-task-list-dropdown" data-am-dropdown>
+                                                <a href="###" class="am-dropdown-toggle tpl-task-list-hover "
+                                                    data-am-dropdown-toggle>
+                                                    <i class="am-icon-cog"></i> <span class="am-icon-caret-down"></span>
+                                                </a>
+                                                <ul class="am-dropdown-content tpl-task-list-dropdown-ul">
+                                                    <li>
+                                                        <a href="javascript:;">
+                                                            <i class="am-icon-check"></i> 保存 </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;">
+                                                            <i class="am-icon-pencil"></i> 编辑 </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;">
+                                                            <i class="am-icon-trash-o"></i> 删除 </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="task-checkbox">
+                                            <input type="hidden" value="1" name="test">
+                                            <input type="checkbox" class="liChild" value="2" name="test"> </div>
+                                        <div class="task-title">
+                                            <span class="task-title-sp"> 使用 LESS： 通过设置变量 @fa-font-path 覆盖默认的值，如
+                                                @fa-font-path: "../fonts";。这个变量定义在 icon.less 里。 </span>
+                                            <span class="label label-sm label-warning">市场部</span>
+                                        </div>
+                                        <div class="task-config">
+                                            <div class="am-dropdown tpl-task-list-dropdown" data-am-dropdown>
+                                                <a href="###" class="am-dropdown-toggle tpl-task-list-hover "
+                                                    data-am-dropdown-toggle>
+                                                    <i class="am-icon-cog"></i> <span class="am-icon-caret-down"></span>
+                                                </a>
+                                                <ul class="am-dropdown-content tpl-task-list-dropdown-ul">
+                                                    <li>
+                                                        <a href="javascript:;">
+                                                            <i class="am-icon-check"></i> 保存 </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;">
+                                                            <i class="am-icon-pencil"></i> 编辑 </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;">
+                                                            <i class="am-icon-trash-o"></i> 删除 </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="task-checkbox">
+                                            <input type="hidden" value="1" name="test">
+                                            <input type="checkbox" class="liChild" value="2" name="test"> </div>
+                                        <div class="task-title">
+                                            <span class="task-title-sp"> 添加 .am-btn-group-justify class
+                                                让按钮组里的按钮平均分布，填满容器宽度。 </span>
+                                            <span class="label label-sm label-default">已废弃</span>
+                                        </div>
+                                        <div class="task-config">
+                                            <div class="am-dropdown tpl-task-list-dropdown" data-am-dropdown>
+                                                <a href="###" class="am-dropdown-toggle tpl-task-list-hover "
+                                                    data-am-dropdown-toggle>
+                                                    <i class="am-icon-cog"></i> <span class="am-icon-caret-down"></span>
+                                                </a>
+                                                <ul class="am-dropdown-content tpl-task-list-dropdown-ul">
+                                                    <li>
+                                                        <a href="javascript:;">
+                                                            <i class="am-icon-check"></i> 保存 </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;">
+                                                            <i class="am-icon-pencil"></i> 编辑 </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;">
+                                                            <i class="am-icon-trash-o"></i> 删除 </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="task-checkbox">
+                                            <input type="hidden" value="1" name="test">
+                                            <input type="checkbox" class="liChild" value="2" name="test"> </div>
+                                        <div class="task-title">
+                                            <span class="task-title-sp"> 按照示例组织好 HTML 结构（不加 data-am-dropdown 属性），然后通过
+                                                JS 来调用。 </span>
+                                            <span class="label label-sm label-success">技术部</span>
+                                            <span class="task-bell">
+                                                <i class="am-icon-bell-o"></i>
+                                            </span>
+                                        </div>
+                                        <div class="task-config">
+                                            <div class="am-dropdown tpl-task-list-dropdown" data-am-dropdown>
+                                                <a href="###" class="am-dropdown-toggle tpl-task-list-hover "
+                                                    data-am-dropdown-toggle>
+                                                    <i class="am-icon-cog"></i> <span class="am-icon-caret-down"></span>
+                                                </a>
+                                                <ul class="am-dropdown-content tpl-task-list-dropdown-ul">
+                                                    <li>
+                                                        <a href="javascript:;">
+                                                            <i class="am-icon-check"></i> 保存 </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;">
+                                                            <i class="am-icon-pencil"></i> 编辑 </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;">
+                                                            <i class="am-icon-trash-o"></i> 删除 </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="task-checkbox">
+                                            <input type="hidden" value="1" name="test">
+                                            <input type="checkbox" class="liChild" value="2" name="test"> </div>
+                                        <div class="task-title">
+                                            <span class="task-title-sp"> 添加 .am-btn-group-justify class
+                                                让按钮组里的按钮平均分布，填满容器宽度。 </span>
+                                            <span class="label label-sm label-default">已废弃</span>
+                                        </div>
+                                        <div class="task-config">
+                                            <div class="am-dropdown tpl-task-list-dropdown" data-am-dropdown>
+                                                <a href="###" class="am-dropdown-toggle tpl-task-list-hover "
+                                                    data-am-dropdown-toggle>
+                                                    <i class="am-icon-cog"></i> <span class="am-icon-caret-down"></span>
+                                                </a>
+                                                <ul class="am-dropdown-content tpl-task-list-dropdown-ul">
+                                                    <li>
+                                                        <a href="javascript:;">
+                                                            <i class="am-icon-check"></i> 保存 </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;">
+                                                            <i class="am-icon-pencil"></i> 编辑 </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;">
+                                                            <i class="am-icon-trash-o"></i> 删除 </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="task-checkbox">
+                                            <input type="hidden" value="1" name="test">
+                                            <input type="checkbox" class="liChild" value="2" name="test"> </div>
+                                        <div class="task-title">
+                                            <span class="task-title-sp"> 使用 LESS： 通过设置变量 @fa-font-path 覆盖默认的值，如
+                                                @fa-font-path: "../fonts";。这个变量定义在 icon.less 里。 </span>
+                                            <span class="label label-sm label-warning">市场部</span>
+                                        </div>
+                                        <div class="task-config">
+                                            <div class="am-dropdown tpl-task-list-dropdown" data-am-dropdown>
+                                                <a href="###" class="am-dropdown-toggle tpl-task-list-hover "
+                                                    data-am-dropdown-toggle>
+                                                    <i class="am-icon-cog"></i> <span class="am-icon-caret-down"></span>
+                                                </a>
+                                                <ul class="am-dropdown-content tpl-task-list-dropdown-ul">
+                                                    <li>
+                                                        <a href="javascript:;">
+                                                            <i class="am-icon-check"></i> 保存 </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;">
+                                                            <i class="am-icon-pencil"></i> 编辑 </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;">
+                                                            <i class="am-icon-trash-o"></i> 删除 </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="task-checkbox">
+                                            <input type="hidden" value="1" name="test">
+                                            <input type="checkbox" class="liChild" value="2" name="test"> </div>
+                                        <div class="task-title">
+                                            <span class="task-title-sp"> 添加 .am-btn-group-justify class
+                                                让按钮组里的按钮平均分布，填满容器宽度。 </span>
+                                            <span class="label label-sm label-default">已废弃</span>
+                                        </div>
+                                        <div class="task-config">
+                                            <div class="am-dropdown tpl-task-list-dropdown" data-am-dropdown>
+                                                <a href="###" class="am-dropdown-toggle tpl-task-list-hover "
+                                                    data-am-dropdown-toggle>
+                                                    <i class="am-icon-cog"></i> <span class="am-icon-caret-down"></span>
+                                                </a>
+                                                <ul class="am-dropdown-content tpl-task-list-dropdown-ul">
+                                                    <li>
+                                                        <a href="javascript:;">
+                                                            <i class="am-icon-check"></i> 保存 </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;">
+                                                            <i class="am-icon-pencil"></i> 编辑 </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;">
+                                                            <i class="am-icon-trash-o"></i> 删除 </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </li>
+                                    <li>
+                                        <div class="task-checkbox">
+                                            <input type="hidden" value="1" name="test">
+                                            <input type="checkbox" class="liChild" value="2" name="test"> </div>
+                                        <div class="task-title">
+                                            <span class="task-title-sp"> 按照示例组织好 HTML 结构（不加 data-am-dropdown 属性），然后通过
+                                                JS 来调用。 </span>
+                                            <span class="label label-sm label-success">技术部</span>
+                                            <span class="task-bell">
+                                                <i class="am-icon-bell-o"></i>
+                                            </span>
+                                        </div>
+                                        <div class="task-config">
+                                            <div class="am-dropdown tpl-task-list-dropdown" data-am-dropdown>
+                                                <a href="###" class="am-dropdown-toggle tpl-task-list-hover "
+                                                    data-am-dropdown-toggle>
+                                                    <i class="am-icon-cog"></i> <span class="am-icon-caret-down"></span>
+                                                </a>
+                                                <ul class="am-dropdown-content tpl-task-list-dropdown-ul">
+                                                    <li>
+                                                        <a href="javascript:;">
+                                                            <i class="am-icon-check"></i> 保存 </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;">
+                                                            <i class="am-icon-pencil"></i> 编辑 </a>
+                                                    </li>
+                                                    <li>
+                                                        <a href="javascript:;">
+                                                            <i class="am-icon-trash-o"></i> 删除 </a>
+                                                    </li>
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="am-u-md-6 am-u-sm-12 row-mb">
+                    <div class="tpl-portlet">
+                        <div class="tpl-portlet-title">
+                            <div class="tpl-caption font-green ">
+                                <span>项目进度</span>
+                            </div>
+                        </div>
+                        <div class="am-tabs tpl-index-tabs" data-am-tabs>
+                            <ul class="am-tabs-nav am-nav am-nav-tabs">
+                                <li class="am-active"><a href="#tab1">进行中</a></li>
+                                <li><a href="#tab2">已完成</a></li>
+                            </ul>
+                            <div class="am-tabs-bd">
+                                <div class="am-tab-panel am-fade am-in am-active" id="tab1">
+                                    <div id="wrapperA" class="wrapper">
+                                        <div id="scroller" class="scroller">
+                                            <ul class="tpl-task-list tpl-task-remind">
+                                                <li>
+                                                    <div class="cosB">
+                                                        12分钟前
+                                                    </div>
+                                                    <div class="cosA">
+                                                        <span class="cosIco">
+                                                            <i class="am-icon-bell-o"></i>
+                                                        </span>
+                                                        <span> 注意：Chrome 和 Firefox 下， display: inline-block; 或 display:
+                                                            block; 的元素才会应用旋转动画。<span class="tpl-label-info"> 提取文件
+                                                                <i class="am-icon-share"></i>
+                                                            </span></span>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="cosB">
+                                                        36分钟前
+                                                    </div>
+                                                    <div class="cosA">
+                                                        <span class="cosIco label-danger">
+                                                            <i class="am-icon-bolt"></i>
+                                                        </span>
+                                                        <span> FontAwesome 在绘制图标的时候不同图标宽度有差异， 添加 .am-icon-fw
+                                                            将图标设置为固定的宽度，解决宽度不一致问题（v2.3 新增）。</span>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="cosB">
+                                                        2小时前
+                                                    </div>
+                                                    <div class="cosA">
+                                                        <span class="cosIco label-info">
+                                                            <i class="am-icon-bullhorn"></i>
+                                                        </span>
+                                                        <span> 使用 flexbox 实现，只兼容 IE 10+ 及其他现代浏览器。</span>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="cosB">
+                                                        1天前
+                                                    </div>
+                                                    <div class="cosA">
+                                                        <span class="cosIco label-warning">
+                                                            <i class="am-icon-plus"></i>
+                                                        </span>
+                                                        <span> 部分用户反应在过长的 Tabs 中滚动页面时会意外触发 Tab 切换事件，用户可以选择禁用触控操作。</span>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="cosB">
+                                                        12分钟前
+                                                    </div>
+                                                    <div class="cosA">
+                                                        <span class="cosIco">
+                                                            <i class="am-icon-bell-o"></i>
+                                                        </span>
+                                                        <span> 注意：Chrome 和 Firefox 下， display: inline-block; 或 display:
+                                                            block; 的元素才会应用旋转动画。<span class="tpl-label-info"> 提取文件
+                                                                <i class="am-icon-share"></i>
+                                                            </span></span>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="cosB">
+                                                        36分钟前
+                                                    </div>
+                                                    <div class="cosA">
+                                                        <span class="cosIco label-danger">
+                                                            <i class="am-icon-bolt"></i>
+                                                        </span>
+                                                        <span> FontAwesome 在绘制图标的时候不同图标宽度有差异， 添加 .am-icon-fw
+                                                            将图标设置为固定的宽度，解决宽度不一致问题（v2.3 新增）。</span>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="cosB">
+                                                        2小时前
+                                                    </div>
+                                                    <div class="cosA">
+                                                        <span class="cosIco label-info">
+                                                            <i class="am-icon-bullhorn"></i>
+                                                        </span>
+                                                        <span> 使用 flexbox 实现，只兼容 IE 10+ 及其他现代浏览器。</span>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="am-tab-panel am-fade" id="tab2">
+                                    <div id="wrapperB" class="wrapper">
+                                        <div id="scroller" class="scroller">
+                                            <ul class="tpl-task-list tpl-task-remind">
+                                                <li>
+                                                    <div class="cosB">
+                                                        12分钟前
+                                                    </div>
+                                                    <div class="cosA">
+                                                        <span class="cosIco">
+                                                            <i class="am-icon-bell-o"></i>
+                                                        </span>
+                                                        <span> 注意：Chrome 和 Firefox 下， display: inline-block; 或 display:
+                                                            block; 的元素才会应用旋转动画。<span class="tpl-label-info"> 提取文件
+                                                                <i class="am-icon-share"></i>
+                                                            </span></span>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="cosB">
+                                                        36分钟前
+                                                    </div>
+                                                    <div class="cosA">
+                                                        <span class="cosIco label-danger">
+                                                            <i class="am-icon-bolt"></i>
+                                                        </span>
+                                                        <span> FontAwesome 在绘制图标的时候不同图标宽度有差异， 添加 .am-icon-fw
+                                                            将图标设置为固定的宽度，解决宽度不一致问题（v2.3 新增）。</span>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="cosB">
+                                                        2小时前
+                                                    </div>
+                                                    <div class="cosA">
+                                                        <span class="cosIco label-info">
+                                                            <i class="am-icon-bullhorn"></i>
+                                                        </span>
+                                                        <span> 使用 flexbox 实现，只兼容 IE 10+ 及其他现代浏览器。</span>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="cosB">
+                                                        1天前
+                                                    </div>
+                                                    <div class="cosA">
+                                                        <span class="cosIco label-warning">
+                                                            <i class="am-icon-plus"></i>
+                                                        </span>
+                                                        <span> 部分用户反应在过长的 Tabs 中滚动页面时会意外触发 Tab 切换事件，用户可以选择禁用触控操作。</span>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="cosB">
+                                                        12分钟前
+                                                    </div>
+                                                    <div class="cosA">
+                                                        <span class="cosIco">
+                                                            <i class="am-icon-bell-o"></i>
+                                                        </span>
+                                                        <span> 注意：Chrome 和 Firefox 下， display: inline-block; 或 display:
+                                                            block; 的元素才会应用旋转动画。<span class="tpl-label-info"> 提取文件
+                                                                <i class="am-icon-share"></i>
+                                                            </span></span>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="cosB">
+                                                        36分钟前
+                                                    </div>
+                                                    <div class="cosA">
+                                                        <span class="cosIco label-danger">
+                                                            <i class="am-icon-bolt"></i>
+                                                        </span>
+                                                        <span> FontAwesome 在绘制图标的时候不同图标宽度有差异， 添加 .am-icon-fw
+                                                            将图标设置为固定的宽度，解决宽度不一致问题（v2.3 新增）。</span>
+                                                    </div>
+                                                </li>
+                                                <li>
+                                                    <div class="cosB">
+                                                        2小时前
+                                                    </div>
+                                                    <div class="cosA">
+                                                        <span class="cosIco label-info">
+                                                            <i class="am-icon-bullhorn"></i>
+                                                        </span>
+                                                        <span> 使用 flexbox 实现，只兼容 IE 10+ 及其他现代浏览器。</span>
+                                                    </div>
+                                                </li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
-</div>
-
-<div class="modal fade" id="myModal1" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title" id="myModalLabel">@lang('cash/list.modal.title1')</h4>
-            </div>
-            <div class="modal-body">
-                <div>
-                @lang('cash/list.modal.msg1')
-                    <input name="reject" id="cash-reject" class="form-control" disabled/>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">@lang('cash/list.modal.cancel')</button>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div>
-<div class="modal fade" id="request-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-                <h4 class="modal-title" id="myModalLabel">@lang('cash/list.modal.title2')</h4>
-            </div>
-            <div class="modal-body">
-                <div class="form-group">
-                    <label>@lang('cash/list.modal.availablePoint')</label>
-                    <input type="text" id="available-point" class="form-control" disabled>
-                    <input type="hidden" id="available-point-number" class="form-control" disabled>
-                </div>
-                <div class="form-group">
-                    <label>@lang('cash/list.modal.amount')</label>
-                    <input type="number" id="modal-amount" class="form-control">
-                </div>
-                <div class="form-group">
-                    <label>@lang('cash/list.modal.bankName')</label>
-                    <input type="text" id="bank-name" class="form-control" disabled>
-                </div>
-                <div class="form-group">
-                    <label>@lang('cash/list.modal.bankAccount')</label>
-                    <input type="text" id="bank-account" class="form-control" disabled>
-                </div>
-                <div class="form-group">
-                    <label>@lang('cash/list.modal.bankAccountOwner')</label>
-                    <input type="text" id="bank-account-owner" class="form-control" disabled>
-                </div>
-            </div>
-            <div class="modal-footer">
-                <button type="button" id="modal-cash-request" class="btn btn-primary">@lang('cash/list.modal.cashRequest')</button>
-                <button type="button" class="btn btn-default" data-dismiss="modal">@lang('cash/list.modal.cancel')</button>
-            </div>
-        </div><!-- /.modal-content -->
-    </div><!-- /.modal-dialog -->
-</div>
-@endsection
-@section('scripts')
-<script>
-    var noBankInfo = '{{ __("cash/list.message.noBankInfo") }}';
-    var wrongRequest = '{{ __("cash/list.message.wrongRequest") }}';
-    var pointValidation = '{{ __("cash/list.message.pointValidation") }}';
-    var minPoint = '{{ __("cash/list.message.minPoint") }}';
-    var notEnoughPoint = '{{ __("cash/list.message.notEnoughPoint") }}';
-    var requestSuccess = '{{ __("cash/list.message.requestSuccess") }}';
-    var serverErr = '{{ __("cash/list.message.serverErr") }}';
-
-    $(document).ready(function(){
-        var CashOutListTable = $('.cash-list-table').DataTable({
-            pageLength: 10,
-            responsive: true,
-            dom: '<"row"<"#status-box.col-lg-6 text-left"><"col-lg-6 text-right"f>><"row"t>p',
-            order: [[ 5, "desc" ]],
-            language: {
-                "zeroRecords": "@lang('cash/list.table.pagination.no_data')",
-                "info": "_PAGE_ / _PAGES_ ",
-                "search": "@lang('cash/list.table.pagination.search') :",
-                "paginate": {
-                    "next":       "@lang('cash/list.table.pagination.next')",
-                    "previous":   "@lang('cash/list.table.pagination.prev')"
-                },
-            },
-            deferRender: true,
-            processing:true,
-            serverSide:true,
-            ajax: {
-                url: "{{ url('api/cash/list/')}}",
-                dataType:'json',
-                dataFilter: function(data){
-                    var json = jQuery.parseJSON( data );
-                    return JSON.stringify( json.data ); // return JSON string
-                },
-                data: function(d) {
-                    d.status = $('.table-responsive #status-box #status').val() || '';
-                }
-            },
-            initComplete: function(settings) {
-                var statusSelectStr = "";
-                
-                statusSelectStr += "<select id='status' class='form-control input-sm'>";
-                statusSelectStr += "    <option value=''>@lang('cash/list.status.all')</option>";
-                statusSelectStr += "    <option value='requested'>@lang('cash/list.status.request')</option>";
-                statusSelectStr += "    <option value='deposited'>@lang('cash/list.status.deposite')</option>";
-                statusSelectStr += "    <option value='rejected'>@lang('cash/list.status.reject')</option>";
-                statusSelectStr += "</select>";
-
-                $('.table-responsive #status-box').append(statusSelectStr);
-                
-                $('.table-responsive #status-box #status').change(function() {
-                    CashOutListTable.ajax.reload();
-                });
-                $('.rejected-btn').click(function(){
-                    $('#cash-reject').val($(this).data('msg'));
-                })
-            },
-            columns:[
-                {
-                    data: "",
-                    className: "text-center",
-                    render: function(data, type, row) {
-                        return Number(row.amount).toLocaleString('en');
-                    }
-                },
-                
-                {
-                    data: "",
-                    className: "text-center",
-                    render: function(data, type, row) {
-                        return row.id;
-                    }
-                },
-                {
-                    data: "",
-                    className: "text-center",
-                    render: function(data, type, row) {
-                        return row.bank_name;
-                    }
-                },
-                {
-                    data: "",
-                    className: "text-center",
-                    render: function(data, type, row) {
-                        return row.account_holder;
-                    }
-                },
-                {
-                    data: "",
-                    className: "text-center",
-                    render: function(data, type, row) {
-                        return row.account_number;
-                    }
-                },
-                {
-                    data: "",
-                    className: "text-center",
-                    render: function(data, type, row) {
-                        var utcDate = row.created_at;
-                        var chinaDate = moment(utcDate).add(8, 'hours').format('YYYY-MM-DD HH:mm:ss')
-                        return chinaDate;
-                    }
-                },
-                {
-                    data: "",
-                    className: "text-center",
-                    render: function(data,type,row) {
-                        var status=row.status;
-                        if(status=='rejected'){
-                            var details = '<a href="javascript:;" class="rejected-btn" data-msg="'+row.remark+'"  data-toggle="modal" data-target="#myModal1">rejected</a>';
-                        }else{
-                            var details = row.status;
-                        }
-                        return details;
-                    }
-                },
-            ],
-        });
-        $('.request-btn').click(function () {
-            $.ajax({
-                url: "{{ url('/api/cash/validation') }}", 
-                dataType: 'json',
-                type: 'GET',
-            }).done(function(res) {
-                //console.log(res);
-                $('#available-point').val(Number(res.data[0].point).toLocaleString('en'));
-                $('#available-point-number').val(res.data[0].point);
-                $('#modal-amount').val(0);
-                $('#bank-name').val(res.data[1].bank_name);
-                $('#bank-account').val(res.data[0].bank_account);
-                $('#bank-account-owner').val(res.data[0].bank_account_owner);
-                $('#request-modal').modal('show');
-            }).fail(function(res) {
-                var httpStatus = res.status;
-                var detailStatus = res.responseJSON.status;
-                if (httpStatus === 404 && detailStatus === 401) {
-                    bootbox.alert(wrongRequest); 
-                } else if (httpStatus === 400 && detailStatus === 401) {
-                    bootbox.alert(noBankInfo);
-                } else {
-                    bootbox.alert(serverErr); 
-                }
-                console.log(e);
-            });
-        });
-        $('#modal-cash-request').click(function () {
-            var modalAmount = $('#modal-amount').val();
-            var availablePoint = $('#available-point-number').val();
-
-            if (modalAmount === '') {
-                bootbox.alert(pointValidation);
-                return false;
-            }
-
-            if (parseInt(modalAmount) < 20000) {
-                bootbox.alert(minPoint);
-                return false;
-            }
-
-            if (parseInt(modalAmount) > parseInt(availablePoint)) {
-                bootbox.alert(notEnoughPoint);
-                return false;
-            }
-            $.ajax({
-                url: "{{ url('/api/cash/request') }}", 
-                dataType: 'json',
-                data: {
-                    'modal_amount' : modalAmount
-                },
-                type: 'POST',
-            }).done(function(res) {
-                bootbox.alert(requestSuccess, function(){
-                    location.reload();
-                });
-            }).fail(function(res) {
-                var httpStatus = res.status;
-                var detailStatus = res.responseJSON.status;
-                if (httpStatus === 404 && detailStatus === 401) {
-                    bootbox.alert(wrongRequest); 
-                } else if (httpStatus === 400 && detailStatus === 401) {
-                    bootbox.alert(noBankInfo);
-                } else {
-                    bootbox.alert(serverErr); 
-                }
-                console.log(e);
-            });
-        });
-    });
-
-</script>
 @endsection
 @section('scripts')
     <script src="js/echarts.min.js"></script>
 @endsection
-

@@ -13,9 +13,9 @@
     <!-- <link rel="icon" type="image/png" href="i/favicon.png"> -->
     <!-- <link rel="apple-touch-icon-precomposed" href="i/app-icon72x72@2x.png"> -->
     <!-- <meta name="apple-mobile-web-app-title" content="Amaze UI" /> -->
-    <link rel="stylesheet" href="css/amazeui.min.css" />
-    <link rel="stylesheet" href="css/admin.css">
-    <link rel="stylesheet" href="css/app.css">
+    <link rel="stylesheet" href="/css/amazeui.min.css" />
+    <link rel="stylesheet" href="/css/admin.css">
+    <link rel="stylesheet" href="/css/app.css">
 </head>
 <body>
 <div>
@@ -153,10 +153,10 @@
         </div>
     </div>
             @yield('content')
-            <script src="js/jquery-2.1.1.js"></script>
-            <script src="js/amazeui.min.js"></script>
-            <script src="js/iscroll.js"></script>
-            <script src="js/app.js"></script>
+            <script src="/js/jquery-2.1.1.js"></script>
+            <script src="/js/amazeui.min.js"></script>
+            <script src="/js/iscroll.js"></script>
+            <script src="/js/app.js"></script>
             @yield('script')
         </div>
 </body>
