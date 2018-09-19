@@ -13,10 +13,16 @@
     <!-- <link rel="icon" type="image/png" href="i/favicon.png"> -->
     <!-- <link rel="apple-touch-icon-precomposed" href="i/app-icon72x72@2x.png"> -->
     <!-- <meta name="apple-mobile-web-app-title" content="Amaze UI" /> -->
+<<<<<<< HEAD
     <link rel="stylesheet" href="css/amazeui.min.css" />
     <link rel="stylesheet" href="css/admin.css">
     <link rel="stylesheet" href="css/app.css">
     @yield('css')
+=======
+    <link rel="stylesheet" href="/css/amazeui.min.css" />
+    <link rel="stylesheet" href="/css/admin.css">
+    <link rel="stylesheet" href="/css/app.css">
+>>>>>>> 800bf4048cc50cb0f34b7217b438ce2e342f7477
 </head>
 <body>
 <div>
@@ -71,13 +77,13 @@
                     </a>
                     <ul class="tpl-left-nav-sub-menu">
                         <li>
-                            <a href="customer.html">
+                            <a href="customer/scanned">
                                 <span>@lang('app.customer.scanned')</span>
                             </a>
-                            <a href="customer/scanned.html">
-                                <span>@lang('app.customer.scanned')</span>
+                            <a href="customer/groupon">
+                                <span>@lang('app.customer.groupon')</span>
                             </a>
-                            <a href="customer/coupon.html">
+                            <a href="customer/coupon">
                                 <span>@lang('app.customer.coupon')</span>
                             </a>
                         </li>
@@ -154,10 +160,10 @@
         </div>
     </div>
             @yield('content')
-            <script src="js/jquery-2.1.1.js"></script>
-            <script src="js/amazeui.min.js"></script>
-            <script src="js/iscroll.js"></script>
-            <script src="js/app.js"></script>
+            <script src="/js/jquery-2.1.1.js"></script>
+            <script src="/js/amazeui.min.js"></script>
+            <script src="/js/iscroll.js"></script>
+            <script src="/js/app.js"></script>
             @yield('script')
         </div>
 </body>

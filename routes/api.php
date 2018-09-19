@@ -26,4 +26,9 @@ Route::group(['namespace' => 'Api'], function() {
         Route::get('/new',           'StatisticsController@newCustomer');
     });
 
+    Route::group(['prefix'  => 'customer'], function() {
+        Route::get('/scannedUserList',               'CustomerController@scannedUserList');//扫码用户列表
+        Route::post('/sendCode',       'LoginController@sendCode');
+        Route::post('/code',           'LoginController@code');
+    });
 });

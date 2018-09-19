@@ -18,4 +18,11 @@ Route::group(['namespace' => 'Web'], function() {
         Route::get('/',               'HomeController@index')->name("shop_index");
         Route::get('/index',               'HomeController@index')->name("shop_index");
     });
+    //customer 我的客户
+    Route::group(['prefix'  => 'customer'], function() {
+        Route::get('/scanned',                       'CustomerController@scannedList')->name("scanned");
+        Route::get('/{seq}/scannedDetai',            'CustomerController@scannedDetail');
+        Route::get('/groupon',                       'CustomerController@grouponList');
+        Route::get('/coupon',                        'CustomerController@couponList');
+    });
 });
