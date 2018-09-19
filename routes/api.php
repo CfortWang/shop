@@ -22,4 +22,8 @@ Route::group(['namespace' => 'Api'], function() {
         Route::post('/sendCode',       'LoginController@sendCode');
         Route::post('/code',           'LoginController@code');
     });
+    Route::group(['prefix'  => 'statistics'], function() {
+        Route::get('/new',           'StatisticsController@newCustomer');
+    });
+
 });

@@ -12,9 +12,7 @@ $(function() {
 
         var dataType = $('body').attr('data-type');
         for (key in pageData) {
-            if (key == dataType) {
-                pageData[key]();
-            }
+            pageData[key]();
         }
 
         $('.tpl-switch').find('.tpl-switch-btn-view').on('click', function() {
@@ -56,32 +54,32 @@ var pageData = {
     'index': function indexData() {
 
 
-        var myScroll = new IScroll('#wrapper', {
-            scrollbars: true,
-            mouseWheel: true,
-            interactiveScrollbars: true,
-            shrinkScrollbars: 'scale',
-            preventDefault: false,
-            fadeScrollbars: true
-        });
+        // var myScroll = new IScroll('#wrapper', {
+        //     scrollbars: true,
+        //     mouseWheel: true,
+        //     interactiveScrollbars: true,
+        //     shrinkScrollbars: 'scale',
+        //     preventDefault: false,
+        //     fadeScrollbars: true
+        // });
 
-        var myScrollA = new IScroll('#wrapperA', {
-            scrollbars: true,
-            mouseWheel: true,
-            interactiveScrollbars: true,
-            shrinkScrollbars: 'scale',
-            preventDefault: false,
-            fadeScrollbars: true
-        });
+        // var myScrollA = new IScroll('#wrapperA', {
+        //     scrollbars: true,
+        //     mouseWheel: true,
+        //     interactiveScrollbars: true,
+        //     shrinkScrollbars: 'scale',
+        //     preventDefault: false,
+        //     fadeScrollbars: true
+        // });
 
-        var myScrollB = new IScroll('#wrapperB', {
-            scrollbars: true,
-            mouseWheel: true,
-            interactiveScrollbars: true,
-            shrinkScrollbars: 'scale',
-            preventDefault: false,
-            fadeScrollbars: true
-        });
+        // var myScrollB = new IScroll('#wrapperB', {
+        //     scrollbars: true,
+        //     mouseWheel: true,
+        //     interactiveScrollbars: true,
+        //     shrinkScrollbars: 'scale',
+        //     preventDefault: false,
+        //     fadeScrollbars: true
+        // });
 
 
 
@@ -92,71 +90,63 @@ var pageData = {
         // ==========================
 
         var echartsA = echarts.init(document.getElementById('tpl-echarts-A'));
-        option = {
-
-            tooltip: {
-                trigger: 'axis',
-            },
-            legend: {
-                data: ['邮件', '媒体', '资源']
-            },
-            grid: {
-                left: '3%',
-                right: '4%',
-                bottom: '3%',
-                containLabel: true
-            },
-            xAxis: [{
-                type: 'category',
-                boundaryGap: true,
-                data: ['周一', '周二', '周三', '周四', '周五', '周六', '周日']
-            }],
-
-            yAxis: [{
-                type: 'value'
-            }],
-            series: [{
-                    name: '邮件',
-                    type: 'line',
-                    stack: '总量',
-                    areaStyle: { normal: {} },
-                    data: [120, 132, 101, 134, 90, 230, 210],
-                    itemStyle: {
-                        normal: {
-                            color: '#59aea2'
+        $.ajax({
+            url: "/api/statistics/new",
+            dataType: 'json',
+            type: 'get',
+            success: function(response){
+                console.log(response);
+                // window.location.href="http://new-shop-background.test" 
+                var data = response.data;
+                var e_data = data.data;
+                var e_item = data.item;
+                option = {
+                    tooltip: {
+                        trigger: 'axis',
+                    },
+                    legend: {
+                        data: ['新增用户', '媒体', '资源']
+                    },
+                    grid: {
+                        left: '3%',
+                        right: '4%',
+                        bottom: '3%',
+                        containLabel: true
+                    },
+                    xAxis: [{
+                        type: 'category',
+                        boundaryGap: true,
+                        data: e_item
+                    }],
+        
+                    yAxis: [{
+                        type: 'value'
+                    }],
+                    series: [{
+                            name: '新增用户',
+                            type: 'line',
+                            stack: '总量',
+                            // areaStyle: { normal: {} },
+                            data: e_data,
+                            itemStyle: {
+                                normal: {
+                                    color: '#59aea2'
+                                },
+                                emphasis: {
+        
+                                }
+                            }
                         },
-                        emphasis: {
-
-                        }
-                    }
-                },
-                {
-                    name: '媒体',
-                    type: 'line',
-                    stack: '总量',
-                    areaStyle: { normal: {} },
-                    data: [220, 182, 191, 234, 290, 330, 310],
-                    itemStyle: {
-                        normal: {
-                            color: '#e7505a'
-                        }
-                    }
-                },
-                {
-                    name: '资源',
-                    type: 'line',
-                    stack: '总量',
-                    areaStyle: { normal: {} },
-                    data: [150, 232, 201, 154, 190, 330, 410],
-                    itemStyle: {
-                        normal: {
-                            color: '#32c5d2'
-                        }
-                    }
-                }
-            ]
-        };
-        echartsA.setOption(option);
+                    ]
+                };
+                echartsA.setOption(option);
+            },
+            error: function(e) {
+                console.log(e);
+            }
+        }).always(function(){
+        });
+        
     },
     // ===============================================
     // 图表页
@@ -321,7 +311,7 @@ var pageData = {
                 trigger: 'axis',
             },
             legend: {
-                data: ['邮件', '媒体', '资源']
+                data: ['新增用户', '媒体', '资源']
             },
             grid: {
                 left: '3%',
@@ -339,7 +329,7 @@ var pageData = {
                 type: 'value'
             }],
             series: [{
-                    name: '邮件',
+                    name: '新增用户',
                     type: 'line',
                     stack: '总量',
                     areaStyle: { normal: {} },

@@ -1,5 +1,10 @@
 @extends('web.layouts.app')
 @section('title', $title)
+@section('css')
+<link rel="stylesheet" href="/css/app.css">
+<link rel="stylesheet" type="text/css" media="all" href="/css/daterangepicker.css" />
+<link rel="stylesheet" type="text/css" media="all" href="/css/bootstrap-datetimepicker.min.css" />
+@endsection('css')
 @section('content')
 
     <div class="tpl-page-container tpl-page-header-fixed">
@@ -12,7 +17,7 @@
                 <li><a href="#">分类</a></li>
                 <li class="am-active">内容</li>
             </ol> -->
-            <div class="tpl-content-scope">
+            <!-- <div class="tpl-content-scope">
                 <div class="note note-info">
                     <h3>Amaze UI 为移动而生
                         <span class="close" data-close="note"></span>
@@ -21,8 +26,8 @@
                     <p><span class="label label-danger">提示:</span> Amaze UI 关注中文排版，根据用户代理调整字体，实现更好的中文排版效果。
                     </p>
                 </div>
-            </div>
-            <div class="row">
+            </div> -->
+            <!-- <div class="row">
                 <div class="am-u-lg-3 am-u-md-6 am-u-sm-12">
                     <div class="dashboard-stat blue">
                         <div class="visual">
@@ -79,7 +84,7 @@
                         </a>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <div class="row">
                 <div class="am-u-md-6 am-u-sm-12 row-mb">
                     <div class="tpl-portlet">
@@ -88,6 +93,9 @@
                                 <i class="am-icon-cloud-download"></i>
                                 <span> Cloud 数据统计</span>
                             </div>
+                                <div style="position: relative;">
+                                    <input type="text" id="config-demo" class="form-control">
+                                </div>
                             <div class="actions">
                                 <ul class="actions-btn">
                                     <li class="red-on">昨天</li>
@@ -197,7 +205,7 @@
                     </div>
                 </div>
             </div>
-            <div class="row">
+            <!-- <div class="row">
                 <div class="am-u-md-6 am-u-sm-12 row-mb">
                     <div class="tpl-portlet">
                         <div class="tpl-portlet-title">
@@ -721,10 +729,24 @@
                         </div>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 @endsection
-@section('scripts')
-    <script src="js/echarts.min.js"></script>
+@section('script')
+    <script src="/js/echarts.min.js"></script>
+    <script src="/js/moment.min.js"></script>
+    <script src="/js/daterangepicker.js"></script>
+    <script>
+    var options = {};
+     options.locale = {
+        format: "YYYY-MM-DD",
+	    	    			separator: " - ",
+	    	    			daysOfWeek: ["日","一","二","三","四","五","六"],
+	    	    			monthNames: ["一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"]
+            };
+        $('#config-demo').daterangepicker(options, function(start, end, label) {
+            console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')'); 
+        }).click();;
+    </script>
 @endsection
