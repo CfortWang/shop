@@ -20,36 +20,111 @@ class StatisticsController extends Controller
     {
     }
 
-    public function newCustomer()
+    public function newCustomer(Request $request)
     {
         $seq  = 1;
-        $days = Input::get('days', 30);
-        $range = Carbon::now()->subDays($days);
-        // 按天
-        // $data = UserScanLog::where('created_at', '>=', $range)
-        //     ->where('buyer',$seq)
-        //     ->groupBy('date','user')
-        //     ->orderBy('date', 'DESC')
-        //     ->get([
-        //         DB::raw('Date(created_at) as date'),
-        //         DB::raw('COUNT(*) as value'),
-        //     ]);
+        $input = Input::only('startDate', 'endDate', 'dateSpan');
 
-        // 按月
-        $data = UserScanLog::where('created_at', '>=', $range)
+        $validator = Validator::make($input, [
+            'startDate'           => 'required',
+            'endDate'             => 'required',
+            'dateSpan'            => 'required|in:day,week,hour'
+        ]);
+
+        if ($validator->fails()) {
+            return $this->responseBadRequest('Bad Request');
+        }
+        $startDate = Carbon::createFromFormat('Y-m-d',$request->input('startDate'));
+        $endDate = Carbon::createFromFormat('Y-m-d',$request->input('endDate'));
+        // 按天
+        $type = $request->input('dateSpan');
+        switch ($type) {
+            case 'hour':
+                $sql = DB::raw('DATE_FORMAT(created_at,"%H") as date');
+                break;
+            case 'day':
+                $sql = DB::raw('Date(created_at) as date');
+                break;
+            case 'week':
+                $sql = DB::raw('DATE_FORMAT(created_at,"%Y-%U") as date');
+                break;
+            default:
+                # code...
+                break;
+        }
+        $data = UserScanLog::where('created_at', '>=', $startDate)
+            ->where('created_at', '<=', $endDate)
             ->where('buyer',$seq)
             ->groupBy('date')
-            ->orderBy('date', 'DESC')
+            ->orderBy('date', 'ASC')
             ->get([
-                DB::raw('DATE_FORMAT(created_at,"%Y-%u") as date'),
-                DB::raw('COUNT(*) as value'),
+                $sql,
+                DB::raw('COUNT(user) as value'),
             ]);
-            $return['data'] = [];
-            $return['item'] = [];
+
+        $data = $this->formatData($startDate,$endDate,$type,$data);
+        $return['data'] = [];
+        $return['item'] = [];
+        $return['origin'] = $data;
         foreach ($data as $key => $value) {
             $return['item'][] = $value['date'];
             $return['data'][] = $value['value'];
         }
         return $this->responseOk('access success',$return);
+    }
+
+    public function analysis(Request $request)
+    {
+
+    }
+    protected function formatData($start,$end,$type,$data)
+    {
+        if($type=='day'){
+            $days = $start->diffInDays($end, false);
+            for ($i=0; $i < $days; $i++) { 
+                $date = $start->addDays(1)->toDateString();
+                $val = 0;
+                foreach ($data as $key => $value) {
+                    if($value['date']==$date){
+                        $val = $value['value'];
+                    }
+                }
+                $tempData['date'] = $date;
+                $tempData['value'] = $val;
+                $newData[] = $tempData;
+            }
+        }elseif ($type=='week') {
+            $day = $start;
+            while ($day->lt($end)) {
+                $week = $day->weekOfYear-1;
+                $year = $day->year;
+                $val = 0;
+                $date = $day->startOfWeek()->toDateString();
+                foreach ($data as $key => $value) {
+                    if($value['date']==$year.'-'.$week){
+                        $val = $value['value'];
+                    }
+                }
+                $tempData['date'] = $date;
+                $tempData['value'] = $val;
+                $newData[] = $tempData;
+                $day = $start->addWeeks(1);
+            }
+        }elseif ($type=='hour') {
+            // $newData = $data;
+            for ($i=0; $i < 24; $i++) { 
+                $date = $i;
+                $val = 0;
+                foreach ($data as $key => $value) {
+                    if($value['date']==$i){
+                        $val = $value['value'];
+                    }
+                }
+                $tempData['date'] = $date;
+                $tempData['value'] = $val;
+                $newData[] = $tempData;
+            }
+        }
+        return $newData;
     }
 }

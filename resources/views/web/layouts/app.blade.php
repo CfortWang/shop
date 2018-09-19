@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="/css/amazeui.min.css" />
     <link rel="stylesheet" href="/css/admin.css">
     <link rel="stylesheet" href="/css/app.css">
+    @yield('css')
 </head>
 <body>
 <div>
@@ -45,19 +46,19 @@
                     </a>
                     <ul class="tpl-left-nav-sub-menu">
                         <li>
-                            <a href="statistics/new.html">
+                            <a href="/statistics/new">
                                 <span>@lang('app.data.new_scanned_code_customer')</span>
                             </a>
-                            <a href="statistics/analysis.html">
+                            <a href="/statistics/analysis">
                                 <span>@lang('app.data.customer_analysis')</span>
                             </a>
-                            <a href="statistics/active.html">
+                            <a href="/statistics/active">
                                 <span>@lang('app.data.active_customer')</span>
                             </a>
-                            <a href="statistics/silence.html">
+                            <a href="/statistics/silence">
                                 <span>@lang('app.data.silence')</span>
                             </a>
-                            <a href="statistics/frequency.html">
+                            <a href="/statistics/frequency">
                                 <span>@lang('app.data.frequency')</span>
                             </a>
                         </li>
@@ -89,13 +90,13 @@
                     </a>
                     <ul class="tpl-left-nav-sub-menu">
                         <li>
-                            <a href="event/groupon.html">
+                            <a href="event/groupon">
                                 <span>@lang('app.event.groupon')</span>
                             </a>
-                            <a href="event/coupon.html">
+                            <a href="event/coupon">
                                 <span>@lang('app.event.coupon')</span>
                             </a>
-                            <a href="event/message.html">
+                            <a href="event/message">
                                 <span>@lang('app.event.message')</span>
                             </a>
                         </li>
@@ -108,7 +109,7 @@
                     </a>
                     <ul class="tpl-left-nav-sub-menu" >
                         <li>
-                            <a href="advertisement/setting.html">
+                            <a href="advertisement/setting">
                                 <span>@lang('app.advertisement.setting')</span>
                             </a>
                         </li>
@@ -121,10 +122,10 @@
                     </a>
                     <ul class="tpl-left-nav-sub-menu">
                         <li>
-                            <a href="shop/info.html">
+                            <a href="shop/info">
                                 <span>@lang('app.shop.info')</span>
                             </a>
-                            <a href="shop/code.html">
+                            <a href="shop/code">
                                 <span>@lang('app.shop.code')</span>
                             </a>
                         </li>
@@ -137,13 +138,13 @@
                     </a>
                     <ul class="tpl-left-nav-sub-menu">
                         <li>
-                            <a href="account.html">
+                            <a href="account">
                                 <span>@lang('app.account.detail')</span>
                             </a>
-                            <a href="account/cashout.html">
+                            <a href="account/cashout">
                                 <span>@lang('app.account.cashout')</span>
                             </a>
-                            <a href="account/point.html">
+                            <a href="account/point">
                                 <span>@lang('app.account.point')</span>
                             </a>
                         </li>
