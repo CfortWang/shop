@@ -18,7 +18,7 @@ Route::group(['namespace' => 'Web'], function() {
         Route::get('/',               'HomeController@index')->name("shop_index");
         Route::get('/index',               'HomeController@index')->name("shop_index");
         Route::group(['prefix'  => '/statistics'], function() {
-            Route::get('/new',                       'StatisticsController@newCustomer');
+            Route::get('/new',                       'StatisticsController@new');
             Route::get('/analysis',                       'StatisticsController@analysis');
             Route::get('/active',                       'StatisticsController@active');
             Route::get('/silence',                       'StatisticsController@silence');
