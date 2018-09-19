@@ -98,9 +98,8 @@
                                 </div>
                             <div class="actions">
                                 <ul class="actions-btn">
-                                    <li class="red-on">昨天</li>
-                                    <li class="green">前天</li>
-                                    <li class="blue">本周</li>
+                                    <li class="red-on">天</li>
+                                    <li class="blue">周</li>
                                 </ul>
                             </div>
                         </div>
@@ -118,9 +117,8 @@
                             </div>
                             <div class="actions">
                                 <ul class="actions-btn">
-                                    <li class="purple-on">昨天</li>
-                                    <li class="green">前天</li>
-                                    <li class="dark">本周</li>
+                                    <li class="purple-on">天</li>
+                                    <li class="green">周</li>
                                 </ul>
                             </div>
                         </div>
@@ -740,11 +738,14 @@
     <script>
     var options = {};
      options.locale = {
-        format: "YYYY-MM-DD",
-	    	    			separator: " - ",
-	    	    			daysOfWeek: ["日","一","二","三","四","五","六"],
-	    	    			monthNames: ["一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"]
-            };
+            format: "YYYY-MM-DD",
+            separator: " - ",
+            daysOfWeek: ["日","一","二","三","四","五","六"],
+            monthNames: ["一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"],
+        };
+        options.autoApply = true;
+        // options.linkedCalendars = false;
+        // options.showCustomRangeLabel = false;
         $('#config-demo').daterangepicker(options, function(start, end, label) {
             console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')'); 
         }).click();;
