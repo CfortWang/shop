@@ -163,15 +163,37 @@ class StatisticsController extends Controller
 
     protected function getMarrige()
     {
-        $d1['name'] = '已婚';
-        $d1['value'] = rand(1,199);
-        $d3['name'] = '单身';
-        $d3['value'] = rand(1,199);
-        $d2['name'] = '热恋中';
-        $d2['value'] = rand(1,199);
-        $data[] = $d1;
-        $data[] = $d2;
-        $data[] = $d3;
+        $orign = User::GroupBy('is_married')->get([
+            'is_married',
+            DB::raw('COUNT(seq) as value'),
+        ]);
+        foreach ($orign as $key => $value) {
+            switch ($value['is_married']) {
+                case '0':
+                    $female = '未婚';
+                    $item[] = $female;
+                    $orign[$key]['name'] = $female;
+                    break;
+                case '1':
+                    $male = '已婚';
+                    $item[] = $male;
+                    $orign[$key]['name'] = $male;
+                    break;
+                case '2':
+                    $male = '热恋中';
+                    $item[] = $male;
+                    $orign[$key]['name'] = $male;
+                    break;
+                default:
+                    $name = '未知';
+                    $item[] = $name;
+                    $orign[$key]['name'] = $name;
+                    break;
+            }
+        }
+        $data['title'] = '婚姻状态';
+        $data['data'] = $orign;
+        $data['item'] = $item;
         return $data;
     }
 
