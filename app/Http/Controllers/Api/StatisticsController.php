@@ -77,42 +77,62 @@ class StatisticsController extends Controller
 
     public function analysis(Request $request)
     {
-        $data[1] = $this->getGender();
-        $data['new'] = $this->getGender();
-        $data[2] = $this->getAge();
-        $data[3] = $this->getMarrige();
-        $data['time'] = $this->getGender();
-        $data['age'] = $this->getGender();
+        $seq = 1;
+        $orign = UserScanLog::where('buyer',$seq)
+            ->leftJoin('User as a','a.seq','=','UserScanLog.user')
+            // ->where('created_at', '<=', $endDate)
+            // ->where('created_at', '>=', $startDate)
+            ->select('a.gender','a.birthday','a.is_married')
+            ->distinct()
+            ->get();
+            
+        $data[1] = $this->getGender($orign);
+        $data['new'] = $this->getGender($orign);
+        $data[2] = $this->getGender($orign);
+        $data[3] = $this->getMarrige($orign);
+        $data['time'] = $this->getGender($orign);
+        $data['age'] = $this->getGender($orign);
         return $this->responseOk('access success',$data);
     }
 
-    protected function getGender()
+    protected function getGender($orign)
     {
-        $orign = User::GroupBy('gender')->get([
-            'gender',
-            DB::raw('COUNT(seq) as value'),
-        ]);
+        $female['name'] = '女';
+        $female['value'] = 0;
+        $male['name'] = '男';
+        $male['value'] = 0;
+        $unknown['name'] = '未知';
+        $unknown['value'] = 0;
         foreach ($orign as $key => $value) {
+            if(!isset($value['gender'])){
+                $value['gender'] = -1;
+            }
             switch ($value['gender']) {
                 case 'female':
-                    $female = '女';
-                    $item[] = $female;
-                    $orign[$key]['name'] = $female;
+                    $female['value'] = $female['value']+1;
                     break;
                 case 'male':
-                    $male = '男';
-                    $item[] = $male;
-                    $orign[$key]['name'] = $male;
+                    $male['value'] = $male['value']+1;
                     break;
                 default:
-                    $name = '未知';
-                    $item[] = $name;
-                    $orign[$key]['name'] = $name;
+                    $unknown['value'] = $unknown['value']+1;
                     break;
             }
         }
+        if($female['value']){
+            $item[] = '女';
+            $orignData[] = $female;
+        }
+        if($male['value']){
+            $item[] = '男';
+            $orignData[] = $male;
+        }
+        if($unknown['value']){
+            $item[] = '未知';
+            $orignData[] = $unknown;
+        }
         $data['title'] = '性别比例';
-        $data['data'] = $orign;
+        $data['data'] = $orignData;
         $data['item'] = $item;
         return $data;
     }
@@ -161,12 +181,29 @@ class StatisticsController extends Controller
         return $orign;
     }
 
-    protected function getMarrige()
+    protected function getMarrige($orign)
     {
-        $orign = User::GroupBy('is_married')->get([
-            'is_married',
-            DB::raw('COUNT(seq) as value'),
-        ]);
+        $female['name'] = '女';
+        $female['value'] = 0;
+        $married['name'] = '已婚';
+        $married['value'] = 0;
+        $loving['name'] = '已婚';
+        $loving['value'] = 0;
+        $unknown['name'] = '未知';
+        $unknown['value'] = 0;
+
+        // if($female['value']){
+        //     $item[] = '女';
+        //     $orignData[] = $female;
+        // }
+        // if($male['value']){
+        //     $item[] = '男';
+        //     $orignData[] = $male;
+        // }
+        // if($unknown['value']){
+        //     $item[] = '未知';
+        //     $orignData[] = $unknown;
+        // }
         foreach ($orign as $key => $value) {
             switch ($value['is_married']) {
                 case '0':
