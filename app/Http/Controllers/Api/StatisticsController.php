@@ -10,8 +10,10 @@ use Illuminate\Support\Facades\DB;
 use App\Helpers\SendCodeHelper;
 use Validator;
 use Hash;
+
 use Carbon\Carbon;
 use App\Models\UserScanLog;
+use App\Models\User;
 use App\Models\PhoneNumCertification;
 
 class StatisticsController extends Controller
@@ -75,8 +77,104 @@ class StatisticsController extends Controller
 
     public function analysis(Request $request)
     {
-
+        $data[1] = $this->getGender();
+        $data['new'] = $this->getGender();
+        $data[2] = $this->getAge();
+        $data[3] = $this->getMarrige();
+        $data['time'] = $this->getGender();
+        $data['age'] = $this->getGender();
+        return $this->responseOk('access success',$data);
     }
+
+    protected function getGender()
+    {
+        $orign = User::GroupBy('gender')->get([
+            'gender',
+            DB::raw('COUNT(seq) as value'),
+        ]);
+        foreach ($orign as $key => $value) {
+            switch ($value['gender']) {
+                case 'female':
+                    $female = '女';
+                    $item[] = $female;
+                    $orign[$key]['name'] = $female;
+                    break;
+                case 'male':
+                    $male = '男';
+                    $item[] = $male;
+                    $orign[$key]['name'] = $male;
+                    break;
+                default:
+                    $name = '未知';
+                    $item[] = $name;
+                    $orign[$key]['name'] = $name;
+                    break;
+            }
+        }
+        $data['title'] = '性别比例';
+        $data['data'] = $orign;
+        $data['item'] = $item;
+        return $data;
+    }
+
+    protected function getAge()
+    {
+        // $orign = User::GroupBy('gender')->get([
+        //     'gender',
+        //     DB::raw('COUNT(seq) as value'),
+        // ]);
+        // foreach ($orign as $key => $value) {
+        //     switch ($value['gender']) {
+        //         case 'female':
+        //             $female = '女';
+        //             $item[] = $female;
+        //             $orign[$key]['name'] = $female;
+        //             break;
+        //         case 'male':
+        //             $male = '男';
+        //             $item[] = $male;
+        //             $orign[$key]['name'] = $male;
+        //             break;
+        //         default:
+        //             $name = '未知';
+        //             $item[] = $name;
+        //             $orign[$key]['name'] = $name;
+        //             break;
+        //     }
+        // }
+        // $data['title'] = '性别比例';
+        // $data['data'] = $orign;
+        // $data['item'] = $item;
+        // return $data;
+        for ($i=0; $i < 10; $i++) { 
+            // SELECT * from users where DATEDIFF(now(),Ubirthday) <18 or DATEDIFF(now(),Ubirthday)>25
+            $start = intval($i*10);
+            if($i==0){
+                $orign[] = User::whereRaw('DATEDIFF(now(),birthday) <'.$start)->count(); 
+            }elseif($i==9){
+                $orign[] = User::whereRaw('DATEDIFF(now(),birthday) >'.$start)->count(); 
+            }else{
+                $orign[] = User::whereRaw('DATEDIFF(now(),birthday) >'.$start.' and DATEDIFF(now(),birthday) <'.($start+10))->count(); 
+            }
+            // $orign[] = User::whereRaw('DATEDIFF(now(),birthday) >'.$start.' and DATEDIFF(now(),birthday) <'.($start+10))->count();
+        }
+        return $orign;
+    }
+
+    protected function getMarrige()
+    {
+        $d1['name'] = '已婚';
+        $d1['value'] = rand(1,199);
+        $d3['name'] = '单身';
+        $d3['value'] = rand(1,199);
+        $d2['name'] = '热恋中';
+        $d2['value'] = rand(1,199);
+        $data[] = $d1;
+        $data[] = $d2;
+        $data[] = $d3;
+        return $data;
+    }
+
     protected function formatData($start,$end,$type,$data)
     {
         if($type=='day'){
