@@ -111,15 +111,23 @@ class Controller extends BaseController
         ], static::$httpOK, [], JSON_UNESCAPED_UNICODE);
     }
 
-    protected function decryptPassword($code)
+    protected function response4DataTables($items, $recordsTotal, $recordsFiltered)
     {
-       $result = openssl_decrypt($code, 'AES-128-CBC', 'RZ7kOJ74GRn9LAmI', 0, '471iWYK44Zx564nl');
-       return $result;
-    }
+        $totalCnt = count($items);
 
-    protected function encryptPassword($code)
-    {
-        $result = openssl_encrypt($code, 'AES-128-CBC', '471iWYK44Zx564nl', 0, 'RZ7kOJ74GRn9LAmI');
-       return $result;
+        if ($totalCnt == 0 || $recordsTotal === 0) {
+            return $this->responseOK('',[
+                'data'              => $items,
+                'recordsTotal'      => $recordsTotal,
+                'recordsFiltered'   => $recordsFiltered,
+            ]);
+        } else {
+            return $this->responseOK('', [
+                'data'              => $items,
+                'recordsTotal'      => $recordsTotal,
+                'recordsFiltered'   => $recordsFiltered,
+            ]);
+        }
     }
+    
 }

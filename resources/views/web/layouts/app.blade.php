@@ -70,7 +70,7 @@
                     </a>
                     <ul class="tpl-left-nav-sub-menu">
                         <li>
-                            <a href="customer/scanned">
+                            <a href="/customer/scanned">
                                 <span>@lang('app.customer.scanned')</span>
                             </a>
                             <a href="customer/groupon">

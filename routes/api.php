@@ -24,7 +24,9 @@ Route::group(['namespace' => 'Api'], function() {
     });
     Route::group(['prefix'  => 'customer'], function() {
         Route::get('/scannedUserList',               'CustomerController@scannedUserList');//扫码用户列表
-        Route::post('/sendCode',       'LoginController@sendCode');
-        Route::post('/code',           'LoginController@code');
+        Route::get('/{seq}/scannedUserDetail',            'CustomerController@scannedUserDetail');//扫码用户详情
+        Route::get('/pddIngUserList',            'CustomerController@pddIngUserList');//拼豆中用户
+        Route::get('/pddSuccessUserList',            'CustomerController@pddSuccessUserList');//拼豆成功用户
+        Route::get('/couponUserList',            'CustomerController@couponUserList');//领取优惠券用户
     });
 });
