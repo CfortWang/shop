@@ -481,7 +481,6 @@ ul.tpl-dropdown-content li>a.tpl-dropdown-content-message:last-child {
 .tpl-left-nav {
     position: fixed;
     height: 100%;
-    margin-top: -100px;
     z-index: 100;
     border-right: 1px solid #e9ecf3;
     width: 235px;

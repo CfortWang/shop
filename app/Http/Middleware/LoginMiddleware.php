@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use Closure;
+use App;
 
 class LoginMiddleware
 {
@@ -19,6 +20,7 @@ class LoginMiddleware
         //     return redirect()->route('login');
         // }
         // dd($request->session()->get('buyer'));
+        App::setLocale('zh');
         return $next($request);
     }
 }
