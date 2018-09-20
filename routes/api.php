@@ -22,6 +22,10 @@ Route::group(['namespace' => 'Api'], function() {
         Route::post('/sendCode',       'LoginController@sendCode');
         Route::post('/code',           'LoginController@code');
     });
+    Route::group(['prefix'  => 'statistics'], function() {
+        Route::get('/new',           'StatisticsController@newCustomer');
+    });
+
     Route::group(['prefix'  => 'customer'], function() {
         Route::get('/scannedUserList',               'CustomerController@scannedUserList');//扫码用户列表
         Route::get('/{seq}/scannedUserDetail',            'CustomerController@scannedUserDetail');//扫码用户详情
