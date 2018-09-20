@@ -30,6 +30,45 @@
                         </div>
                     </div>
                 </div>
+                <div class="am-u-md-8 am-u-sm-8 row-mb">
+                    <div class="tpl-portlet">
+                        <div class="tpl-portlet-title">
+                            <div class="tpl-caption font-green ">
+                                <span> 昨日扫码用户</span>
+                            </div>
+                            <input type="text" id="config-demo" class="form-control" style="max-width:320px;display:inline-block;margin:4px">
+                            <div class="actions">
+                                <ul class="actions-btn">
+                                    <li class="dateSpan blue blue-on" data-span="hour">小时</li>
+                                    <li class="dateSpan blue" data-span="day">天</li>
+                                    <li class="dateSpan blue" data-span="week">周</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <!--此部分数据请在 js文件夹下中的 app.js 中的 “百度图表A” 处修改数据 插件使用的是 百度echarts-->
+                        <div class="tpl-echarts" id="tpl-echarts-B">
+                        </div>
+                    </div>
+                </div>
+                <!-- <div class="am-u-md-4 am-u-sm-4 row-mb">
+                    <div class="tpl-portlet">
+                        <div class="tpl-portlet-title">
+                            <div class="tpl-caption font-green ">
+                                <span> 昨日扫码用户</span>
+                            </div>
+                            <input type="text" id="config-demo" class="form-control" style="max-width:320px;display:inline-block;margin:4px">
+                            <div class="actions">
+                                <ul class="actions-btn">
+                                    <li class="dateSpan blue blue-on" data-span="hour">小时</li>
+                                    <li class="dateSpan blue" data-span="day">天</li>
+                                    <li class="dateSpan blue" data-span="week">周</li>
+                                </ul>
+                            </div>
+                        </div>
+                        <div class="tpl-echarts" id="tpl-echarts-C">
+                        </div>
+                    </div>
+                </div> -->
             </div>
         </div>
     </div>
@@ -72,7 +111,7 @@
             drawData();
         })
         var drawData = function() {
-            var echartsA = echarts.init(document.getElementById('tpl-echarts-A'));
+            var echartsA = echarts.init(document.getElementById('tpl-echarts-B'));
             $.ajax({
                 url: "/api/statistics/new",
                 dataType: 'json',
