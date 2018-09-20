@@ -12,114 +12,36 @@
             <div class="row">
                 <div class="am-u-md-6 am-u-sm-12 row-mb">
                     <div class="tpl-portlet">
-                        <div class="tpl-portlet-title">
-                            <div class="tpl-caption font-green ">
-                                <span> 昨日扫码用户</span>
-                            </div>
-                            <input type="text" id="config-demo" class="form-control" style="max-width:320px;display:inline-block;margin:4px">
-                            <div class="actions">
-                                <ul class="actions-btn">
-                                    <li class="dateSpan blue blue-on" data-span="hour">小时</li>
-                                    <li class="dateSpan blue" data-span="day">天</li>
-                                    <li class="dateSpan blue" data-span="week">周</li>
-                                </ul>
-                            </div>
-                        </div>
                         <div class="tpl-echarts" id="tpl-echarts-1">
                         </div>
                     </div>
                 </div>
                 <div class="am-u-md-6 am-u-sm-12 row-mb">
                     <div class="tpl-portlet">
-                        <div class="tpl-portlet-title">
-                            <div class="tpl-caption font-green ">
-                                <span> 性别比例</span>
-                            </div>
-                            <input type="text" id="config-demo" class="form-control" style="max-width:320px;display:inline-block;margin:4px">
-                            <div class="actions">
-                                <ul class="actions-btn">
-                                    <li class="dateSpan blue blue-on" data-span="hour">小时</li>
-                                    <li class="dateSpan blue" data-span="day">天</li>
-                                    <li class="dateSpan blue" data-span="week">周</li>
-                                </ul>
-                            </div>
-                        </div>
                         <div class="tpl-echarts" id="tpl-echarts-gender">
                         </div>
                     </div>
                 </div>
                 <div class="am-u-md-6 am-u-sm-12 row-mb">
                     <div class="tpl-portlet">
-                        <div class="tpl-portlet-title">
-                            <div class="tpl-caption font-green ">
-                                <span> 新用户比例</span>
-                            </div>
-                            <input type="text" id="config-demo" class="form-control" style="max-width:320px;display:inline-block;margin:4px">
-                            <div class="actions">
-                                <ul class="actions-btn">
-                                    <li class="dateSpan blue blue-on" data-span="hour">小时</li>
-                                    <li class="dateSpan blue" data-span="day">天</li>
-                                    <li class="dateSpan blue" data-span="week">周</li>
-                                </ul>
-                            </div>
-                        </div>
                         <div class="tpl-echarts" id="tpl-echarts-2">
                         </div>
                     </div>
                 </div>
                 <div class="am-u-md-6 am-u-sm-12 row-mb">
                     <div class="tpl-portlet">
-                        <div class="tpl-portlet-title">
-                            <div class="tpl-caption font-green ">
-                                <span> 昨日扫码用户</span>
-                            </div>
-                            <input type="text" id="config-demo" class="form-control" style="max-width:320px;display:inline-block;margin:4px">
-                            <div class="actions">
-                                <ul class="actions-btn">
-                                    <li class="dateSpan blue blue-on" data-span="hour">小时</li>
-                                    <li class="dateSpan blue" data-span="day">天</li>
-                                    <li class="dateSpan blue" data-span="week">周</li>
-                                </ul>
-                            </div>
-                        </div>
                         <div class="tpl-echarts" id="tpl-echarts-3">
                         </div>
                     </div>
                 </div>
                 <div class="am-u-md-6 am-u-sm-12 row-mb">
                     <div class="tpl-portlet">
-                        <div class="tpl-portlet-title">
-                            <div class="tpl-caption font-green ">
-                                <span> 昨日扫码用户</span>
-                            </div>
-                            <input type="text" id="config-demo" class="form-control" style="max-width:320px;display:inline-block;margin:4px">
-                            <div class="actions">
-                                <ul class="actions-btn">
-                                    <li class="dateSpan blue blue-on" data-span="hour">小时</li>
-                                    <li class="dateSpan blue" data-span="day">天</li>
-                                    <li class="dateSpan blue" data-span="week">周</li>
-                                </ul>
-                            </div>
-                        </div>
                         <div class="tpl-echarts" id="tpl-echarts-D">
                         </div>
                     </div>
                 </div>
                 <div class="am-u-md-6 am-u-sm-12 row-mb">
                     <div class="tpl-portlet">
-                        <div class="tpl-portlet-title">
-                            <div class="tpl-caption font-green ">
-                                <span> 昨日扫码用户</span>
-                            </div>
-                            <input type="text" id="config-demo" class="form-control" style="max-width:320px;display:inline-block;margin:4px">
-                            <div class="actions">
-                                <ul class="actions-btn">
-                                    <li class="dateSpan blue blue-on" data-span="hour">小时</li>
-                                    <li class="dateSpan blue" data-span="day">天</li>
-                                    <li class="dateSpan blue" data-span="week">周</li>
-                                </ul>
-                            </div>
-                        </div>
                         <div class="tpl-echarts" id="tpl-echarts-E">
                         </div>
                     </div>
