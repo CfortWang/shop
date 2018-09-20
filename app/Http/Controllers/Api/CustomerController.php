@@ -11,66 +11,120 @@ use App\Helpers\SendCodeHelper;
 use Validator;
 use Hash;
 use App\Models\Buyer;
+use App\Models\User;
+use App\Models\Groupon;
+use App\Models\GrouponProduct;
+use App\Models\GrouponRecord;
 use App\Models\UserScanLog;
 use App\Models\PhoneNumCertification;
+use Illuminate\Support\Carbon;
 
-class LoginController extends Controller
+class CustomerController extends Controller
 {
     public function __construct()
     {
     }
     public function scannedUserList(Request $request){
-        $seq = $request->session()->get('buyer.seq');
-        dd($seq);
-        $offset = $request->start;
-        $limit = $request->length;
-        $searchValue = $request->search['value'];
-        $orderColumnsNo = $request->order[0]['column'];
-        $orderType = $request->order[0]['dir'];
-        $columnArray = array('id','nickname','gender','q35package_code','created_at');
-        $items = UserScanLog::where('buyer',$seq);
-        $recordsTotal = $items->count();
-        if (!empty($request->search['value'])) {
-            $items = $items->where(function ($query) use ($searchValue) {
-                $query
-                ->where('user_phone_num', $searchValue);
-            });
+    
+        // $buyer = $request->session()->get('buyer.seq');
+        $buyer=2;
+        $items = DB::table('UserScanLog')
+                    ->where('UserScanLog.buyer',$buyer)  
+                    // ->join('User','User.seq','=','UserScanLog.user')  
+                    ->select(  
+                        'UserScanLog.user',
+                         DB::raw('count(UserScanLog.user) AS scannedCount'))  
+                    ->groupBy('UserScanLog.user')  
+                    ->get();  
+        foreach($items as $k=>$v){
+            $user=User::where('seq',$v->user)->select('nickname','gender')->first();
+            $firstTime=UserScanLog::where('user',$v->user)->where('buyer',$buyer)->select('created_at')->orderBy('created_at','asc')->first();
+            $endTime=UserScanLog::where('user',$v->user)->where('buyer',$buyer)->select('created_at')->orderBy('created_at','desc')->first();
+            $list['nickname']=$user['nickname'];
+            $list['gender']=$user['gender'];
+            $list['scannedCount']=$v->scannedCount;
+            $list['firstTime']= $firstTime['created_at'];
+            $list['endTime']=$endTime['created_at'];
+            $list['user']=$v->user;
+            $data[]=$list;
         }
-        $recordsFiltered = $items->count();
-        $items = $items->select('user_phone_num', 'user_name','created_at','q35code_code','q35package_code')
-                ->orderBy($columnArray[$orderColumnsNo], $orderType)
-                ->offset($offset)
-                ->limit($limit)
-                ->get();
-        return $this->response4DataTables($items, $recordsTotal, $recordsFiltered);
+        
+        // $items = $items->select('user_phone_num', 'user_name','created_at','q35code_code','q35package_code')
+        //         ->orderBy()
+        //         ->offset($offset)
+        //         ->limit($limit)
+        //         ->get();
+        return $this->response4DataTables($data, 1, 1);
     }
-    public function code(Request $request)
+    public function scannedUserDetail(Request $request, $seq)
     {
-        $input = Input::only('phone','password','code','repeatPassword');
-
+       // $buyer = $request->session()->get('buyer.seq');
+        $buyer=2;
+        $input = Input::only('seq');
         $validator = Validator::make($input, [
-            'phone'           => 'required',
-            'code'            => 'required',
-            'password'        => 'required',
-            'repeatPassword'  => 'required',
+            'seq'           => 'required',
         ]);
-
         if ($validator->fails()) {
             return $this->responseBadRequest('Bad Request');
         }
-        $loginID  = $request->input('phone');
-        $loginPW = $request->input('password');
-        $buyer = Buyer::where('rep_phone_num', $loginID)->first();
-        if (empty($buyer)){
-            return $this->responseBadRequest('ID can not be find.', 101);
-        } 
-        if (!Hash::check($loginPW, $buyer->password)){
-            return $this->responseBadRequest('Incorrect Password', 102);
+        $seq=$request->input('seq');
+        dd($seq);
+        $veriSeq=UserScanLog::where('buyer',$buyer)->where('user',$seq)->select('created_at')->get()->toArray();
+        if(empty($veriSeq)){
+            return $this->responseBadRequest('seq is error');  
         }
-        $request->session()->put('buyer.seq', $buyer->seq);
-        $request->session()->put('buyer.id', $buyer->rep_phone_num);
-        return $this->responseOk('access success');
+        $user=User::where('seq',$seq)->select("nickname",'id')->first();
+        foreach($veriSeq as $k=>$v){
+           $data['id']=$user['id'];
+           $data['nickname']=$user['nickname'];
+           $data['created_at']=$v['created_at'];
+           $items[]=$data;
+        }
+        return $this->responseOk($items);
     }
-
-   
+    //拼豆豆中用户
+    public function pddIngUserList(Request $request){
+        // $buyer=$request->session()->get('buyer.seq'); 
+        $buyer=39;
+        $items=GrouponRecord::where('p.buyer_id',$buyer)
+                      ->where('g.groupon_status',1)
+                      ->leftJoin('groupon as g','g.id','=','groupon_record.groupon_id')
+                      ->leftJoin('groupon_product as p','p.id','=','g.groupon_product_id')
+                      ->leftJoin('User as u','u.seq','=','groupon_record.user_id')
+                      ->select('u.id','u.nickname','groupon_record.is_owner','g.groupon_status','g.created_at')
+                      ->get();
+        return $this->response4DataTables($items, 1, 1);
+    }
+     //拼豆豆成功用户
+     public function pddSuccessUserList(Request $request){
+        // $buyer=$request->session()->get('buyer.seq'); 
+        $buyer=39;
+        $items=GrouponRecord::where('p.buyer_id',$buyer)
+                      ->where('g.groupon_status',2)
+                      ->leftJoin('groupon as g','g.id','=','groupon_record.groupon_id')
+                      ->leftJoin('groupon_product as p','p.id','=','g.groupon_product_id')
+                      ->leftJoin('User as u','u.seq','=','groupon_record.user_id')
+                      ->select('u.id','u.nickname','groupon_record.is_owner','g.groupon_status','g.created_at','g.updated_at')
+                      ->get();
+        return $this->response4DataTables($items, 1, 1);
+    }
+     //拼豆豆失败用户
+     public function pddFailUserList(Request $request){
+        // $buyer=$request->session()->get('buyer.seq'); 
+        $buyer=39;
+        $items=GrouponRecord::where('p.buyer_id',$buyer)
+                      ->where('g.groupon_status',3)
+                      ->leftJoin('groupon as g','g.id','=','groupon_record.groupon_id')
+                      ->leftJoin('groupon_product as p','p.id','=','g.groupon_product_id')
+                      ->leftJoin('User as u','u.seq','=','groupon_record.user_id')
+                      ->select('u.id','u.nickname','groupon_record.is_owner','g.groupon_status','g.created_at','g.updated_at')
+                      ->get();
+        return $this->response4DataTables($items, 1, 1);
+    }
+    //领取优惠券用户
+    public function couponUserList(Request $request){
+        // $buyer=$request->session()->get('buyer.seq');
+        $buyer=2;
+        
+    }
 }
