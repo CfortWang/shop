@@ -54,14 +54,12 @@ class StatisticsController extends Controller
         }
         $data = UserScanLog::where('created_at', '>=', $startDate)
             ->where('created_at', '<=', $endDate)
-            ->where('firstCreate','>',$startDate)
             ->where('buyer',$seq)
             ->groupBy('date')
             ->orderBy('date', 'ASC')
             ->get([
                 $sql,
                 DB::raw('COUNT(user) as value'),
-                DB::raw('min(created_at) as firstCreate'),
             ]);
 
         $data = $this->formatData($startDate,$endDate,$type,$data);
