@@ -30,6 +30,68 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="am-u-md-12 am-u-sm-12 row-mb active-user">
+                    <div class="tpl-portlet">
+                        <div class="tpl-portlet-title center">
+                            <div class="center-caption">
+                                <span>活跃用户</span>
+                            </div>
+                        </div>
+                        <div class="tpl-echarts" id="tpl-echarts-C">
+                            <div class="user-table">
+                                <div class="table-title clear-fix">
+                                    <div class="date">日期</div>
+                                    <div class="count">活跃用户数</div>
+                                    <div class="percentage">新用户占比</div>
+                                </div>
+                                <div class="table-content">
+                                    <div class="table-tr clear-fix">
+                                        <div class="table-td-date">2019-09-09</div>
+                                        <div class="table-td-count">1000</div>
+                                    </div>
+                                    <div class="table-tr clear-fix">
+                                        <div class="table-td-date">2019-09-09</div>
+                                        <div class="table-td-count">1000</div>
+                                    </div>
+                                    <div class="table-tr clear-fix">
+                                        <div class="table-td-date">2019-09-09</div>
+                                        <div class="table-td-count">1000</div>
+                                    </div>
+                                    <div class="table-tr clear-fix">
+                                        <div class="table-td-date">2019-09-09</div>
+                                        <div class="table-td-count">1000</div>
+                                    </div>
+                                    <div class="table-tr clear-fix">
+                                        <div class="table-td-date">2019-09-09</div>
+                                        <div class="table-td-count">1000</div>
+                                    </div>
+                                    <div class="table-tr clear-fix">
+                                        <div class="table-td-date">2019-09-09</div>
+                                        <div class="table-td-count">1000</div>
+                                    </div>
+                                    <div class="table-tr clear-fix">
+                                        <div class="table-td-date">2019-09-09</div>
+                                        <div class="table-td-count">1000</div>
+                                    </div>
+                                    <div class="table-tr clear-fix">
+                                        <div class="table-td-date">2019-09-09</div>
+                                        <div class="table-td-count">1000</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pagination">
+                                <div class="page-down">
+                                    <img src="/img/main/icon_page_left.png" alt="">
+                                </div>
+                                <div class="page-number">1</div>
+                                <div class="page-up">
+                                    <img src="/img/main/icon_page_right.png" alt="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>

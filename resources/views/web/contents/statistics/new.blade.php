@@ -55,7 +55,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="am-u-md-4 am-u-sm-4 row-mb C">
+                <div class="am-u-md-4 am-u-sm-4 row-mb new">
                     <div class="tpl-portlet">
                         <div class="tpl-portlet-title center">
                             <div class="center-caption">
