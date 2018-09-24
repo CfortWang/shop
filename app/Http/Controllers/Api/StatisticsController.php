@@ -22,6 +22,26 @@ class StatisticsController extends Controller
     {
     }
 
+    public function all(Request $request)
+    {
+        $seq = 1;
+       
+         $return['tomorrowNew'] = UserScanLog::where('UserScanLog.buyer',$seq)
+            ->leftJoin('User as a','a.seq','=','UserScanLog.user')
+            ->where('UserScanLog.created_at','>',Carbon::now()->yesterday())
+            ->where('a.created_at','>',Carbon::now()->yesterday())
+            ->distinct('user')
+            ->count('user');
+        $return['all'] = UserScanLog::where('buyer',$seq)
+            ->distinct('user')
+            ->count('user');
+         $return['tomorrowAll'] = UserScanLog::where('buyer',$seq)
+            ->where('created_at','>',Carbon::now()->yesterday())
+            ->distinct('user')
+            ->count('user');
+        return $this->responseOk('access success',$return);
+    }
+
     public function newCustomer(Request $request)
     {
         $seq  = 1;
@@ -82,16 +102,16 @@ class StatisticsController extends Controller
             ->leftJoin('User as a','a.seq','=','UserScanLog.user')
             // ->where('created_at', '<=', $endDate)
             // ->where('created_at', '>=', $startDate)
-            ->select('a.gender','a.birthday','a.is_married')
+            ->select('a.gender','a.birthday','a.is_married','a.created_at')
             ->distinct()
             ->get();
             
         $data[1] = $this->getGender($orign);
-        $data['new'] = $this->getGender($orign);
+        $data['new'] = $this->getNew($orign);
         $data[2] = $this->getAge($orign);
         $data[3] = $this->getMarrige($orign);
-        $data['time'] = $this->getGender($orign);
-        $data['age'] = $this->getGender($orign);
+        $data['time'] = $this->getTime($orign);
+        $data['province'] = $this->getProvince($orign);
         return $this->responseOk('access success',$data);
     }
 
@@ -137,11 +157,64 @@ class StatisticsController extends Controller
         return $data;
     }
 
+    protected function getNew($orign)
+    {
+        // foreach($orign as $key => $value){
+
+        // }
+        $data[] = 12;
+        $data[] = 25;
+        return $data;
+    }
+
+    protected function getTime()
+    {
+        $seq = 2;
+        $sql = DB::raw('DATE_FORMAT(created_at,"%H") as name');
+        $data = UserScanLog::where('buyer',$seq)
+            ->groupBy('name')
+            ->orderBy('name', 'ASC')
+            ->get([
+                $sql,
+                DB::raw('COUNT(user) as value'),
+            ]);
+        $title= '时间分布';
+        foreach($data as $key => $value){
+            $item[] = $value['name'] ;
+        }
+        $return['title'] = '时间分布';
+        $return['data'] = $data;
+        $return['item'] = $item;
+        return $return;
+    }
+
+    protected function getProvince()
+    {
+        $seq = 2;
+        $data = UserScanLog::where('UserScanLog.buyer',$seq)
+            ->leftJoin('User as u','u.seq','=','UserScanLog.user')
+            ->leftJoin('Province as p','p.seq','=','u.province')
+            ->groupBy('p.name')
+            ->get([
+                'p.name',
+                DB::raw('COUNT(UserScanLog.user) as value'),
+            ]);
+
+        foreach($data as $key => $value){
+            $item[] = $value['name'] ;
+        }
+        $return['title'] = '地域分布';
+        $return['data'] = $data;
+        $return['item'] = $item;
+        return $return;
+    }
+
     protected function getAge($orign)
     {
         $arnge = ['0-10','10-20','20-30','30-40','40-50','50-60','60-70','80_90','90以上'];
         $unknown['name'] = '未知';
         $unknown['value'] = 0;
+        $item = [];
         foreach ($orign as $key => $value) {
             if(isset($value['birthday'])){
                 $year = Carbon::parse($value['birthday']);
@@ -149,9 +222,12 @@ class StatisticsController extends Controller
                 if($different>8){
                     $different = 8;
                 }
-                $data[$different]['name'] = $arnge[$different];
+                $data[$different]['name'] = isset($data[$different]['value'])?:$item[] = $arnge[$different];
                 $data[$different]['value'] = isset($data[$different]['value'])?$data[$different]['value']+1:1;
             }else{
+                if($unknown['value']==0){
+                    $item[] = '未知';
+                }
                 $unknown['value'] = $unknown['value']+1;
             }
         }
@@ -159,7 +235,7 @@ class StatisticsController extends Controller
         $data[] = $unknown;
         $return['title'] = '年龄分布';
         $return['data'] = $data;
-        $return['item'] = ['0-10','80-90','90以上','未知'];
+        $return['item'] = $item;
         return $return;
     }
 
@@ -422,6 +498,38 @@ class StatisticsController extends Controller
         }
         return $this->responseOk('access success',$return);
     }
- 
- 
+
+    public function list(Request $request)
+    {
+        // $type = $request->input('type');
+        // $startDate = Carbon::createFromFormat('Y-m-d',$request->input('startDate'));
+        // $endDate = Carbon::createFromFormat('Y-m-d',$request->input('endDate'));
+        // // 按天
+        // $dataType = $request->input('dateSpan');
+        // switch ($dataType) {
+        //     case 'hour':
+        //         $sql = DB::raw('DATE_FORMAT(created_at,"%H") as date');
+        //         break;
+        //     case 'day':
+        //         $sql = DB::raw('Date(created_at) as date');
+        //         break;
+        //     case 'week':
+        //         $sql = DB::raw('DATE_FORMAT(created_at,"%Y-%U") as date');
+        //         break;
+        //     default:
+        //         # code...
+        //         break;
+        // }
+        $seq = 2;
+        $data = UserScanLog::where('UserScanLog.buyer',$seq)
+            ->leftJoin('User as a','a.seq','=','UserScanLog.user')
+            // ->where('UserScanLog.created_at','>',Carbon::now()->yesterday())
+            // ->where('a.created_at','>',Carbon::now()->yesterday())
+            // ->distinct('user')
+            // ->count('user');
+            ->select('a.nickname','UserScanLog.created_at')
+            ->limit(20)
+            ->get();
+        return $this->responseOk('',$data);
+    }
 }
