@@ -13,6 +13,31 @@
                 <div class="am-u-md-12 am-u-sm-12 row-mb">
                     <div class="tpl-portlet">
                         <div class="tpl-portlet-title">
+                            <div class="tpl-caption">
+                                <span> 昨日核心指标</span>
+                                <p class="tpl-remark">本页面根据昨日数据计算,并非实时数据</p>
+                            </div>
+                        </div>
+                        <!--此部分数据请在 js文件夹下中的 app.js 中的 “百度图表A” 处修改数据 插件使用的是 百度echarts-->
+                        <div class="tpl-echarts-A" id="tpl-echarts-A">
+                            <div class="new-user">
+                                <span class="user-type">新增扫码用户</span>
+                                <p class="user-amount">100</p>
+                            </div>
+                            <div class="yesterday-user">
+                                <span class="user-type">昨日扫码用户</span>
+                                <p class="user-amount">1000</p>
+                            </div>
+                            <div class="user-count">
+                                <span class="user-type">累计扫码用户</span>
+                                <p class="user-amount">10000</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="am-u-md-8 am-u-sm-8 row-mb">
+                    <div class="tpl-portlet">
+                        <div class="tpl-portlet-title">
                             <div class="tpl-caption font-green ">
                                 <span> 昨日扫码用户</span>
                             </div>
@@ -26,7 +51,67 @@
                             </div>
                         </div>
                         <!--此部分数据请在 js文件夹下中的 app.js 中的 “百度图表A” 处修改数据 插件使用的是 百度echarts-->
-                        <div class="tpl-echarts" id="tpl-echarts-A">
+                        <div class="tpl-echarts" id="tpl-echarts-B">
+                        </div>
+                    </div>
+                </div>
+                <div class="am-u-md-4 am-u-sm-4 row-mb new">
+                    <div class="tpl-portlet">
+                        <div class="tpl-portlet-title center">
+                            <div class="center-caption">
+                                <span>新增扫码用户</span>
+                            </div>
+                        </div>
+                        <div class="tpl-echarts" id="tpl-echarts-C">
+                            <div class="user-table">
+                                <div class="table-title clear-fix">
+                                    <div class="date">日期</div>
+                                    <div class="count">新增用户</div>
+                                </div>
+                                <div class="table-content">
+                                    <div class="table-tr clear-fix">
+                                        <div class="table-td-date">2019-09-09</div>
+                                        <div class="table-td-count">1000</div>
+                                    </div>
+                                    <div class="table-tr clear-fix">
+                                        <div class="table-td-date">2019-09-09</div>
+                                        <div class="table-td-count">1000</div>
+                                    </div>
+                                    <div class="table-tr clear-fix">
+                                        <div class="table-td-date">2019-09-09</div>
+                                        <div class="table-td-count">1000</div>
+                                    </div>
+                                    <div class="table-tr clear-fix">
+                                        <div class="table-td-date">2019-09-09</div>
+                                        <div class="table-td-count">1000</div>
+                                    </div>
+                                    <div class="table-tr clear-fix">
+                                        <div class="table-td-date">2019-09-09</div>
+                                        <div class="table-td-count">1000</div>
+                                    </div>
+                                    <div class="table-tr clear-fix">
+                                        <div class="table-td-date">2019-09-09</div>
+                                        <div class="table-td-count">1000</div>
+                                    </div>
+                                    <div class="table-tr clear-fix">
+                                        <div class="table-td-date">2019-09-09</div>
+                                        <div class="table-td-count">1000</div>
+                                    </div>
+                                    <div class="table-tr clear-fix">
+                                        <div class="table-td-date">2019-09-09</div>
+                                        <div class="table-td-count">1000</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="pagination">
+                                <div class="page-down">
+                                    <img src="/img/main/icon_page_left.png" alt="">
+                                </div>
+                                <div class="page-number">1</div>
+                                <div class="page-up">
+                                    <img src="/img/main/icon_page_right.png" alt="">
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -72,7 +157,7 @@
             drawData();
         })
         var drawData = function() {
-            var echartsA = echarts.init(document.getElementById('tpl-echarts-A'));
+            var echartsA = echarts.init(document.getElementById('tpl-echarts-B'));
             $.ajax({
                 url: "/api/statistics/new",
                 dataType: 'json',
