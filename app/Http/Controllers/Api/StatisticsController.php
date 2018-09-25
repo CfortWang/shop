@@ -549,7 +549,7 @@ class StatisticsController extends Controller
             ->groupBy('date')
             ->select(DB::raw('Date(UserScanLog.created_at) as date'),DB::raw('COUNT(UserScanLog.user) as value'))
             ->limit($limit)
-            ->offset($page*$limit)
+            ->offset(($page-1)*$limit)
             ->get();
         $count = UserScanLog::where('UserScanLog.buyer',$seq)
             ->leftJoin('User as a','a.seq','=','UserScanLog.user')
@@ -584,7 +584,7 @@ class StatisticsController extends Controller
             // ->count('user');
             ->select('a.seq','a.nickname','UserScanLog.created_at')
             ->limit($limit)
-            ->offset($page*$limit)
+            ->offset(($page-1)*$limit)
             ->get();
         $count = UserScanLog::where('UserScanLog.buyer',$seq)
             ->leftJoin('User as a','a.seq','=','UserScanLog.user')
