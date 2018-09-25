@@ -50,4 +50,11 @@ class StatisticsController extends Controller
         ]);
     }
 
+    public function details()
+    {
+        return view('web.contents.statistics.details',[
+            'title' => '',
+        ]);
+    }
+
 }

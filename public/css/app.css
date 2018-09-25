@@ -556,7 +556,7 @@ ul.tpl-dropdown-content li>a.tpl-dropdown-content-message:last-child {
     margin: 40px 50px;
 }
 
-.C{
+.new{
     width: 30.5%;
 }
 .tpl-echarts-A{
@@ -613,13 +613,13 @@ ul.tpl-dropdown-content li>a.tpl-dropdown-content-message:last-child {
     height: 35px;
     line-height: 35px;
 }
-.date, .table-td-date{
+.user-table .date, .user-table .table-td-date{
     display: inline-block;
     text-align: center;
     float: left;
     width: 45%;
 }
-.count, .table-td-count{
+.user-table .count, .user-table .table-td-count{
     display: inline-block;
     text-align: center;
     float: right;
@@ -633,7 +633,7 @@ ul.tpl-dropdown-content li>a.tpl-dropdown-content-message:last-child {
 .table-tr:nth-child(even){
     background: #F8F9FC;
 }
-.table-td-date{
+.table-td-date, .table-td-percent{
     font-family: "PingFangSC-Regular";
     font-size: 16px;
     font-weight:400;
@@ -665,6 +665,41 @@ ul.tpl-dropdown-content li>a.tpl-dropdown-content-message:last-child {
     font-weight: 300;
     margin: 0px 16px;
 }
+.active-table .table-title > div, .active-table .table-tr > div{
+    display: inline-block;
+    text-align: center;
+    float: left;
+    width: 33%;
+}
+.table-tr > div{
+    font-family: "PingFangSC-Regular";
+    font-size: 16px;
+    font-weight: 400;
+}
+
+.silence-table .table-title > div, .silence-table .table-tr > div{
+    display: inline-block;
+    text-align: center;
+    float: left;
+    width: 50%;
+}
+.detail-page .silence-table .table-title > div, .detail-page .silence-table .table-tr > div{
+    width: 33%;
+}
+
+.frequency-table .table-title > div, .frequency-table .table-tr > div{
+    display: inline-block;
+    text-align: center;
+    float: left;
+    width: 50%;
+}
+.scan-user-table .table-title > div, .scan-user-table .table-tr > div{
+    display: inline-block;
+    text-align: center;
+    float: left;
+    width: 12.5%;
+}
+
 .tpl-left-nav {
     position: fixed;
     height: 100vh;

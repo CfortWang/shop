@@ -23,6 +23,7 @@ Route::group(['namespace' => 'Web'], function() {
             Route::get('/active',                       'StatisticsController@active');
             Route::get('/silence',                       'StatisticsController@silence');
             Route::get('/frequency',                       'StatisticsController@frequency');
+            Route::get('/details',                       'StatisticsController@details');
         });
         //customer 我的客户
         Route::group(['prefix'  => 'customer'], function() {
