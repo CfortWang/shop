@@ -97,12 +97,11 @@ class AdController extends Controller
             'landing_url'     => 'required|string',
             'pkg_list'        => 'nullable'
         ]);
-
         if ($validator->fails()) {
             return $this->responseBadRequest('Wrong Request', 401);//error code 400,401
         }
-
-        $title = $input['title'];
+        $title = $request->input('title');
+        $landingUrl = $request->input('landing_url');
         $exits = ShopAD::where('buyer', $buyer)->where('title',$title)->first();
         if($exits){
             return $this->responseConflict('already exist title', 401);//error code 409,401
@@ -116,19 +115,15 @@ class AdController extends Controller
         }
         $adImage = FileHelper::shopADImage($image);
         $adImage = ShopImageFile::create($adImage);
-
         $shopAd = ShopAD::create([
             'title'            => $input['title'],
-            'type'             => $input['type'],
-            'landing_url'      => $input['landing_url'],
+            'landing_url'      => $landingUrl,
             'status'           => 'registered',
             'buyer'            => $buyer,
             'shop_image_file'  => $adImage->seq
         ]);
-
         if ($pkgSeqList) {
             $packages = Q35Package::whereIn('seq', $pkgSeqList)->get();
-
             foreach ($packages as $package) {
                 Shop2Q35Package::create([
                     'type'             => 'ad',
@@ -143,27 +138,30 @@ class AdController extends Controller
         }
         return $this->responseOK('success', $shopAd);
     }
-    public function update(Request $request, $seq)
+    //修改广告
+    public function modifyAd(Request $request, $seq)
     {
         $buyer = $request->session()->get('buyer.seq');
-        $input = Input::only('type', 'landing_url' , 'ad_image_file', 'pkg_list');
+        $input = Input::only('title', 'landing_url' , 'ad_image_file', 'pkg_list','start_date','end_date');
 
         $validator = Validator::make($input, [
-            'type'            => 'required|string',
-            'ad_image_file'   => 'required',
+            'title'           => 'required',
+            'ad_image_file'   => 'required|image',
             'landing_url'     => 'required|string',
             'pkg_list'        => 'nullable'
         ]);
-
         if ($validator->fails()) {
             return $this->responseBadRequest('Wrong Request', 401);//error code 400,401
         }
-
         $shopAD = ShopAD::where('seq', $seq)->where('buyer', $buyer)->first();
         if (empty($shopAD)){
             return $this->responseNotFound('There is no data', 401);//error code 404,401
         }
-
+        $title=$request->input('title');
+        $exitTitle=ShopAd::where('title',$title)->first();
+        if($exitTitle){
+            return $this->responseConflict('already exist title', 401);//error code 409,401
+        }
         $adImage = $request->file('ad_image_file');
         if($adImage){
             list($imageWidth, $imageHeight) = getimagesize($adImage);
@@ -184,7 +182,6 @@ class AdController extends Controller
         foreach ($shop2Buyer as $item) {
             $item->forceDelete();
         }
-
         if ($pkgSeqList) {
             $packages = Q35Package::whereIn('seq', $pkgSeqList)->get();
 
@@ -200,7 +197,6 @@ class AdController extends Controller
                 ]);
             }
         }
-        $shopAD->type = $request->input('type');
         $shopAD->landing_url = $request->input('landing_url');
         $shopAD->save();
 
@@ -209,7 +205,6 @@ class AdController extends Controller
     public function packagelist(Request $request)
     {
         $seq = $request->session()->get('buyer.seq');
-
         $items = Q35Sales::leftJoin('Q35Package as PKG', 'PKG.q35sales', '=', 'Q35Sales.seq')
         ->leftJoin('Shop2Q35Package as S2P', 'S2P.q35package', '=', 'PKG.seq')
         ->where('Q35Sales.buyer', $seq)

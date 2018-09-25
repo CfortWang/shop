@@ -29,10 +29,8 @@ Route::group(['namespace' => 'Api'], function() {
         Route::get('/silence',                       'StatisticsController@silence');
         Route::get('/frequency',                       'StatisticsController@frequency');
         Route::get('/all',                       'StatisticsController@all');
-        Route::get('/list',                       'StatisticsController@list');
-        
+        Route::get('/list',                       'StatisticsController@list'); 
     });
-
     Route::group(['prefix'  => 'customer'], function() {
         Route::get('/scannedUserList',               'CustomerController@scannedUserList');//扫码用户列表
         Route::get('/{seq}/scannedUserDetail',            'CustomerController@scannedUserDetail');//扫码用户详情
@@ -40,10 +38,39 @@ Route::group(['namespace' => 'Api'], function() {
         Route::get('/pddSuccessUserList',            'CustomerController@pddSuccessUserList');//拼豆成功用户
         Route::get('/couponUserList',            'CustomerController@couponUserList');//领取优惠券用户
     });
-    //广告设置
+    //ad
     Route::group(['prefix'  => 'ad'], function() {
         Route::get('/adList',               'AdController@adList');//广告列表
         Route::post('/adtype/{seq}/{type}',               'AdController@adtype');//广告上下架
-        Route::post('/modifyAd',            'AdController@modifyAd');//修改广告
+        Route::post('/modifyAd/{seq}',              'AdController@modifyAd');//修改广告
+        Route::get('/pkgList',            'AdController@pkgList');//喜豆码列表
     });
+    //shop
+    Route::group(['prefix'  => 'shop'], function() {
+        Route::get('info',                  'ShopController@info');
+        Route::get('category',              'ShopController@category');
+        Route::post('modify',               'ShopController@modify');
+        Route::post('delete/image',         'ShopController@deleteImage');
+    });
+    //Package
+    Route::group(['prefix' => 'packages'], function() {
+    Route::get('package_sales',                   'PackagesController@packageSales');
+    Route::get('buyer_request',                   'PackagesController@buyerRequest');
+    Route::get('package_sales/{seq}/detail',      'PackagesController@salesDetail');
+    Route::get('package_sales/{seq}/item',        'PackagesController@salesItem');
+    Route::post('refund/{seq}',                    'PackagesController@refundSales');
+    Route::patch('package_sales/{seq}/received',  'PackagesController@received');
+    Route::get('package_sales/{seq}/item_detail', 'PackagesController@itemDetail');
+    Route::post('buying_create',                  'PackagesController@buyingCreate');
+    Route::get('my_package',                      'PackagesController@myPackageList');
+    Route::get('my_package/codes/{seq}',          'PackagesController@codeList');
+    Route::post('my_package/codes/activation',    'PackagesController@codeActivation');
+});
+  // Account Info
+  Route::group(['prefix'  => 'account'], function() {
+    Route::get('detail',                      'AccountInfoController@detail'); // 账号信息
+    Route::get('scoreList',                   'AccountInfoController@scoreList'); // 积分列表
+    Route::post('modify',                   'AccountInfoController@modify');
+    Route::get('bank-list',                 'AccountInfoController@bankList');
+});
 });
