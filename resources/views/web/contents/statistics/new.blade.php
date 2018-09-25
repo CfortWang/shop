@@ -22,15 +22,15 @@
                         <div class="tpl-echarts-A" id="tpl-echarts-A">
                             <div class="new-user">
                                 <span class="user-type">新增扫码用户</span>
-                                <p class="user-amount">100</p>
+                                <p class="user-amount"></p>
                             </div>
                             <div class="yesterday-user">
                                 <span class="user-type">昨日扫码用户</span>
-                                <p class="user-amount">1000</p>
+                                <p class="user-amount"></p>
                             </div>
                             <div class="user-count">
                                 <span class="user-type">累计扫码用户</span>
-                                <p class="user-amount">10000</p>
+                                <p class="user-amount"></p>
                             </div>
                         </div>
                     </div>
@@ -68,40 +68,7 @@
                                     <div class="date">日期</div>
                                     <div class="count">新增用户</div>
                                 </div>
-                                <div class="table-content">
-                                    <div class="table-tr clear-fix">
-                                        <div class="table-td-date">2019-09-09</div>
-                                        <div class="table-td-count">1000</div>
-                                    </div>
-                                    <div class="table-tr clear-fix">
-                                        <div class="table-td-date">2019-09-09</div>
-                                        <div class="table-td-count">1000</div>
-                                    </div>
-                                    <div class="table-tr clear-fix">
-                                        <div class="table-td-date">2019-09-09</div>
-                                        <div class="table-td-count">1000</div>
-                                    </div>
-                                    <div class="table-tr clear-fix">
-                                        <div class="table-td-date">2019-09-09</div>
-                                        <div class="table-td-count">1000</div>
-                                    </div>
-                                    <div class="table-tr clear-fix">
-                                        <div class="table-td-date">2019-09-09</div>
-                                        <div class="table-td-count">1000</div>
-                                    </div>
-                                    <div class="table-tr clear-fix">
-                                        <div class="table-td-date">2019-09-09</div>
-                                        <div class="table-td-count">1000</div>
-                                    </div>
-                                    <div class="table-tr clear-fix">
-                                        <div class="table-td-date">2019-09-09</div>
-                                        <div class="table-td-count">1000</div>
-                                    </div>
-                                    <div class="table-tr clear-fix">
-                                        <div class="table-td-date">2019-09-09</div>
-                                        <div class="table-td-count">1000</div>
-                                    </div>
-                                </div>
+                                <div class="table-content"></div>
                             </div>
                             <div class="pagination">
                                 <div class="page-down">
@@ -124,11 +91,12 @@
     <script src="/js/moment.min.js"></script>
     <script src="/js/daterangepicker.js"></script>
     <script>
-    var startDate = moment().subtract(7, 'days').format('YYYY-MM-DD');
-    var endDate = moment().format('YYYY-MM-DD');
-    var dateSpan = 'day';
-    var options = {};
-     options.locale = {
+        var startDate = moment().subtract(7, 'days').format('YYYY-MM-DD');
+        var endDate = moment().format('YYYY-MM-DD');
+        var dateSpan = 'day';
+        var type = 'new';
+        var options = {};
+        options.locale = {
             format: "YYYY-MM-DD",
             separator: " - ",
             daysOfWeek: ["日","一","二","三","四","五","六"],
@@ -149,13 +117,102 @@
             startDate = start.format('YYYY-MM-DD');
             endDate = end.format('YYYY-MM-DD');
             drawData();
+            drawList();
         })
         $('.dateSpan').click(function(){
             $(this).siblings().removeClass('blue-on');
             $(this).addClass('blue-on');
             dateSpan = $(this).data('span');
             drawData();
+            drawList();
         })
+
+        var getYesterday = function () {
+            $.ajax({
+                url: 'http://shop.test/api/statistics/all',
+                type: 'get',
+                dataType: 'json',
+                success: function (res) {
+                    let resData = res.data
+                    let newUser = resData.tomorrowNew
+                    let yestdUser = resData.tomorrowAll
+                    let userCount = resData.all
+                    $(".new-user .user-amount").text(newUser)
+                    $(".yesterday-user .user-amount").text(yestdUser)
+                    $(".user-count .user-amount").text(userCount)
+                },
+                error: function (ex) {
+                    console.log(ex)
+                }
+            })
+        }
+        getYesterday();
+
+        var limit = 8
+        var page = 1
+        var pageCount
+        var drawList = function () {
+            $.ajax({
+                url: 'http://shop.test/api/statistics/list',
+                type: 'get',
+                dataType: 'json',
+                data: {
+                    startDate: startDate,
+                    endDate: endDate,
+                    dateSpan: dateSpan,
+                    type: type,
+                    limit: limit,
+                    page: page
+                },
+                success: function (res) {
+                    $(".user-table .table-content").empty()
+                    let resData = res.data.data
+                    let count = res.data.count
+                    pageCount = Math.ceil(count / limit)
+                    var $tr = '<div class="table-tr clear-fix"><div class="table-td-date"></div><div class="table-td-count"></div></div>'
+                    for (let i = 0; i < resData.length; i++) {
+                        $('.user-table .table-content').append($tr)
+                        let date = resData[i].date
+                        let count = resData[i].value
+                        $(".user-table .table-content .table-tr:eq("+ i +") .table-td-date").text(date)
+                        $(".user-table .table-content .table-tr:eq("+ i +") .table-td-count").text(count)
+                    }
+                },
+                error: function (ex) {
+                    console.log(ex)
+                }
+            })
+        }
+        drawList();
+
+        $(".page-down").click(function () {
+            if (page > 1) {
+                page--
+                drawList();
+                $(".page-number").text(page)
+            } else {
+                console.log("当前已是第一页")
+            }
+        })
+        $(".page-up").click(function () {
+            if (page < pageCount) {
+                page++;
+                drawList();
+                $(".page-number").text(page)
+            } else {
+                console.log("已无更多数据")
+            }
+        })
+
+        $(".table-content").on('click', '.table-tr', function () {
+            let type = 'new'
+            let time = $(this).children()[0]
+            let date = $(time).text()
+            let detailLimit = 8
+            let detailPage = 1
+            window.location.href = '/statistics/details?type=' + type + '&date=' + date + '&limit=' + detailLimit + '&page=' + detailPage
+        })
+
         var drawData = function() {
             var echartsA = echarts.init(document.getElementById('tpl-echarts-B'));
             $.ajax({
@@ -219,6 +276,5 @@
             });
         }
         drawData();
-       
     </script>
 @endsection
