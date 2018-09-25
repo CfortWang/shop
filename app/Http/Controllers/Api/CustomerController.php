@@ -26,7 +26,6 @@ class CustomerController extends Controller
     }
     //扫描用户列表
     public function scannedUserList(Request $request){
-    
         // $buyer = $request->session()->get('buyer.seq');
         $buyer=2;
         $limit = $request->input('limit',20);
@@ -42,14 +41,20 @@ class CustomerController extends Controller
                     ->offset(($page-1)*$limit) 
                     ->get();  
         foreach($items as $k=>$v){
-            $user=User::where('seq',$v->user)->select('nickname','gender')->first();
+            $user=User::where('seq',$v->user)->select('nickname','gender','birthday')->first();
             $firstTime=UserScanLog::where('user',$v->user)->where('buyer',$buyer)->select('created_at')->orderBy('created_at','asc')->first();
             $endTime=UserScanLog::where('user',$v->user)->where('buyer',$buyer)->select('created_at')->orderBy('created_at','desc')->first();
             $list['nickname']=$user['nickname'];
             $list['gender']=$user['gender'];
+            $list['age']=Carbon::parse($user['birthday'])->diffInYears();
+            $list['rate']= rand(1,9)/10;;
             $list['scannedCount']=$v->scannedCount;
-            $list['firstTime']= $firstTime['created_at'];
-            $list['endTime']=$endTime['created_at'];
+            $list['firstTime']= Carbon::createFromTimestamp(strtotime($firstTime['created_at']))
+            ->timezone(session('tz'))
+            ->toDateTimeString();
+            $list['endTime']=Carbon::createFromTimestamp(strtotime($endTime['created_at']))
+            ->timezone(session('tz'))
+            ->toDateTimeString();
             $list['user']=$v->user;
             $data[]=$list;
         }
@@ -77,9 +82,7 @@ class CustomerController extends Controller
             return $this->responseBadRequest($message);
         } 
         $seq=$request->input('seq');
-        dd($seq);
         $veriSeq=UserScanLog::where('buyer',$buyer)->where('user',$seq)->select('created_at')->get()->toArray();
-        dd($veriSeq);
         if(empty($veriSeq)){
             return $this->responseBadRequest('seq is error');  
         }
