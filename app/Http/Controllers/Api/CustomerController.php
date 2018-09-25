@@ -1,9 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\Api;
-
 use App\Http\Controllers\Controller;
-
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\DB;
@@ -26,6 +24,7 @@ class CustomerController extends Controller
     public function __construct()
     {
     }
+    //扫描用户列表
     public function scannedUserList(Request $request){
     
         // $buyer = $request->session()->get('buyer.seq');
@@ -56,7 +55,7 @@ class CustomerController extends Controller
         //         ->offset($offset)
         //         ->limit($limit)
         //         ->get();
-        return $this->response4DataTables($data, 1, 1);
+        return $this->responseOk('',$data);
     }
     public function scannedUserDetail(Request $request, $seq)
     {
