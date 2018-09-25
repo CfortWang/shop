@@ -33,4 +33,10 @@ Route::group(['namespace' => 'Api'], function() {
         Route::get('/pddSuccessUserList',            'CustomerController@pddSuccessUserList');//拼豆成功用户
         Route::get('/couponUserList',            'CustomerController@couponUserList');//领取优惠券用户
     });
+    //广告设置
+    Route::group(['prefix'  => 'ad'], function() {
+        Route::get('/adList',               'AdController@adList');//广告列表
+        Route::post('/adtype/{seq}/{type}',               'AdController@adtype');//广告上下架
+        Route::post('/modifyAd',            'AdController@modifyAd');//修改广告
+    });
 });
