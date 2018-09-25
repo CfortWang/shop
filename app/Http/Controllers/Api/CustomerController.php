@@ -26,40 +26,53 @@ class CustomerController extends Controller
     }
     //扫描用户列表
     public function scannedUserList(Request $request){
-    
         // $buyer = $request->session()->get('buyer.seq');
         $buyer=2;
         $limit = $request->input('limit',20);
         $page = $request->input('page',1);
         $items = DB::table('UserScanLog')
                     ->where('UserScanLog.buyer',$buyer)  
-                    // ->join('User','User.seq','=','UserScanLog.user')  
                     ->select(  
                         'UserScanLog.user',
                          DB::raw('count(UserScanLog.user) AS scannedCount'))  
                     ->groupBy('UserScanLog.user') 
-                    ->limit($limit)
-                    ->offset(($page-1)*$limit) 
-                    ->get();  
+                    ->get();
+        $count=count($items);
+        $items = DB::table('UserScanLog')
+        ->where('UserScanLog.buyer',$buyer)  
+        ->select(  
+            'UserScanLog.user',
+             DB::raw('count(UserScanLog.user) AS scannedCount'))  
+            ->groupBy('UserScanLog.user') 
+            ->limit($limit)
+            ->offset(($page-1)*$limit) 
+            ->get();
         foreach($items as $k=>$v){
-            $user=User::where('seq',$v->user)->select('nickname','gender')->first();
+            $user=User::where('seq',$v->user)->select('nickname','gender','birthday')->first();
             $firstTime=UserScanLog::where('user',$v->user)->where('buyer',$buyer)->select('created_at')->orderBy('created_at','asc')->first();
             $endTime=UserScanLog::where('user',$v->user)->where('buyer',$buyer)->select('created_at')->orderBy('created_at','desc')->first();
             $list['nickname']=$user['nickname'];
             $list['gender']=$user['gender'];
+            $list['age']=Carbon::parse($user['birthday'])->diffInYears();
+            $list['rate']= rand(1,9)/10;;
             $list['scannedCount']=$v->scannedCount;
-            $list['firstTime']= $firstTime['created_at'];
-            $list['endTime']=$endTime['created_at'];
+            $list['firstTime']= Carbon::createFromTimestamp(strtotime($firstTime['created_at']))
+            ->timezone(session('tz'))
+            ->toDateTimeString();
+            $list['endTime']=Carbon::createFromTimestamp(strtotime($endTime['created_at']))
+            ->timezone(session('tz'))
+            ->toDateTimeString();
             $list['user']=$v->user;
             $data[]=$list;
         }
-        
+        $newData['scanUserList']=$data;
+        $newData['count']=$count;
         // $items = $items->select('user_phone_num', 'user_name','created_at','q35code_code','q35package_code')
         //         ->orderBy()
         //         ->offset($offset)
         //         ->limit($limit)
         //         ->get();
-        return $this->responseOk('',$data);
+        return $this->responseOk('',$newData);
     }
     public function scannedUserDetail(Request $request){
        // $buyer = $request->session()->get('buyer.seq');
@@ -77,9 +90,7 @@ class CustomerController extends Controller
             return $this->responseBadRequest($message);
         } 
         $seq=$request->input('seq');
-        dd($seq);
         $veriSeq=UserScanLog::where('buyer',$buyer)->where('user',$seq)->select('created_at')->get()->toArray();
-        dd($veriSeq);
         if(empty($veriSeq)){
             return $this->responseBadRequest('seq is error');  
         }

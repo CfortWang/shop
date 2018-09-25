@@ -9,7 +9,6 @@
 
     <div class="tpl-page-container tpl-page-header-fixed">
         <div class="tpl-content-wrapper">
-            div
             <div class="row">
                 <div class="am-u-md-6 am-u-sm-12 row-mb">
                     <div class="tpl-portlet">

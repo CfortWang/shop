@@ -62,20 +62,37 @@
             },
             success: function (res) {
                 $(".table-content").empty()
-                let resData = res.data.data
-                console.log(res)
-                // let count = res.data.count
-                // pageCount = Math.ceil(count / limit)
-                // var $tr = '<div class="table-tr clear-fix"><div class="table-td-id"></div><div class="table-td-nikname"></div><div class="table-td-sex"></div><div class="table-td-age"></div><div class="table-td-first"></div><div class="table-td-last"></div><div class="table-td-frequency"></div><div class="table-td-count"></div></div>'
-                // for (let i = 0; i < resData.length; i++) {
-                //     $('.table-content').append($tr)
-                //     let date = resData[i].date
-                //     let count = resData[i].value
-                //     let percent = resData[i].rate
-                //     $(".table-content .table-tr:eq("+ i +") .table-td-date").text(date)
-                //     $(".table-content .table-tr:eq("+ i +") .table-td-count").text(count)
-                //     $(".table-content .table-tr:eq("+ i +") .table-td-percent").text(percent)
-                // }
+                let resData = res.data.scanUserList
+                console.log(resData)
+                let count = res.data.count
+                pageCount = Math.ceil(count / limit)
+                console.log(pageCount)
+                var $tr = '<div class="table-tr clear-fix"><div class="table-td-id"></div><div class="table-td-nickname"></div><div class="table-td-sex"></div><div class="table-td-age"></div><div class="table-td-first"></div><div class="table-td-last"></div><div class="table-td-frequency"></div><div class="table-td-count"></div></div>'
+                for (let i = 0; i < resData.length; i++) {
+                    $('.table-content').append($tr)
+                    let id = resData[i].user
+                    let nickname = resData[i].nickname
+                    let gender = resData[i].gender
+                    let age = resData[i].age
+                    let firstTime = resData[i].firstTime.split(' ')[0]
+                    let endTime = resData[i].endTime.split(' ')[0]
+                    let percent = resData[i].rate
+                    let count = resData[i].scannedCount
+                    if (nickname == null || nickname == '') {
+                        nickname = '——'
+                    }
+                    if (gender == null || gender == '') {
+                        gender = '——'
+                    }
+                    $(".table-content .table-tr:eq("+ i +") .table-td-id").text(id)
+                    $(".table-content .table-tr:eq("+ i +") .table-td-nickname").text(nickname)
+                    $(".table-content .table-tr:eq("+ i +") .table-td-sex").text(gender)
+                    $(".table-content .table-tr:eq("+ i +") .table-td-age").text(age)
+                    $(".table-content .table-tr:eq("+ i +") .table-td-first").text(firstTime)
+                    $(".table-content .table-tr:eq("+ i +") .table-td-last").text(endTime)
+                    $(".table-content .table-tr:eq("+ i +") .table-td-frequency").text(percent)
+                    $(".table-content .table-tr:eq("+ i +") .table-td-count").text(count)
+                }
             },
             error: function (ex) {
                 console.log(ex)

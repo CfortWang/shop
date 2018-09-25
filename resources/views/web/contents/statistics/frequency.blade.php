@@ -92,6 +92,7 @@
             startDate = start.format('YYYY-MM-DD');
             endDate = end.format('YYYY-MM-DD');
             drawData();
+            drawList();
         })
         $('.dateSpan').click(function(){
             $(this).siblings().removeClass('blue-on');
