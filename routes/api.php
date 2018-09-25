@@ -32,7 +32,6 @@ Route::group(['namespace' => 'Api'], function() {
         Route::get('/list',                       'StatisticsController@list'); 
         Route::get('/list',                       'StatisticsController@list');
         Route::get('/detail',                       'StatisticsController@detail');
-        
     });
     Route::group(['prefix'  => 'customer'], function() {
         Route::get('/scannedUserList',               'CustomerController@scannedUserList');//扫码用户列表
@@ -54,6 +53,12 @@ Route::group(['namespace' => 'Api'], function() {
         Route::get('category',              'ShopController@category');
         Route::post('modify',               'ShopController@modify');
         Route::post('delete/image',         'ShopController@deleteImage');
+    });
+    //拼豆豆
+    Route::group(['prefix'  => 'groupon'], function() {
+        Route::get('/list',                 'GroupOnController@list');
+        Route::post('/',                 'GroupOnController@create');
+        Route::post('/{seq}',                 'GroupOnController@modify');
     });
     //Package
     Route::group(['prefix' => 'packages'], function() {
