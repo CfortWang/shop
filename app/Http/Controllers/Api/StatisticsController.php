@@ -544,6 +544,7 @@ class StatisticsController extends Controller
         $data = UserScanLog::where('UserScanLog.buyer',$seq)
             ->leftJoin('User as a','a.seq','=','UserScanLog.user')
             ->where('UserScanLog.created_at','>',$startDate)
+            ->where('UserScanLog.created_at', '<=', $endDate)
             // ->where('a.created_at','>',Carbon::now()->yesterday())
             // ->distinct('user')
             ->groupBy('date')
@@ -553,7 +554,8 @@ class StatisticsController extends Controller
             ->get();
         $count = UserScanLog::where('UserScanLog.buyer',$seq)
             ->leftJoin('User as a','a.seq','=','UserScanLog.user')
-            ->where('UserScanLog.created_at','>',$startDate)
+            ->where('UserScanLog.created_at','>=',$startDate)
+            ->where('UserScanLog.created_at', '<=', $endDate)
             // ->where('a.created_at','>',Carbon::now()->yesterday())
             ->groupBy('date')
             ->select(DB::raw('Date(UserScanLog.created_at) as date'),DB::raw('COUNT(UserScanLog.user) as value'))
@@ -578,6 +580,7 @@ class StatisticsController extends Controller
         $page = $request->input('page',1);
         $data = UserScanLog::where('UserScanLog.buyer',$seq)
             ->leftJoin('User as a','a.seq','=','UserScanLog.user')
+            
             // ->where('UserScanLog.created_at','>',Carbon::now()->yesterday())
             // ->where('a.created_at','>',Carbon::now()->yesterday())
             // ->distinct('user')
