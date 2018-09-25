@@ -24,6 +24,13 @@ Route::group(['namespace' => 'Api'], function() {
     });
     Route::group(['prefix'  => 'statistics'], function() {
         Route::get('/new',           'StatisticsController@newCustomer');
+        Route::get('/analysis',                       'StatisticsController@analysis');
+        Route::get('/active',                       'StatisticsController@active');
+        Route::get('/silence',                       'StatisticsController@silence');
+        Route::get('/frequency',                       'StatisticsController@frequency');
+        Route::get('/all',                       'StatisticsController@all');
+        Route::get('/list',                       'StatisticsController@list');
+        
     });
 
     Route::group(['prefix'  => 'customer'], function() {
