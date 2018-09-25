@@ -42,6 +42,7 @@ class LoginController extends Controller
         }
         $request->session()->put('buyer.seq', $buyer->seq);
         $request->session()->put('buyer.id', $buyer->rep_phone_num);
+        $request->session()->put('bw.locale', 'zh');
         // dd($request->session()->get('buyer'));
         return $this->responseOk('access success');
     }
