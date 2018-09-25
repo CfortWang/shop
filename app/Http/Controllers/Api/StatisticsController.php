@@ -562,7 +562,7 @@ class StatisticsController extends Controller
         $return['count'] = $count;
         if($type=='active'){
             foreach ($data as $key => $value) {
-                $data[$key]['rate'] = rand(0.1,0.9);
+                $data[$key]['rate'] = rand(1,9)/10;
             }
         }
         $return['data'] = $data;
