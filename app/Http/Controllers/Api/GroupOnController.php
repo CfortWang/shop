@@ -54,7 +54,29 @@ class GroupOnController extends Controller
     public function create(Request $request)
     {
         $buyer_id = $this->buyer_id;
-        $Input=Input::only('title','price','discounted_price','group_size','remark','rule','open_time','close_time','start_use_time','end_use_time','is_weekend','is_festival');
-        
+        $input=Input::only('title','price','discounted_price','group_size','remark','rule','open_time','close_time','start_use_time','end_use_time','is_weekend','is_festival','logo');
+        $message =  $messages = [
+            "required" => ":attribute ".trans('common.verification.cannotEmpty'),
+        ];
+        $validator = Validator::make($input, [
+            'title'                => 'required|string',
+            'price'                => 'required|numeric',
+            'discounted_price'     => 'required|numeric',
+            'group_size'           => 'required|numeric|max:20|min:2',
+            'remark'               => 'required|string',
+            'rule'                 => 'required|string',
+            'open_time'            => 'required|date',
+            'close_time'           => 'required|date',
+            'start_use_time'       => 'required',
+            'end_use_time'         => 'required',
+            'is_weekend'           => 'required|boolean',
+            'is_festival'          => 'required|boolean',
+            'logo'                 => 'required|image',
+        ],$message);
+        if ($validator->fails()) {
+            $message = $validator->errors()->first();
+            return $this->responseBadRequest($message);
+        }
+        return $this->responseOk('',12);
     }
 }
