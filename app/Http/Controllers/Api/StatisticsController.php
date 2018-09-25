@@ -516,25 +516,6 @@ class StatisticsController extends Controller
 
     public function list(Request $request)
     {
-        // $type = $request->input('type');
-        // $startDate = Carbon::createFromFormat('Y-m-d',$request->input('startDate'));
-        // $endDate = Carbon::createFromFormat('Y-m-d',$request->input('endDate'));
-        // // 按天
-        // $dataType = $request->input('dateSpan');
-        // switch ($dataType) {
-        //     case 'hour':
-        //         $sql = DB::raw('DATE_FORMAT(created_at,"%H") as date');
-        //         break;
-        //     case 'day':
-        //         $sql = DB::raw('Date(created_at) as date');
-        //         break;
-        //     case 'week':
-        //         $sql = DB::raw('DATE_FORMAT(created_at,"%Y-%U") as date');
-        //         break;
-        //     default:
-        //         # code...
-        //         break;
-        // }
         $seq = 1;
         $type = $request->input('type');
         $startDate = Carbon::createFromFormat('Y-m-d',$request->input('startDate'));
@@ -545,8 +526,6 @@ class StatisticsController extends Controller
             ->leftJoin('User as a','a.seq','=','UserScanLog.user')
             ->where('UserScanLog.created_at','>',$startDate)
             ->where('UserScanLog.created_at', '<=', $endDate)
-            // ->where('a.created_at','>',Carbon::now()->yesterday())
-            // ->distinct('user')
             ->groupBy('date')
             ->select(DB::raw('Date(UserScanLog.created_at) as date'),DB::raw('COUNT(UserScanLog.user) as value'))
             ->limit($limit)
@@ -556,13 +535,10 @@ class StatisticsController extends Controller
             ->leftJoin('User as a','a.seq','=','UserScanLog.user')
             ->where('UserScanLog.created_at','>=',$startDate)
             ->where('UserScanLog.created_at', '<=', $endDate)
-            // ->where('a.created_at','>',Carbon::now()->yesterday())
             ->groupBy('date')
             ->select(DB::raw('Date(UserScanLog.created_at) as date'),DB::raw('COUNT(UserScanLog.user) as value'))
             ->get();
             $count = count($count);
-            // ->limit($limit)
-            // ->count();
         $return['count'] = $count;
         if($type=='active'){
             foreach ($data as $key => $value) {
@@ -578,20 +554,63 @@ class StatisticsController extends Controller
         $seq = 1;
         $limit = $request->input('limit',20);
         $page = $request->input('page',1);
-        $data = UserScanLog::where('UserScanLog.buyer',$seq)
-            ->leftJoin('User as a','a.seq','=','UserScanLog.user')
-            
-            // ->where('UserScanLog.created_at','>',Carbon::now()->yesterday())
-            // ->where('a.created_at','>',Carbon::now()->yesterday())
-            // ->distinct('user')
-            // ->count('user');
-            ->select('a.seq','a.nickname','UserScanLog.created_at')
-            ->limit($limit)
-            ->offset(($page-1)*$limit)
-            ->get();
-        $count = UserScanLog::where('UserScanLog.buyer',$seq)
-            ->leftJoin('User as a','a.seq','=','UserScanLog.user')
-            ->count();
+        $date = $request->input('date');
+        $type = $request->input('type');
+        $startDate = Carbon::createFromFormat('Y-m-d',$date);
+        $date = $startDate;
+        switch ($type) {
+            case 'new':
+                $startDate = $startDate->toDateTimeString();
+                $endDate = $date->addDay();
+                $data = UserScanLog::where('UserScanLog.buyer',$seq)
+                    ->where('UserScanLog.created_at','>',$startDate)
+                    ->where('UserScanLog.created_at', '<=', $endDate)
+                    ->leftJoin('User as a','a.seq','=','UserScanLog.user')
+                    ->select('a.seq','a.nickname','UserScanLog.created_at')
+                    ->limit($limit)
+                    ->offset(($page-1)*$limit)
+                    ->get();
+                $count = UserScanLog::where('UserScanLog.buyer',$seq)
+                    ->leftJoin('User as a','a.seq','=','UserScanLog.user')
+                    ->where('UserScanLog.created_at','>',$startDate)
+                    ->where('UserScanLog.created_at', '<=', $endDate)
+                    ->count();
+                break;
+            case 'silence':
+                $startDate = $startDate->toDateTimeString();
+                $monthBefore = $date->subMonth();
+                $data = UserScanLog::where('UserScanLog.buyer',$seq)
+                    ->leftJoin('User as a','a.seq','=','UserScanLog.user')
+                    ->where('UserScanLog.created_at', '<=', $monthBefore)
+                    ->select('a.seq','a.nickname','UserScanLog.created_at')
+                    ->limit($limit)
+                    ->offset(($page-1)*$limit)
+                    ->get();
+                $count = UserScanLog::where('UserScanLog.buyer',$seq)
+                    ->leftJoin('User as a','a.seq','=','UserScanLog.user')
+                    ->where('UserScanLog.created_at', '<=', $monthBefore)
+                    ->count();
+                break;
+            case 'active':
+                $startDate = $startDate->toDateTimeString();
+                $monthBefore = $date->subMonth();
+                $data = UserScanLog::where('UserScanLog.buyer',$seq)
+                    ->leftJoin('User as a','a.seq','=','UserScanLog.user')
+                    ->where('UserScanLog.created_at', '<=', $monthBefore)
+                    ->select('a.seq','a.nickname','UserScanLog.created_at')
+                    ->limit($limit)
+                    ->offset(($page-1)*$limit)
+                    ->get();
+                $count = UserScanLog::where('UserScanLog.buyer',$seq)
+                    ->leftJoin('User as a','a.seq','=','UserScanLog.user')
+                    ->where('UserScanLog.created_at', '<=', $monthBefore)
+                    ->count();
+                break;
+            default:
+                # code...
+                break;
+        }
+        
         $return['count'] = $count;
         $return['data'] = $data;
         return $this->responseOk('',$return);
