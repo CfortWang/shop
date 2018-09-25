@@ -1,138 +1,115 @@
 @extends('web.layouts.app')
+@section('css')
+<link rel="stylesheet" href="/css/app.css">
+@endsection('css')
 @section('content')
 
     <div class="tpl-page-container tpl-page-header-fixed">
         <div class="tpl-content-wrapper">
             <div class="row">
-                <div class="note note-info">
-                    <h3>@lang('customer/scannedList.title.title1')
-                        <span class="close" data-close="note"></span>
-                    </h3>
-                    <p>@lang('customer/scannedList.title.title2')</p>
+                <div class="am-u-md-12 am-u-sm-12 row-mb scan-user">
+                    <div class="tpl-portlet">
+                        <div class="tpl-portlet-title center">
+                            <div class="center-caption">
+                                <span>用户列表</span>
+                            </div>
+                        </div>
+                        <div class="tpl-echarts" id="tpl-echarts-C">
+                            <div class="scan-user-table">
+                                <div class="table-title clear-fix">
+                                    <div class="ID">用户名id</div>
+                                    <div class="nickname">昵称</div>
+                                    <div class="sex">性别</div>
+                                    <div class="age">年龄</div>
+                                    <div class="first-scan">首次扫码时间</div>
+                                    <div class="last-scan">	最后一次扫码时间</div>
+                                    <div class="frequency">扫码频率(月)</div>
+                                    <div class="scan-count">扫码总次数</div>
+                                </div>
+                                <div class="table-content"></div>
+                            </div>
+                            <div class="pagination">
+                                <div class="page-down">
+                                    <img src="/img/main/icon_page_left.png" alt="">
+                                </div>
+                                <div class="page-number">1</div>
+                                <div class="page-up">
+                                    <img src="/img/main/icon_page_right.png" alt="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <div class="row">
-                    <div class="dashboard-stat">
-                    @lang('customer/scannedList.title.title3')
-                    </div>
-            </div>
-            <div class="row"> 
-                    <div class="tpl-portlet">
-                        <div class="tpl-portlet-title">
-                        <div class="tpl-caption font-green ">
-                             <span><button type="button" class="am-btn am-btn-danger">搜索</button></span>
-                        </div>
-                        <div class="tpl-portlet-input">
-                                <div class="portlet-input input-small input-inline">
-                                    <div class="">
-                                        <input type="text" class="form-control form-control-solid" placeholder="输入手机号查找">
-                                    </div>
-                                </div>
-                        </div>   
-                    </div>  
-                    <div class="dashboard-stat">
-                    用户列表
-                    </div>  
-                    <div class="table-responsive">
-                    <table class="am-table am-table-striped am-table-hover scanned-list-table">
-                        <thead>
-                            <tr>
-                                <th>用户名id</th>
-                                <th>昵称</th>
-                                <th>性别</th>
-                                <th>年龄</th>
-                                <th>首次扫码时间</th>
-                                <th>最后一次扫码时间</th>
-                                <th>扫码频率(月)</th>
-                                <th>扫码总次数</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <!-- <tr>
-                                <td>Amaze UI</td>
-                                <td>http://amazeui.org</td>
-                                <td>2012-10-01</td>
-                                <td>Amaze UI</td>
-                                <td>http://amazeui.org</td>
-                                <td>2012-10-01</td>
-                                <td>http://amazeui.org</td>
-                                <td>2012-10-01</td>
-                            </tr>
-                            <tr>
-                                <td>Amaze UI</td>
-                                <td>http://amazeui.org</td>
-                                <td>2012-10-01</td>
-                                <td>Amaze UI</td>
-                                <td>http://amazeui.org</td>
-                                <td>2012-10-01</td>
-                                <td>http://amazeui.org</td>
-                                <td>2012-10-01</td>
-                            </tr>
-                            </tr> -->
-                            </tbody>
-                        </table>
-                       </div>
-            </div> 
         </div>
-   </div>
+    </div>
 @endsection
-@section('scripts')
+@section('script')
 <script>
-$(document).ready(function(){
-    console.log(2)
-    $('.scanned-list-table').DataTable({
-        pageLength: 10,
-        responsive: true,
-        dom: 'f<"row"t>p',
-        order: [[ 3, "desc" ]],
-        language: {
-            "zeroRecords": "@lang('client/list.table.pagination.no_data')",
-            "info": "_PAGE_ / _PAGES_ ",
-            "search": "@lang('client/list.table.pagination.search') :",
-            "paginate": {
-                "next":       "@lang('client/list.table.pagination.next')",
-                "previous":   "@lang('client/list.table.pagination.prev')"
+    var limit = 8
+    var type = 'scan'
+    var page = 1
+    var pageCount
+    var drawList = function () {
+        $.ajax({
+            url: 'http://shop.test/api/customer/scannedUserList',
+            type: 'get',
+            dataType: 'json',
+            data: {
+                type: type,
+                limit: limit,
+                page: page
             },
-        },
-        deferRender: true,
-        processing:true,
-        serverSide:true,
-        ajax: {
-            url: "{{ url('/api/client/list')}}",
-            dataType:'json',
-            dataFilter: function(data){
-                var json = jQuery.parseJSON( data );
-                return JSON.stringify( json.data ); // return JSON string
+            success: function (res) {
+                $(".table-content").empty()
+                let resData = res.data.data
+                console.log(res)
+                // let count = res.data.count
+                // pageCount = Math.ceil(count / limit)
+                // var $tr = '<div class="table-tr clear-fix"><div class="table-td-id"></div><div class="table-td-nikname"></div><div class="table-td-sex"></div><div class="table-td-age"></div><div class="table-td-first"></div><div class="table-td-last"></div><div class="table-td-frequency"></div><div class="table-td-count"></div></div>'
+                // for (let i = 0; i < resData.length; i++) {
+                //     $('.table-content').append($tr)
+                //     let date = resData[i].date
+                //     let count = resData[i].value
+                //     let percent = resData[i].rate
+                //     $(".table-content .table-tr:eq("+ i +") .table-td-date").text(date)
+                //     $(".table-content .table-tr:eq("+ i +") .table-td-count").text(count)
+                //     $(".table-content .table-tr:eq("+ i +") .table-td-percent").text(percent)
+                // }
+            },
+            error: function (ex) {
+                console.log(ex)
             }
-        },
-        columns:[
-            {
-                data: "user_name",
-                className: "text-center",
-            },
-            {
-                data: "user_phone_num",
-                className: "text-center",
-            },
-            {
-                data: "q35code_code",
-                className: "text-center",
-            },
-            {
-                data: "q35package_code",
-                className: "text-center",
-            },
-            {
-                data: "created_at",
-                className: "text-center",
-                render: function(data, type, row) {
-                    var utcDate = row.created_at;
-                    var chinaDate = moment(utcDate).add(8, 'hours').format('YYYY-MM-DD HH:mm:ss')
-                    return chinaDate;
-                }
-            },
-        ]
-    });
-});
+        })
+    }
+    drawList();
+
+    $(".page-down").click(function () {
+        if (page > 1) {
+            page--
+            drawList();
+            $(".page-number").text(page)
+        } else {
+            console.log("当前已是第一页")
+        }
+    })
+    $(".page-up").click(function () {
+        if (page < pageCount) {
+            page++;
+            drawList();
+            $(".page-number").text(page)
+        } else {
+            console.log("已无更多数据")
+        }
+    })
+
+    $(".table-content").on('click', '.table-tr', function () {
+        let type = 'active'
+        let time = $(this).children()[0]
+        let date = $(time).text()
+        let detailLimit = 8
+        let detailPage = 1
+        // window.location.href = '/statistics/details?type=' + type + '&date=' + date + '&limit=' + detailLimit + '&page=' + detailPage
+    })
 </script>
 @endsection

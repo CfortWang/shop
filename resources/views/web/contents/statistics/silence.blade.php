@@ -30,6 +30,34 @@
                         </div>
                     </div>
                 </div>
+
+                <div class="am-u-md-12 am-u-sm-12 row-mb active-user">
+                    <div class="tpl-portlet">
+                        <div class="tpl-portlet-title center">
+                            <div class="center-caption">
+                                <span>沉默用户</span>
+                            </div>
+                        </div>
+                        <div class="tpl-echarts" id="tpl-echarts-C">
+                            <div class="silence-table">
+                                <div class="table-title clear-fix">
+                                    <div class="date">日期</div>
+                                    <div class="count">沉默用户数</div>
+                                </div>
+                                <div class="table-content"></div>
+                            </div>
+                            <div class="pagination">
+                                <div class="page-down">
+                                    <img src="/img/main/icon_page_left.png" alt="">
+                                </div>
+                                <div class="page-number">1</div>
+                                <div class="page-up">
+                                    <img src="/img/main/icon_page_right.png" alt="">
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -134,6 +162,72 @@
             });
         }
         drawData();
-       
+
+        var limit = 8
+        var type = 'silence'
+        var page = 1
+        var pageCount
+        var drawList = function () {
+            $.ajax({
+                url: 'http://shop.test/api/statistics/list',
+                type: 'get',
+                dataType: 'json',
+                data: {
+                    startDate: startDate,
+                    endDate: endDate,
+                    dateSpan: dateSpan,
+                    type: type,
+                    limit: limit,
+                    page: page
+                },
+                success: function (res) {
+                    $(".table-content").empty()
+                    let resData = res.data.data
+                    console.log(resData)
+                    let count = res.data.count
+                    pageCount = Math.ceil(count / limit)
+                    var $tr = '<div class="table-tr clear-fix"><div class="table-td-date"></div><div class="table-td-count"></div></div>'
+                    for (let i = 0; i < resData.length; i++) {
+                        $('.table-content').append($tr)
+                        let date = resData[i].date
+                        let count = resData[i].value
+                        $(".table-content .table-tr:eq("+ i +") .table-td-date").text(date)
+                        $(".table-content .table-tr:eq("+ i +") .table-td-count").text(count)
+                    }
+                },
+                error: function (ex) {
+                    console.log(ex)
+                }
+            })
+        }
+        drawList();
+
+        $(".page-down").click(function () {
+            if (page > 1) {
+                page--
+                drawList();
+                $(".page-number").text(page)
+            } else {
+                console.log("当前已是第一页")
+            }
+        })
+        $(".page-up").click(function () {
+            if (page < pageCount) {
+                page++;
+                drawList();
+                $(".page-number").text(page)
+            } else {
+                console.log("已无更多数据")
+            }
+        })
+
+        $(".table-content").on('click', '.table-tr', function () {
+            let type = 'silence'
+            let time = $(this).children()[0]
+            let date = $(time).text()
+            let detailLimit = 8
+            let detailPage = 1
+            window.location.href = '/statistics/details?type=' + type + '&date=' + date + '&limit=' + detailLimit + '&page=' + detailPage
+        })
     </script>
 @endsection

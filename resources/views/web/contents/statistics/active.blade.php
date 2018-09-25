@@ -39,7 +39,7 @@
                             </div>
                         </div>
                         <div class="tpl-echarts" id="tpl-echarts-C">
-                            <div class="user-table">
+                            <div class="active-table">
                                 <div class="table-title clear-fix">
                                     <div class="date">日期</div>
                                     <div class="count">活跃用户数</div>
@@ -49,34 +49,7 @@
                                     <div class="table-tr clear-fix">
                                         <div class="table-td-date">2019-09-09</div>
                                         <div class="table-td-count">1000</div>
-                                    </div>
-                                    <div class="table-tr clear-fix">
-                                        <div class="table-td-date">2019-09-09</div>
-                                        <div class="table-td-count">1000</div>
-                                    </div>
-                                    <div class="table-tr clear-fix">
-                                        <div class="table-td-date">2019-09-09</div>
-                                        <div class="table-td-count">1000</div>
-                                    </div>
-                                    <div class="table-tr clear-fix">
-                                        <div class="table-td-date">2019-09-09</div>
-                                        <div class="table-td-count">1000</div>
-                                    </div>
-                                    <div class="table-tr clear-fix">
-                                        <div class="table-td-date">2019-09-09</div>
-                                        <div class="table-td-count">1000</div>
-                                    </div>
-                                    <div class="table-tr clear-fix">
-                                        <div class="table-td-date">2019-09-09</div>
-                                        <div class="table-td-count">1000</div>
-                                    </div>
-                                    <div class="table-tr clear-fix">
-                                        <div class="table-td-date">2019-09-09</div>
-                                        <div class="table-td-count">1000</div>
-                                    </div>
-                                    <div class="table-tr clear-fix">
-                                        <div class="table-td-date">2019-09-09</div>
-                                        <div class="table-td-count">1000</div>
+                                        <div class="table-td-percent">0.00%</div>
                                     </div>
                                 </div>
                             </div>
@@ -196,6 +169,75 @@
             });
         }
         drawData();
-       
+
+        var limit = 8
+        var type = 'active'
+        var page = 1
+        var pageCount
+        var drawList = function () {
+            $.ajax({
+                url: 'http://shop.test/api/statistics/list',
+                type: 'get',
+                dataType: 'json',
+                data: {
+                    startDate: startDate,
+                    endDate: endDate,
+                    dateSpan: dateSpan,
+                    type: type,
+                    limit: limit,
+                    page: page
+                },
+                success: function (res) {
+                    $(".table-content").empty()
+                    let resData = res.data.data
+                    console.log(resData)
+                    let count = res.data.count
+                    pageCount = Math.ceil(count / limit)
+                    var $tr = '<div class="table-tr clear-fix"><div class="table-td-date"></div><div class="table-td-count"></div><div class="table-td-percent"></div></div>'
+                    for (let i = 0; i < resData.length; i++) {
+                        $('.table-content').append($tr)
+                        let date = resData[i].date
+                        let count = resData[i].value
+                        let percent = resData[i].rate
+                        $(".table-content .table-tr:eq("+ i +") .table-td-date").text(date)
+                        $(".table-content .table-tr:eq("+ i +") .table-td-count").text(count)
+                        $(".table-content .table-tr:eq("+ i +") .table-td-percent").text(percent)
+                    }
+                },
+                error: function (ex) {
+                    console.log(ex)
+                }
+            })
+        }
+        drawList();
+
+        $(".page-down").click(function () {
+            if (page > 1) {
+                page--
+                drawList();
+                $(".page-number").text(page)
+            } else {
+                console.log("当前已是第一页")
+            }
+        })
+        $(".page-up").click(function () {
+            if (page < pageCount) {
+                page++;
+                drawList();
+                $(".page-number").text(page)
+            } else {
+                console.log("已无更多数据")
+            }
+        })
+
+        $(".table-content").on('click', '.table-tr', function () {
+            let type = 'active'
+            let time = $(this).children()[0]
+            let date = $(time).text()
+            let detailLimit = 8
+            let detailPage = 1
+            window.location.href = '/statistics/details?type=' + type + '&date=' + date + '&limit=' + detailLimit + '&page=' + detailPage
+        })
+
     </script>
 @endsection
