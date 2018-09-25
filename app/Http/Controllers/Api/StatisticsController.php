@@ -107,11 +107,11 @@ class StatisticsController extends Controller
             ->get();
             
         $data[1] = $this->getGender($orign);
-        $data['new'] = $this->getNew($orign);
         $data[2] = $this->getAge($orign);
         $data[3] = $this->getMarrige($orign);
-        $data['time'] = $this->getTime($orign);
-        $data['province'] = $this->getProvince($orign);
+        $data[4] = $this->getNew($orign);
+        $data[5] = $this->getTime($orign);
+        $data[6] = $this->getProvince($orign);
         return $this->responseOk('access success',$data);
     }
 
@@ -162,9 +162,19 @@ class StatisticsController extends Controller
         // foreach($orign as $key => $value){
 
         // }
-        $data[] = 12;
-        $data[] = 25;
-        return $data;
+        $man['name'] = '新用户';
+        $man['value'] = 12;
+        $woman['name'] = '旧用户';
+        $woman['value'] = 23;
+        $data[] = $man;
+        $data[] = $woman;
+        $item[] = '新用户';
+        $item[] = '旧用户';
+        $return['title'] = '新用户比例';
+        $return['item'] = $item;
+        $return['data'] = $data;
+        return $return;
+
     }
 
     protected function getTime()
@@ -201,7 +211,12 @@ class StatisticsController extends Controller
             ]);
 
         foreach($data as $key => $value){
-            $item[] = $value['name'] ;
+            if($value['name']){
+                $item[] = $value['name'] ;
+            }else{
+                $data[$key]['name'] = '未知';
+                $item[] = '未知';
+            }
         }
         $return['title'] = '地域分布';
         $return['data'] = $data;

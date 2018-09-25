@@ -19,7 +19,7 @@
                 </div>
                 <div class="am-u-md-6 am-u-sm-12 row-mb">
                     <div class="tpl-portlet">
-                        <div class="tpl-echarts" id="tpl-echarts-gender">
+                        <div class="tpl-echarts" id="tpl-echarts-4">
 
                         </div>
                     </div>
@@ -38,13 +38,13 @@
                 </div>
                 <div class="am-u-md-6 am-u-sm-12 row-mb">
                     <div class="tpl-portlet">
-                        <div class="tpl-echarts" id="tpl-echarts-D">
+                        <div class="tpl-echarts" id="tpl-echarts-5">
                         </div>
                     </div>
                 </div>
                 <div class="am-u-md-6 am-u-sm-12 row-mb">
                     <div class="tpl-portlet">
-                        <div class="tpl-echarts" id="tpl-echarts-E">
+                        <div class="tpl-echarts" id="tpl-echarts-6">
                         </div>
                     </div>
                 </div>
@@ -54,6 +54,7 @@
 @endsection
 @section('script')
     <script src="/js/echarts.min.js"></script>
+    <script src="/js/echartTheme/macarons.js"></script>
     <script src="/js/moment.min.js"></script>
     <script src="/js/daterangepicker.js"></script>
     <script>
@@ -102,38 +103,63 @@
 				},
                 success: function(response){
                     var data = response.data;
-                    console.log(data);
-                    for (let index = 1; index < 4; index++) {
-                        var echart = echarts.init(document.getElementById('tpl-echarts-'+index));
-                        console.log(index);
+                    for (let index = 1; index < 7; index++) {
+                        var echart = echarts.init(document.getElementById('tpl-echarts-'+index),'macarons');
                         var e_data = data[index];
-                        console.log(e_data);
-                        option = {
-                            title : {
-                                text: e_data.title,
-                                subtext: '',
-                                x:'center'
-                            },
-                            tooltip : {
-                                trigger: 'item',
-                                formatter: "{a} <br/>{b} : {c} ({d}%)"
-                            },
-                            legend: {
-                                orient : 'vertical',
-                                x : 'left',
-                                data:e_data.item
-                            },
-                            calculable : true,
-                            series : [
-                                {
-                                    name:e_data.title,
-                                    type:'pie',
-                                    radius : '55%',
-                                    center: ['50%', '60%'],
-                                    data:e_data.data
-                                }
-                            ]
-                        };
+                        var type='pie';
+                        if(index>4){
+                            var type='bar';
+                            var tem = [];
+                            for (let index = 0; index < e_data.data.length; index++) {
+                                tem.push(e_data.data[index]['value']);
+                            }
+                            option = {
+                                title : {
+                                    text: e_data.title,
+                                    subtext: '',
+                                    x:'center'
+                                },
+                                xAxis: {
+                                    type: 'category',
+                                    data: e_data.item
+                                },
+                                yAxis: {
+                                    type: 'value'
+                                },
+                                series: [{
+                                    data: tem,
+                                    type: 'bar'
+                                }]
+                            };
+                        }else{
+                            option = {
+                                title : {
+                                    text: e_data.title,
+                                    subtext: '',
+                                    x:'center'
+                                },
+                                tooltip : {
+                                    trigger: 'item',
+                                    formatter: "{a} <br/>{b} : {c} ({d}%)"
+                                },
+                                legend: {
+                                    orient : 'vertical',
+                                    x : 'left',
+                                    data:e_data.item
+                                },
+                                calculable : true,
+                                series : [
+                                    {
+                                        name:e_data.title,
+                                        type:type,
+                                        radius : ['50%', '75%'],
+                                        // center: ['50%', '60%'],
+                                        data:e_data.data
+                                    }
+                                ]
+                            };
+                        }
+                        
                         echart.setOption(option,true);
                     }
                 },
