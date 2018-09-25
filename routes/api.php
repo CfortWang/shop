@@ -30,6 +30,7 @@ Route::group(['namespace' => 'Api'], function() {
         Route::get('/frequency',                       'StatisticsController@frequency');
         Route::get('/all',                       'StatisticsController@all');
         Route::get('/list',                       'StatisticsController@list');
+        Route::get('/detail',                       'StatisticsController@detail');
         
     });
 
