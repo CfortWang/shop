@@ -81,7 +81,7 @@ class StatisticsController extends Controller
             ->orderBy('date', 'ASC')
             ->get([
                 $sql,
-                DB::raw('COUNT(user) as value'),
+                DB::raw('COUNT(distinct user) as value'),
             ]);
 
         $data = $this->formatData($startDate,$endDate,$type,$data);
@@ -527,7 +527,7 @@ class StatisticsController extends Controller
             ->where('UserScanLog.created_at','>',$startDate)
             ->where('UserScanLog.created_at', '<=', $endDate)
             ->groupBy('date')
-            ->select(DB::raw('Date(UserScanLog.created_at) as date'),DB::raw('COUNT(UserScanLog.user) as value'))
+            ->select(DB::raw('Date(UserScanLog.created_at) as date'),DB::raw('COUNT(distinct UserScanLog.user) as value'))
             ->limit($limit)
             ->offset(($page-1)*$limit)
             ->get();
@@ -536,7 +536,7 @@ class StatisticsController extends Controller
             ->where('UserScanLog.created_at','>=',$startDate)
             ->where('UserScanLog.created_at', '<=', $endDate)
             ->groupBy('date')
-            ->select(DB::raw('Date(UserScanLog.created_at) as date'),DB::raw('COUNT(UserScanLog.user) as value'))
+            ->select(DB::raw('Date(UserScanLog.created_at) as date'),DB::raw('COUNT(distinct UserScanLog.user) as value'))
             ->get();
             $count = count($count);
         $return['count'] = $count;
@@ -560,13 +560,14 @@ class StatisticsController extends Controller
         $date = $startDate;
         switch ($type) {
             case 'new':
-                $startDate = $startDate->toDateTimeString();
+                $startDate = $startDate->startOfDay()->toDateTimeString();
                 $endDate = $date->addDay();
                 $data = UserScanLog::where('UserScanLog.buyer',$seq)
                     ->where('UserScanLog.created_at','>',$startDate)
                     ->where('UserScanLog.created_at', '<=', $endDate)
                     ->leftJoin('User as a','a.seq','=','UserScanLog.user')
-                    ->select('a.seq','a.nickname','UserScanLog.created_at')
+                    ->groupBy('a.seq','a.nickname','UserScanLog.created_at','UserScanLog.user')
+                    ->select('a.seq','a.nickname','UserScanLog.created_at','UserScanLog.user')
                     ->limit($limit)
                     ->offset(($page-1)*$limit)
                     ->get();
@@ -577,7 +578,7 @@ class StatisticsController extends Controller
                     ->count();
                 break;
             case 'silence':
-                $startDate = $startDate->toDateTimeString();
+                $startDate = $startDate->startOfDay()->toDateTimeString();
                 $monthBefore = $date->subMonth();
                 $data = UserScanLog::where('UserScanLog.buyer',$seq)
                     ->leftJoin('User as a','a.seq','=','UserScanLog.user')
@@ -592,7 +593,7 @@ class StatisticsController extends Controller
                     ->count();
                 break;
             case 'active':
-                $startDate = $startDate->toDateTimeString();
+                $startDate = $startDate->startOfDay()->toDateTimeString();
                 $monthBefore = $date->subMonth();
                 $data = UserScanLog::where('UserScanLog.buyer',$seq)
                     ->leftJoin('User as a','a.seq','=','UserScanLog.user')
