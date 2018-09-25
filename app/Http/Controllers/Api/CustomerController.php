@@ -12,6 +12,8 @@ use Validator;
 use Hash;
 use App\Models\Buyer;
 use App\Models\User;
+use App\Models\ShopEventCoupon;
+use App\Models\ShopGift;
 use App\Models\Groupon;
 use App\Models\GrouponProduct;
 use App\Models\GrouponRecord;
@@ -124,7 +126,11 @@ class CustomerController extends Controller
     //领取优惠券用户
     public function couponUserList(Request $request){
         // $buyer=$request->session()->get('buyer.seq');
-        $buyer=2;
-        
+        $buyer=1;
+        $items=ShopEventCoupon::where('ShopEventCoupon.buyer',$buyer)
+        ->leftJoin('ShopGift as g','g.seq','=','ShopEventCoupon.shop_gift')
+        ->select('g.name','ShopEventCoupon.created_at','ShopEventCoupon.status','ShopEventCoupon.used_at','ShopEventCoupon.status')
+        ->get();
+        return $this->responseOK($items);
     }
 }
