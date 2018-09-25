@@ -31,7 +31,6 @@ Route::group(['namespace' => 'Api'], function() {
         Route::get('/all',                       'StatisticsController@all');
         Route::get('/list',                       'StatisticsController@list');
         Route::get('/detail',                       'StatisticsController@detail');
-        
     });
 
     Route::group(['prefix'  => 'customer'], function() {
@@ -46,5 +45,11 @@ Route::group(['namespace' => 'Api'], function() {
         Route::get('/adList',               'AdController@adList');//广告列表
         Route::post('/adtype/{seq}/{type}',               'AdController@adtype');//广告上下架
         Route::post('/modifyAd',            'AdController@modifyAd');//修改广告
+    });
+    //拼豆豆
+    Route::group(['prefix'  => 'groupon'], function() {
+        Route::get('/list',                 'GroupOnController@list');
+        Route::post('/',                 'GroupOnController@create');
+        Route::post('/{seq}',                 'GroupOnController@modify');
     });
 });
