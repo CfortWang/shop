@@ -30,17 +30,17 @@ class CustomerController extends Controller
         $buyer=2;
         $limit = $request->input('limit',20);
         $page = $request->input('page',1);
+        $count=UserScanLog::where('UserScanLog.buyer',$buyer)->get();  
         $items = DB::table('UserScanLog')
                     ->where('UserScanLog.buyer',$buyer)  
                     ->select(  
                         'UserScanLog.user',
                          DB::raw('count(UserScanLog.user) AS scannedCount'))  
                     ->groupBy('UserScanLog.user') 
-                    ->get(); 
-        $count=count($items);
-        $items = $items->limit($limit)
-                        ->offset(($page-1)*$limit) 
-                        ->get(); 
+                    ->limit($limit)
+                    ->offset(($page-1)*$limit) 
+                    ->get();
+        $count=count($count);
         foreach($items as $k=>$v){
             $user=User::where('seq',$v->user)->select('nickname','gender','birthday')->first();
             $firstTime=UserScanLog::where('user',$v->user)->where('buyer',$buyer)->select('created_at')->orderBy('created_at','asc')->first();
