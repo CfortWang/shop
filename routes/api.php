@@ -2,6 +2,7 @@
 
 use Illuminate\Http\Request;
 
+
 /*
 |--------------------------------------------------------------------------
 | API Routes
@@ -34,7 +35,7 @@ Route::group(['namespace' => 'Api'], function() {
     });
     Route::group(['prefix'  => 'customer'], function() {
         Route::get('/scannedUserList',               'CustomerController@scannedUserList');//扫码用户列表
-        Route::get('/{seq}/scannedUserDetail',            'CustomerController@scannedUserDetail');//扫码用户详情
+        Route::get('/scannedUserDetail',            'CustomerController@scannedUserDetail');//扫码用户详情
         Route::get('/pddIngUserList',            'CustomerController@pddIngUserList');//拼豆中用户
         Route::get('/pddSuccessUserList',            'CustomerController@pddSuccessUserList');//拼豆成功用户
         Route::get('/couponUserList',            'CustomerController@couponUserList');//领取优惠券用户
@@ -52,12 +53,6 @@ Route::group(['namespace' => 'Api'], function() {
         Route::get('category',              'ShopController@category');
         Route::post('modify',               'ShopController@modify');
         Route::post('delete/image',         'ShopController@deleteImage');
-    });
-    //拼豆豆
-    Route::group(['prefix'  => 'groupon'], function() {
-        Route::get('/list',                 'GroupOnController@list');
-        Route::post('/',                 'GroupOnController@create');
-        Route::post('/{seq}',                 'GroupOnController@modify');
     });
     //Package
     Route::group(['prefix' => 'packages'], function() {

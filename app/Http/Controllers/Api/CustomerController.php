@@ -29,13 +29,17 @@ class CustomerController extends Controller
     
         // $buyer = $request->session()->get('buyer.seq');
         $buyer=2;
+        $limit = $request->input('limit',20);
+        $page = $request->input('page',1);
         $items = DB::table('UserScanLog')
                     ->where('UserScanLog.buyer',$buyer)  
                     // ->join('User','User.seq','=','UserScanLog.user')  
                     ->select(  
                         'UserScanLog.user',
                          DB::raw('count(UserScanLog.user) AS scannedCount'))  
-                    ->groupBy('UserScanLog.user')  
+                    ->groupBy('UserScanLog.user') 
+                    ->limit($limit)
+                    ->offset(($page-1)*$limit) 
                     ->get();  
         foreach($items as $k=>$v){
             $user=User::where('seq',$v->user)->select('nickname','gender')->first();
@@ -57,20 +61,25 @@ class CustomerController extends Controller
         //         ->get();
         return $this->responseOk('',$data);
     }
-    public function scannedUserDetail(Request $request, $seq)
-    {
+    public function scannedUserDetail(Request $request){
        // $buyer = $request->session()->get('buyer.seq');
         $buyer=2;
-        $input = Input::only('seq');
+        $input=Input::only('seq');
+        $message = array(
+            "required" => ":attribute ".trans('common.verification.cannotEmpty'),
+            "integer" => ":attribute ".trans('common.verification.requiredNumber'),
+        );
         $validator = Validator::make($input, [
-            'seq'           => 'required',
-        ]);
+            'seq'              => 'required|integer',
+        ],$message);
         if ($validator->fails()) {
-            return $this->responseBadRequest('Bad Request');
-        }
+            $message = $validator->errors()->first();
+            return $this->responseBadRequest($message);
+        } 
         $seq=$request->input('seq');
         dd($seq);
         $veriSeq=UserScanLog::where('buyer',$buyer)->where('user',$seq)->select('created_at')->get()->toArray();
+        dd($veriSeq);
         if(empty($veriSeq)){
             return $this->responseBadRequest('seq is error');  
         }
