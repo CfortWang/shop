@@ -535,16 +535,59 @@ class StatisticsController extends Controller
         //         # code...
         //         break;
         // }
-        $seq = 2;
+        $seq = 1;
+        $type = $request->input('type');
+        $startDate = Carbon::createFromFormat('Y-m-d',$request->input('startDate'));
+        $endDate = Carbon::createFromFormat('Y-m-d',$request->input('endDate'));
+        $limit = $request->input('limit',20);
+        $data = UserScanLog::where('UserScanLog.buyer',$seq)
+            ->leftJoin('User as a','a.seq','=','UserScanLog.user')
+            ->where('UserScanLog.created_at','>',$startDate)
+            // ->where('a.created_at','>',Carbon::now()->yesterday())
+            // ->distinct('user')
+            ->groupBy('date')
+            ->select(DB::raw('Date(UserScanLog.created_at) as date'),DB::raw('COUNT(UserScanLog.user) as value'))
+            ->limit($limit)
+            ->get();
+        $count = UserScanLog::where('UserScanLog.buyer',$seq)
+            ->leftJoin('User as a','a.seq','=','UserScanLog.user')
+            ->where('UserScanLog.created_at','>',$startDate)
+            // ->where('a.created_at','>',Carbon::now()->yesterday())
+            ->groupBy('date')
+            ->select(DB::raw('Date(UserScanLog.created_at) as date'),DB::raw('COUNT(UserScanLog.user) as value'))
+            ->get();
+            $count = count($count);
+            // ->limit($limit)
+            // ->count();
+        $return['count'] = $count;
+        if($type=='active'){
+            foreach ($data as $key => $value) {
+                $data[$key]['rate'] = rand(1,9)/10;
+            }
+        }
+        $return['data'] = $data;
+        return $this->responseOk('',$return);
+    }
+
+    public function detail(Request $request)
+    {
+        $seq = 1;
+        $limit = $request->input('limit',20);
         $data = UserScanLog::where('UserScanLog.buyer',$seq)
             ->leftJoin('User as a','a.seq','=','UserScanLog.user')
             // ->where('UserScanLog.created_at','>',Carbon::now()->yesterday())
             // ->where('a.created_at','>',Carbon::now()->yesterday())
             // ->distinct('user')
             // ->count('user');
-            ->select('a.nickname','UserScanLog.created_at')
-            ->limit(20)
+            ->select('a.seq','a.nickname','UserScanLog.created_at')
+            ->limit($limit)
             ->get();
-        return $this->responseOk('',$data);
+        $count = UserScanLog::where('UserScanLog.buyer',$seq)
+            ->leftJoin('User as a','a.seq','=','UserScanLog.user')
+            ->count();
+        $return['count'] = $count;
+        $return['data'] = $data;
+        return $this->responseOk('',$return);
     }
+
 }
