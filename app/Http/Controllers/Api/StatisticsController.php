@@ -554,7 +554,8 @@ class StatisticsController extends Controller
                 $data[$key]['rate'] = rand(0.1,0.9);
             }
         }
-        return $this->responseOk('',$data);
+        $return['data'] = $data;
+        return $this->responseOk('',$return);
     }
 
     public function detail(Request $request)
@@ -569,7 +570,8 @@ class StatisticsController extends Controller
             ->select('a.seq','a.nickname','UserScanLog.created_at')
             ->limit(20)
             ->get();
-        return $this->responseOk('',$data);
+        $return['data'] = $data;
+        return $this->responseOk('',$return);
     }
 
 }
