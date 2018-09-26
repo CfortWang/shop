@@ -27,7 +27,7 @@ class CustomerController extends Controller
     //扫描用户列表
     public function scannedUserList(Request $request){
         // $buyer = $request->session()->get('buyer.seq');
-        $buyer=2;
+        $buyer=1;
         $limit = $request->input('limit',20);
         $page = $request->input('page',1);
         $items = DB::table('UserScanLog')
