@@ -258,6 +258,8 @@ class CustomerController extends Controller
     //领取优惠券详细列表
     public function couponDetailUserList(Request $request){
         // $buyer=$request->session()->get('buyer.seq');
+        $limit = $request->input('limit',10);
+        $page = $request->input('page',1);
         $buyer=1;
         $input=Input::only('user');
         $message = array(
@@ -277,7 +279,7 @@ class CustomerController extends Controller
         $items=ShopEventCoupon::where('ShopEventCoupon.buyer',$buyer)
                             ->where('user',$user)
                             ->leftJoin('ShopGift as g','g.seq','=','ShopEventCoupon.shop_gift')
-                            ->select('g.name','ShopEventCoupon.created_at','ShopEventCoupon.status',
+                            ->select('g.name','ShopEventCoupon.created_at','ShopEventCoupon.status','ShopEventCoupon.used_at',
                             'ShopEventCoupon.used_at','ShopEventCoupon.status')
                             ->limit($limit)
                             ->offset(($page-1)*$limit) 
