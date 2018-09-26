@@ -32,5 +32,10 @@ Route::group(['namespace' => 'Web'], function() {
             Route::get('/groupon',                       'CustomerController@grouponList');
             Route::get('/coupon',                        'CustomerController@couponList');
         });
+
+        //
+        Route::group(['prefix'  => 'event'], function() {
+            Route::get('/groupon',                       'EventController@groupon');
+        });
     });
 });

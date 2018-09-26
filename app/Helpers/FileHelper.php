@@ -13,6 +13,7 @@ class FileHelper
     public static $giftResultImagePath = '/shop/gift/';
     public static $adImagePath = '/shop/ad/';
 
+    public static $groupImagePath = '/shop/groupon/';
     
     public static function shopLogoImage($file) 
     {
@@ -34,14 +35,18 @@ class FileHelper
         return static::uploadImage(static::$adImagePath, $file);
     }
 
+    public static function groupOnImage($file)
+    {
+        return static::uploadImage(static::$groupImagePath, $file);
+    }
     public static function uploadImage($filePath, $file)
     {
-        $mediaHost = Config::get('bw.media.host');
-        $mediaUser = Config::get('bw.media.user');
-        $mediaPass = Config::get('bw.media.pass');
-        $mediaRoot = Config::get('bw.media.root');
-        $mediaPath = Config::get('bw.media.path');
-        $mediaIp = Config::get('bw.media.ip');
+        $mediaHost = Config::get('shop.media.host');
+        $mediaUser = Config::get('shop.media.user');
+        $mediaPass = Config::get('shop.media.pass');
+        $mediaRoot = Config::get('shop.media.root');
+        $mediaPath = Config::get('shop.media.path');
+        $mediaIp = Config::get('shop.media.ip');
 
         $clientName = $file->getClientOriginalName();
         $name       = md5($clientName.microtime());

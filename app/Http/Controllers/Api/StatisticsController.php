@@ -310,8 +310,8 @@ class StatisticsController extends Controller
         if($type=='day'){
             $days = $start->diffInDays($end, false);
             for ($i=0; $i < $days; $i++) { 
-                $date = $start->addDays(1)->toDateString();
                 $val = 0;
+                $date = $start->toDateString();
                 foreach ($data as $key => $value) {
                     if($value['date']==$date){
                         $val = $value['value'];
@@ -320,6 +320,7 @@ class StatisticsController extends Controller
                 $tempData['date'] = $date;
                 $tempData['value'] = $val;
                 $newData[] = $tempData;
+                $start->addDays(1);
             }
         }elseif ($type=='week') {
             $day = $start;
@@ -395,7 +396,7 @@ class StatisticsController extends Controller
             ->orderBy('date', 'ASC')
             ->get([
                 $sql,
-                DB::raw('COUNT(user) as value'),
+                DB::raw('COUNT(distinct user) as value'),
             ]);
 
         $data = $this->formatData($startDate,$endDate,$type,$data);
@@ -522,22 +523,46 @@ class StatisticsController extends Controller
         $endDate = Carbon::createFromFormat('Y-m-d',$request->input('endDate'));
         $limit = $request->input('limit',20);
         $page = $request->input('page',1);
-        $data = UserScanLog::where('UserScanLog.buyer',$seq)
-            ->leftJoin('User as a','a.seq','=','UserScanLog.user')
-            ->where('UserScanLog.created_at','>',$startDate)
-            ->where('UserScanLog.created_at', '<=', $endDate)
-            ->groupBy('date')
-            ->select(DB::raw('Date(UserScanLog.created_at) as date'),DB::raw('COUNT(distinct UserScanLog.user) as value'))
-            ->limit($limit)
-            ->offset(($page-1)*$limit)
-            ->get();
-        $count = UserScanLog::where('UserScanLog.buyer',$seq)
-            ->leftJoin('User as a','a.seq','=','UserScanLog.user')
-            ->where('UserScanLog.created_at','>=',$startDate)
-            ->where('UserScanLog.created_at', '<=', $endDate)
-            ->groupBy('date')
-            ->select(DB::raw('Date(UserScanLog.created_at) as date'),DB::raw('COUNT(distinct UserScanLog.user) as value'))
-            ->get();
+        switch ($type) {
+            case 'frequency':
+                $data = UserScanLog::where('UserScanLog.buyer',$seq)
+                    ->leftJoin('User as a','a.seq','=','UserScanLog.user')
+                    ->where('UserScanLog.created_at','>',$startDate)
+                    ->where('UserScanLog.created_at', '<=', $endDate)
+                    ->groupBy('date')
+                    ->select(DB::raw('Date(UserScanLog.created_at) as date'),DB::raw('COUNT(UserScanLog.user) as value'))
+                    ->limit($limit)
+                    ->offset(($page-1)*$limit)
+                    ->get();
+                $count = UserScanLog::where('UserScanLog.buyer',$seq)
+                    ->leftJoin('User as a','a.seq','=','UserScanLog.user')
+                    ->where('UserScanLog.created_at','>=',$startDate)
+                    ->where('UserScanLog.created_at', '<=', $endDate)
+                    ->groupBy('date')
+                    ->select(DB::raw('Date(UserScanLog.created_at) as date'),DB::raw('COUNT(UserScanLog.user) as value'))
+                    ->get();
+                break;
+            
+            default:
+                $data = UserScanLog::where('UserScanLog.buyer',$seq)
+                    ->leftJoin('User as a','a.seq','=','UserScanLog.user')
+                    ->where('UserScanLog.created_at','>',$startDate)
+                    ->where('UserScanLog.created_at', '<=', $endDate)
+                    ->groupBy('date')
+                    ->select(DB::raw('Date(UserScanLog.created_at) as date'),DB::raw('COUNT(distinct UserScanLog.user) as value'))
+                    ->limit($limit)
+                    ->offset(($page-1)*$limit)
+                    ->get();
+                $count = UserScanLog::where('UserScanLog.buyer',$seq)
+                    ->leftJoin('User as a','a.seq','=','UserScanLog.user')
+                    ->where('UserScanLog.created_at','>=',$startDate)
+                    ->where('UserScanLog.created_at', '<=', $endDate)
+                    ->groupBy('date')
+                    ->select(DB::raw('Date(UserScanLog.created_at) as date'),DB::raw('COUNT(distinct UserScanLog.user) as value'))
+                    ->get();
+                break;
+        }
+        
             $count = count($count);
         $return['count'] = $count;
         if($type=='active'){
@@ -566,7 +591,6 @@ class StatisticsController extends Controller
                     ->where('UserScanLog.created_at','>',$startDate)
                     ->where('UserScanLog.created_at', '<=', $endDate)
                     ->leftJoin('User as a','a.seq','=','UserScanLog.user')
-                    ->groupBy('a.seq','a.nickname','UserScanLog.created_at','UserScanLog.user')
                     ->select('a.seq','a.nickname','UserScanLog.created_at','UserScanLog.user')
                     ->limit($limit)
                     ->offset(($page-1)*$limit)
@@ -586,6 +610,7 @@ class StatisticsController extends Controller
                     ->select('a.seq','a.nickname','UserScanLog.created_at')
                     ->limit($limit)
                     ->offset(($page-1)*$limit)
+                    ->orderBy('created_at','desc')
                     ->get();
                 $count = UserScanLog::where('UserScanLog.buyer',$seq)
                     ->leftJoin('User as a','a.seq','=','UserScanLog.user')
@@ -605,6 +630,23 @@ class StatisticsController extends Controller
                 $count = UserScanLog::where('UserScanLog.buyer',$seq)
                     ->leftJoin('User as a','a.seq','=','UserScanLog.user')
                     ->where('UserScanLog.created_at', '<=', $monthBefore)
+                    ->count();
+                break;
+            case 'frequency':
+                $startDate = $startDate->startOfDay()->toDateTimeString();
+                $endDate = $date->addDay();
+                $data = UserScanLog::where('UserScanLog.buyer',$seq)
+                    ->leftJoin('User as a','a.seq','=','UserScanLog.user')
+                    ->where('UserScanLog.created_at','>',$startDate)
+                    ->where('UserScanLog.created_at', '<=', $endDate)
+                    ->select('a.seq','a.nickname','UserScanLog.created_at')
+                    ->limit($limit)
+                    ->offset(($page-1)*$limit)
+                    ->get();
+                $count = UserScanLog::where('UserScanLog.buyer',$seq)
+                    ->leftJoin('User as a','a.seq','=','UserScanLog.user')
+                    ->where('UserScanLog.created_at','>',$startDate)
+                    ->where('UserScanLog.created_at', '<=', $endDate)
                     ->count();
                 break;
             default:
