@@ -128,6 +128,8 @@ class CustomerController extends Controller
     public function pddUserList(Request $request){
         // $buyer=$request->session()->get('buyer.seq'); 
         $buyer=1;
+        $limit = $request->input('limit',20);
+        $page = $request->input('page',1);
         $input=Input::only('type');
         $message = array(
             "required" => ":attribute ".trans('common.verification.cannotEmpty'),
@@ -146,7 +148,9 @@ class CustomerController extends Controller
                 ->leftJoin('groupon as g','g.id','=','groupon_record.groupon_id')
                 ->leftJoin('groupon_product as p','p.id','=','g.groupon_product_id')
                 ->leftJoin('User as u','u.seq','=','groupon_record.user_id')
-                ->select('u.id','u.nickname','groupon_record.is_owner','g.groupon_status','g.created_at')
+                ->select('u.id as phone','u.phone_num','u.nickname','groupon_record.is_owner','g.groupon_status','g.created_at','u.seq')
+                ->limit($limit)
+                ->offset(($page-1)*$limit) 
                 ->get();
         }
         if($type == 'success'){
@@ -155,7 +159,9 @@ class CustomerController extends Controller
                 ->leftJoin('groupon as g','g.id','=','groupon_record.groupon_id')
                 ->leftJoin('groupon_product as p','p.id','=','g.groupon_product_id')
                 ->leftJoin('User as u','u.seq','=','groupon_record.user_id')
-                ->select('u.id','u.nickname','groupon_record.is_owner','g.groupon_status','g.created_at','g.updated_at')
+                ->select('u.id as phone','u.nickname','groupon_record.is_owner','g.groupon_status','g.created_at','g.updated_at')
+                ->limit($limit)
+                ->offset(($page-1)*$limit) 
                 ->get();
         }
         if($type == 'fail'){
@@ -164,19 +170,40 @@ class CustomerController extends Controller
                 ->leftJoin('groupon as g','g.id','=','groupon_record.groupon_id')
                 ->leftJoin('groupon_product as p','p.id','=','g.groupon_product_id')
                 ->leftJoin('User as u','u.seq','=','groupon_record.user_id')
-                ->select('u.id','u.nickname','groupon_record.is_owner','g.groupon_status','g.created_at','g.updated_at')
+                ->select('u.id as phone','u.nickname','groupon_record.is_owner','g.groupon_status','g.created_at','g.updated_at')
+                ->limit($limit)
+                ->offset(($page-1)*$limit) 
                 ->get();
         }
         return $this->responseOk('',$items);
     }
-    //领取优惠券用户
-    public function couponUserList(Request $request){
+    //领取优惠券详细列表
+    public function couponDetailUserList(Request $request){
         // $buyer=$request->session()->get('buyer.seq');
         $buyer=1;
+        $input=Input::only('user');
+        $message = array(
+            "required" => ":attribute ".trans('common.verification.cannotEmpty'),
+            "integer" => ":attribute ".trans('common.verification.requiredNumber'),
+        );
+        $validator = Validator::make($input, [
+            'user'              => 'required|integer',
+        ],$message);
+        if ($validator->fails()) {
+            $message = $validator->errors()->first();
+            return $this->responseBadRequest($message);
+        } 
+        $user=$request->input('user');
+        $limit = $request->input('limit',20);
+        $page = $request->input('page',1);
         $items=ShopEventCoupon::where('ShopEventCoupon.buyer',$buyer)
-        ->leftJoin('ShopGift as g','g.seq','=','ShopEventCoupon.shop_gift')
-        ->select('g.name','ShopEventCoupon.created_at','ShopEventCoupon.status','ShopEventCoupon.used_at','ShopEventCoupon.status')
-        ->get();
-        return $this->responseOK($items);
+                            ->where('user',$user)
+                            ->leftJoin('ShopGift as g','g.seq','=','ShopEventCoupon.shop_gift')
+                            ->select('g.name','ShopEventCoupon.created_at','ShopEventCoupon.status',
+                            'ShopEventCoupon.used_at','ShopEventCoupon.status')
+                            ->limit($limit)
+                            ->offset(($page-1)*$limit) 
+                            ->get();
+        return $this->responseOK('',$items);
     }
 }
