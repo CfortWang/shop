@@ -77,6 +77,8 @@ class CustomerController extends Controller
     public function scannedUserDetail(Request $request){
        // $buyer = $request->session()->get('buyer.seq');
         $buyer=2;
+        $limit = $request->input('limit',20);
+        $page = $request->input('page',1);
         $input=Input::only('seq');
         $message = array(
             "required" => ":attribute ".trans('common.verification.cannotEmpty'),
@@ -90,7 +92,13 @@ class CustomerController extends Controller
             return $this->responseBadRequest($message);
         } 
         $seq=$request->input('seq');
-        $veriSeq=UserScanLog::where('buyer',$buyer)->where('user',$seq)->select('created_at')->get()->toArray();
+        $veriSeq=UserScanLog::where('buyer',$buyer)
+                            ->where('user',$seq)
+                            ->select('created_at') 
+                            ->limit($limit)
+                            ->offset(($page-1)*$limit) 
+                            ->get()->toArray();
+        $count=count($veriSeq);
         if(empty($veriSeq)){
             return $this->responseBadRequest('seq is error');  
         }
@@ -101,7 +109,9 @@ class CustomerController extends Controller
            $data['created_at']=$v['created_at'];
            $items[]=$data;
         }
-        return $this->responseOk($items);
+        $newData['list']=$items;
+        $newData['count']=$count;
+        return $this->responseOk($newData);
     }
     //拼豆豆中用户
     public function pddIngUserList(Request $request){
