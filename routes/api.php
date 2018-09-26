@@ -34,11 +34,11 @@ Route::group(['namespace' => 'Api'], function() {
         Route::get('/detail',                       'StatisticsController@detail');
     });
     Route::group(['prefix'  => 'customer'], function() {
-        Route::get('/scannedUserList',               'CustomerController@scannedUserList');//扫码用户列表
-        Route::get('/scannedUserDetail',            'CustomerController@scannedUserDetail');//扫码用户详情
-        Route::get('/pddIngUserList',            'CustomerController@pddIngUserList');//拼豆中用户
-        Route::get('/pddSuccessUserList',            'CustomerController@pddSuccessUserList');//拼豆成功用户
-        Route::get('/couponUserList',            'CustomerController@couponUserList');//领取优惠券用户领取优惠券用户
+        Route::get('/scannedUserList',            'CustomerController@scannedUserList');//扫码用户列表
+        Route::get('/scannedUserDetail',          'CustomerController@scannedUserDetail');//扫码用户详情
+        Route::get('/pddUserList',               'CustomerController@pddUserList');//拼豆用户列表
+        Route::get('/couponUserList',            'CustomerController@couponUserList');//领取优惠券用户
+        Route::get('/couponDetailUserList',       'CustomerController@couponDetailUserList');//领取优惠券详细用户列表
     });
     //ad
     Route::group(['prefix'  => 'ad'], function() {

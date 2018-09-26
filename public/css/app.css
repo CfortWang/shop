@@ -612,6 +612,7 @@ ul.tpl-dropdown-content li>a.tpl-dropdown-content-message:last-child {
     font-weight: 300;
     height: 35px;
     line-height: 35px;
+    font-size: 14px;
 }
 .user-table .date, .user-table .table-td-date{
     display: inline-block;
@@ -629,6 +630,7 @@ ul.tpl-dropdown-content li>a.tpl-dropdown-content-message:last-child {
     height: 40px;
     line-height: 40px;
     border-radius:3px;
+    font-size: 14px;
 }
 .table-tr:nth-child(even){
     background: #F8F9FC;
@@ -673,7 +675,7 @@ ul.tpl-dropdown-content li>a.tpl-dropdown-content-message:last-child {
 }
 .table-tr > div{
     font-family: "PingFangSC-Regular";
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 400;
 }
 
@@ -693,12 +695,140 @@ ul.tpl-dropdown-content li>a.tpl-dropdown-content-message:last-child {
     float: left;
     width: 50%;
 }
+.scan-user-table .table-title, #pdd-table .table-title{
+    height:64px;
+    line-height: 64px;
+    background:rgba(87,160,255,1);
+    border-radius:5px 5px 0px 0px;
+    color: #ffffff;
+}
+.scan-user-table .table-tr, #pdd-table .table-tr{
+    height: 70px;
+    /* line-height: 70px; */
+}
+.scan-user-table .table-tr > div, #pdd-table .table-tr > div{
+    line-height: 70px;
+}
+.table-tr p{
+    height: 30px;
+    margin: 0px;
+    line-height: 42px;
+}
 .scan-user-table .table-title > div, .scan-user-table .table-tr > div{
     display: inline-block;
     text-align: center;
     float: left;
-    width: 12.5%;
+    width: 11%;
 }
+.scan-user-table .table-tr > .see-more{
+    height:30px;
+    width: 8%;
+    border:0.81px solid rgba(87,160,255,1);
+    border-radius:3px;
+    color: #57A0FF;
+    cursor: pointer;
+    margin: 20px 0px;
+    line-height: 30px;
+}
+
+.search-box{
+    width: 40%;
+    min-width: 300px;
+    max-width: 500px;
+    border:0.81px solid rgba(221,221,221,1);
+    border-radius:3px;
+    height: 55px;
+    display: flex;
+    font-family: "PingFangSC-Light";
+    margin-bottom: 10px;
+}
+.search-input{
+    flex: 1;
+    padding: 0 12px;
+    font-size: 16px;
+}
+/* input提示文本样式 */
+::-webkit-input-placeholder {
+    font-size: 14px;
+    font-family: "PingFangSC-Light";
+    font-weight: 300;
+}
+::-moz-placeholder {
+    font-size: 14px;
+    font-family: "PingFangSC-Light";
+    font-weight: 300;
+}
+:-ms-input-placeholder {
+    font-size: 14px;
+    font-family: "PingFangSC-Light";
+    font-weight: 300;
+}
+input:-moz-placeholder {
+    font-size: 14px;
+    font-family: "PingFangSC-Light";
+    font-weight: 300;
+}
+.search-btn{
+    width: 100px;
+    background:rgba(248,249,252,1);
+    border: none;
+    border-left:0.81px solid rgba(221,221,221,1);
+    /* border-right:0.81px solid rgba(221,221,221,1); */
+    border-radius: 0px 3px 3px 0px;
+    font-size: 16px;
+    font-weight: 300;
+    color: #666;
+}
+.search-input:focus, .search-btn:focus{
+    outline: none;
+}
+
+.tab{
+    width: 30%;
+    min-width: 300px;
+    font-size: 0px;
+    border: 0.81px solid rgba(221,221,221,1);
+    border-radius: 5px;
+}
+.tab-item{
+    display: inline-block;
+    height: 40px;
+    line-height: 40px;
+    width: 33.333333%;
+    margin: 0px;
+    font-size: 16px;
+    text-align: center;
+    cursor: pointer;
+}
+.tab-active{
+    background: rgba(87,160,255,1);
+    border-radius: 5px 5px 0px 0px;
+    color: #ffffff;
+}
+.pdd-ing-table .table-title > div, .pdd-ing-table .table-tr > div{
+    display: inline-block;
+    text-align: center;
+    float: left;
+    width: 25%;
+}
+.pdd-success-table .table-title > div, .pdd-success-table .table-tr > div{
+    display: inline-block;
+    text-align: center;
+    float: left;
+    width: 14.28%;
+}
+.pdd-fail-table .table-title > div, .pdd-fail-table .table-tr > div{
+    display: inline-block;
+    text-align: center;
+    float: left;
+    width: 20%;
+}
+.pdd-success-table, .pdd-fail-table{
+    display: none;
+}
+
+
+
 
 .tpl-left-nav {
     position: fixed;

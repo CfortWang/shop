@@ -9,15 +9,20 @@
             <div class="row">
                 <div class="am-u-md-12 am-u-sm-12 row-mb scan-user">
                     <div class="tpl-portlet">
-                        <div class="tpl-portlet-title center">
-                            <div class="center-caption">
+                        <div class="tpl-portlet-title">
+                            <!-- <div class="center-caption">
                                 <span>用户列表</span>
+                            </div> -->
+                            <div class="search-box">
+                                <input type="text" class="search-input" name="search" placeholder="请输入手机号查找">
+                                <button class="search-btn">搜索</button>
                             </div>
+
                         </div>
                         <div class="tpl-echarts" id="tpl-echarts-C">
                             <div class="scan-user-table">
                                 <div class="table-title clear-fix">
-                                    <div class="ID">用户名id</div>
+                                    <div class="ID">手机号</div>
                                     <div class="nickname">昵称</div>
                                     <div class="sex">性别</div>
                                     <div class="age">年龄</div>
@@ -67,29 +72,39 @@
                 let count = res.data.count
                 pageCount = Math.ceil(count / limit)
                 console.log(pageCount)
-                var $tr = '<div class="table-tr clear-fix"><div class="table-td-id"></div><div class="table-td-nickname"></div><div class="table-td-sex"></div><div class="table-td-age"></div><div class="table-td-first"></div><div class="table-td-last"></div><div class="table-td-frequency"></div><div class="table-td-count"></div></div>'
+                var $tr = '<div class="table-tr clear-fix"><div class="table-td-id"></div><div class="table-td-nickname"></div><div class="table-td-sex"></div><div class="table-td-age"></div><div class="table-td-first"><p class="years"></p><p class="hours"></p></div><div class="table-td-last"><p class="years"></p><p class="hours"></p></div><div class="table-td-frequency"></div><div class="table-td-count"></div><div class="see-more">查看更多</div></div>'
                 for (let i = 0; i < resData.length; i++) {
                     $('.table-content').append($tr)
-                    let id = resData[i].user
+                    if (resData[i].id == null || resData[i].id == '') {
+                        var id = '——'
+                    } else {
+                        var id = "+" + resData[i].id.split('@')[1] + " " + resData[i].id.split('@')[0]
+                    }
+                    let seq = resData[i].user
                     let nickname = resData[i].nickname
                     let gender = resData[i].gender
                     let age = resData[i].age
-                    let firstTime = resData[i].firstTime.split(' ')[0]
-                    let endTime = resData[i].endTime.split(' ')[0]
+                    let firstTimeYears = resData[i].firstTime.split(' ')[0]
+                    let firstTimeHours = resData[i].firstTime.split(' ')[1]
+                    let endTimeYears = resData[i].endTime.split(' ')[0]
+                    let endTimeHours = resData[i].endTime.split(' ')[1]
                     let percent = resData[i].rate
                     let count = resData[i].scannedCount
-                    if (nickname == null || nickname == '') {
-                        nickname = '——'
-                    }
                     if (gender == null || gender == '') {
                         gender = '——'
                     }
+                    if (nickname == null || nickname == '') {
+                        nickname = '——'
+                    }
+                    $(".table-content .table-tr:eq("+ i +")").attr('data-seq', seq)
                     $(".table-content .table-tr:eq("+ i +") .table-td-id").text(id)
                     $(".table-content .table-tr:eq("+ i +") .table-td-nickname").text(nickname)
                     $(".table-content .table-tr:eq("+ i +") .table-td-sex").text(gender)
                     $(".table-content .table-tr:eq("+ i +") .table-td-age").text(age)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-first").text(firstTime)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-last").text(endTime)
+                    $(".table-content .table-tr:eq("+ i +") .table-td-first .years").text(firstTimeYears)
+                    $(".table-content .table-tr:eq("+ i +") .table-td-first .hours").text(firstTimeHours)
+                    $(".table-content .table-tr:eq("+ i +") .table-td-last .years").text(endTimeYears)
+                    $(".table-content .table-tr:eq("+ i +") .table-td-last .hours").text(endTimeHours)
                     $(".table-content .table-tr:eq("+ i +") .table-td-frequency").text(percent)
                     $(".table-content .table-tr:eq("+ i +") .table-td-count").text(count)
                 }
@@ -120,13 +135,12 @@
         }
     })
 
-    $(".table-content").on('click', '.table-tr', function () {
-        let type = 'active'
-        let time = $(this).children()[0]
-        let date = $(time).text()
+    $(".table-content").on('click', '.table-tr .see-more', function () {
+        let seq = $(this).parent().attr('data-seq')
+        console.log(typeof(seq))
         let detailLimit = 8
         let detailPage = 1
-        // window.location.href = '/statistics/details?type=' + type + '&date=' + date + '&limit=' + detailLimit + '&page=' + detailPage
+        window.location.href = '/customer/scanned/details?seq=' + seq + '&limit=' + detailLimit + '&page=' + detailPage
     })
 </script>
 @endsection

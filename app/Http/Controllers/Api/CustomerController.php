@@ -27,7 +27,7 @@ class CustomerController extends Controller
     //扫描用户列表
     public function scannedUserList(Request $request){
         // $buyer = $request->session()->get('buyer.seq');
-        $buyer=2;
+        $buyer=1;
         $limit = $request->input('limit',20);
         $page = $request->input('page',1);
         $items = DB::table('UserScanLog')
@@ -48,11 +48,18 @@ class CustomerController extends Controller
             ->offset(($page-1)*$limit) 
             ->get();
         foreach($items as $k=>$v){
-            $user=User::where('seq',$v->user)->select('nickname','gender','birthday')->first();
+            $user=User::where('seq',$v->user)->select('nickname','gender','birthday','id')->first();
             $firstTime=UserScanLog::where('user',$v->user)->where('buyer',$buyer)->select('created_at')->orderBy('created_at','asc')->first();
             $endTime=UserScanLog::where('user',$v->user)->where('buyer',$buyer)->select('created_at')->orderBy('created_at','desc')->first();
+            $list['id']= $user['id'];;
             $list['nickname']=$user['nickname'];
             $list['gender']=$user['gender'];
+            if( $list['gender']=='male'){
+                $list['gender']='男';
+            }
+            if( $list['gender']=='female'){
+                $list['gender']='女';
+            }
             $list['age']=Carbon::parse($user['birthday'])->diffInYears();
             $list['rate']= rand(1,9)/10;;
             $list['scannedCount']=$v->scannedCount;
@@ -76,7 +83,9 @@ class CustomerController extends Controller
     }
     public function scannedUserDetail(Request $request){
        // $buyer = $request->session()->get('buyer.seq');
-        $buyer=2;
+        $buyer=1;
+        $limit = $request->input('limit',20);
+        $page = $request->input('page',1);
         $input=Input::only('seq');
         $message = array(
             "required" => ":attribute ".trans('common.verification.cannotEmpty'),
@@ -90,7 +99,17 @@ class CustomerController extends Controller
             return $this->responseBadRequest($message);
         } 
         $seq=$request->input('seq');
-        $veriSeq=UserScanLog::where('buyer',$buyer)->where('user',$seq)->select('created_at')->get()->toArray();
+        $count=UserScanLog::where('buyer',$buyer)
+        ->where('user',$seq)
+        ->select('created_at') 
+        ->get()->toArray();
+        $count=count($count);
+        $veriSeq=UserScanLog::where('buyer',$buyer)
+                            ->where('user',$seq)
+                            ->select('created_at') 
+                            ->limit($limit)
+                            ->offset(($page-1)*$limit) 
+                            ->get()->toArray();
         if(empty($veriSeq)){
             return $this->responseBadRequest('seq is error');  
         }
@@ -101,55 +120,119 @@ class CustomerController extends Controller
            $data['created_at']=$v['created_at'];
            $items[]=$data;
         }
-        return $this->responseOk($items);
+        $newData['list']=$items;
+        $newData['count']=$count;
+        return $this->responseOk('',$newData);
     }
     //拼豆豆中用户
-    public function pddIngUserList(Request $request){
+    public function pddUserList(Request $request){
         // $buyer=$request->session()->get('buyer.seq'); 
-        $buyer=39;
-        $items=GrouponRecord::where('p.buyer_id',$buyer)
-                      ->where('g.groupon_status',1)
-                      ->leftJoin('groupon as g','g.id','=','groupon_record.groupon_id')
-                      ->leftJoin('groupon_product as p','p.id','=','g.groupon_product_id')
-                      ->leftJoin('User as u','u.seq','=','groupon_record.user_id')
-                      ->select('u.id','u.nickname','groupon_record.is_owner','g.groupon_status','g.created_at')
-                      ->get();
-        return $this->response4DataTables($items, 1, 1);
+        $buyer=1;
+        $limit = $request->input('limit',20);
+        $page = $request->input('page',1);
+        $input=Input::only('type');
+        $message = array(
+            "required" => ":attribute ".trans('common.verification.cannotEmpty'),
+        );
+        $validator = Validator::make($input, [
+            'type'              => 'required|in:ing,success,fail',
+        ],$message);
+        if ($validator->fails()) {
+            $message = $validator->errors()->first();
+            return $this->responseBadRequest($message);
+        } 
+        $type=$request->input('type');
+        if($type == 'ing'){
+            $count=GrouponRecord::where('p.buyer_id',$buyer)
+            ->where('g.groupon_status',1)
+            ->leftJoin('groupon as g','g.id','=','groupon_record.groupon_id')
+            ->leftJoin('groupon_product as p','p.id','=','g.groupon_product_id')
+            ->leftJoin('User as u','u.seq','=','groupon_record.user_id')
+            ->select('u.id as phone','u.nickname','groupon_record.is_owner','g.created_at')
+            ->get();
+            $count=count($count);
+            $items=GrouponRecord::where('p.buyer_id',$buyer)
+            ->where('g.groupon_status',1)
+            ->leftJoin('groupon as g','g.id','=','groupon_record.groupon_id')
+            ->leftJoin('groupon_product as p','p.id','=','g.groupon_product_id')
+            ->leftJoin('User as u','u.seq','=','groupon_record.user_id')
+            ->select('u.id as phone','u.nickname','groupon_record.is_owner','g.created_at')
+            ->limit($limit)
+            ->offset(($page-1)*$limit) 
+            ->get();
+             
+        }
+        if($type == 'success'){
+                $count=GrouponRecord::where('p.buyer_id',$buyer)
+                ->where('g.groupon_status',2)
+                ->leftJoin('groupon as g','g.id','=','groupon_record.groupon_id')
+                ->leftJoin('groupon_product as p','p.id','=','g.groupon_product_id')
+                ->leftJoin('User as u','u.seq','=','groupon_record.user_id')
+                ->select('u.id as phone','u.nickname','groupon_record.is_owner',
+                'groupon_record.use_code', 'groupon_record.paid_status','g.created_at','g.updated_at')
+                ->get();
+                $count=count($count);
+                $items=GrouponRecord::where('p.buyer_id',$buyer)
+                ->where('g.groupon_status',2)
+                ->leftJoin('groupon as g','g.id','=','groupon_record.groupon_id')
+                ->leftJoin('groupon_product as p','p.id','=','g.groupon_product_id')
+                ->leftJoin('User as u','u.seq','=','groupon_record.user_id')
+                ->select('u.id as phone','u.nickname','groupon_record.is_owner',
+                'groupon_record.use_code', 'groupon_record.paid_status','g.created_at','g.updated_at')
+                ->limit($limit)
+                ->offset(($page-1)*$limit) 
+                ->get();
+        }
+        if($type == 'fail'){
+                $count=GrouponRecord::where('p.buyer_id',$buyer)
+                ->where('g.groupon_status',3)
+                ->leftJoin('groupon as g','g.id','=','groupon_record.groupon_id')
+                ->leftJoin('groupon_product as p','p.id','=','g.groupon_product_id')
+                ->leftJoin('User as u','u.seq','=','groupon_record.user_id')
+                ->select('u.id','u.nickname','groupon_record.is_owner','g.created_at','g.expried_at')
+                ->get();
+                $count=count($count);
+                $items=GrouponRecord::where('p.buyer_id',$buyer)
+                ->where('g.groupon_status',3)
+                ->leftJoin('groupon as g','g.id','=','groupon_record.groupon_id')
+                ->leftJoin('groupon_product as p','p.id','=','g.groupon_product_id')
+                ->leftJoin('User as u','u.seq','=','groupon_record.user_id')
+                ->select('u.id','u.nickname','groupon_record.is_owner','g.created_at','g.expried_at')
+                ->limit($limit)
+                ->offset(($page-1)*$limit) 
+                ->get();
+        }
+        $newdata['count']=$count;
+        $newdata['data']=$items;
+        return $this->responseOk('', $newdata);
     }
-     //拼豆豆成功用户
-     public function pddSuccessUserList(Request $request){
-        // $buyer=$request->session()->get('buyer.seq'); 
-        $buyer=39;
-        $items=GrouponRecord::where('p.buyer_id',$buyer)
-                      ->where('g.groupon_status',2)
-                      ->leftJoin('groupon as g','g.id','=','groupon_record.groupon_id')
-                      ->leftJoin('groupon_product as p','p.id','=','g.groupon_product_id')
-                      ->leftJoin('User as u','u.seq','=','groupon_record.user_id')
-                      ->select('u.id','u.nickname','groupon_record.is_owner','g.groupon_status','g.created_at','g.updated_at')
-                      ->get();
-        return $this->response4DataTables($items, 1, 1);
-    }
-     //拼豆豆失败用户
-     public function pddFailUserList(Request $request){
-        // $buyer=$request->session()->get('buyer.seq'); 
-        $buyer=39;
-        $items=GrouponRecord::where('p.buyer_id',$buyer)
-                      ->where('g.groupon_status',3)
-                      ->leftJoin('groupon as g','g.id','=','groupon_record.groupon_id')
-                      ->leftJoin('groupon_product as p','p.id','=','g.groupon_product_id')
-                      ->leftJoin('User as u','u.seq','=','groupon_record.user_id')
-                      ->select('u.id','u.nickname','groupon_record.is_owner','g.groupon_status','g.created_at','g.updated_at')
-                      ->get();
-        return $this->response4DataTables($items, 1, 1);
-    }
-    //领取优惠券用户
-    public function couponUserList(Request $request){
+    //领取优惠券详细列表
+    public function couponDetailUserList(Request $request){
         // $buyer=$request->session()->get('buyer.seq');
         $buyer=1;
+        $input=Input::only('user');
+        $message = array(
+            "required" => ":attribute ".trans('common.verification.cannotEmpty'),
+            "integer" => ":attribute ".trans('common.verification.requiredNumber'),
+        );
+        $validator = Validator::make($input, [
+            'user'              => 'required|integer',
+        ],$message);
+        if ($validator->fails()) {
+            $message = $validator->errors()->first();
+            return $this->responseBadRequest($message);
+        } 
+        $user=$request->input('user');
+        $limit = $request->input('limit',20);
+        $page = $request->input('page',1);
         $items=ShopEventCoupon::where('ShopEventCoupon.buyer',$buyer)
-        ->leftJoin('ShopGift as g','g.seq','=','ShopEventCoupon.shop_gift')
-        ->select('g.name','ShopEventCoupon.created_at','ShopEventCoupon.status','ShopEventCoupon.used_at','ShopEventCoupon.status')
-        ->get();
-        return $this->responseOK($items);
+                            ->where('user',$user)
+                            ->leftJoin('ShopGift as g','g.seq','=','ShopEventCoupon.shop_gift')
+                            ->select('g.name','ShopEventCoupon.created_at','ShopEventCoupon.status',
+                            'ShopEventCoupon.used_at','ShopEventCoupon.status')
+                            ->limit($limit)
+                            ->offset(($page-1)*$limit) 
+                            ->get();
+        return $this->responseOK('',$items);
     }
 }
