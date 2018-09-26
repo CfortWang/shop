@@ -83,7 +83,7 @@ class CustomerController extends Controller
     }
     public function scannedUserDetail(Request $request){
        // $buyer = $request->session()->get('buyer.seq');
-        $buyer=2;
+        $buyer=1;
         $limit = $request->input('limit',20);
         $page = $request->input('page',1);
         $input=Input::only('seq');
@@ -99,11 +99,12 @@ class CustomerController extends Controller
             return $this->responseBadRequest($message);
         } 
         $seq=$request->input('seq');
+        
         $veriSeq=UserScanLog::where('buyer',$buyer)
                             ->where('user',$seq)
-                            ->select('created_at') 
-                            ->limit($limit)
-                            ->offset(($page-1)*$limit) 
+                            // ->select('created_at') 
+                            // ->limit($limit)
+                            // ->offset(($page-1)*$limit) 
                             ->get()->toArray();
         $count=count($veriSeq);
         if(empty($veriSeq)){
