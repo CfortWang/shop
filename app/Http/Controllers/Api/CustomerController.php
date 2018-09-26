@@ -121,43 +121,49 @@ class CustomerController extends Controller
         return $this->responseOk('',$newData);
     }
     //拼豆豆中用户
-    public function pddIngUserList(Request $request){
+    public function pddUserList(Request $request){
         // $buyer=$request->session()->get('buyer.seq'); 
         $buyer=39;
-        $items=GrouponRecord::where('p.buyer_id',$buyer)
-                      ->where('g.groupon_status',1)
-                      ->leftJoin('groupon as g','g.id','=','groupon_record.groupon_id')
-                      ->leftJoin('groupon_product as p','p.id','=','g.groupon_product_id')
-                      ->leftJoin('User as u','u.seq','=','groupon_record.user_id')
-                      ->select('u.id','u.nickname','groupon_record.is_owner','g.groupon_status','g.created_at')
-                      ->get();
-        return $this->response4DataTables($items, 1, 1);
-    }
-     //拼豆豆成功用户
-     public function pddSuccessUserList(Request $request){
-        // $buyer=$request->session()->get('buyer.seq'); 
-        $buyer=39;
-        $items=GrouponRecord::where('p.buyer_id',$buyer)
-                      ->where('g.groupon_status',2)
-                      ->leftJoin('groupon as g','g.id','=','groupon_record.groupon_id')
-                      ->leftJoin('groupon_product as p','p.id','=','g.groupon_product_id')
-                      ->leftJoin('User as u','u.seq','=','groupon_record.user_id')
-                      ->select('u.id','u.nickname','groupon_record.is_owner','g.groupon_status','g.created_at','g.updated_at')
-                      ->get();
-        return $this->response4DataTables($items, 1, 1);
-    }
-     //拼豆豆失败用户
-     public function pddFailUserList(Request $request){
-        // $buyer=$request->session()->get('buyer.seq'); 
-        $buyer=39;
-        $items=GrouponRecord::where('p.buyer_id',$buyer)
-                      ->where('g.groupon_status',3)
-                      ->leftJoin('groupon as g','g.id','=','groupon_record.groupon_id')
-                      ->leftJoin('groupon_product as p','p.id','=','g.groupon_product_id')
-                      ->leftJoin('User as u','u.seq','=','groupon_record.user_id')
-                      ->select('u.id','u.nickname','groupon_record.is_owner','g.groupon_status','g.created_at','g.updated_at')
-                      ->get();
-        return $this->response4DataTables($items, 1, 1);
+        $input=Input::only('type');
+        $message = array(
+            "required" => ":attribute ".trans('common.verification.cannotEmpty'),
+        );
+        $validator = Validator::make($input, [
+            'type'              => 'required|in:ing,success,fail',
+        ],$message);
+        if ($validator->fails()) {
+            $message = $validator->errors()->first();
+            return $this->responseBadRequest($message);
+        } 
+        $type=$request->input('type');
+        if($type == 'ing'){
+                $items=GrouponRecord::where('p.buyer_id',$buyer)
+                ->where('g.groupon_status',1)
+                ->leftJoin('groupon as g','g.id','=','groupon_record.groupon_id')
+                ->leftJoin('groupon_product as p','p.id','=','g.groupon_product_id')
+                ->leftJoin('User as u','u.seq','=','groupon_record.user_id')
+                ->select('u.id','u.nickname','groupon_record.is_owner','g.groupon_status','g.created_at')
+                ->get();
+        }
+        if($type == 'success'){
+                $items=GrouponRecord::where('p.buyer_id',$buyer)
+                ->where('g.groupon_status',2)
+                ->leftJoin('groupon as g','g.id','=','groupon_record.groupon_id')
+                ->leftJoin('groupon_product as p','p.id','=','g.groupon_product_id')
+                ->leftJoin('User as u','u.seq','=','groupon_record.user_id')
+                ->select('u.id','u.nickname','groupon_record.is_owner','g.groupon_status','g.created_at','g.updated_at')
+                ->get();
+        }
+        if($type == 'fail'){
+                $items=GrouponRecord::where('p.buyer_id',$buyer)
+                ->where('g.groupon_status',3)
+                ->leftJoin('groupon as g','g.id','=','groupon_record.groupon_id')
+                ->leftJoin('groupon_product as p','p.id','=','g.groupon_product_id')
+                ->leftJoin('User as u','u.seq','=','groupon_record.user_id')
+                ->select('u.id','u.nickname','groupon_record.is_owner','g.groupon_status','g.created_at','g.updated_at')
+                ->get();
+        }
+        return $this->responseOk('',$items);
     }
     //领取优惠券用户
     public function couponUserList(Request $request){
