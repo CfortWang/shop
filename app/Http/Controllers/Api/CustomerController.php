@@ -107,8 +107,8 @@ class CustomerController extends Controller
         $veriSeq=UserScanLog::where('buyer',$buyer)
                             ->where('user',$seq)
                             ->select('created_at') 
-                            // ->limit($limit)
-                            // ->offset(($page-1)*$limit) 
+                            ->limit($limit)
+                            ->offset(($page-1)*$limit) 
                             ->get()->toArray();
         if(empty($veriSeq)){
             return $this->responseBadRequest('seq is error');  
