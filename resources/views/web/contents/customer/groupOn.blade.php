@@ -84,7 +84,6 @@
                 page: page
             },
             success: function (res) {
-                console.log(type)
                 $(".table-content").empty()
                 if (type == 'ing') {
                     var selected = $(".pdd-ing-table .table-content")
@@ -96,7 +95,6 @@
                     var selected = $(".pdd-fail-table .table-content")
                 }
                 let resData = res.data.data
-                console.log(resData)
                 let count = res.data.count
                 pageCount = Math.ceil(count / limit)
                 if (type == 'ing') {
@@ -125,7 +123,11 @@
                     let joinTimeHours = resData[i].created_at.split(' ')[1]
 
                     if (type == 'success') {
-                        let couponUse = resData[i].paid_status
+                        if (resData[i].paid_status == 2) {
+                            var couponUse = "已使用"
+                        } else {
+                            var couponUse = "未使用"
+                        }
                         let couponID = resData[i].use_code
                         let successTimeYears = resData[i].updated_at.split(' ')[0]
                         let successTimeHours = resData[i].updated_at.split(' ')[1]
