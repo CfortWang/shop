@@ -28,6 +28,7 @@ Route::group(['namespace' => 'Web'], function() {
         //customer 我的客户
         Route::group(['prefix'  => 'customer'], function() {
             Route::get('/scanned',                       'CustomerController@scannedList')->name("scanned");
+            Route::get('/scanned/details',                       'CustomerController@scanDetails');
             Route::get('/{seq}/scannedDetai',            'CustomerController@scannedDetail');
             Route::get('/groupon',                       'CustomerController@grouponList');
             Route::get('/coupon',                        'CustomerController@couponList');
