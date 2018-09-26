@@ -211,13 +211,22 @@ class CustomerController extends Controller
         // $buyer=$request->session()->get('buyer.seq');
         $buyer=1;
         // $user=$request->input('user');
-        $limit = $request->input('limit',20);
+        $limit = $request->input('limit',10);
         $page = $request->input('page',1);
+        $count  = DB::table('ShopEventCoupon')
+                ->where('buyer',$buyer)
+                ->where('user','>',0)
+                ->select(DB::raw('count(*) as user_count, status,user,created_at'))
+                ->groupBy('user')
+                ->get();
+        $count=count($count);
         $items  = DB::table('ShopEventCoupon')
                      ->where('buyer',$buyer)
                      ->where('user','>',0)
                      ->select(DB::raw('count(*) as user_count, status,user,created_at'))
                      ->groupBy('user')
+                     ->limit($limit)
+                     ->offset(($page-1)*$limit) 
                      ->get();
         foreach($items as $k=>$v){
             $user=User::where('seq',$v->user)->select('nickname','id')->first();
@@ -242,7 +251,9 @@ class CustomerController extends Controller
             }
             $newdata[]=$data;
         }
-        return $this->responseOK('',$newdata);
+        $dataArray['count']=$count;
+        $dataArray['data']=$newdata;
+        return $this->responseOK('',$dataArray);
     }
     //领取优惠券详细列表
     public function couponDetailUserList(Request $request){
