@@ -102,9 +102,9 @@ class CustomerController extends Controller
         
         $veriSeq=UserScanLog::where('buyer',$buyer)
                             ->where('user',$seq)
-                            // ->select('created_at') 
-                            // ->limit($limit)
-                            // ->offset(($page-1)*$limit) 
+                            ->select('created_at') 
+                            ->limit($limit)
+                            ->offset(($page-1)*$limit) 
                             ->get()->toArray();
         $count=count($veriSeq);
         if(empty($veriSeq)){
