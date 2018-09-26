@@ -276,14 +276,36 @@ class CustomerController extends Controller
         $user=$request->input('user');
         $limit = $request->input('limit',20);
         $page = $request->input('page',1);
+        $count=ShopEventCoupon::where('ShopEventCoupon.buyer',$buyer)
+        ->where('user',$user)
+        ->leftJoin('ShopGift as g','g.seq','=','ShopEventCoupon.shop_gift')
+        ->select('g.name','ShopEventCoupon.created_at','ShopEventCoupon.status',
+        'ShopEventCoupon.used_at')
+        ->get();
+        $count=count($count);
         $items=ShopEventCoupon::where('ShopEventCoupon.buyer',$buyer)
                             ->where('user',$user)
                             ->leftJoin('ShopGift as g','g.seq','=','ShopEventCoupon.shop_gift')
-                            ->select('g.name','ShopEventCoupon.created_at','ShopEventCoupon.status','ShopEventCoupon.used_at',
-                            'ShopEventCoupon.used_at','ShopEventCoupon.status')
+                            ->select('g.name','ShopEventCoupon.created_at','ShopEventCoupon.status',
+                            'ShopEventCoupon.used_at')
                             ->limit($limit)
                             ->offset(($page-1)*$limit) 
                             ->get();
-        return $this->responseOK('',$items);
+        foreach($items as $k=>$v){
+            $data['name']=$v['name'];
+            $data['created_at']=$v['created_at'];
+            $data['use_code']=rand(1000,9999);
+            if($v['stauts']=='used_at'){
+                $data['status']="已使用";
+                $data['used_at']=$v['used_at'];
+            }else{
+                $data['status']="未使用";
+                $data['used_at']="";
+            }
+            $newdata[]=$data;
+        }
+        $dataArray['count']=$count;
+        $dataArray['data']=$newdata;
+        return $this->responseOK('',$dataArray);
     }
 }
