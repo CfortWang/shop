@@ -143,39 +143,68 @@ class CustomerController extends Controller
         } 
         $type=$request->input('type');
         if($type == 'ing'){
-                $items=GrouponRecord::where('p.buyer_id',$buyer)
-                ->where('g.groupon_status',1)
+            $count=GrouponRecord::where('p.buyer_id',$buyer)
+            ->where('g.groupon_status',1)
+            ->leftJoin('groupon as g','g.id','=','groupon_record.groupon_id')
+            ->leftJoin('groupon_product as p','p.id','=','g.groupon_product_id')
+            ->leftJoin('User as u','u.seq','=','groupon_record.user_id')
+            ->select('u.id as phone','u.nickname','groupon_record.is_owner','g.created_at')
+            ->get();
+            $count=count($count);
+            $items=GrouponRecord::where('p.buyer_id',$buyer)
+            ->where('g.groupon_status',1)
+            ->leftJoin('groupon as g','g.id','=','groupon_record.groupon_id')
+            ->leftJoin('groupon_product as p','p.id','=','g.groupon_product_id')
+            ->leftJoin('User as u','u.seq','=','groupon_record.user_id')
+            ->select('u.id as phone','u.nickname','groupon_record.is_owner','g.created_at')
+            ->limit($limit)
+            ->offset(($page-1)*$limit) 
+            ->get();
+             
+        }
+        if($type == 'success'){
+                $count=GrouponRecord::where('p.buyer_id',$buyer)
+                ->where('g.groupon_status',2)
                 ->leftJoin('groupon as g','g.id','=','groupon_record.groupon_id')
                 ->leftJoin('groupon_product as p','p.id','=','g.groupon_product_id')
                 ->leftJoin('User as u','u.seq','=','groupon_record.user_id')
-                ->select('u.id as phone','u.phone_num','u.nickname','groupon_record.is_owner','g.groupon_status','g.created_at','u.seq')
-                ->limit($limit)
-                ->offset(($page-1)*$limit) 
+                ->select('u.id as phone','u.nickname','groupon_record.is_owner',
+                'groupon_record.use_code', 'groupon_record.paid_status','g.created_at','g.updated_at')
                 ->get();
-        }
-        if($type == 'success'){
+                $count=count($count);
                 $items=GrouponRecord::where('p.buyer_id',$buyer)
                 ->where('g.groupon_status',2)
                 ->leftJoin('groupon as g','g.id','=','groupon_record.groupon_id')
                 ->leftJoin('groupon_product as p','p.id','=','g.groupon_product_id')
                 ->leftJoin('User as u','u.seq','=','groupon_record.user_id')
-                ->select('u.id as phone','u.nickname','groupon_record.is_owner','g.groupon_status','g.created_at','g.updated_at')
+                ->select('u.id as phone','u.nickname','groupon_record.is_owner',
+                'groupon_record.use_code', 'groupon_record.paid_status','g.created_at','g.updated_at')
                 ->limit($limit)
                 ->offset(($page-1)*$limit) 
                 ->get();
         }
         if($type == 'fail'){
+                $count=GrouponRecord::where('p.buyer_id',$buyer)
+                ->where('g.groupon_status',3)
+                ->leftJoin('groupon as g','g.id','=','groupon_record.groupon_id')
+                ->leftJoin('groupon_product as p','p.id','=','g.groupon_product_id')
+                ->leftJoin('User as u','u.seq','=','groupon_record.user_id')
+                ->select('u.id','u.nickname','groupon_record.is_owner','g.created_at','g.expried_at')
+                ->get();
+                $count=count($count);
                 $items=GrouponRecord::where('p.buyer_id',$buyer)
                 ->where('g.groupon_status',3)
                 ->leftJoin('groupon as g','g.id','=','groupon_record.groupon_id')
                 ->leftJoin('groupon_product as p','p.id','=','g.groupon_product_id')
                 ->leftJoin('User as u','u.seq','=','groupon_record.user_id')
-                ->select('u.id as phone','u.nickname','groupon_record.is_owner','g.groupon_status','g.created_at','g.updated_at')
+                ->select('u.id','u.nickname','groupon_record.is_owner','g.created_at','g.expried_at')
                 ->limit($limit)
                 ->offset(($page-1)*$limit) 
                 ->get();
         }
-        return $this->responseOk('',$items);
+        $newdata['count']=$count;
+        $newdata['data']=$items;
+        return $this->responseOk('', $newdata);
     }
     //领取优惠券详细列表
     public function couponDetailUserList(Request $request){
