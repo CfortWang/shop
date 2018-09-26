@@ -75,10 +75,10 @@
                                 <a href="/customer/scanned">
                                     <span>@lang('app.customer.scanned')</span>
                                 </a>
-                                <a href="customer/groupon">
+                                <a href="/customer/groupon">
                                     <span>@lang('app.customer.groupon')</span>
                                 </a>
-                                <a href="customer/coupon">
+                                <a href="/customer/coupon">
                                     <span>@lang('app.customer.coupon')</span>
                                 </a>
                             </li>
@@ -91,13 +91,13 @@
                         </a>
                         <ul class="tpl-left-nav-sub-menu">
                             <li>
-                                <a href="event/groupon">
+                                <a href="/event/groupon">
                                     <span>@lang('app.event.groupon')</span>
                                 </a>
-                                <a href="event/coupon">
+                                <a href="/event/coupon">
                                     <span>@lang('app.event.coupon')</span>
                                 </a>
-                                <a href="event/message">
+                                <a href="/event/message">
                                     <span>@lang('app.event.message')</span>
                                 </a>
                             </li>

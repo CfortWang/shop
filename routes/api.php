@@ -56,23 +56,30 @@ Route::group(['namespace' => 'Api'], function() {
     });
     //Package
     Route::group(['prefix' => 'packages'], function() {
-    Route::get('package_sales',                   'PackagesController@packageSales');
-    Route::get('buyer_request',                   'PackagesController@buyerRequest');
-    Route::get('package_sales/{seq}/detail',      'PackagesController@salesDetail');
-    Route::get('package_sales/{seq}/item',        'PackagesController@salesItem');
-    Route::post('refund/{seq}',                    'PackagesController@refundSales');
-    Route::patch('package_sales/{seq}/received',  'PackagesController@received');
-    Route::get('package_sales/{seq}/item_detail', 'PackagesController@itemDetail');
-    Route::post('buying_create',                  'PackagesController@buyingCreate');
-    Route::get('my_package',                      'PackagesController@myPackageList');
-    Route::get('my_package/codes/{seq}',          'PackagesController@codeList');
-    Route::post('my_package/codes/activation',    'PackagesController@codeActivation');
-});
-  // Account Info
-  Route::group(['prefix'  => 'account'], function() {
-    Route::get('detail',                      'AccountInfoController@detail'); // 账号信息
-    Route::get('scoreList',                   'AccountInfoController@scoreList'); // 积分列表
-    Route::post('modify',                   'AccountInfoController@modify');
-    Route::get('bank-list',                 'AccountInfoController@bankList');
-});
+        Route::get('package_sales',                   'PackagesController@packageSales');
+        Route::get('buyer_request',                   'PackagesController@buyerRequest');
+        Route::get('package_sales/{seq}/detail',      'PackagesController@salesDetail');
+        Route::get('package_sales/{seq}/item',        'PackagesController@salesItem');
+        Route::post('refund/{seq}',                    'PackagesController@refundSales');
+        Route::patch('package_sales/{seq}/received',  'PackagesController@received');
+        Route::get('package_sales/{seq}/item_detail', 'PackagesController@itemDetail');
+        Route::post('buying_create',                  'PackagesController@buyingCreate');
+        Route::get('my_package',                      'PackagesController@myPackageList');
+        Route::get('my_package/codes/{seq}',          'PackagesController@codeList');
+        Route::post('my_package/codes/activation',    'PackagesController@codeActivation');
+    });
+    // Account Info
+    Route::group(['prefix'  => 'account'], function() {
+        Route::get('detail',                      'AccountInfoController@detail'); // 账号信息
+        Route::get('scoreList',                   'AccountInfoController@scoreList'); // 积分列表
+        Route::post('modify',                   'AccountInfoController@modify');
+        Route::get('bank-list',                 'AccountInfoController@bankList');
+    });
+
+    Route::group(['prefix'  => 'event'], function() {
+        Route::get('groupon',                      'GroupOnController@list'); // 账号信息
+        Route::post('groupon',                   'GroupOnController@create');
+    });
+
+
 });

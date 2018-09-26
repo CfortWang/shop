@@ -29,9 +29,15 @@ Route::group(['namespace' => 'Web'], function() {
         Route::group(['prefix'  => 'customer'], function() {
             Route::get('/scanned',                       'CustomerController@scannedList')->name("scanned");
             Route::get('/scanned/details',                       'CustomerController@scanDetails');
-            Route::get('/{seq}/scannedDetai',            'CustomerController@scannedDetail');
-            Route::get('/groupon',                       'CustomerController@grouponList');
-            Route::get('/coupon',                        'CustomerController@couponList');
+            Route::get('/groupon',                       'CustomerController@groupOn');
+            Route::get('/groupon/details',                       'CustomerController@groupDetails');
+            Route::get('/coupon',                       'CustomerController@coupon');
+            Route::get('/coupon/details',                       'CustomerController@couponDetails');
+        });
+
+        //
+        Route::group(['prefix'  => 'event'], function() {
+            Route::get('/groupon',                       'EventController@groupon');
         });
     });
 });
