@@ -111,7 +111,7 @@ class CustomerController extends Controller
         }
         $newData['list']=$items;
         $newData['count']=$count;
-        return $this->responseOk($newData);
+        return $this->responseOk('',$newData);
     }
     //拼豆豆中用户
     public function pddIngUserList(Request $request){
