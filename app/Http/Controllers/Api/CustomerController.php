@@ -99,14 +99,17 @@ class CustomerController extends Controller
             return $this->responseBadRequest($message);
         } 
         $seq=$request->input('seq');
-        
+        $count=UserScanLog::where('buyer',$buyer)
+        ->where('user',$seq)
+        ->select('created_at') 
+        ->get()->toArray();
+        $count=count($count);
         $veriSeq=UserScanLog::where('buyer',$buyer)
                             ->where('user',$seq)
                             ->select('created_at') 
-                            ->limit($limit)
-                            ->offset(($page-1)*$limit) 
+                            // ->limit($limit)
+                            // ->offset(($page-1)*$limit) 
                             ->get()->toArray();
-        $count=count($veriSeq);
         if(empty($veriSeq)){
             return $this->responseBadRequest('seq is error');  
         }
