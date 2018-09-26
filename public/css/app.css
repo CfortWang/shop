@@ -612,6 +612,7 @@ ul.tpl-dropdown-content li>a.tpl-dropdown-content-message:last-child {
     font-weight: 300;
     height: 35px;
     line-height: 35px;
+    font-size: 16px;
 }
 .user-table .date, .user-table .table-td-date{
     display: inline-block;
