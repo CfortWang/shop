@@ -206,6 +206,44 @@ class CustomerController extends Controller
         $newdata['data']=$items;
         return $this->responseOk('', $newdata);
     }
+     //领取优惠券用户列表
+     public function couponUserList(Request $request){
+        // $buyer=$request->session()->get('buyer.seq');
+        $buyer=1;
+        // $user=$request->input('user');
+        $limit = $request->input('limit',20);
+        $page = $request->input('page',1);
+        $items  = DB::table('ShopEventCoupon')
+                     ->where('buyer',$buyer)
+                     ->where('user','>',0)
+                     ->select(DB::raw('count(*) as user_count, status,user,created_at'))
+                     ->groupBy('user')
+                     ->get();
+        foreach($items as $k=>$v){
+            $user=User::where('seq',$v->user)->select('nickname','id')->first();
+            $data['user']=$v->user;
+            $data['id']=$user['id'];
+            $data['nickname']=$user['nickname'];
+            $data['user_count']=$v->user_count;
+            if($v->user_count > 1){
+               $data['status']="";
+               $data['use_code']="";
+               $data['created_at']="";
+               $data['used_at']="";
+            }else{
+                if($v->status=='used'){
+                    $data['status']="已使用"; 
+                }else{
+                    $data['status']="未使用"; 
+                }
+                $data['use_code']=rand(1000,9999);
+                $data['created_at']=$v->created_at;
+                $data['used_at']="";
+            }
+            $newdata[]=$data;
+        }
+        return $this->responseOK('',$newdata);
+    }
     //领取优惠券详细列表
     public function couponDetailUserList(Request $request){
         // $buyer=$request->session()->get('buyer.seq');
