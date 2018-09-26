@@ -48,9 +48,10 @@ class CustomerController extends Controller
             ->offset(($page-1)*$limit) 
             ->get();
         foreach($items as $k=>$v){
-            $user=User::where('seq',$v->user)->select('nickname','gender','birthday')->first();
+            $user=User::where('seq',$v->user)->select('nickname','gender','birthday','id')->first();
             $firstTime=UserScanLog::where('user',$v->user)->where('buyer',$buyer)->select('created_at')->orderBy('created_at','asc')->first();
             $endTime=UserScanLog::where('user',$v->user)->where('buyer',$buyer)->select('created_at')->orderBy('created_at','desc')->first();
+            $list['id']= $user['id'];;
             $list['nickname']=$user['nickname'];
             $list['gender']=$user['gender'];
             $list['age']=Carbon::parse($user['birthday'])->diffInYears();
