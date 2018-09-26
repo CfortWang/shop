@@ -127,7 +127,7 @@ class CustomerController extends Controller
     //拼豆豆中用户
     public function pddUserList(Request $request){
         // $buyer=$request->session()->get('buyer.seq'); 
-        $buyer=39;
+        $buyer=1;
         $input=Input::only('type');
         $message = array(
             "required" => ":attribute ".trans('common.verification.cannotEmpty'),
