@@ -54,6 +54,12 @@ class CustomerController extends Controller
             $list['id']= $user['id'];;
             $list['nickname']=$user['nickname'];
             $list['gender']=$user['gender'];
+            if( $list['gender']=='male'){
+                $list['gender']=='男';
+            }
+            if( $list['gender']=='female'){
+                $list['gender']=='女';
+            }
             $list['age']=Carbon::parse($user['birthday'])->diffInYears();
             $list['rate']= rand(1,9)/10;;
             $list['scannedCount']=$v->scannedCount;
