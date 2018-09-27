@@ -206,9 +206,60 @@ class CustomerController extends Controller
         $newdata['data']=$items;
         return $this->responseOk('', $newdata);
     }
+     //领取优惠券用户列表
+     public function couponUserList(Request $request){
+        // $buyer=$request->session()->get('buyer.seq');
+        $buyer=1;
+        // $user=$request->input('user');
+        $limit = $request->input('limit',10);
+        $page = $request->input('page',1);
+        $count  = DB::table('ShopEventCoupon')
+                ->where('buyer',$buyer)
+                ->where('user','>',0)
+                ->select(DB::raw('count(*) as user_count, status,user,created_at'))
+                ->groupBy('user')
+                ->get();
+        $count=count($count);
+        $items  = DB::table('ShopEventCoupon')
+                     ->where('buyer',$buyer)
+                     ->where('user','>',0)
+                     ->select(DB::raw('count(*) as user_count, status,user,created_at'))
+                     ->groupBy('user')
+                     ->limit($limit)
+                     ->offset(($page-1)*$limit) 
+                     ->get();
+        foreach($items as $k=>$v){
+            $user=User::where('seq',$v->user)->select('nickname','id')->first();
+            $data['user']=$v->user;
+            $data['id']=$user['id'];
+            $data['nickname']=$user['nickname'];
+            $data['user_count']=$v->user_count;
+            if($v->user_count > 1){
+               $data['status']="";
+               $data['use_code']="";
+               $data['created_at']="";
+               $data['used_at']="";
+            }else{
+                if($v->status=='used'){
+                    $data['status']="已使用"; 
+                }else{
+                    $data['status']="未使用"; 
+                }
+                $data['use_code']=rand(1000,9999);
+                $data['created_at']=Carbon::parse($v->created_at)->toDateTimeString();
+                $data['used_at']="";
+            }
+            $newdata[]=$data;
+        }
+        $dataArray['count']=$count;
+        $dataArray['data']=$newdata;
+        return $this->responseOK('',$dataArray);
+    }
     //领取优惠券详细列表
     public function couponDetailUserList(Request $request){
         // $buyer=$request->session()->get('buyer.seq');
+        $limit = $request->input('limit',10);
+        $page = $request->input('page',1);
         $buyer=1;
         $input=Input::only('user');
         $message = array(
@@ -225,14 +276,36 @@ class CustomerController extends Controller
         $user=$request->input('user');
         $limit = $request->input('limit',20);
         $page = $request->input('page',1);
+        $count=ShopEventCoupon::where('ShopEventCoupon.buyer',$buyer)
+        ->where('user',$user)
+        ->leftJoin('ShopGift as g','g.seq','=','ShopEventCoupon.shop_gift')
+        ->select('g.name','ShopEventCoupon.created_at','ShopEventCoupon.status',
+        'ShopEventCoupon.used_at')
+        ->get();
+        $count=count($count);
         $items=ShopEventCoupon::where('ShopEventCoupon.buyer',$buyer)
                             ->where('user',$user)
                             ->leftJoin('ShopGift as g','g.seq','=','ShopEventCoupon.shop_gift')
                             ->select('g.name','ShopEventCoupon.created_at','ShopEventCoupon.status',
-                            'ShopEventCoupon.used_at','ShopEventCoupon.status')
+                            'ShopEventCoupon.used_at')
                             ->limit($limit)
                             ->offset(($page-1)*$limit) 
                             ->get();
-        return $this->responseOK('',$items);
+        foreach($items as $k=>$v){
+            $data['name']=$v['name'];
+            $data['created_at']=Carbon::parse($v['created_at'])->toDateTimeString();
+            $data['use_code']=rand(1000,9999);
+            if($v['stauts']=='used_at'){
+                $data['status']="已使用";
+                $data['used_at']=$v['used_at'];
+            }else{
+                $data['status']="未使用";
+                $data['used_at']="";
+            }
+            $newdata[]=$data;
+        }
+        $dataArray['count']=$count;
+        $dataArray['data']=$newdata;
+        return $this->responseOK('',$dataArray);
     }
 }

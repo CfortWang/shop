@@ -137,7 +137,6 @@
 
     $(".table-content").on('click', '.table-tr .see-more', function () {
         let seq = $(this).parent().attr('data-seq')
-        console.log(typeof(seq))
         let detailLimit = 8
         let detailPage = 1
         window.location.href = '/customer/scanned/details?seq=' + seq + '&limit=' + detailLimit + '&page=' + detailPage
