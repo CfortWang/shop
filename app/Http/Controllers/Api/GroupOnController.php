@@ -23,12 +23,21 @@ class GroupOnController extends Controller
         $this->buyer_id = 1;
     }
 
-    public function list()
+    public function list(Request $request)
     {
         $buyer_id = $this->buyer_id;
-        $product = GrouponProduct::where('buyer_id',$buyer_id)
-            ->select('id','price','discounted_price','join_number','product_status','effective_day')
-            ->get();
+        
+        $title = $request->input('keyword');
+        if($title){
+            $product = GrouponProduct::where('buyer_id',$buyer_id)
+                ->where('title','LIKE','%'.$title.'%')
+                ->select('id','title','price','discounted_price','join_number','product_status','effective_day')
+                ->get();
+        }else{
+            $product = GrouponProduct::where('buyer_id',$buyer_id)
+                ->select('id','title','price','discounted_price','join_number','product_status','effective_day')
+                ->get();
+        }
         foreach ($product as $key => $value) {
             $product[$key]['unused'] = 0;
             $product[$key]['used'] = 0;
