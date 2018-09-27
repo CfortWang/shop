@@ -93,8 +93,8 @@
                     let couponName = resData[i].name
                     let couponUse = resData[i].status
                     let couponID = resData[i].use_code
-                    let getTimeYears = resData[i].created_at.date.split(' ')[0]
-                    let getTimeHours = resData[i].created_at.date.split(' ')[1]
+                    let getTimeYears = resData[i].created_at.split(' ')[0]
+                    let getTimeHours = resData[i].created_at.split(' ')[1]
                     let useTimeYears = resData[i].used_at.split(' ')[0]
                     let useTimeHours = resData[i].used_at.split(' ')[1]
                     $(".table-content .table-tr:eq("+ i +") .table-td-name").text(couponName)
