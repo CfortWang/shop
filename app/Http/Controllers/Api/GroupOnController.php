@@ -23,12 +23,21 @@ class GroupOnController extends Controller
         $this->buyer_id = 1;
     }
 
-    public function list()
+    public function list(Request $request)
     {
         $buyer_id = $this->buyer_id;
-        $product = GrouponProduct::where('buyer_id',$buyer_id)
-            ->select('id','price','discounted_price','join_number','product_status','effective_day')
-            ->get();
+        
+        $title = $request->input('keyword');
+        if($title){
+            $product = GrouponProduct::where('buyer_id',$buyer_id)
+                ->where('title','LIKE','%'.$title.'%')
+                ->select('id','title','price','discounted_price','join_number','product_status','effective_day')
+                ->get();
+        }else{
+            $product = GrouponProduct::where('buyer_id',$buyer_id)
+                ->select('id','title','price','discounted_price','join_number','product_status','effective_day')
+                ->get();
+        }
         foreach ($product as $key => $value) {
             $product[$key]['unused'] = 0;
             $product[$key]['used'] = 0;
@@ -37,6 +46,7 @@ class GroupOnController extends Controller
                 ->select('a.paid_status','a.groupon_id')
                 ->get();
                 unset($group);
+                $group = [];
                 foreach ($data as $k => $val) {
                     if($val['paid_status']==1){
                         $product[$key]['unused'] = $product[$key]['unused']+1;
@@ -114,5 +124,32 @@ class GroupOnController extends Controller
         // $data['image'] = 'https://s1.ax1x.com/2018/09/26/iMNRat.png';
         // $res = GrouponProduct::create($data);
         return $this->responseOk('',$res);
+    }
+
+    public function status(Request $request)
+    {
+        $buyer_id = $this->buyer_id;
+        $input=Input::only('id','status');
+        $message = [
+            "required" => ":attribute ".trans('common.verification.cannotEmpty'),
+        ];
+        $validator = Validator::make($input, [
+            'id'                => 'required|numeric',
+            'status'                => 'required|in:0,1',
+        ],$message);
+        if ($validator->fails()) {
+            $message = $validator->errors()->first();
+            return $this->responseBadRequest($message);
+        }
+        $id = $input['id'];
+        $status = $input['status'];
+        $product = GrouponProduct::where('id',$id)->where('buyer_id',$buyer_id)->where('product_status',$status)->first();
+        if($product){
+            $product->product_status = intval(!$status);
+            $product->save();
+            return $this->responseOk('',intval(!$status));
+        }else{
+            return $this->responseBadRequest('操作失败');
+        }
     }
 }

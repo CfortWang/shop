@@ -78,7 +78,8 @@ Route::group(['namespace' => 'Api'], function() {
     });
 
     Route::group(['prefix'  => 'event'], function() {
-        Route::get('groupon',                      'GroupOnController@list'); // 账号信息
+        Route::get('groupon',                      'GroupOnController@list'); 
+        Route::put('status',                      'GroupOnController@status'); 
         Route::post('groupon',                   'GroupOnController@create');
     });
 
