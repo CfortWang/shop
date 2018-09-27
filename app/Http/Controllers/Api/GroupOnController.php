@@ -37,6 +37,7 @@ class GroupOnController extends Controller
                 ->select('a.paid_status','a.groupon_id')
                 ->get();
                 unset($group);
+                $group = [];
                 foreach ($data as $k => $val) {
                     if($val['paid_status']==1){
                         $product[$key]['unused'] = $product[$key]['unused']+1;
