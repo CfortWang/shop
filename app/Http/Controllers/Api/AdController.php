@@ -14,6 +14,7 @@ use App\Models\Q35Package;
 use App\Models\Q35Sales;
 use App\Models\ShopImageFile;
 use App\Models\Shop2Q35Package;
+use Illuminate\Support\Carbon;
 
 use App\Helpers\ParamValidationHelper;
 
@@ -24,19 +25,36 @@ class AdController extends Controller
     public function adList(Request $request)
     {
         // $seq = $request->session()->get('buyer.seq');
-        
-        // $offset = $request->start;
-        // $limit = $request->length;
-        $offset = 0;
-        $limit = 10;
-        $seq=10;
+        $input=Input::only('limit','page');
+        $seq=14;
+        $limit = $request->input('limit',10);
+        $page = $request->input('page',1);
         $items = ShopAD::where('buyer',$seq);
+        $count = $items->select('title', 'view_cnt', 'start_date','end_date', 'status', 'seq')
+        ->orderBy('seq','desc')
+        ->get();
+        $count=count($count);
         $items = $items->select('title', 'view_cnt', 'start_date','end_date', 'status', 'seq')
-                ->orderBy('seq','desc')
-                ->offset($offset)
+                ->orderBy('seq','asc')
                 ->limit($limit)
-                ->get();   
-        return $this->responseOK($items);
+                ->offset(($page-1)*$limit) 
+                ->get(); 
+        foreach($items as $k=>$v){
+            $startDate=Carbon::parse($v['start_date'])->toDateTimeString();
+            $startDate=strtotime($startDate);
+            $endDate=Carbon::parse($v['end_date'])->toDateTimeString();
+            $endDate=strtotime($endDate);
+            $day=floor(($endDate-$startDate)/3600/24);
+            $list['title']=$v['title'];
+            $list['view_cnt']=$v['view_cnt'];
+            $list['start_date']=$v['start_date'];
+            $list['day']=$day;
+            $newData[]=$list;
+
+        }
+        $data['count']=$count;
+        $data['data']=$newData;
+        return $this->responseOK('',$data);
     }
     //广告上下架
     public function adtype(Request $request,$seq,$type){
@@ -85,35 +103,41 @@ class AdController extends Controller
         }
         return $this->responseOk('', $item);
     }
-    public function create(Request $request)
+    public function createAd(Request $request)
     {
         $buyer = $request->session()->get('buyer.seq');
         $input = Input::only('title', 'landing_url' , 'ad_image_file','start_date','end_date', 'pkg_list');
+        $message = array(
+            "required" => ":attribute ".trans('common.verification.cannotEmpty'),
+            "integer" => ":attribute ".trans('common.verification.requiredNumber'),
+        );
         $validator = Validator::make($input, [
             'title'           => 'required|string|min:1',
             'ad_image_file'   => 'required|image',
-            'start_date'      => 'required|date',
-            'end_date'        => 'required|date',
-            'landing_url'     => 'required|string',
+            // 'start_date'      => 'required|date',
+            // 'end_date'        => 'required|date',
+            // 'landing_url'     => 'required|string',
             'pkg_list'        => 'nullable'
-        ]);
+        ],$message);
         if ($validator->fails()) {
-            return $this->responseBadRequest('Wrong Request', 401);//error code 400,401
-        }
+            $message = $validator->errors()->first();
+            return $this->responseBadRequest($message);
+        }  
         $title = $request->input('title');
         $landingUrl = $request->input('landing_url');
         $exits = ShopAD::where('buyer', $buyer)->where('title',$title)->first();
         if($exits){
             return $this->responseConflict('already exist title', 401);//error code 409,401
         }
-        $pkgSeqList = $request->input('pkg_list');
-        $pkgSeqList = ParamValidationHelper::isValidSeqListStr($pkgSeqList);
+        // $pkgSeqList = $request->input('pkg_list');
+        // $pkgSeqList = ParamValidationHelper::isValidSeqListStr($pkgSeqList);
         $image = $request->file('ad_image_file');
-        list($imageWidth, $imageHeight) = getimagesize($image);
-        if ($imageWidth !== 1280 || $imageHeight !== 480) {
-            return $this->responseBadRequest('Wrong Image size', 402);//error code 400,402
-        }
-        $adImage = FileHelper::shopADImage($image);
+        // list($imageWidth, $imageHeight) = getimagesize($image);
+        // if ($imageWidth !== 1280 || $imageHeight !== 480) {
+        //     return $this->responseBadRequest('Wrong Image size', 402);//error code 400,402
+        // }
+        $adImage = FileHelper::shopAdImage($image);
+        dd($adImage);
         $adImage = ShopImageFile::create($adImage);
         $shopAd = ShopAD::create([
             'title'            => $input['title'],
@@ -169,6 +193,7 @@ class AdController extends Controller
                 return $this->responseBadRequest('Wrong Image size', 402);//error code 400,402
             }
             $adImage = FileHelper::shopADImage($adImage);
+            dd($adImage);
             $adImage = ShopImageFile::create($adImage);
             $shopAD->shop_image_file = $adImage->seq;
         }else if(!$shopAD->shop_image_file){
