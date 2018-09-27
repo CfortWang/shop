@@ -125,4 +125,31 @@ class GroupOnController extends Controller
         // $res = GrouponProduct::create($data);
         return $this->responseOk('',$res);
     }
+
+    public function status(Request $request)
+    {
+        $buyer_id = $this->buyer_id;
+        $input=Input::only('id','status');
+        $message = [
+            "required" => ":attribute ".trans('common.verification.cannotEmpty'),
+        ];
+        $validator = Validator::make($input, [
+            'id'                => 'required|numeric',
+            'status'                => 'required|in:0,1',
+        ],$message);
+        if ($validator->fails()) {
+            $message = $validator->errors()->first();
+            return $this->responseBadRequest($message);
+        }
+        $id = $input['id'];
+        $status = $input['status'];
+        $product = GrouponProduct::where('id',$id)->where('buyer_id',$buyer_id)->where('product_status',$status)->first();
+        if($product){
+            $product->product_status = intval(!$status);
+            $product->save();
+            return $this->responseOk('',intval(!$status));
+        }else{
+            return $this->responseBadRequest('操作失败');
+        }
+    }
 }
