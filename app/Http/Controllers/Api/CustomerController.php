@@ -246,7 +246,7 @@ class CustomerController extends Controller
                     $data['status']="未使用"; 
                 }
                 $data['use_code']=rand(1000,9999);
-                $data['created_at']=$v->created_at;
+                $data['created_at']=Carbon::parse($v->created_at)->toDateTimeString();
                 $data['used_at']="";
             }
             $newdata[]=$data;
@@ -293,7 +293,7 @@ class CustomerController extends Controller
                             ->get();
         foreach($items as $k=>$v){
             $data['name']=$v['name'];
-            $data['created_at']=$v['created_at'];
+            $data['created_at']=Carbon::parse($v['created_at'])->toDateTimeString();
             $data['use_code']=rand(1000,9999);
             if($v['stauts']=='used_at'){
                 $data['status']="已使用";
