@@ -46,6 +46,7 @@ Route::group(['namespace' => 'Api'], function() {
         Route::post('/adtype/{seq}/{type}',               'AdController@adtype');//广告上下架
         Route::post('/modifyAd/{seq}',              'AdController@modifyAd');//修改广告
         Route::get('/pkgList',            'AdController@pkgList');//喜豆码列表
+        Route::post('/createAd',               'AdController@createAd');
     });
     //shop
     Route::group(['prefix'  => 'shop'], function() {
