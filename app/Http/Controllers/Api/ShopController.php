@@ -4,11 +4,9 @@ namespace App\Http\Controllers\Api;
 
 use Validator;
 use App;
-
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
-
 use App\Helpers\FileHelper;
 use App\Models\Q35Sales;
 use App\Models\Q35Package;
@@ -30,11 +28,19 @@ class ShopController extends Controller
 
     public function info(Request $request){
         $seq = $request->session()->get('buyer.seq');
-        $items = Buyer::find($seq);
-        // $items = Buyer::where('seq',$seq)
-        // ->select('name', 'code', 'branch_name', 'buyer_category', 'phone_num','homepage_url',
-        // 'country','province','city','area','address_detail','description','lat','lng')
-        //         ->first();
+        $buyer=14;
+        $items = Buyer::where('Buyer.seq',$buyer) 
+                    ->leftJoin('ShopImageFile as F','F.seq', '=', 'Buyer.shop_logo_image_file')
+                    ->select('Buyer.name as shop_name','Buyer.phone_num',
+                    'Buyer.open_time','Buyer.close_time','Buyer.province','Buyer.city','Buyer.area','Buyer.address_detail','F.url','Buyer.lat','Buyer.lng')
+                    ->first(); 
+        $data=ShopDetailImage:: where('buyer',$buyer)
+                    ->leftJoin('ShopImageFile as F','F.seq', '=', 'ShopDetailImage.shop_image_file')
+                    ->select('ShopDetailImage.order_num','ShopDetailImage.seq',
+                    'F.url')
+                    ->orderBy('ShopDetailImage.order_num','desc')
+                    ->get(); 
+        $items['detailImage']=$data;
         if(empty($items)){
             return $this->responseNotFound('No data','');
         }
@@ -43,6 +49,7 @@ class ShopController extends Controller
 
     public function category(Request $request){
         $lang = $request->session()->get('bw.locale');
+        $lang="zh";
         $data = ShopCategory::select('seq', 'name_'.$lang.' as name')->orderBy('seq', 'asc')->get();
         return $this->responseOK('Ok',$data);
     }
@@ -51,19 +58,15 @@ class ShopController extends Controller
         $seq = $request->session()->get('buyer.seq');
         $input = Input::only([
             'name',
-            'branch_name',
             'buyer_category',
             'phone_num',
-            'homepage_url',
             'open_time',
             'close_time',
-            'time_remark',
             'country',
             'province',
             'city',
             'area',
             'address_detail',
-            'description',
             'lat',
             'lng',
             'cropped_logo_image',
@@ -76,19 +79,15 @@ class ShopController extends Controller
 
         $validator = Validator::make($input,[
             'name'                   => 'required|string|min:1',
-            'branch_name'            => 'nullable|string|min:1',
             'buyer_category'         => 'nullable|integer|min:1',
             'phone_num'              => 'required|string',
-            'homepage_url'           => 'nullable|string',
             'open_time'              => 'nullable|string',
             'close_time'             => 'nullable|string',
-            'time_remark'            => 'nullable|string',
             'country'                => 'required|integer|min:1',
             'province'               => 'required|integer|min:1',
             'city'                   => 'nullable|integer|min:1',
             'area'                   => 'nullable|integer|min:1',
             'address_detail'         => 'nullable|string',
-            'description'            => 'nullable|string',
             'lat'                    => 'required|numeric',
             'lng'                    => 'required|numeric',
             'cropped_logo_image'     => 'nullable',
@@ -213,48 +212,37 @@ class ShopController extends Controller
 
     public function deleteImage(Request $request)
     {
-        $seq = $request->session()->get('buyer.seq');
+        $buyer = $request->session()->get('buyer.seq');
+        $buyer=14;
         $input = Input::only([
-            'image_type'
+            'image_type',
+            'detailSeq'
         ]);
-
         $validator = Validator::make($input,[
-            'image_type'             => 'required|string|min:1'
+            'image_type'             => 'required|string|min:1',
+            'detailSeq'              => 'nullable'
         ]);
         if ($validator->fails()) {
             return $this->responseBadRequest('parameter is invalid', 401);//error code 400,401
         }
-
-        $Buyer = Buyer::where('seq', $seq)->first();
-
+        $Buyer = Buyer::where('seq', $buyer)->first();
         if (empty($Buyer)){
             return $this->responseNotFound('There is no buyer', 401);//error code 404,401
         }
         $imageType = $input['image_type'];
-        if ($imageType === 'logo') {
+        $detailSeq = $input['detailSeq'];
+        $exitDetailImage=ShopDetailImage::where('seq',$detailSeq)->where('buyer',$buyer)->first();
+        if(empty($exitDetailImage)){
+            return $this->responseNotFound('There is no detailSeq', 401);//error code 404,401
+        }
+        if ($imageType === 'shop_logo') {
             $Buyer->shop_logo_image_file = null;
             $Buyer->save();
-        } else if ($imageType === 'detail1') {
-            ShopDetailImage::where('buyer', $Buyer->seq)
-            ->where('order_num', 1)
+        } else if ($imageType === 'shop_detail') {
+            ShopDetailImage::where('buyer', $buyer)
+            ->where('seq',$input['detailSeq'] )
             ->delete();
-        } else if ($imageType === 'detail2') {
-            ShopDetailImage::where('buyer', $Buyer->seq)
-            ->where('order_num', 2)
-            ->delete();
-        } else if ($imageType === 'detail3') {
-            ShopDetailImage::where('buyer', $Buyer->seq)
-            ->where('order_num', 3)
-            ->delete();
-        } else if ($imageType === 'detail4') {
-            ShopDetailImage::where('buyer', $Buyer->seq)
-            ->where('order_num', 4)
-            ->delete();
-        } else if ($imageType === 'detail5') {
-            ShopDetailImage::where('buyer', $Buyer->seq)
-            ->where('order_num', 5)
-            ->delete();
-        }
+        } 
 
         return $this->responseOK('success','');
     }

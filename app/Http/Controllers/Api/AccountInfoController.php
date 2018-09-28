@@ -17,54 +17,13 @@ use App\Models\PartnerAccount;
 
 class AccountInfoController extends Controller
 {
-   //积分列表
-    public function scoreList(Request $request)
-    {
-        $seq = $request->session()->get('buyer.seq');
-        $offset = $request->start;
-        $limit = $request->length;
-        $searchValue = $request->search['value'];
-        $orderColumnsNo = $request->order[0]['column'];
-        $orderType = $request->order[0]['dir'];
-
-        $columnArray = array('type', 'signed_point', 'remain_point', 'created_at');
-
-        $items = BuyerPoint::where('buyer', $seq);
-        
-        $recordsTotal = $items->count();
-        
-        if (!empty($request->search['value'])) {
-            $items = $items->where(function ($query) use ($searchValue) {
-                $query
-                ->where('type', 'like', '%'.$searchValue.'%')
-                ->orWhere('signed_point', 'like', '%'.$searchValue.'%')
-                ->orWhere('remain_point', 'like', '%'.$searchValue.'%');
-            });
-        }
-
-        $recordsFiltered = $items->count();
-        $items = $items->select(
-                    'type as description',
-                    'signed_point',
-                    'remain_point',
-                    'created_at',
-                    'seq'
-                )
-                ->orderBy($columnArray[$orderColumnsNo], $orderType)
-                ->offset($offset)
-                ->limit($limit)
-                ->get();
-        
-        // $salesPartner = SalesPartner::with('partnerAccount')->where('seq', $buyer->sales_partner)->first();
-        return $this->response4DataTables($items, $recordsTotal, $recordsFiltered);
-    }
-    //账号基本信息
+     //账号基本信息
     public function detail(Request $request)
     {
         // $seq = $request->session()->get('buyer.seq');
-        $seq=11;
-        $AccountInfoDetail= Buyer::where('seq', $seq)
-        // ->join('Bank as B', 'B.seq', '=', 'Buyer.bank')
+        $seq=14;
+        $data= Buyer::where('seq', $seq)
+        // ->join('PartnerAccount as p', 'p.seq', '=', 'Buyer.sales_partner')
         ->select([
             'id',
             'rep_name',
@@ -76,11 +35,48 @@ class AccountInfoController extends Controller
             'sales_partner'
         ])
         ->first();
-        $PartnerID = PartnerAccount::find($AccountInfoDetail->sales_partner);
-        if (empty($AccountInfoDetail)) {
+        $PartnerAccount=PartnerAccount::where('seq',$data->sales_partner)->select('id')->first();
+        $list['rep_name'] =$data['rep_name'];
+        $list['rep_phone_num'] =$data['rep_phone_num'];
+        $list['bank'] =$data['bank'];
+        $list['bank_account'] =$data['bank_account'];
+        $list['bank_account_owner'] =$data['bank_account_owner'];
+        $list['partner_id'] =$PartnerAccount['id'];
+        if (empty($data)) {
             return $this->responseNotFound('There is no buyer.');
         }
-        return $this->responseOK('Success.', [$AccountInfoDetail, $PartnerID]);
+        return $this->responseOK('Success.', $list);
+    }
+    //积分列表
+    public function scoreList(Request $request)
+    {
+        $seq = $request->session()->get('buyer.seq');
+        $seq=14;
+        $limit = $request->input('limit',20);
+        $page = $request->input('page',1);
+        $searchValue = $request->input('search');
+        $items = BuyerPoint::where('buyer', $seq);
+        $count = $items->count();
+        if (!empty( $searchValue)) {
+            $items = $items->where(function ($query) use ($searchValue) {
+                $query
+                ->where('type', 'like', '%'.$searchValue.'%')
+                ->orWhere('signed_point', 'like', '%'.$searchValue.'%')
+                ->orWhere('remain_point', 'like', '%'.$searchValue.'%');
+            });
+        }
+        $items = $items->select(
+                    'type as description',
+                    'signed_point',
+                    'remain_point',
+                    'created_at',
+                    'seq'
+                )
+                ->limit($limit)
+                ->offset(($page-1)*$limit) 
+                ->get();
+        
+        return $this->response4DataTables($items,$count,1);
     }
     public function modify(Request $request){
         $seq = $request->session()->get('buyer.seq');
@@ -106,6 +102,7 @@ class AccountInfoController extends Controller
 
     public function bankList(Request $request){
         $lang = $request->session()->get('bw.locale');
+        $lang="zh";
         $data = Bank::select('seq', 'name_'.$lang.' as name')->where('name_'.$lang,'!=',null)->orderBy('seq', 'asc')->get();
         return $this->responseOk('',$data);
     }
