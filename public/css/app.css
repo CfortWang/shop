@@ -877,6 +877,7 @@ input:-moz-placeholder {
 }
 #submit .tpl-portlet{
     padding: 40px 20px;
+    margin-bottom: 40px;
 }
 .form-title{
     font-family: "PingFangSC-Regular";
@@ -887,8 +888,9 @@ input:-moz-placeholder {
 }
 .form-group{
     margin-bottom: 20px;
-    height: 40px;
+    /* height: 40px; */
 }
+
 .form-group label{
     text-align: right;
     padding-right: 30px;
@@ -927,7 +929,6 @@ input:-moz-placeholder {
     width: 20%;
     border: 1px solid #dddddd;
     border-radius:4px;
-    margin-bottom: 20px;
     display: flex;
     -webkit-box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
     box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.075);
@@ -946,7 +947,7 @@ input:-moz-placeholder {
     border-radius:0px 4px 4px 0px;
 }
 
-.remark{
+.image-remark{
     display: inline-block;
     font-size: 14px;
     color: #FF5F57;
@@ -959,6 +960,16 @@ input::-webkit-outer-spin-button,input::-webkit-inner-spin-button{
 }
 input[type="number"]{
     -moz-appearance:textfield;
+}
+.image-group{
+    /* height: 100px; */
+    margin-bottom: 10px;
+}
+.image-group .image-remark{
+    height: 100px;
+    line-height: 100px;
+    vertical-align: top;
+    color: #666666;
 }
 .add-image{
     vertical-align: middle
@@ -976,6 +987,9 @@ input[type="number"]{
     width: 100px;
     height: 100px;
     line-height: 100px;
+    font-size: 16px;
+    margin-right: 10px;
+    margin-bottom: 10px;
 }
 .file input {
     position: absolute;
@@ -992,6 +1006,9 @@ input[type="number"]{
     color: #004974;
     text-decoration: none;
 }
+.product, .list{
+    font-size: 0px;
+}
 .selected-image{
     width: 100px;
     height: 100px;
@@ -999,11 +1016,162 @@ input[type="number"]{
     border: 1px solid #dddddd;
     border-radius: 4px;
     vertical-align: top;
+    position: relative;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+.delete-image{
+    width: 20px;
+    height: 20px;
+    position: absolute;
+    right: 0px;
+    top: 0px;
+    z-index: 100;
+    cursor: pointer;
+    border-radius: 50%;
+    font-size: 0px;
+}
+.delete-image img{
+    width: 100%;
+    height: 100%;
 }
 #image{
     width: 100%;
     height: 100%;
 }
+.image{
+    width: 100%;
+    height: 100%;
+}
+
+.pdd-table-head > div{
+    text-align: left;
+}
+.pdd-table-head{
+    margin: 0px 20px;
+    padding: 8px 30px;
+    font-family: "PingFangSC-Regular";
+    font-weight: 400;
+    color: #666;
+}
+.pdd-table-tr{
+    background: #F8F9FC;
+    padding: 8px 30px;
+    border-radius:3px;
+    margin: 0px 20px;
+    border: 1px solid #D7D7D7;
+}
+.pdd-table-tr .form-control, .package-remark .form-control{
+    height: 40px;
+    width: 90%;
+}
+.sure-add, .pdd-table-tr .operating{
+    text-align: right;
+    height: 40px;
+    padding: 4px 0px;
+}
+.sure-add-btn, .remark-add-btn{
+    font-family: "PingFangSC-Regular";
+    font-size: 14px;
+    font-weight: 400;
+    height:32px;
+    width: 100px;
+    line-height: 30px;
+    border:0.81px solid #57A0FF;
+    color: #57A0FF;
+    border-radius:3px;
+    text-align: center;
+    display: inline-block;
+    cursor: pointer;
+}
+.remark-title{
+    font-family: "PingFangSC-Regular";
+    font-weight: 400;
+    margin-left: 20px;
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+.package-remark{
+    padding-left: 70px;
+}
+.remark-add{
+    text-align: left;
+    height: 40px;
+    padding: 4px 0px;
+}
+.package-info{
+    font-size: 16px;
+    font-family: "PingFangSC-Light";
+    font-weight: 300;
+    color: #333;
+    height: 40px;
+    line-height: 40px;
+}
+
+.pdd-table-tr .operating > div{
+    height: 32px;
+    width: 50px;
+    line-height: 30px;
+    border: 0.81px solid #57A0FF;
+    color: #57A0FF;
+    border-radius: 3px;
+    text-align: center;
+    display: inline-block;
+    cursor: pointer;
+    font-family: "PingFangSC-Regular";
+    font-size: 14px;
+    font-weight: 400;
+}
+.pdd-table-tr .operating .delete{
+    color: #999999;
+    border: 0.81px solid #dddddd;
+    margin-left: 10px;
+}
+.pdd-table-tr .operating .save{
+    display: none;
+}
+.package-obj{
+    display: none;
+}
+
+.package-data .form-control, .remark-data .form-control{
+    display: none;
+}
+.remark-tr{
+    border: none;
+    background: #fff;
+    padding: 0px;
+    padding:5px 0px 5px 50px;
+}
+.remark-tr .operating{
+    text-align: left;
+    margin-left: -32px;
+}
+
+.dividing{
+    margin: 0px 20px;
+    height: 0px;
+    border-top: 1px solid #dddddd;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
