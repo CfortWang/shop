@@ -38,6 +38,9 @@ Route::group(['namespace' => 'Web'], function() {
         //
         Route::group(['prefix'  => 'event'], function() {
             Route::get('/groupon',                       'EventController@groupon');
+            Route::get('/groupon/create',                       'EventController@createGroup');
+            Route::get('/coupon',                       'EventController@coupon');
+            Route::get('/coupon/create',                       'EventController@createCoupon');
         });
     });
 });

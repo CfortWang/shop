@@ -15,10 +15,27 @@ class EventController extends Controller
   {
   }
 
-  public function groupon()
-  {
+  public function groupon() {
     return view('web.contents.event.groupon',[
-        'title' => 'Home page',
+        'title' => '拼豆豆',
+      ]);
+  }
+
+  public function createGroup() {
+    return view('web.contents.event.createGroup',[
+        'title' => '新建拼豆豆',
+      ]);
+  }
+
+  public function coupon() {
+    return view('web.contents.event.coupon',[
+        'title' => '优惠券',
+      ]);
+  }
+
+  public function createCoupon() {
+    return view('web.contents.event.createCoupon',[
+        'title' => '新建优惠券',
       ]);
   }
 
