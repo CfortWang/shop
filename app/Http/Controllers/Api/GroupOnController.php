@@ -166,4 +166,11 @@ class GroupOnController extends Controller
         $image = FileHelper::groupOnImage($input['file']);
         return $this->responseOk('',$image);
     }
+
+    public function moveFile()
+    {
+        $url = 'beta-media.beanpop.cn/temp/shop/groupon/2b6a1cdb30e0bc8060728166aeb227fd.png';
+        
+        $path = 
+    }
 }
