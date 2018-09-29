@@ -182,37 +182,37 @@
                                 </div>
                                 <div class="section-time-weekends">
                                     <div class="weekends-day">
-                                        <input type="checkbox" id="weekendCheckbox1" value="1" hidden name="weekend-checkbox">
+                                        <input type="checkbox" id="weekendCheckbox1" value="1" hidden name="weekend-checkbox[]">
                                         <label for="weekendCheckbox1" class="weekend-checkbox"></label>
                                         <span>周一</span>
                                     </div>
                                     <div class="weekends-day">
-                                        <input type="checkbox" id="weekendCheckbox2" value="2" hidden name="weekend-checkbox">
+                                        <input type="checkbox" id="weekendCheckbox2" value="2" hidden name="weekend-checkbox[]">
                                         <label for="weekendCheckbox2" class="weekend-checkbox"></label>
                                         <span>周二</span>
                                     </div>
                                     <div class="weekends-day">
-                                        <input type="checkbox" id="weekendCheckbox3" value="3" hidden name="weekend-checkbox">
+                                        <input type="checkbox" id="weekendCheckbox3" value="3" hidden name="weekend-checkbox[]">
                                         <label for="weekendCheckbox3" class="weekend-checkbox"></label>
                                         <span>周三</span>
                                     </div>
                                     <div class="weekends-day">
-                                        <input type="checkbox" id="weekendCheckbox4" value="4" hidden name="weekend-checkbox">
+                                        <input type="checkbox" id="weekendCheckbox4" value="4" hidden name="weekend-checkbox[]">
                                         <label for="weekendCheckbox4" class="weekend-checkbox"></label>
                                         <span>周四</span>
                                     </div>
                                     <div class="weekends-day">
-                                        <input type="checkbox" id="weekendCheckbox5" value="5" hidden name="weekend-checkbox">
+                                        <input type="checkbox" id="weekendCheckbox5" value="5" hidden name="weekend-checkbox[]">
                                         <label for="weekendCheckbox5" class="weekend-checkbox"></label>
                                         <span>周五</span>
                                     </div>
                                     <div class="weekends-day">
-                                        <input type="checkbox" id="weekendCheckbox6" value="6" hidden name="weekend-checkbox">
+                                        <input type="checkbox" id="weekendCheckbox6" value="6" hidden name="weekend-checkbox[]">
                                         <label for="weekendCheckbox6" class="weekend-checkbox"></label>
                                         <span>周末</span>
                                     </div>
                                     <div class="weekends-day">
-                                        <input type="checkbox" id="weekendCheckbox7" value="7" hidden name="weekend-checkbox" onclick="getCheckVal()">
+                                        <input type="checkbox" id="weekendCheckbox7" value="7" hidden name="weekend-checkbox[]" onclick="getCheckVal()">
                                         <label for="weekendCheckbox7" class="weekend-checkbox"></label>
                                         <span>节假日</span>
                                     </div>
@@ -389,9 +389,6 @@ $(".effective-days").blur(function () {
     }
 })
 
-var productUrlArr = []
-var listUrlArr = []
-
 function selectImage(file, selector) {
     if (!file.files || !file.files[0]) {
         return;
@@ -399,14 +396,12 @@ function selectImage(file, selector) {
     var reader = new FileReader();
     reader.onload = function (evt) {
         var sonNum = $(selector).children().length
-        console.log(sonNum)
         if (sonNum > 16) {
             console.log("最多只能选择15张图片")
             return false
         }
         var $imgBox = '<div class="selected-image"><div class="delete-image"><img src="/img/main/close.png" alt=""></div><img class="image" alt="" src="' +evt.target.result + '"></div>'
         $(selector).append($imgBox)
-        // $(".image").attr("src", evt.target.result)
         image = evt.target.result;
         let remark = selector + ' .image-remark'
         $(remark).hide()
@@ -427,13 +422,8 @@ function upLoadImage (file, kind) {
         contentType: false,
         success: function (res) {
             let url = res.data.url
-            if (kind == 'list') {
-                listUrlArr.push(url)
-                console.log(listUrlArr)
-            } else {
-                productUrlArr.push(url)
-                console.log(productUrlArr)
-            }
+            let selector = kind + ' .selected-image:last-child'
+            $(selector).attr("data-url", url)
         },
         error: function (ex) {
             console.log(ex)
@@ -647,7 +637,21 @@ function addCustomize () {
 
 
 $(".bottom-submit-btn").on("click", function () {
-    $("#submit").submit()
+    var aa = $("#submit").serialize()
+    console.log(aa)
+    // $("#submit").submit()
+    // var productUrlArr = []
+    // var listUrlArr = []
+    // let a = $('.product .selected-image')
+    // let b = $('.list .selected-image')
+    // for (let i = 0; i < a.length; i++) {
+    //     productUrlArr.push($(a[i]).attr("data-url"))
+    // }
+    // console.log(productUrlArr)
+
+    // for (let i = 0; i < b.length; i++) {
+    //     listUrlArr.push($(a[i]).attr("data-url"))
+    // }
 })
 
 $(".bottom-reset-btn").on("click", function () {
@@ -658,8 +662,7 @@ $('.start-hours, .end-hours').datetimepicker({
   format: 'hh:ii',
   autoclose: true,
   todayHighlight: true,
-//   maxView: 'hour',
-//   minView: 'hour'
+  startView: 'hour'
 });
 </script>
 @endsection
