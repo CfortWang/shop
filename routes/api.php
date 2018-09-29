@@ -43,8 +43,8 @@ Route::group(['namespace' => 'Api'], function() {
     //ad
     Route::group(['prefix'  => 'ad'], function() {
         Route::get('/adList',               'AdController@adList');//广告列表
-        Route::post('/adtype/{seq}/{type}',               'AdController@adtype');//广告上下架
-        Route::post('/modifyAd/{seq}',              'AdController@modifyAd');//修改广告
+        Route::post('/adStatus',               'AdController@adStatus');//广告上下架
+        Route::post('/modifyAd',              'AdController@modifyAd');//修改广告
         Route::get('/pkgList',            'AdController@pkgList');//喜豆码列表
         Route::post('/createAd',               'AdController@createAd');
     });
@@ -53,7 +53,7 @@ Route::group(['namespace' => 'Api'], function() {
         Route::get('info',                  'ShopController@info');
         Route::get('category',              'ShopController@category');
         Route::post('modify',               'ShopController@modify');
-        Route::post('delete/image',         'ShopController@deleteImage');
+        Route::put('deleteImage',         'ShopController@deleteImage');
     });
     //Package
     Route::group(['prefix' => 'packages'], function() {
@@ -81,6 +81,7 @@ Route::group(['namespace' => 'Api'], function() {
         Route::get('groupon',                      'GroupOnController@list'); 
         Route::put('status',                      'GroupOnController@status'); 
         Route::post('groupon',                   'GroupOnController@create');
+        Route::post('upload',                   'GroupOnController@upload');
     });
 
 
