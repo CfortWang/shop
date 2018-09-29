@@ -925,6 +925,12 @@ input:-moz-placeholder {
     border-radius:4px 0px 0px 4px;
 }
 
+.form-group .timepicker{
+    width: 20%;
+    min-width: 200px;
+    display: inline-block;
+}
+
 .input-outer{
     width: 20%;
     border: 1px solid #dddddd;
@@ -1153,14 +1159,91 @@ input[type="number"]{
     height: 0px;
     border-top: 1px solid #dddddd;
 }
+.pdd-success-title{
+    margin-bottom: 10px;
+}
+.choose-title{
+    padding-left: 40px;
+    color: #333;
+    margin-top: 25px;
+}
+.fixed-time{
+    padding-left: 40px;
+}
+.fixed-time span{
+    vertical-align: middle;
+}
+.fixed-time-option1{
+    margin-bottom: 10px;
+}
+.fixed-time-option2{
+    margin-bottom: 20px;
+}
+.time-kind{
+    margin-left: 30px;
+}
+.effective-days, .effect-time, .expired-time{
+    height: 40px;
+    width: 130px;
+    padding: 6px 12px;
+    border:0.81px solid rgba(221,221,221,1);
+    border-radius:3px;
+    outline: none;
+    margin-left: 10px;
+}
+.effect-time, .expired-time{
+    margin-left: 0px;
+    width: 220px;
+}
+.effective-remark{
+    font-size:14px;
+    font-weight:300;
+    color: #FF5F57;
+}
 
+.effective-time{
+    padding-left: 40px;
+    margin: 30px 0px;
+}
+.effective-time span{
+    vertical-align: middle;
+}
+.hours-choose{
+    padding-left: 40px;
+    margin-top: 20px;
+}
+.random-time{
+    margin-bottom: 10px;
+}
+.section-time-weekends{
+    margin-top: 10px;
+}
+.weekends-day{
+    display: inline-block;
+    margin-left: 40px;
+}
 
-
-
-
+.start-hours, .end-hours{
+    height: 40px;
+    width: 150px;
+    padding: 6px 12px;
+    border:0.81px solid rgba(221,221,221,1);
+    border-radius:3px;
+    outline: none;
+}
+.add-time{
+    text-decoration: underline;
+    color: #57A0FF;
+    font-size: 14px;
+    margin: 0px 25px;
+    cursor: pointer;
+}
 
 .use-rule{
     margin-top: 35px;
+}
+.rule-title{
+    text-align: center;
 }
 .rule-box{
     padding-right: 20px;
@@ -1170,17 +1253,63 @@ input[type="number"]{
     height: 150px;
     border:0.81px solid rgba(221,221,221,1);
     border-radius:3px;
+    outline: none;
 }
 
+.option-disabled{
+    cursor: not-allowed;
+}
+.time-radio{
+    height: 26px;
+    width: 26px;
+    display: inline-block;
+    background: url('../img/main/unselected.png') no-repeat center;
+    vertical-align: middle;
+    margin: 0px;
+}
+input[type="radio"]:checked + .time-radio{
+    background: url('../img/main/selected.png');
+}
+.weekend-checkbox{
+    height: 26px;
+    width: 26px;
+    display: inline-block;
+    background: url('../img/main/checkbox-unselected.png') no-repeat center;
+    background-size: 100% 100%;
+    vertical-align: middle;
+    margin: 0px;
+}
+input[type="checkbox"]:checked + .weekend-checkbox{
+    background: url('../img/main/checkbox-selected.png');
+    background-size: 100% 100%;
+}
+input[disabled]{
+    cursor: not-allowed!important;
+    background-color: #F3F4F7;
+}
 
-
-
-
-
-
-
-
-
+.bottom-btn{
+    text-align: center;
+}
+.bottom-btn > div{
+    display: inline-block;
+    background: #57A0FF;
+    color: #fff;
+    font-size:18px;
+    font-family: "PingFangSC-Light";
+    font-weight: 300;
+    text-align: center;
+    width: 20%;
+    height: 70px;
+    line-height: 70px;
+    border-radius: 5px;
+    cursor: pointer;
+}
+.bottom-btn > .bottom-reset-btn{
+    background: #fff;
+    color: #666;
+    margin-left: 45px;
+}
 
 
 

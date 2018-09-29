@@ -2,8 +2,7 @@
 @section('title', $title)
 @section('css')
 <link rel="stylesheet" href="/css/app.css">
-<link rel="stylesheet" type="text/css" media="all" href="/css/daterangepicker.css" />
-<link rel="stylesheet" type="text/css" media="all" href="/css/bootstrap-datetimepicker.min.css" />
+<link rel="stylesheet" href="/css/amazeui.datetimepicker.css">
 @endsection('css')
 @section('content')
 
@@ -61,7 +60,9 @@
                             <div class="form-group clear-fix">
                                 <label class="am-u-lg-2 am-u-md-2 am-u-sm-3">拼豆活动时间</label>
                                 <div class="am-u-lg-10 am-u-md-10 am-u-sm-9">
-                                    <input type="text" class="form-control" id="time" name="time">
+                                    <input type="text" class="form-control timepicker" id="pdd-startDate" data-am-datepicker name="time">
+                                    <span>-</span>
+                                    <input type="text" class="form-control timepicker" id="pdd-endDate" data-am-datepicker name="time">
                                     <!-- <input type="text" id="config-demo" class="form-control" style="max-width:320px;display:inline-block;margin:4px"> -->
                                 </div>
                             </div>
@@ -140,76 +141,256 @@
                 <div class="row">
                     <div class="am-u-md-12 am-u-sm-12">
                         <div class="form-container">
-                            <div class="form-title">拼豆成功后优惠使用须知</div>
+                            <div class="form-title pdd-success-title">拼豆成功后优惠使用须知</div>
                         </div>
                         <div class="dividing"></div>
                         <div class="choose-time">
                             <div class="choose-title">拼豆成功后优惠有效期</div>
                             <div class="fixed-time">
                                 <div class="fixed-time-option1">
-                                    <img src="/img/main/unselected.png" alt="">
+                                    <input type="radio" id="effectRadio1" value="1" checked hidden name="effective-radio">
+                                    <label for="effectRadio1" class="time-radio"></label>
                                     <span>固定日期</span>
+                                    <span class="time-kind">生效时间：</span>
+                                    <input type="text" class="effect-time" data-am-datepicker placeholder="请选择日期">
+                                    <span class="time-kind">过期时间：</span>
+                                    <input type="text" class="expired-time" data-am-datepicker placeholder="请选择日期">
+                                    
                                 </div>
                                 <div class="fixed-time-option2">
-                                    <img src="/img/main/unselected.png" alt="">
+                                    <input type="radio" id="effectRadio2" value="2" hidden name="effective-radio">
+                                    <label for="effectRadio2" class="time-radio"></label>
                                     <span>拼豆成功后当日开始</span>
-                                    <input type="number" name="" id="" class="effective-days">
+                                    <input type="number" name="" id="" class="effective-days" placeholder="请输入天数">
                                     <span>天内有效</span>
                                     <span class="effective-remark">(生效天数必须在1-365之间)</span>
                                 </div>
                             </div>
-                            <div class="period"></div>
                         </div>
                         <div class="dividing"></div>
                         <div class="effective-time">
-                            <div class="random-time"></div>
+                            <div class="random-time option-disabled">
+                                <input type="radio" id="timeRadio1" value="1" checked hidden name="time-radio">
+                                <label for="timeRadio1" class="time-radio"></label>
+                                <span>有效期内任意时间段可用</span>
+                            </div>
                             <div class="sectiom-time">
-                                <div class="section-time-weekends"></div>
-                                <div class="hours-choose"></div>
+                                <div>
+                                    <input type="radio" id="timeRadio2" value="2" hidden name="time-radio">
+                                    <label for="timeRadio2" class="time-radio"></label>
+                                    <span>有效期内部分时间段可用</span>
+                                </div>
+                                <div class="section-time-weekends">
+                                    <div class="weekends-day">
+                                        <input type="checkbox" id="weekendCheckbox1" value="1" hidden name="weekend-checkbox">
+                                        <label for="weekendCheckbox1" class="weekend-checkbox"></label>
+                                        <span>周一</span>
+                                    </div>
+                                    <div class="weekends-day">
+                                        <input type="checkbox" id="weekendCheckbox2" value="2" hidden name="weekend-checkbox">
+                                        <label for="weekendCheckbox2" class="weekend-checkbox"></label>
+                                        <span>周二</span>
+                                    </div>
+                                    <div class="weekends-day">
+                                        <input type="checkbox" id="weekendCheckbox3" value="3" hidden name="weekend-checkbox">
+                                        <label for="weekendCheckbox3" class="weekend-checkbox"></label>
+                                        <span>周三</span>
+                                    </div>
+                                    <div class="weekends-day">
+                                        <input type="checkbox" id="weekendCheckbox4" value="4" hidden name="weekend-checkbox">
+                                        <label for="weekendCheckbox4" class="weekend-checkbox"></label>
+                                        <span>周四</span>
+                                    </div>
+                                    <div class="weekends-day">
+                                        <input type="checkbox" id="weekendCheckbox5" value="5" hidden name="weekend-checkbox">
+                                        <label for="weekendCheckbox5" class="weekend-checkbox"></label>
+                                        <span>周五</span>
+                                    </div>
+                                    <div class="weekends-day">
+                                        <input type="checkbox" id="weekendCheckbox6" value="6" hidden name="weekend-checkbox">
+                                        <label for="weekendCheckbox6" class="weekend-checkbox"></label>
+                                        <span>周末</span>
+                                    </div>
+                                    <div class="weekends-day">
+                                        <input type="checkbox" id="weekendCheckbox7" value="7" hidden name="weekend-checkbox" onclick="getCheckVal()">
+                                        <label for="weekendCheckbox7" class="weekend-checkbox"></label>
+                                        <span>节假日</span>
+                                    </div>
+                                </div>
+                                <div class="hours-choose">
+                                    <div class="customize"></div>
+                                    <input type="text" class="start-hours">
+                                    <span>-</span>
+                                    <input type="text" class="end-hours">
+                                    <span class="add-time" onclick="addCustomize()">+添加时间段</span>
+                                    <span class="effective-remark">(请按照24小时制输入可用时段)</span>
+                                </div>
                             </div>
                         </div>
 
                         <div class="dividing"></div>
                         <div class="use-rule">
-                            <div class="am-u-lg-1 am-u-md-1 am-u-sm-3">
+                            <div class="am-u-lg-1 am-u-md-2 am-u-sm-3 rule-title">
                             使用规则
                             </div>
-                            <div class="am-u-lg-11 am-u-md-11 am-u-sm-9 rule-box">
-                                <textarea class="rule-text" name="rules" id="" cols="" rows=""></textarea>
+                            <div class="am-u-lg-11 am-u-md-10 am-u-sm-9 rule-box">
+                                <textarea class="rule-text" name="rules" id="" cols="" rows="" placeholder="多行输入"></textarea>
                             </div>
                         </div>
                     </div>
                 </div>
+            </div>
+
+            <div class="bottom-btn">
+                <div class="bottom-submit-btn">保存</div>
+                <div class="bottom-reset-btn">取消</div>
             </div>
         </form>
     </div>
 </div>
 @endsection
 @section('script')
-<script src="/js/moment.min.js"></script>
-<script src="/js/bootstrap-datetimepicker.min.js"></script>
+<script src="/js/amazeui.datetimepicker.min.js"></script>
 <script>
-var startDate = moment().subtract(7, 'days').format('YYYY-MM-DD');
-var endDate = moment().format('YYYY-MM-DD');
-var options = {};
-options.locale = {
-    format: "YYYY-MM-DD",
-    separator: " - ",
-    daysOfWeek: ["日","一","二","三","四","五","六"],
-    monthNames: ["一月","二月","三月","四月","五月","六月","七月","八月","九月","十月","十一月","十二月"],
-};
-options.startDate =  moment().subtract(7, 'days');
-options.endDate =  moment();
-options.maxDate =  moment();
-options.autoApply = true;
-$('#config-demo').datetimepicker(options, function(start, end, label) {
-    console.log('New date range selected: ' + start.format('YYYY-MM-DD') + ' to ' + end.format('YYYY-MM-DD') + ' (predefined range: ' + label + ')'); 
-    startDate = start.format('YYYY-MM-DD');
-    endDate = end.format('YYYY-MM-DD');
+
+var nowTemp = new Date();
+var nowDay = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0).valueOf();
+var nowMoth = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), 1, 0, 0, 0, 0).valueOf();
+var nowYear = new Date(nowTemp.getFullYear(), 0, 1, 0, 0, 0, 0).valueOf();
+var $startDate = $('#pdd-startDate');
+
+// 拼豆豆活动时间
+var checkin = $startDate.datepicker({
+    onRender: function(date, viewMode) {
+    // 默认 days 视图，与当前日期比较
+    var viewDate = nowDay;
+    switch (viewMode) {
+        // moths 视图，与当前月份比较
+        case 1:
+        viewDate = nowMoth;
+        break;
+        // years 视图，与当前年份比较
+        case 2:
+        viewDate = nowYear;
+        break;
+    }
+
+    return date.valueOf() < viewDate ? 'am-disabled' : '';
+    }
+}).on('changeDate.datepicker.amui', function(ev) {
+    if (ev.date.valueOf() > checkout.date.valueOf()) {
+        var newDate = new Date(ev.date)
+        newDate.setDate(newDate.getDate() + 1);
+        checkout.setValue(newDate);
+    }
+    checkin.close();
+    $('#pdd-endDate')[0].focus();
+}).data('amui.datepicker');
+
+var checkout = $('#pdd-endDate').datepicker({
+    onRender: function(date, viewMode) {
+    var inTime = checkin.date;
+    var inDay = inTime.valueOf();
+    var inMoth = new Date(inTime.getFullYear(), inTime.getMonth(), 1, 0, 0, 0, 0).valueOf();
+    var inYear = new Date(inTime.getFullYear(), 0, 1, 0, 0, 0, 0).valueOf();
+
+    // 默认 days 视图，与当前日期比较
+    var viewDate = inDay;
+
+    switch (viewMode) {
+        // moths 视图，与当前月份比较
+        case 1:
+        viewDate = inMoth;
+        break;
+        // years 视图，与当前年份比较
+        case 2:
+        viewDate = inYear;
+        break;
+    }
+
+    return date.valueOf() <= viewDate ? 'am-disabled' : '';
+    }
+}).on('changeDate.datepicker.amui', function(ev) {
+    checkout.close();
+}).data('amui.datepicker');
+
+
+// 拼豆豆优惠生效时间
+var checkin = $(".effect-time").datepicker({
+    onRender: function(date, viewMode) {
+    // 默认 days 视图，与当前日期比较
+    var viewDate = nowDay;
+    switch (viewMode) {
+        // moths 视图，与当前月份比较
+        case 1:
+        viewDate = nowMoth;
+        break;
+        // years 视图，与当前年份比较
+        case 2:
+        viewDate = nowYear;
+        break;
+    }
+
+    return date.valueOf() < viewDate ? 'am-disabled' : '';
+    }
+}).on('changeDate.datepicker.amui', function(ev) {
+    if (ev.date.valueOf() > checkout.date.valueOf()) {
+        var newDate = new Date(ev.date)
+        newDate.setDate(newDate.getDate() + 1);
+        checkout.setValue(newDate);
+    }
+    checkin.close();
+    $('.expired-time')[0].focus();
+}).data('amui.datepicker');
+
+var checkout = $('.expired-time').datepicker({
+    onRender: function(date, viewMode) {
+    var inTime = checkin.date;
+    var inDay = inTime.valueOf();
+    var inMoth = new Date(inTime.getFullYear(), inTime.getMonth(), 1, 0, 0, 0, 0).valueOf();
+    var inYear = new Date(inTime.getFullYear(), 0, 1, 0, 0, 0, 0).valueOf();
+
+    // 默认 days 视图，与当前日期比较
+    var viewDate = inDay;
+
+    switch (viewMode) {
+        // moths 视图，与当前月份比较
+        case 1:
+        viewDate = inMoth;
+        break;
+        // years 视图，与当前年份比较
+        case 2:
+        viewDate = inYear;
+        break;
+    }
+
+    return date.valueOf() <= viewDate ? 'am-disabled' : '';
+    }
+}).on('changeDate.datepicker.amui', function(ev) {
+    checkout.close();
+}).data('amui.datepicker');
+
+
+// 判定成团人数
+$(".group-size").blur(function () {
+    if ($(this).val() > 20) {
+        alert("成团人数不得超过20人")
+    }
 })
-$('.btn').click(function(){
-    $('#submit').submit();
+
+
+// 判定拼豆豆有效天数
+$(".effective-days").blur(function () {
+    if ($(this).val() == null || $(this).val() == '') {
+    } else {
+        if ($(this).val() > 365 || $(this).val() < 1) {
+            alert("生效天数不合法")
+        }
+    }
 })
+
+var productUrlArr = []
+var listUrlArr = []
 
 function selectImage(file, selector) {
     if (!file.files || !file.files[0]) {
@@ -231,6 +412,34 @@ function selectImage(file, selector) {
         $(remark).hide()
     }
     reader.readAsDataURL(file.files[0]);
+    var fd = new FormData()
+    fd.append('file', file.files[0])
+    upLoadImage(fd, selector);
+}
+
+function upLoadImage (file, kind) {
+    $.ajax({
+        url: 'http://shop.test/api/event/upload',
+        type: 'post',
+        dataType: 'json',
+        data: file,
+        processData: false,
+        contentType: false,
+        success: function (res) {
+            let url = res.data.url
+            if (kind == 'list') {
+                listUrlArr.push(url)
+                console.log(listUrlArr)
+            } else {
+                productUrlArr.push(url)
+                console.log(productUrlArr)
+            }
+        },
+        error: function (ex) {
+            console.log(ex)
+        }
+    })
+    // console.log(file)
 }
 
 $(".product").on("click", ".selected-image .delete-image", function () {
@@ -239,6 +448,7 @@ $(".product").on("click", ".selected-image .delete-image", function () {
     if (sonNum == 2) {
         $(".product .image-remark").show()
     }
+
 })
 $(".list").on("click", ".selected-image .delete-image", function () {
     $(this).parent().remove()
@@ -339,6 +549,9 @@ $(".package-data").on("click", ".pdd-table-tr .operating .delete", function () {
     $(this).parent().parent().parent().remove()
     getPackageData()
 })
+$(".remark-data").on("click", ".pdd-table-tr .operating .delete", function () {
+    $(this).parent().parent().parent().remove()
+})
 
 function addRemarkInfo () {
     let remarkData = $("#package-remark").val()
@@ -350,5 +563,103 @@ function addRemarkInfo () {
     $(".remark-data").append($remark)
     $("#package-remark").val("")
 }
+
+
+
+
+
+
+
+
+
+
+
+function getCheckVal () {
+    var obj = $("input[name='weekend-checkbox']");
+    var checkVal = [];
+    for(k in obj){
+        if(obj[k].checked){
+            checkVal.push(obj[k].value);
+        }
+    }
+    console.log(checkVal)
+}
+
+$('input[type=radio][name=effective-radio]').change(function() {
+    if (this.value == 1) {
+        console.log("1");
+        $(this).parent().removeClass("option-disabled")
+        $(this).parent().siblings().addClass("option-disabled")
+        $(this).parent().siblings().children(".effective-days").attr("disabled", true)
+        $(this).parent().children(".effect-time").attr("disabled", false)
+        $(this).parent().children(".expired-time").attr("disabled", false)
+    }
+    else if (this.value == 2) {
+        console.log("2");
+        $(this).parent().removeClass("option-disabled")
+        $(this).parent().siblings().addClass("option-disabled")
+        $(this).parent().siblings().children(".effect-time").attr("disabled", true)
+        $(this).parent().siblings().children(".expired-time").attr("disabled", true)
+        $(this).parent().children(".effective-days").attr("disabled", false)
+    }
+})
+
+$('.fixed-time-option2 .effective-days').attr("disabled", true)
+$('.sectiom-time').find("input").attr("disabled", true)
+$('.sectiom-time #timeRadio2').attr("disabled", false)
+
+$('input[type=radio][name=time-radio]').change(function() {
+    if (this.value == 1) {
+        console.log("1");
+        $(this).parent().removeClass("option-disabled")
+        $(this).parent().siblings().addClass("option-disabled")
+        // let a = $(this).parent().siblings().children(".section-time-weekends").children()
+        // for (let i = 0; i < a.length; i++) {
+        //     $(a[i]).children('input').attr("disabled", true)
+        // }
+        $(this).parent().siblings().find("input").attr("disabled", true)
+        $(this).parent().siblings().find("#timeRadio2").attr("disabled", false)
+    }
+    else if (this.value == 2) {
+        console.log("2");
+        $(this).parent().parent().removeClass("option-disabled")
+        $(this).parent().parent().siblings().addClass("option-disabled")
+        $(this).parent().parent().find("input").attr("disabled", false)
+    }
+})
+
+function addCustomize () {
+    let startHours = $(".start-hours").val()
+    let endHours = $(".end-hours").val()
+    if (startHours == '' || startHours == null) {
+        alert("开始时间不能为空")
+        return false
+    }
+    if (endHours == '' || endHours == null) {
+        alert("结束时间不能为空")
+        return false
+    }
+    var $customizeTime = '<div class="customize-time"><span class="customize-time-start">' + startHours + '</span><span>-</span><span class="customize-time-end">' + endHours + '</span></div>'
+    $(".customize").append($customizeTime)
+    $(".start-hours").val("")
+    $(".end-hours").val("")
+}
+
+
+$(".bottom-submit-btn").on("click", function () {
+    $("#submit").submit()
+})
+
+$(".bottom-reset-btn").on("click", function () {
+    window.location.href = '/event/groupon/create'
+})
+
+$('.start-hours, .end-hours').datetimepicker({
+  format: 'hh:ii',
+  autoclose: true,
+  todayHighlight: true,
+//   maxView: 'hour',
+//   minView: 'hour'
+});
 </script>
 @endsection
