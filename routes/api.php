@@ -73,8 +73,11 @@ Route::group(['namespace' => 'Api'], function() {
     Route::group(['prefix'  => 'account'], function() {
         Route::get('detail',                      'AccountInfoController@detail'); // 账号信息
         Route::get('scoreList',                   'AccountInfoController@scoreList'); // 积分列表
-        Route::post('modify',                   'AccountInfoController@modify');
-        Route::get('bank-list',                 'AccountInfoController@bankList');
+        Route::post('modify',                     'AccountInfoController@modify');
+        Route::get('bank-list',                   'AccountInfoController@bankList');
+        Route::get('cashList',                     'AccountInfoController@cashList');//提现列表
+        Route::get('showBuyerInfo',                 'AccountInfoController@showBuyerInfo');
+        Route::post('requestCash',                 'AccountInfoController@requestCash');//提现申请
     });
 
     Route::group(['prefix'  => 'event'], function() {
