@@ -145,7 +145,19 @@
                         <div class="dividing"></div>
                         <div class="choose-time">
                             <div class="choose-title">拼豆成功后优惠有效期</div>
-                            <div class="fixed-time"></div>
+                            <div class="fixed-time">
+                                <div class="fixed-time-option1">
+                                    <img src="/img/main/unselected.png" alt="">
+                                    <span>固定日期</span>
+                                </div>
+                                <div class="fixed-time-option2">
+                                    <img src="/img/main/unselected.png" alt="">
+                                    <span>拼豆成功后当日开始</span>
+                                    <input type="number" name="" id="" class="effective-days">
+                                    <span>天内有效</span>
+                                    <span class="effective-remark">(生效天数必须在1-365之间)</span>
+                                </div>
+                            </div>
                             <div class="period"></div>
                         </div>
                         <div class="dividing"></div>
@@ -159,11 +171,11 @@
 
                         <div class="dividing"></div>
                         <div class="use-rule">
-                            <div class="am-u-lg-5 am-u-md-5 am-u-sm-6">
+                            <div class="am-u-lg-1 am-u-md-1 am-u-sm-3">
                             使用规则
                             </div>
-                            <div class="am-u-lg-5 am-u-md-5 am-u-sm-6">
-                                <textarea name="" id="" cols="30" rows="10"></textarea>
+                            <div class="am-u-lg-11 am-u-md-11 am-u-sm-9 rule-box">
+                                <textarea class="rule-text" name="rules" id="" cols="" rows=""></textarea>
                             </div>
                         </div>
                     </div>
