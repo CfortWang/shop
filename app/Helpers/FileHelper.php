@@ -37,15 +37,18 @@ class FileHelper
 
     public static function groupOnImage($file)
     {
-        return static::uploadImage(static::$groupImagePath, $file);
+        return static::uploadImage(static::$groupImagePath, $file,true);
     }
-    public static function uploadImage($filePath, $file)
+    public static function uploadImage($filePath, $file ,$temp=false)
     {
         $mediaHost = Config::get('shop.media.host');
         $mediaUser = Config::get('shop.media.user');
         $mediaPass = Config::get('shop.media.pass');
         $mediaRoot = Config::get('shop.media.root');
         $mediaPath = Config::get('shop.media.path');
+        if($temp){
+            $mediaPath = Config::get('shop.media.tempPath');
+        }
         $mediaIp = Config::get('shop.media.ip');
 
         $clientName = $file->getClientOriginalName();

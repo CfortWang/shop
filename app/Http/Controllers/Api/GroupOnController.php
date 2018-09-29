@@ -152,4 +152,18 @@ class GroupOnController extends Controller
             return $this->responseBadRequest('操作失败');
         }
     }
+
+    public function upload(Request $request)
+    {
+        $input=Input::only('file');
+        $validator = Validator::make($input, [
+            'file'                 => 'required|image',
+        ]);
+
+        if ($validator->fails()) {
+            return $this->responseBadRequest('格式错误');
+        }
+        $image = FileHelper::groupOnImage($input['file']);
+        return $this->responseOk('',$image);
+    }
 }
