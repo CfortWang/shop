@@ -276,7 +276,7 @@ class AdController extends Controller
         ->where('S2P.seq', '=', null)
         ->select('PKG.seq as pkg_seq', 'PKG.code as pkg_code')
         ->get();
-
+     
         return $this->responseOk('package list', $items);
     }
     public function allPackagelist(Request $request, $seq)
