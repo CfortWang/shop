@@ -25,7 +25,7 @@
 </form> -->
 <div class="tpl-page-container tpl-page-header-fixed">
     <div class="tpl-content-wrapper">
-        <form id="submit" action="/api/event/groupon" method="post"  enctype="multipart/form-data">
+        <form id="submit" action="/api/event/groupon" method="post"  enctype="multipart/form-data" target="_blank">
             <div class="tpl-portlet">
                 <div class="row">
                     <div class="am-u-md-12 am-u-sm-12">
@@ -34,14 +34,14 @@
                             <div class="form-group clear-fix">
                                 <label class="am-u-lg-2 am-u-md-2 am-u-sm-3">拼豆豆名称</label>
                                 <div class="am-u-lg-10 am-u-md-10 am-u-sm-9">
-                                    <input type="text" class="form-control" id="name" name="name" placeholder="最多可输入20个字符" maxlength="20">
+                                    <input type="text" class="form-control" id="name" name="title" placeholder="最多可输入20个字符" maxlength="20">
                                 </div>
                             </div>
                             <div class="form-group clear-fix">
                                 <label class="am-u-lg-2 am-u-md-2 am-u-sm-3">原价格</label>
                                 <div class="am-u-lg-10 am-u-md-10 am-u-sm-9 has-remark">
                                     <div class="input-outer">
-                                        <input type="number" class="old-price" id="old-price" name="old-price" placeholder="输入拼豆商品原价">
+                                        <input type="number" class="old-price" id="old-price" name="price" placeholder="输入拼豆商品原价">
                                         <div class="price-unit">元</div>
                                     </div>
                                     <span class="image-remark">请设置大于0的金额数字</span>
@@ -51,7 +51,7 @@
                                 <label class="am-u-lg-2 am-u-md-2 am-u-sm-3">拼豆后价格</label>
                                 <div class="am-u-lg-10 am-u-md-10 am-u-sm-9 has-remark">
                                     <div class="input-outer">
-                                        <input type="number" class="new-price" id="new-price" name="new-price" placeholder="输入拼豆商品原价">
+                                        <input type="number" class="new-price" id="new-price" name="discounted_price" placeholder="输入拼豆商品原价">
                                         <div class="price-unit">元</div>
                                     </div>
                                     <span class="image-remark">请设置大于0的金额数字</span>
@@ -60,17 +60,34 @@
                             <div class="form-group clear-fix">
                                 <label class="am-u-lg-2 am-u-md-2 am-u-sm-3">拼豆活动时间</label>
                                 <div class="am-u-lg-10 am-u-md-10 am-u-sm-9">
-                                    <input type="text" class="form-control timepicker" id="pdd-startDate" data-am-datepicker name="time">
+                                    <input type="text" class="form-control timepicker" id="pdd-startDate" data-am-datepicker name="open_time">
                                     <span>-</span>
-                                    <input type="text" class="form-control timepicker" id="pdd-endDate" data-am-datepicker name="time">
+                                    <input type="text" class="form-control timepicker" id="pdd-endDate" data-am-datepicker name="close_time">
                                     <!-- <input type="text" id="config-demo" class="form-control" style="max-width:320px;display:inline-block;margin:4px"> -->
+                                </div>
+                            </div>
+                            <div class="form-group clear-fix">
+                                <label class="am-u-lg-2 am-u-md-2 am-u-sm-3">拼豆发起后持续时间</label>
+                                <div class="am-u-lg-10 am-u-md-10 am-u-sm-9">
+                                    <label for="continue-time1">
+                                        <input type="radio" class="form-control" checked id="continue-time1" name="continued_time" value="48">
+                                        <span>48小时</span>
+                                    </label>
+                                    <label for="continue-time2">
+                                        <input type="radio" class="form-control" id="continue-time2" name="continued_time" value="72">
+                                        <span>72小时</span>
+                                    </label>
+                                    <label for="continue-time3">
+                                        <input type="radio" class="form-control" id="continue-time3" name="continued_time" value="120">
+                                        <span>120小时</span>
+                                    </label>
                                 </div>
                             </div>
                             <div class="form-group clear-fix">
                                 <label class="am-u-lg-2 am-u-md-2 am-u-sm-3">成团人数</label>
                                 <div class="am-u-lg-10 am-u-md-10 am-u-sm-9 has-remark">
                                     <div class="input-outer">
-                                        <input type="number" class="group-size" id="group-size" name="group-size" placeholder="输入成团人数">
+                                        <input type="number" class="group-size" id="group-size" name="group_size" placeholder="输入成团人数">
                                     </div>
                                     <span class="image-remark">最高设置20个人</span>
                                 </div>
@@ -90,7 +107,7 @@
                                     <a href="javascript:;" class="file">+添加图片
                                         <input type="file" class="" id="product-image" name="image[]" onchange="selectImage(this, '.list')">
                                     </a>
-                                    <span class="image-remark">建议尺寸:1204*1204像素,最多上传15张,仅支持gif,jpeg,png,bmp 4种格式,大小不超过3.0M</span>
+                                    <span class="image-remark">建议尺寸:1204*1204像素,最多上传1张,仅支持gif,jpeg,png,bmp 4种格式,大小不超过3.0M</span>
                                 </div>
                             </div>
                         </div>
@@ -110,7 +127,6 @@
                             <div class="am-u-lg-2 am-u-md-3 am-u-sm-3 am-u-end">所值价格 (元)</div>
                         </div>
                         <div class="package-data"></div>
-                        <input type="text" name="package" class="package-obj">
                         <div class="pdd-table-tr clear-fix">
                             <div class="am-u-lg-4 am-u-md-4 am-u-sm-4">
                                 <input type="text" class="form-control" id="package-name">
@@ -148,20 +164,20 @@
                             <div class="choose-title">拼豆成功后优惠有效期</div>
                             <div class="fixed-time">
                                 <div class="fixed-time-option1">
-                                    <input type="radio" id="effectRadio1" value="1" checked hidden name="effective-radio">
+                                    <input type="radio" id="effectRadio1" value="1" checked hidden name="is_effective_fixed">
                                     <label for="effectRadio1" class="time-radio"></label>
                                     <span>固定日期</span>
                                     <span class="time-kind">生效时间：</span>
-                                    <input type="text" class="effect-time" data-am-datepicker placeholder="请选择日期">
+                                    <input type="text" class="effect-time" name="start_use_time" data-am-datepicker placeholder="请选择日期">
                                     <span class="time-kind">过期时间：</span>
-                                    <input type="text" class="expired-time" data-am-datepicker placeholder="请选择日期">
+                                    <input type="text" class="expired-time" name="end_use_time" data-am-datepicker placeholder="请选择日期">
                                     
                                 </div>
                                 <div class="fixed-time-option2">
-                                    <input type="radio" id="effectRadio2" value="2" hidden name="effective-radio">
+                                    <input type="radio" id="effectRadio2" value="0" hidden name="is_effective_fixed">
                                     <label for="effectRadio2" class="time-radio"></label>
                                     <span>拼豆成功后当日开始</span>
-                                    <input type="number" name="" id="" class="effective-days" placeholder="请输入天数">
+                                    <input type="number" name="effective_days" id="" class="effective-days" placeholder="请输入天数">
                                     <span>天内有效</span>
                                     <span class="effective-remark">(生效天数必须在1-365之间)</span>
                                 </div>
@@ -170,49 +186,49 @@
                         <div class="dividing"></div>
                         <div class="effective-time">
                             <div class="random-time option-disabled">
-                                <input type="radio" id="timeRadio1" value="1" checked hidden name="time-radio">
+                                <input type="radio" id="timeRadio1" value="0" checked hidden name="is_usetime_limit">
                                 <label for="timeRadio1" class="time-radio"></label>
                                 <span>有效期内任意时间段可用</span>
                             </div>
                             <div class="sectiom-time">
                                 <div>
-                                    <input type="radio" id="timeRadio2" value="2" hidden name="time-radio">
+                                    <input type="radio" id="timeRadio2" value="1" hidden name="is_usetime_limit">
                                     <label for="timeRadio2" class="time-radio"></label>
                                     <span>有效期内部分时间段可用</span>
                                 </div>
                                 <div class="section-time-weekends">
                                     <div class="weekends-day">
-                                        <input type="checkbox" id="weekendCheckbox1" value="1" hidden name="weekend-checkbox[]">
+                                        <input type="checkbox" id="weekendCheckbox1" value="1" hidden name="days[]">
                                         <label for="weekendCheckbox1" class="weekend-checkbox"></label>
                                         <span>周一</span>
                                     </div>
                                     <div class="weekends-day">
-                                        <input type="checkbox" id="weekendCheckbox2" value="2" hidden name="weekend-checkbox[]">
+                                        <input type="checkbox" id="weekendCheckbox2" value="2" hidden name="days[]">
                                         <label for="weekendCheckbox2" class="weekend-checkbox"></label>
                                         <span>周二</span>
                                     </div>
                                     <div class="weekends-day">
-                                        <input type="checkbox" id="weekendCheckbox3" value="3" hidden name="weekend-checkbox[]">
+                                        <input type="checkbox" id="weekendCheckbox3" value="3" hidden name="days[]">
                                         <label for="weekendCheckbox3" class="weekend-checkbox"></label>
                                         <span>周三</span>
                                     </div>
                                     <div class="weekends-day">
-                                        <input type="checkbox" id="weekendCheckbox4" value="4" hidden name="weekend-checkbox[]">
+                                        <input type="checkbox" id="weekendCheckbox4" value="4" hidden name="days[]">
                                         <label for="weekendCheckbox4" class="weekend-checkbox"></label>
                                         <span>周四</span>
                                     </div>
                                     <div class="weekends-day">
-                                        <input type="checkbox" id="weekendCheckbox5" value="5" hidden name="weekend-checkbox[]">
+                                        <input type="checkbox" id="weekendCheckbox5" value="5" hidden name="days[]">
                                         <label for="weekendCheckbox5" class="weekend-checkbox"></label>
                                         <span>周五</span>
                                     </div>
                                     <div class="weekends-day">
-                                        <input type="checkbox" id="weekendCheckbox6" value="6" hidden name="weekend-checkbox[]">
+                                        <input type="checkbox" id="weekendCheckbox6" value="1" hidden name="is_weekend">
                                         <label for="weekendCheckbox6" class="weekend-checkbox"></label>
                                         <span>周末</span>
                                     </div>
                                     <div class="weekends-day">
-                                        <input type="checkbox" id="weekendCheckbox7" value="7" hidden name="weekend-checkbox[]" onclick="getCheckVal()">
+                                        <input type="checkbox" id="weekendCheckbox7" value="1" hidden name="is_festival">
                                         <label for="weekendCheckbox7" class="weekend-checkbox"></label>
                                         <span>节假日</span>
                                     </div>
@@ -234,7 +250,7 @@
                             使用规则
                             </div>
                             <div class="am-u-lg-11 am-u-md-10 am-u-sm-9 rule-box">
-                                <textarea class="rule-text" name="rules" id="" cols="" rows="" placeholder="多行输入"></textarea>
+                                <textarea class="rule-text" name="rule" id="" cols="" rows="" placeholder="多行输入"></textarea>
                             </div>
                         </div>
                     </div>
@@ -396,11 +412,15 @@ function selectImage(file, selector) {
     var reader = new FileReader();
     reader.onload = function (evt) {
         var sonNum = $(selector).children().length
-        if (sonNum > 16) {
+        if (selector == '.product' && sonNum > 16) {
             console.log("最多只能选择15张图片")
             return false
         }
-        var $imgBox = '<div class="selected-image"><div class="delete-image"><img src="/img/main/close.png" alt=""></div><img class="image" alt="" src="' +evt.target.result + '"></div>'
+        if (selector == '.list' && sonNum > 2) {
+            console.log("最多只能选择1张图片")
+            return false
+        }
+        var $imgBox = '<div class="selected-image"><div class="delete-image"><img src="/img/main/close.png" alt=""></div><img class="image" alt="" src="' +evt.target.result + '"><input class="img-value" type="text" name="image[]" hidden></div>'
         $(selector).append($imgBox)
         image = evt.target.result;
         let remark = selector + ' .image-remark'
@@ -422,8 +442,12 @@ function upLoadImage (file, kind) {
         contentType: false,
         success: function (res) {
             let url = res.data.url
-            let selector = kind + ' .selected-image:last-child'
-            $(selector).attr("data-url", url)
+            let selector = kind + ' .selected-image:last-child .img-value'
+            if (kind == '.list') {
+                $(".list .selected-image input[name='image[]']").attr("name", 'logo')
+            }
+            $(selector).val(url)
+            // console.log($(selector))
         },
         error: function (ex) {
             console.log(ex)
@@ -451,7 +475,7 @@ $(".list").on("click", ".selected-image .delete-image", function () {
 function modify (that, len) {
     for (let i = 0; i < len; i++) {
         let a = $(that).parent().parent().siblings().children(".package-info")[i]
-        let b = $(a).text().replace(/¥/g, '')
+        let b = $(a).text()
         let c = $(that).parent().parent().siblings().children(".form-control")[i]
         $(c).val(b)
     }
@@ -472,37 +496,36 @@ function save (that, len) {
     $(that).parent().parent().siblings().children(".package-info").show()
     $(that).hide()
     $(that).siblings().css('display', 'inline-block')
-    getPackageData()
 }
 
-function getPackageData () {
-    var package = []
-    let pLength = $(".package-data > .pdd-table-tr").length
-    for (let i = 0; i < pLength; i++) {
-        var pdata = {}
-        // for (let j = 0; j < 3; j++) {
-        pdata.name = $(".package-data > .pdd-table-tr:eq("+ i +") .package-info:eq("+ 0 +")").text()
-        pdata.amount = $(".package-data > .pdd-table-tr:eq("+ i +") .package-info:eq("+ 1 +")").text()
-        pdata.price = $(".package-data > .pdd-table-tr:eq("+ i +") .package-info:eq("+ 2 +")").text()
-        // }
-        package[i] = pdata
-    }
-}
+// function getPackageData () {
+//     var package = []
+//     let pLength = $(".package-data > .pdd-table-tr").length
+//     for (let i = 0; i < pLength; i++) {
+//         var pdata = {}
+//         // for (let j = 0; j < 3; j++) {
+//         pdata.name = $(".package-data > .pdd-table-tr:eq("+ i +") .package-info:eq("+ 0 +")").text()
+//         pdata.amount = $(".package-data > .pdd-table-tr:eq("+ i +") .package-info:eq("+ 1 +")").text()
+//         pdata.price = $(".package-data > .pdd-table-tr:eq("+ i +") .package-info:eq("+ 2 +")").text()
+//         // }
+//         package[i] = pdata
+//     }
+// }
 
-function getRemarkData () {
-    var package = []
-    let pLength = $(".package-data > .pdd-table-tr").length
-    for (let i = 0; i < pLength; i++) {
-        var pdata = {}
-        // for (let j = 0; j < 3; j++) {
-        pdata.name = $(".package-data > .pdd-table-tr:eq("+ i +") .package-info:eq("+ 0 +")").text()
-        pdata.amount = $(".package-data > .pdd-table-tr:eq("+ i +") .package-info:eq("+ 1 +")").text()
-        pdata.price = $(".package-data > .pdd-table-tr:eq("+ i +") .package-info:eq("+ 2 +")").text()
-        // }
-        package[i] = pdata
-    }
-}
-
+// function getRemarkData () {
+//     var package = []
+//     let pLength = $(".package-data > .pdd-table-tr").length
+//     for (let i = 0; i < pLength; i++) {
+//         var pdata = {}
+//         // for (let j = 0; j < 3; j++) {
+//         pdata.name = $(".package-data > .pdd-table-tr:eq("+ i +") .package-info:eq("+ 0 +")").text()
+//         pdata.amount = $(".package-data > .pdd-table-tr:eq("+ i +") .package-info:eq("+ 1 +")").text()
+//         pdata.price = $(".package-data > .pdd-table-tr:eq("+ i +") .package-info:eq("+ 2 +")").text()
+//         // }
+//         package[i] = pdata
+//     }
+// }
+var i = 0
 function addPackageInfo () {
     var packageName = $("#package-name").val()
     var packageAmount = $("#package-amount").val()
@@ -527,29 +550,33 @@ function addPackageInfo () {
         alert("套餐价格不能小于0")
         return false;
     }
-    var $package = '<div class="pdd-table-tr clear-fix"><div class="am-u-lg-4 am-u-md-4 am-u-sm-4"><div class="package-info">'+ packageName +'</div><input type="text" class="form-control" id="" name=""></div><div class="am-u-lg-2 am-u-md-3 am-u-sm-3"><div class="package-info">' + packageAmount + '</div><input type="number" class="form-control" id="" name=""></div><div class="am-u-lg-2 am-u-md-3 am-u-sm-3"><div class="package-info">' + packagePrice + '</div><input type="number" class="form-control" id="" name=""></div><div class="am-u-lg-4 am-u-md-2 am-u-sm-2 am-u-end"><div class="operating"><div class="motify" onclick="modify(this, 3)">修改</div><div class="save" onclick="save(this, 3)">保存</div><div class="delete">删除</div></div></div></div>'
+    let productName = 'product[' + i + '][name]'
+    let productPrice = 'product[' + i + '][price]'
+    let productQuantity = 'product[' + i + '][quantity]'
+    i++
+    var $package = '<div class="pdd-table-tr clear-fix"><div class="am-u-lg-4 am-u-md-4 am-u-sm-4"><div class="package-info">'+ packageName +'</div><input type="text" class="form-control" value="'+ packageName +'" name="' + productName + '"></div><div class="am-u-lg-2 am-u-md-3 am-u-sm-3"><div class="package-info">' + packageAmount + '</div><input type="number" class="form-control" value="'+ packageAmount +'" name="' + productQuantity + '"></div><div class="am-u-lg-2 am-u-md-3 am-u-sm-3"><div class="package-info">' + packagePrice + '</div><input type="number" class="form-control" value="'+ packagePrice +'" name="' + productPrice + '"></div><div class="am-u-lg-4 am-u-md-2 am-u-sm-2 am-u-end"><div class="operating"><div class="motify" onclick="modify(this, 3)">修改</div><div class="save" onclick="save(this, 3)">保存</div><div class="delete">删除</div></div></div></div>'
     $(".package-data").append($package)
     $("#package-name").val("")
     $("#package-amount").val("")
     $("#package-price").val("")
-    getPackageData()
 }
 
 $(".package-data").on("click", ".pdd-table-tr .operating .delete", function () {
     $(this).parent().parent().parent().remove()
-    getPackageData()
 })
 $(".remark-data").on("click", ".pdd-table-tr .operating .delete", function () {
     $(this).parent().parent().parent().remove()
 })
 
+var j = 0
 function addRemarkInfo () {
     let remarkData = $("#package-remark").val()
     if (remarkData == '' || remarkData == null) {
         alert("备注内容不能为空")
         return false;
     }
-    var $remark = '<div class="pdd-table-tr clear-fix remark-tr"><div class="am-u-lg-5 am-u-md-5 am-u-sm-6"><div class="package-info">' + remarkData + '</div><input type="text" class="form-control" id="" name=""></div><div class="am-u-lg-7 am-u-md-7 am-u-sm-6 am-u-end"><div class="operating"><div class="motify" onclick="modify(this, 1)">修改</div><div class="save" onclick="save(this, 1)">保存</div><div class="delete">删除</div></div></div></div>'
+    let remarkContent = 'remark[' + j + ']'
+    var $remark = '<div class="pdd-table-tr clear-fix remark-tr"><div class="am-u-lg-5 am-u-md-5 am-u-sm-6"><div class="package-info">' + remarkData + '</div><input type="text" class="form-control" value="'+ remarkData +'" name="' + remarkContent + '"></div><div class="am-u-lg-7 am-u-md-7 am-u-sm-6 am-u-end"><div class="operating"><div class="motify" onclick="modify(this, 1)">修改</div><div class="save" onclick="save(this, 1)">保存</div><div class="delete">删除</div></div></div></div>'
     $(".remark-data").append($remark)
     $("#package-remark").val("")
 }
@@ -575,17 +602,15 @@ function getCheckVal () {
     console.log(checkVal)
 }
 
-$('input[type=radio][name=effective-radio]').change(function() {
+$('input[type=radio][name=is_effective_fixed]').change(function() {
     if (this.value == 1) {
-        console.log("1");
         $(this).parent().removeClass("option-disabled")
         $(this).parent().siblings().addClass("option-disabled")
         $(this).parent().siblings().children(".effective-days").attr("disabled", true)
         $(this).parent().children(".effect-time").attr("disabled", false)
         $(this).parent().children(".expired-time").attr("disabled", false)
     }
-    else if (this.value == 2) {
-        console.log("2");
+    else if (this.value == 0) {
         $(this).parent().removeClass("option-disabled")
         $(this).parent().siblings().addClass("option-disabled")
         $(this).parent().siblings().children(".effect-time").attr("disabled", true)
@@ -598,9 +623,8 @@ $('.fixed-time-option2 .effective-days').attr("disabled", true)
 $('.sectiom-time').find("input").attr("disabled", true)
 $('.sectiom-time #timeRadio2').attr("disabled", false)
 
-$('input[type=radio][name=time-radio]').change(function() {
-    if (this.value == 1) {
-        console.log("1");
+$('input[type=radio][name=is_usetime_limit]').change(function() {
+    if (this.value == 0) {
         $(this).parent().removeClass("option-disabled")
         $(this).parent().siblings().addClass("option-disabled")
         // let a = $(this).parent().siblings().children(".section-time-weekends").children()
@@ -610,8 +634,7 @@ $('input[type=radio][name=time-radio]').change(function() {
         $(this).parent().siblings().find("input").attr("disabled", true)
         $(this).parent().siblings().find("#timeRadio2").attr("disabled", false)
     }
-    else if (this.value == 2) {
-        console.log("2");
+    else if (this.value == 1) {
         $(this).parent().parent().removeClass("option-disabled")
         $(this).parent().parent().siblings().addClass("option-disabled")
         $(this).parent().parent().find("input").attr("disabled", false)
@@ -629,7 +652,7 @@ function addCustomize () {
         alert("结束时间不能为空")
         return false
     }
-    var $customizeTime = '<div class="customize-time"><span class="customize-time-start">' + startHours + '</span><span>-</span><span class="customize-time-end">' + endHours + '</span></div>'
+    var $customizeTime = '<div class="customize-time"><div><span class="customize-time-start">' + startHours + '</span><span>-</span><span class="customize-time-end">' + endHours + '</span></div><div class="add-time-box"><input type="text" class="start-hours"><span>&nbsp;-&nbsp;</span><input type="text" class="end-hours"></div></div>'
     $(".customize").append($customizeTime)
     $(".start-hours").val("")
     $(".end-hours").val("")
@@ -637,9 +660,9 @@ function addCustomize () {
 
 
 $(".bottom-submit-btn").on("click", function () {
-    var aa = $("#submit").serialize()
-    console.log(aa)
-    // $("#submit").submit()
+    // var aa = $("#submit").serialize()
+    // console.log(aa)
+    $("#submit").submit()
     // var productUrlArr = []
     // var listUrlArr = []
     // let a = $('.product .selected-image')

@@ -1238,6 +1238,17 @@ input[type="number"]{
     margin: 0px 25px;
     cursor: pointer;
 }
+.add-time-box{
+    margin-bottom: 10px;
+    display: none;
+}
+.customize-time-start, .customize-time-end{
+    display: inline-block;
+    height: 40px;
+    line-height: 40px;
+    width: 150px;
+    text-align: center;
+}
 
 .use-rule{
     margin-top: 35px;
