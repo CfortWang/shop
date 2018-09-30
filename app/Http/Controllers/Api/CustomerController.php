@@ -30,6 +30,12 @@ class CustomerController extends Controller
         $buyer=1;
         $limit = $request->input('limit')?$request->input('limit'):20;
         $page = $request->input('page')?$request->input('page'):1;
+        $items=UserScanLog::where('UserScanLog.buyer',$buyer)  
+                          ->leftJoin('User as u', 'u.seq', '=', 'UserScanLog.user')
+                          ->select('u.id','u.nickname','u.gender','u.birthday','count(user)')
+                          ->groupBy('UserScanLog.user')
+                          ->get();
+        dd(count($items));
         $items = DB::table('UserScanLog')
                     ->where('UserScanLog.buyer',$buyer)  
                     ->select(  
