@@ -42,7 +42,7 @@ Route::group(['namespace' => 'Api'], function() {
     });
     //ad
     Route::group(['prefix'  => 'ad'], function() {
-        Route::get('/adList',                  'AdController@adList');//广告列表
+        Route::get('/list',                  'AdController@adList');//广告列表
         Route::post('/adStatus',               'AdController@adStatus');//广告上下架
         Route::post('/modifyAd',               'AdController@modifyAd');//修改广告
         Route::get('/pkgList',                 'AdController@pkgList');//喜豆码列表
