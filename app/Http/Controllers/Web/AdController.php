@@ -13,12 +13,12 @@ class AdController extends Controller
   {
   }
   public function list() {
-    return view('web.contents.ad.list',[
+    return view('web.contents.ad.adList',[
         'title' => '广告列表',
       ]);
   }
   public function createAd() {
-    return view('web.contents.ad.register',[
+    return view('web.contents.ad.createAD',[
         'title' => '新增广告',
       ]);
   }
