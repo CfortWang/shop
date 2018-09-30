@@ -105,7 +105,7 @@
                     </li>
                     <li class="tpl-left-nav-item">
                         <a href="javascript:;" class="nav-link tpl-left-nav-link-list">
-                            <img s     rc="/img/main/icon_gg.png" alt="">
+                            <img src="/img/main/icon_gg.png" alt="">
                             <span>@lang('app.advertisement.title')</span>
                         </a>
                         <ul class="tpl-left-nav-sub-menu" >
