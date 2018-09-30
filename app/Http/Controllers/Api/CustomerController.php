@@ -28,14 +28,15 @@ class CustomerController extends Controller
     public function scannedUserList(Request $request){
         // $buyer = $request->session()->get('buyer.seq');
         $buyer=1;
-        $limit = $request->input('limit')?$request->input('limit'):20;
-        $page = $request->input('page')?$request->input('page'):1;
-        $items=UserScanLog::where('UserScanLog.buyer',$buyer)  
+        // $limit = $request->input('limit')?$request->input('limit'):20;
+        // $page = $request->input('page')?$request->input('page'):1;
+        $xxx=UserScanLog::where('UserScanLog.buyer',$buyer)  
                           ->leftJoin('User as u', 'u.seq', '=', 'UserScanLog.user')
-                          ->select('u.id','u.nickname','u.gender','u.birthday','count(user)')
+                        //  ->select('u.id','u.nickname','u.gender','u.birthday')
+                          ->select(DB::raw('sum(user) as sum_countt'))
                           ->groupBy('UserScanLog.user')
                           ->get();
-        dd(count($items));
+        dd(count($xxx));
         $items = DB::table('UserScanLog')
                     ->where('UserScanLog.buyer',$buyer)  
                     ->select(  

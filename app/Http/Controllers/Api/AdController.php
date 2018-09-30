@@ -41,6 +41,8 @@ class AdController extends Controller
             $endDate=Carbon::parse($v['end_date'])->toDateTimeString();
             $endDate=strtotime($endDate);
             $day=floor(($endDate-$startDate)/3600/24);
+            $list['seq']=$v['seq'];
+            $list['status']=$v['status'];
             $list['title']=$v['title'];
             $list['view_cnt']=$v['view_cnt'];
             $list['start_date']=$v['start_date'];
