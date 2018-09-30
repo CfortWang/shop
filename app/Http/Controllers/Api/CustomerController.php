@@ -33,7 +33,7 @@ class CustomerController extends Controller
         $xxx=UserScanLog::where('UserScanLog.buyer',$buyer)  
                           ->leftJoin('User as u', 'u.seq', '=', 'UserScanLog.user')
                         //  ->select('u.id','u.nickname','u.gender','u.birthday')
-                          ->select(DB::raw('count(user) as sum_countt','.id','u.nickname','u.gender','u.birthday'))
+                          ->select(DB::raw('count(user) as sum_countt','u.nickname','u.gender','u.birthday'))
                           ->groupBy('UserScanLog.user')
                           ->get();
         // dd(count($xxx));
