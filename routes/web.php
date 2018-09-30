@@ -25,7 +25,7 @@ Route::group(['namespace' => 'Web'], function() {
             Route::get('/frequency',                       'StatisticsController@frequency');
             Route::get('/details',                       'StatisticsController@details');
         });
-        //customer 我的客户
+        //customer 
         Route::group(['prefix'  => 'customer'], function() {
             Route::get('/scanned',                       'CustomerController@scannedList')->name("scanned");
             Route::get('/scanned/details',                       'CustomerController@scanDetails');
@@ -34,7 +34,7 @@ Route::group(['namespace' => 'Web'], function() {
             Route::get('/coupon',                       'CustomerController@coupon');
             Route::get('/coupon/details',                       'CustomerController@couponDetails');
         });
-
+   
         //
         Route::group(['prefix'  => 'event'], function() {
             Route::get('/groupon',                       'EventController@groupon');
@@ -42,5 +42,21 @@ Route::group(['namespace' => 'Web'], function() {
             Route::get('/coupon',                       'EventController@coupon');
             Route::get('/coupon/create',                       'EventController@createCoupon');
         });
+        //ad
+        Route::group(['prefix'  => 'ad'], function() {
+            Route::get('/list',                       'AdController@list');
+            Route::get('/register',                   'AdController@createAd');
+        });
+        //shop
+        Route::group(['prefix'  => 'shop'], function() {
+            Route::get('/info',                       'ShopController@list');
+            Route::get('/code',                       'ShopController@code');
+        });
+        //account
+        Route::group(['prefix'  => 'account'], function() {
+        Route::get('/detail',                       'AccountController@detail');
+        Route::get('/cashout',                      'AccountController@cashout');
+        Route::get('/point',                        'AccountController@point');
+    });
     });
 });

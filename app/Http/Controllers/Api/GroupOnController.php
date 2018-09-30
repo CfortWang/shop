@@ -16,6 +16,8 @@ use App\Models\GrouponProduct;
 use App\Models\Groupon;
 use App\Models\GrouponRecord;
 use App\Models\GrouponImage;
+use App\Models\GrouponItem;
+
 class GroupOnController extends Controller
 {
     public function __construct()
@@ -63,27 +65,34 @@ class GroupOnController extends Controller
     public function create(Request $request)
     {
         $buyer_id = $this->buyer_id;
-        $input=Input::only('title','price','discounted_price','group_size','remark','rule','open_time','close_time','start_use_time','end_use_time','is_weekend','is_festival','logo','image','product','continued_time');
+        $input=Input::only('title','price','discounted_price','group_size','remark','rule','open_time','close_time','start_use_time','end_use_time','is_weekend','is_festival','logo','image','product','continued_time','is_effective_fixed','is_usetime_limit','effective_start_at','effective_end_at','time_limit','days','effective_days');
         $message =  $messages = [
             "required" => ":attribute ".trans('common.verification.cannotEmpty'),
         ];
         $validator = Validator::make($input, [
-            // 'title'                => 'required|string',
-            // 'price'                => 'required|numeric',
-            // 'discounted_price'     => 'required|numeric',
-            // 'group_size'           => 'required|numeric|max:20|min:2',
-            // 'remark'               => 'required|string',
-            // 'rule'                 => 'required|string',
-            // 'open_time'            => 'required|date',
-            // 'close_time'           => 'required|date',
+            'title'                => 'required|string',
+            'price'                => 'required|numeric',
+            'discounted_price'     => 'required|numeric',
+            'group_size'           => 'required|numeric|max:20|min:2',
+            'remark'               => 'required|array',
+            'rule'                 => 'required|string',
+            'open_time'            => 'required|date',
+            'close_time'           => 'required|date',
             // 'start_use_time'       => 'required',
             // 'end_use_time'         => 'required',
-            // 'continued_time'          => 'required|numeric',
-            // 'is_weekend'           => 'required|boolean',
-            // 'is_festival'          => 'required|boolean',
-            // 'logo'                 => 'required|image',
+            'continued_time'          => 'required|numeric',
+            'is_weekend'           => 'required|boolean',
+            'is_festival'          => 'required|boolean',
+            'logo'                 => 'required|string',
             'image'                => 'required|array',
-            // 'product'              => 'required|array',
+            'product'              => 'required|array',
+            'is_effective_fixed'   => 'required|in:0,1',
+            'is_usetime_limit'     => 'required|in:0,1'
+            'effective_start_at'   => 'nullable|string'
+            'effective_end_at'     => 'nullable|string'
+            'time_limit'           => 'nullable|array' 
+            'days'                 => 'nullable|array'
+            'effective_days'       => 'nullable|numeric'
         ],$message);
 
         if ($validator->fails()) {
@@ -104,25 +113,67 @@ class GroupOnController extends Controller
         // dd($image['url']);
         // dd($input['image']);
         // dd($input['product']);
-        // $data['title'] = $input['title'];
-        // $data['price'] = $input['price'];
-        // $data['discounted_price'] = $input['discounted_price'];
-        // $data['group_size'] = $input['group_size'];
-        // $data['remark'] = $input['remark'];
-        // $data['rule'] = $input['rule'];
-        // $data['buyer_id'] = $buyer_id;
-        // $data['product_status'] = 1;
-        // $data['open_time'] = $input['open_time'];
-        // $data['close_time'] = $input['close_time'];
-        // $data['start_use_time'] = $input['start_use_time'];
-        // $data['end_use_time'] = $input['end_use_time'];
-        // $data['is_weekend'] = $input['is_weekend'];
-        // $data['is_festival'] = $input['is_festival'];
-        // $data['effective_day'] = Carbon::now()->addWeeks(3);
-        // $data['continued_time'] = $input['continued_time'];
-        // $data['groupon_price'] = 0.001;
-        // $data['image'] = 'https://s1.ax1x.com/2018/09/26/iMNRat.png';
-        // $res = GrouponProduct::create($data);
+        $data['title'] = $input['title'];
+        $data['price'] = $input['price'];
+        $data['discounted_price'] = $input['discounted_price'];
+        $data['group_size'] = $input['group_size'];
+        $data['remark'] = implode('/n',$input['remark']);
+        $data['rule'] = $input['rule'];
+        $data['buyer_id'] = $buyer_id;
+        $data['product_status'] = 1;
+        $data['open_time'] = $input['open_time'];
+        $data['close_time'] = $input['close_time'];
+        $data['start_use_time'] = $input['start_use_time'];
+        $data['end_use_time'] = $input['end_use_time'];
+        $data['is_weekend'] = $input['is_weekend',1];
+        $data['is_festival'] = $input['is_festival',1];
+        $data['effective_day'] = Carbon::now()->addWeeks(3);
+        $data['continued_time'] = $input['continued_time']*60;
+        $data['groupon_price'] = 0.01;
+        $data['image'] = $input['logo'];
+        $data['is_effective_fixed'] = $input['is_effective_fixed',0];
+        $data['is_usetime_limit'] = $input['is_usetime_limit',0];
+        if($data['is_effective_fixed']==1){
+            $data['effective_start_at'] = $input['effective_start_at'];
+            $data['effective_end_at'] = $input['effective_end_at'];
+        }else{
+            $data['effective_days'] = $input['effective_days'];
+        }
+        if($data['is_usetime_limit']==1){
+            $limit = 1;
+            foreach ($input['time_limit'] as $key => $value) {
+                if($value['start_at']&&$value['end_at']&&$limit<4){
+                    $data['time_limit'.$limit.'_start_at'] = $value['start_at'];
+                    $limit  = $limit + 1;
+                }
+            }
+            $day = 0;
+            foreach ($input['days'] as $key => $value) {
+                $temp = 1;
+                for ($i=0; $i < $value; $i++) { 
+                    $temp = $temp*10;
+                }
+                $data['days_limit'] = $day+$temp;
+            }
+            $data['days'] = 
+        }
+        $res = GrouponProduct::create($data);
+        foreach ($data['image'] as $key => $value) {
+            if($value){
+                $image['groupon_product_id'] = $res->id;
+                $image['image_url'] = $value;
+                GrouponImage::create($image);
+            }
+        }
+        foreach ($data['product'] as $key => $value) {
+            if($value['name']){
+                $item['title'] = $value['name'];
+                $item['price'] = $value['price']?$value['price']:0;
+                $item['quantity'] = $value['quantity']?$value['quantity']:1;
+                $item['groupon_product_id'] = $res->id;
+                GrouponItem::create($item);
+            }
+        }
         return $this->responseOk('',$res);
     }
 
@@ -165,5 +216,12 @@ class GroupOnController extends Controller
         }
         $image = FileHelper::groupOnImage($input['file']);
         return $this->responseOk('',$image);
+    }
+
+    public function moveFile()
+    {
+        $url = 'beta-media.beanpop.cn/temp/shop/groupon/2b6a1cdb30e0bc8060728166aeb227fd.png';
+        
+        // $path = 
     }
 }
