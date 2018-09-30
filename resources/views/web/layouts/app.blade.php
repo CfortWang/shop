@@ -105,12 +105,12 @@
                     </li>
                     <li class="tpl-left-nav-item">
                         <a href="javascript:;" class="nav-link tpl-left-nav-link-list">
-                            <img src="/img/main/icon_gg.png" alt="">
+                            <img s     rc="/img/main/icon_gg.png" alt="">
                             <span>@lang('app.advertisement.title')</span>
                         </a>
                         <ul class="tpl-left-nav-sub-menu" >
                             <li>
-                                <a href="advertisement/setting">
+                                <a href="/ad/list">
                                     <span>@lang('app.advertisement.setting')</span>
                                 </a>
                             </li>
@@ -126,7 +126,7 @@
                                 <a href="shop/info">
                                     <span>@lang('app.shop.info')</span>
                                 </a>
-                                <a href="shop/code">
+                                <a href="/shop/code">
                                     <span>@lang('app.shop.code')</span>
                                 </a>
                             </li>
@@ -139,13 +139,13 @@
                         </a>
                         <ul class="tpl-left-nav-sub-menu">
                             <li>
-                                <a href="account">
+                                <a href="/account/detail">
                                     <span>@lang('app.account.detail')</span>
                                 </a>
-                                <a href="account/cashout">
+                                <a href="/account/cashout">
                                     <span>@lang('app.account.cashout')</span>
                                 </a>
-                                <a href="account/point">
+                                <a href="/account/point">
                                     <span>@lang('app.account.point')</span>
                                 </a>
                             </li>
