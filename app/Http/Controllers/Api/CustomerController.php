@@ -28,8 +28,8 @@ class CustomerController extends Controller
     public function scannedUserList(Request $request){
         // $buyer = $request->session()->get('buyer.seq');
         $buyer=1;
-        $limit = $request->input('limit',20);
-        $page = $request->input('page',1);
+        $limit = $request->input('limit')?$request->input('limit'):20;
+        $page = $request->input('page')?$request->input('page'):1;
         $items = DB::table('UserScanLog')
                     ->where('UserScanLog.buyer',$buyer)  
                     ->select(  
