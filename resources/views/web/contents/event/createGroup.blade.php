@@ -25,7 +25,7 @@
 </form> -->
 <div class="tpl-page-container tpl-page-header-fixed">
     <div class="tpl-content-wrapper">
-        <form id="submit" action="/api/event/groupon" method="post"  enctype="multipart/form-data" target="_blank">
+        <form id="submit" action="/api/event/groupon" method="post"  enctype="multipart/form-data">
             <div class="tpl-portlet">
                 <div class="row">
                     <div class="am-u-md-12 am-u-sm-12">
@@ -168,9 +168,9 @@
                                     <label for="effectRadio1" class="time-radio"></label>
                                     <span>固定日期</span>
                                     <span class="time-kind">生效时间：</span>
-                                    <input type="text" class="effect-time" name="start_use_time" data-am-datepicker placeholder="请选择日期">
+                                    <input type="text" class="effect-time" name="effective_start_at" data-am-datepicker placeholder="请选择日期">
                                     <span class="time-kind">过期时间：</span>
-                                    <input type="text" class="expired-time" name="end_use_time" data-am-datepicker placeholder="请选择日期">
+                                    <input type="text" class="expired-time" name="effective_end_at" data-am-datepicker placeholder="请选择日期">
                                     
                                 </div>
                                 <div class="fixed-time-option2">
@@ -239,7 +239,7 @@
                                     <span>-</span>
                                     <input type="text" class="end-hours">
                                     <span class="add-time" onclick="addCustomize()">+添加时间段</span>
-                                    <span class="effective-remark">(请按照24小时制输入可用时段)</span>
+                                    <span class="effective-remark">(请按照24小时制输入可用时段，最多添加三个)</span>
                                 </div>
                             </div>
                         </div>
@@ -641,6 +641,7 @@ $('input[type=radio][name=is_usetime_limit]').change(function() {
     }
 })
 
+var k = 0
 function addCustomize () {
     let startHours = $(".start-hours").val()
     let endHours = $(".end-hours").val()
@@ -652,10 +653,46 @@ function addCustomize () {
         alert("结束时间不能为空")
         return false
     }
-    var $customizeTime = '<div class="customize-time"><div><span class="customize-time-start">' + startHours + '</span><span>-</span><span class="customize-time-end">' + endHours + '</span></div><div class="add-time-box"><input type="text" class="start-hours"><span>&nbsp;-&nbsp;</span><input type="text" class="end-hours"></div></div>'
+    let startTime = 'time_limit[' + k + '][start_at]'
+    let endTime = 'time_limit[' + k + '][end_at]'
+    k++
+    var $customizeTime = '<div class="customize-time"><div class="add-time-text"><span class="customize-time-text">' + startHours + '</span><span>&nbsp;-&nbsp;</span><span class="customize-time-text">' + endHours + '</span></div><div class="add-time-box"><input type="text" class="add-start-hours" value="' + startHours + '" name="' + startTime + '"><span>&nbsp;-&nbsp;</span><input type="text" class="add-end-hours" value="' + endHours + '" name="' + endTime + '"></div><div class="operating"><div class="motify" onclick="modifyCustomize(this)">修改</div><div class="save" onclick="saveCustomize(this)">保存</div><div class="delete">删除</div></div></div>'
     $(".customize").append($customizeTime)
     $(".start-hours").val("")
     $(".end-hours").val("")
+
+    $('.add-start-hours, .add-end-hours').datetimepicker({
+        format: 'hh:ii',
+        autoclose: true,
+        todayHighlight: true,
+        startView: 'hour'
+    });
+}
+
+function modifyCustomize (that) {
+    // for (let i = 0; i < 2; i++) {
+    //     let a = $(that).parent().siblings().children(".package-info")[i]
+    //     let b = $(a).text()
+    //     let c = $(that).parent().parent().siblings().children(".form-control")[i]
+    //     $(c).val(b)
+    // }
+    $(that).parent().siblings(".add-time-text").hide()
+    $(that).parent().siblings(".add-time-box").css("display", 'inline-block')
+    $(that).hide()
+    $(that).siblings().css('display', 'inline-block')
+}
+
+function saveCustomize (that) {
+    for (let i = 0; i < 2; i++) {
+        let a = $(that).parent().siblings(".add-time-box").children("input")[i]
+        let b = $(that).parent().siblings(".add-time-text").children(".customize-time-text")[i]
+        let c = $(a).val()
+        $(b).text(c)
+    }
+    $(that).parent().siblings(".add-time-text").show()
+    $(that).parent().siblings(".add-time-box").hide()
+    $(that).hide()
+    $(that).siblings().css('display', 'inline-block')
 }
 
 
@@ -682,10 +719,10 @@ $(".bottom-reset-btn").on("click", function () {
 })
 
 $('.start-hours, .end-hours').datetimepicker({
-  format: 'hh:ii',
-  autoclose: true,
-  todayHighlight: true,
-  startView: 'hour'
+    format: 'hh:ii',
+    autoclose: true,
+    todayHighlight: true,
+    startView: 'hour'
 });
 </script>
 @endsection

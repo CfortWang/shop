@@ -81,18 +81,18 @@ class GroupOnController extends Controller
             // 'start_use_time'       => 'required',
             // 'end_use_time'         => 'required',
             'continued_time'          => 'required|numeric',
-            'is_weekend'           => 'required|boolean',
-            'is_festival'          => 'required|boolean',
+            'is_weekend'           => 'nullable|boolean',
+            'is_festival'          => 'nullable|boolean',
             'logo'                 => 'required|string',
             'image'                => 'required|array',
             'product'              => 'required|array',
             'is_effective_fixed'   => 'required|in:0,1',
-            'is_usetime_limit'     => 'required|in:0,1'
-            'effective_start_at'   => 'nullable|string'
-            'effective_end_at'     => 'nullable|string'
-            'time_limit'           => 'nullable|array' 
-            'days'                 => 'nullable|array'
-            'effective_days'       => 'nullable|numeric'
+            'is_usetime_limit'     => 'required|in:0,1',
+            'effective_start_at'   => 'nullable|string',
+            'effective_end_at'     => 'nullable|string',
+            'time_limit'           => 'nullable|array' ,
+            'days'                 => 'nullable|array',
+            'effective_days'       => 'nullable|numeric',
         ],$message);
 
         if ($validator->fails()) {
@@ -100,14 +100,7 @@ class GroupOnController extends Controller
             return $this->responseBadRequest($message);
         }
         // $image = FileHelper::groupOnImage($input['image']);
-        for ($i=0; $i < count($input['image']); $i++) { 
-            if(isset($input['image'][$i])){
-                $image = FileHelper::groupOnImage($input['image'][$i]);
-                $product['groupon_product_id'] = 9;
-                $product['image_url'] = $image['url'];
-                GrouponImage::create($product);
-            }
-        }
+        
         $res  = 1;
         // dd(1);
         // dd($image['url']);
@@ -123,16 +116,15 @@ class GroupOnController extends Controller
         $data['product_status'] = 1;
         $data['open_time'] = $input['open_time'];
         $data['close_time'] = $input['close_time'];
-        $data['start_use_time'] = $input['start_use_time'];
-        $data['end_use_time'] = $input['end_use_time'];
-        $data['is_weekend'] = $input['is_weekend',1];
-        $data['is_festival'] = $input['is_festival',1];
+        // $data['start_use_time'] = $input['start_use_time'];
+        // $data['end_use_time'] = $input['end_use_time'];
+        
         $data['effective_day'] = Carbon::now()->addWeeks(3);
         $data['continued_time'] = $input['continued_time']*60;
         $data['groupon_price'] = 0.01;
         $data['image'] = $input['logo'];
-        $data['is_effective_fixed'] = $input['is_effective_fixed',0];
-        $data['is_usetime_limit'] = $input['is_usetime_limit',0];
+        $data['is_effective_fixed'] = $input['is_effective_fixed'];
+        $data['is_usetime_limit'] = $input['is_usetime_limit'];
         if($data['is_effective_fixed']==1){
             $data['effective_start_at'] = $input['effective_start_at'];
             $data['effective_end_at'] = $input['effective_end_at'];
@@ -153,19 +145,21 @@ class GroupOnController extends Controller
                 for ($i=0; $i < $value; $i++) { 
                     $temp = $temp*10;
                 }
-                $data['days_limit'] = $day+$temp;
+                $day = $day+$temp;
             }
-            $data['days'] = 
+            $data['days_limit'] = $day;
+            $data['is_weekend'] = $input['is_weekend'];
+            $data['is_festival'] = $input['is_festival'];
         }
         $res = GrouponProduct::create($data);
-        foreach ($data['image'] as $key => $value) {
+        foreach ($input['image'] as $key => $value) {
             if($value){
                 $image['groupon_product_id'] = $res->id;
                 $image['image_url'] = $value;
                 GrouponImage::create($image);
             }
         }
-        foreach ($data['product'] as $key => $value) {
+        foreach ($input['product'] as $key => $value) {
             if($value['name']){
                 $item['title'] = $value['name'];
                 $item['price'] = $value['price']?$value['price']:0;

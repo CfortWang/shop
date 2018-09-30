@@ -1136,9 +1136,7 @@ input[type="number"]{
 .pdd-table-tr .operating .save{
     display: none;
 }
-.package-obj{
-    display: none;
-}
+
 
 .package-data .form-control, .remark-data .form-control{
     display: none;
@@ -1223,7 +1221,7 @@ input[type="number"]{
     margin-left: 40px;
 }
 
-.start-hours, .end-hours{
+.start-hours, .end-hours, .add-start-hours, .add-end-hours{
     height: 40px;
     width: 150px;
     padding: 6px 12px;
@@ -1238,11 +1236,40 @@ input[type="number"]{
     margin: 0px 25px;
     cursor: pointer;
 }
+.add-time-text{
+    display: inline-block;
+}
 .add-time-box{
     margin-bottom: 10px;
     display: none;
 }
-.customize-time-start, .customize-time-end{
+.customize-time .operating{
+    display: inline-block;
+    margin-left: 40px;
+}
+.customize-time .operating > div{
+    height: 32px;
+    width: 50px;
+    line-height: 30px;
+    border: 0.81px solid #57A0FF;
+    color: #57A0FF;
+    border-radius: 3px;
+    text-align: center;
+    display: inline-block;
+    cursor: pointer;
+    font-family: "PingFangSC-Regular";
+    font-size: 14px;
+    font-weight: 400;
+}
+.customize-time .operating .delete{
+    color: #999999;
+    border: 0.81px solid #dddddd;
+    margin-left: 10px;
+}
+.customize-time .operating .save{
+    display: none;
+}
+.customize-time-text{
     display: inline-block;
     height: 40px;
     line-height: 40px;
