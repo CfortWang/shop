@@ -266,7 +266,7 @@ class AdController extends Controller
     public function pkgList(Request $request)
     {
         $seq = $request->session()->get('buyer.seq');
-        $seq=14;
+        $seq=16;
         $items = Q35Sales::leftJoin('Q35Package as PKG', 'PKG.q35sales', '=', 'Q35Sales.seq')
         ->leftJoin('Shop2Q35Package as S2P', 'S2P.q35package', '=', 'PKG.seq')
         ->where('Q35Sales.buyer', $seq)
