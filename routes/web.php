@@ -10,8 +10,6 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-
 Route::group(['namespace' => 'Web'], function() {
     Route::get('login',                       'LoginController@login')->name("login");
     Route::group(['middleware' => 'login'], function() {

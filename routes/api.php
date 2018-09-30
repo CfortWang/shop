@@ -42,10 +42,10 @@ Route::group(['namespace' => 'Api'], function() {
     });
     //ad
     Route::group(['prefix'  => 'ad'], function() {
-        Route::get('/adList',               'AdController@adList');//广告列表
+        Route::get('/adList',                  'AdController@adList');//广告列表
         Route::post('/adStatus',               'AdController@adStatus');//广告上下架
-        Route::post('/modifyAd',              'AdController@modifyAd');//修改广告
-        Route::get('/pkgList',            'AdController@pkgList');//喜豆码列表
+        Route::post('/modifyAd',               'AdController@modifyAd');//修改广告
+        Route::get('/pkgList',                 'AdController@pkgList');//喜豆码列表
         Route::post('/createAd',               'AdController@createAd');
     });
     //shop
@@ -53,7 +53,7 @@ Route::group(['namespace' => 'Api'], function() {
         Route::get('info',                  'ShopController@info');
         Route::get('category',              'ShopController@category');
         Route::post('modify',               'ShopController@modify');
-        Route::put('deleteImage',         'ShopController@deleteImage');
+        Route::put('deleteImage',           'ShopController@deleteImage');
     });
     //Package
     Route::group(['prefix' => 'packages'], function() {
@@ -69,7 +69,7 @@ Route::group(['namespace' => 'Api'], function() {
         Route::get('my_package/codes/{seq}',          'PackagesController@codeList');
         Route::post('my_package/codes/activation',    'PackagesController@codeActivation');
     });
-    // Account Info
+    //Account Info
     Route::group(['prefix'  => 'account'], function() {
         Route::get('detail',                      'AccountInfoController@detail'); // 账号信息
         Route::get('scoreList',                   'AccountInfoController@scoreList'); // 积分列表
