@@ -26,9 +26,7 @@ class AdController extends Controller
         // $seq = $request->session()->get('buyer.seq');
         // $input=Input::only('limit','page');
         $seq=14;
-        // $limit = $request->input('limit');
-        $limit = 8;
-        // dd($limit);
+        $limit = $request->input('limit');
         $page = $request->input('page');
         $items = ShopAD::where('buyer',$seq);
         $count=count($items);

@@ -46,6 +46,7 @@
 <script>
     var limit = 1
     var page = 1
+    var type = 'ing'
     var pageCount
     var drawList = function () {
         $.ajax({
