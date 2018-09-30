@@ -24,7 +24,7 @@ class AdController extends Controller
     public function adList(Request $request)
     {
         // $seq = $request->session()->get('buyer.seq');
-        $input=Input::only('limit','page');
+        // $input=Input::only('limit','page');
         $seq=14;
         $limit = $request->input('limit');
         $page = $request->input('page');
