@@ -28,9 +28,9 @@ class AdController extends Controller
         $seq=14;
         $limit = $request->input('limit');
         $page = $request->input('page');
-        $items = ShopAD::where('buyer',$seq);
-        $count=count($items);
-        $items = $items->select('title', 'view_cnt', 'start_date','end_date', 'status', 'seq')
+        $count = ShopAD::where('buyer',$seq)->get();
+        $count=count($count);
+        $items = ShopAD::where('buyer',$seq)->select('title', 'view_cnt', 'start_date','end_date', 'status', 'seq')
                 ->orderBy('seq','asc')
                 ->limit($limit)
                 ->offset(($page-1)*$limit) 
