@@ -43,9 +43,9 @@ class AdController extends Controller
             $day=floor(($endDate-$startDate)/3600/24);
             $list['seq']=$v['seq'];
             if($v['status']=="registered" || $v['status']=="stopped"){
-                $list['status']=0;
-            }elseif($v['status']=="activated"){
                 $list['status']=1;
+            }elseif($v['status']=="activated"){
+                $list['status']=0;
             }
             $list['title']=$v['title'];
             $list['view_cnt']=$v['view_cnt'];
