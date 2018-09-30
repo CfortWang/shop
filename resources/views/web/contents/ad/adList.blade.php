@@ -7,21 +7,21 @@
     <div class="tpl-page-container tpl-page-header-fixed">
         <div class="tpl-content-wrapper">
             <div class="row">
-                <div class="am-u-md-12 am-u-sm-12 row-mb ad">
+                <div class="am-u-md-12 am-u-sm-12 row-mb">
                     <div class="tpl-portlet">
-                        <div class="tpl-portlet-title">
+                        <div class="tpl-portlet-title ad-title">
                             <div class="create-ad">
                                 <span>新建广告</span>
                             </div>
                         </div>
-                        <div class="tpl-echarts" id="coupon-table">
-                            <div class="coupon-table">
+                        <div class="tpl-echarts" id="ad-table">
+                            <div class="ad-table">
                                 <div class="table-title clear-fix">
-                                    <div class="name">优惠券名称</div>
-                                    <div class="worth">价值</div>
-                                    <div class="condition">领取限制</div>
-                                    <div class="effective">有效期</div>
-                                    <div class="getTimes">领取人数/次</div>
+                                    <div class="title">优惠券名称</div>
+                                    <div class="uv">UV（总查看人数）</div>
+                                    <div class="pv">PV（总查看数)</div>
+                                    <div class="time">投放时间</div>
+                                    <div class="duration">投放时长</div>
                                     <div class="operating">操作</div>
                                 </div>
                                 <div class="table-content"></div>
@@ -44,13 +44,12 @@
 @endsection
 @section('script')
 <script>
-    var limit = 1
+    var limit = 8
     var page = 1
-    var type = 'ing'
     var pageCount
     var drawList = function () {
         $.ajax({
-            url: 'http://shop.test/api/ad/adList',
+            url: 'http://shop.test/api/ad/list',
             type: 'get',
             dataType: 'json',
             data: {
@@ -58,49 +57,40 @@
                 page: page
             },
             success: function (res) {
-                console.log(res)
-                // $(".table-content").empty()
-                // let resData = res.data.scanUserList
-                // console.log(resData)
-                // let count = res.data.count
-                // pageCount = Math.ceil(count / limit)
-                // console.log(pageCount)
-                // var $tr = '<div class="table-tr clear-fix"><div class="table-td-id"></div><div class="table-td-nickname"></div><div class="table-td-sex"></div><div class="table-td-age"></div><div class="table-td-first"><p class="years"></p><p class="hours"></p></div><div class="table-td-last"><p class="years"></p><p class="hours"></p></div><div class="table-td-frequency"></div><div class="table-td-count"></div><div class="see-more">查看更多</div></div>'
-                // for (let i = 0; i < resData.length; i++) {
-                //     $('.table-content').append($tr)
-                //     if (resData[i].id == null || resData[i].id == '') {
-                //         var id = '——'
-                //     } else {
-                //         var id = "+" + resData[i].id.split('@')[1] + " " + resData[i].id.split('@')[0]
-                //     }
-                //     let seq = resData[i].user
-                //     let nickname = resData[i].nickname
-                //     let gender = resData[i].gender
-                //     let age = resData[i].age
-                //     let firstTimeYears = resData[i].firstTime.split(' ')[0]
-                //     let firstTimeHours = resData[i].firstTime.split(' ')[1]
-                //     let endTimeYears = resData[i].endTime.split(' ')[0]
-                //     let endTimeHours = resData[i].endTime.split(' ')[1]
-                //     let percent = resData[i].rate
-                //     let count = resData[i].scannedCount
-                //     if (gender == null || gender == '') {
-                //         gender = '——'
-                //     }
-                //     if (nickname == null || nickname == '') {
-                //         nickname = '——'
-                //     }
-                //     $(".table-content .table-tr:eq("+ i +")").attr('data-seq', seq)
-                //     $(".table-content .table-tr:eq("+ i +") .table-td-id").text(id)
-                //     $(".table-content .table-tr:eq("+ i +") .table-td-nickname").text(nickname)
-                //     $(".table-content .table-tr:eq("+ i +") .table-td-sex").text(gender)
-                //     $(".table-content .table-tr:eq("+ i +") .table-td-age").text(age)
-                //     $(".table-content .table-tr:eq("+ i +") .table-td-first .years").text(firstTimeYears)
-                //     $(".table-content .table-tr:eq("+ i +") .table-td-first .hours").text(firstTimeHours)
-                //     $(".table-content .table-tr:eq("+ i +") .table-td-last .years").text(endTimeYears)
-                //     $(".table-content .table-tr:eq("+ i +") .table-td-last .hours").text(endTimeHours)
-                //     $(".table-content .table-tr:eq("+ i +") .table-td-frequency").text(percent)
-                //     $(".table-content .table-tr:eq("+ i +") .table-td-count").text(count)
-                // }
+                $(".table-content").empty()
+                let resData = res.data.data
+                console.log(resData)
+                let count = res.data.count
+                pageCount = Math.ceil(count / limit)
+                console.log(pageCount)
+                var $tr = '<div class="table-tr clear-fix"><div class="table-td-title"></div><div class="table-td-uv"></div><div class="table-td-pv"></div><div class="table-td-time"><p class="years"></p><p class="hours"></p></div><div class="table-td-duration"></div><div class="operating"><span class="shelf"></span><span class="obtained"></span><span class="modify">&nbsp;&nbsp;&nbsp;&nbsp;修改</span></div></div>'
+                for (let i = 0; i < resData.length; i++) {
+                    $('.table-content').append($tr)
+                    // let seq = resData[i].user
+                    let adTitle = resData[i].title
+                    let uv = resData[i].view_cnt
+                    let pv = resData[i].view_cnt
+                    let startDateYears = resData[i].start_date.split(' ')[0]
+                    let startDateHours = resData[i].start_date.split(' ')[1]
+                    let duration = resData[i].day
+                    let status = resData[i].status
+                    let id = resData[i].seq
+
+                    if (status == 0) {
+                        $(".table-content .table-tr:eq("+ i +") .operating .obtained").text("下架")
+                    }
+                    if (status == 1) {
+                        $(".table-content .table-tr:eq("+ i +") .operating .shelf").text("上架")
+                    }
+
+                    $(".table-content .table-tr:eq("+ i +") .operating").attr({"data-id": id, "data-status": status})
+                    $(".table-content .table-tr:eq("+ i +") .table-td-title").text(adTitle)
+                    $(".table-content .table-tr:eq("+ i +") .table-td-uv").text(uv)
+                    $(".table-content .table-tr:eq("+ i +") .table-td-pv").text(pv)
+                    $(".table-content .table-tr:eq("+ i +") .table-td-time .years").text(startDateYears)
+                    $(".table-content .table-tr:eq("+ i +") .table-td-time .hours").text(startDateHours)
+                    $(".table-content .table-tr:eq("+ i +") .table-td-duration").text(duration)
+                }
             },
             error: function (ex) {
                 console.log(ex)
@@ -108,6 +98,35 @@
         })
     }
     drawList();
+
+    var changeStatus = function (event1, event2, that) {
+        $.ajax({
+            url: 'http://shop.test/api/ad/adStatus',
+            type: 'post',
+            dataType: 'json',
+            data: {
+                seq: event1,
+                status: event2
+            },
+            success: function (res) {
+                console.log(res)
+                if (res.code != 200) {
+                    alert(res.message);
+                } else {
+                    if (that.parent().attr("data-status") == 0) {
+                        that.parent().attr("data-status", 1)
+                        that.text("上架")
+                    } else {
+                        that.parent().attr("data-status", 0)
+                        that.text("下架")
+                    }
+                }
+            },
+            error: function (ex) {
+                console.log(ex)
+            }
+        })
+    }
 
     $(".page-down").click(function () {
         if (page > 1) {
@@ -128,8 +147,15 @@
         }
     })
 
-    $(".create-pdd").on("click", function () {
+    $(".create-ad").on("click", function () {
         window.location.href = "/ad/createAD"
+    })
+
+    $(".table-content").on("click", ".table-tr .operating .obtained, .table-tr .operating .shelf", function () {
+        var id = $(this).parent().attr("data-id")
+        var status = $(this).parent().attr("data-status")
+        var that = $(this)
+        changeStatus(id, status, that);
     })
 </script>
 @endsection
