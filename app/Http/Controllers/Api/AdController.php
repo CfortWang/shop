@@ -15,7 +15,6 @@ use App\Models\Q35Sales;
 use App\Models\ShopImageFile;
 use App\Models\Shop2Q35Package;
 use Illuminate\Support\Carbon;
-
 use App\Helpers\ParamValidationHelper;
 
 
@@ -144,8 +143,8 @@ class AdController extends Controller
         if($exits){
             return $this->responseBadRequest('already exist title', 401);//error code 409,401
         }
-        // $pkgSeqList = $request->input('pkg_list');
-        // $pkgSeqList = ParamValidationHelper::isValidSeqListStr($pkgSeqList);
+        $pkgSeqList = $request->input('pkg_list');
+        $pkgSeqList = ParamValidationHelper::isValidSeqListStr($pkgSeqList);
         $image = $request->file('ad_image_file');
         // list($imageWidth, $imageHeight) = getimagesize($image);
         // if ($imageWidth !== 1280 || $imageHeight !== 480) {
@@ -163,20 +162,20 @@ class AdController extends Controller
             'shop_image_file'  => $adImage->seq
         ]);
 
-        // if ($pkgSeqList) {
-        //     $packages = Q35Package::whereIn('seq', $pkgSeqList)->get();
-        //     foreach ($packages as $package) {
-        //         Shop2Q35Package::create([
-        //             'type'             => 'ad',
-        //             'start_num'        => $package->start_q35code,
-        //             'end_num'          => $package->end_q35code,
-        //             'status'           => 'registered',
-        //             'buyer'            => $buyer,
-        //             'shop_ad'          => $shopAd->seq,
-        //             'q35package'       => $package->seq
-        //         ]);
-        //     }
-        // }
+        if ($pkgSeqList) {
+            $packages = Q35Package::whereIn('seq', $pkgSeqList)->get();
+            foreach ($packages as $package) {
+                Shop2Q35Package::create([
+                    'type'             => 'ad',
+                    'start_num'        => $package->start_q35code,
+                    'end_num'          => $package->end_q35code,
+                    'status'           => 'registered',
+                    'buyer'            => $buyer,
+                    'shop_ad'          => $shopAd->seq,
+                    'q35package'       => $package->seq
+                ]);
+            }
+        }
         return $this->responseOK('success', $shopAd);
     }
     //修改广告
