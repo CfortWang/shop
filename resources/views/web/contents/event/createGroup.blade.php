@@ -5,24 +5,6 @@
 <link rel="stylesheet" href="/css/amazeui.datetimepicker.css">
 @endsection('css')
 @section('content')
-
-
-
-<!-- <form id="submit" action="/api/event/groupon" method="post"  enctype="multipart/form-data">
-    <input type="file" name="image[]">
-    <input type="file" name="image[]">
-    <input type="file" name="image[]">
-    <input type="file" name="image[]">
-    <input type="file" name="image[]">
-    <input type="file" name="imag">
-    <input type="text" class="form-control" name="product[1][name]">
-    <input type="text" class="form-control" name="product[1][price]">
-    <input type="text" class="form-control" name="product[1][quantity]">
-    <input type="text" class="form-control" name="product[2][name]">
-    <input type="text" class="form-control" name="product[2][price]">
-    <input type="text" class="form-control" name="product[2][quantity]">
-    <button type="button" class="btn">提交</button>
-</form> -->
 <div class="tpl-page-container tpl-page-header-fixed">
     <div class="tpl-content-wrapper">
         <form id="submit" action="/api/event/groupon" method="post"  enctype="multipart/form-data">
@@ -60,25 +42,27 @@
                             <div class="form-group clear-fix">
                                 <label class="am-u-lg-2 am-u-md-2 am-u-sm-3">拼豆活动时间</label>
                                 <div class="am-u-lg-10 am-u-md-10 am-u-sm-9">
-                                    <input type="text" class="form-control timepicker" id="pdd-startDate" data-am-datepicker name="open_time">
+                                    <input type="text" class="form-control timepicker" id="pdd-startDate" autocomplete="off" data-am-datepicker name="open_time">
                                     <span>-</span>
-                                    <input type="text" class="form-control timepicker" id="pdd-endDate" data-am-datepicker name="close_time">
-                                    <!-- <input type="text" id="config-demo" class="form-control" style="max-width:320px;display:inline-block;margin:4px"> -->
+                                    <input type="text" class="form-control timepicker" id="pdd-endDate" autocomplete="off" data-am-datepicker name="close_time">
                                 </div>
                             </div>
                             <div class="form-group clear-fix">
                                 <label class="am-u-lg-2 am-u-md-2 am-u-sm-3">拼豆发起后持续时间</label>
-                                <div class="am-u-lg-10 am-u-md-10 am-u-sm-9">
-                                    <label for="continue-time1">
-                                        <input type="radio" class="form-control" checked id="continue-time1" name="continued_time" value="48">
+                                <div class="am-u-lg-10 am-u-md-10 am-u-sm-9 continued-time">
+                                    <label for="continue-time1" class="label-radio">
+                                        <input type="radio" checked hidden id="continue-time1" name="continued_time" value="48">
+                                        <label for="continue-time1" class="time-radio"></label>
                                         <span>48小时</span>
                                     </label>
-                                    <label for="continue-time2">
-                                        <input type="radio" class="form-control" id="continue-time2" name="continued_time" value="72">
+                                    <label for="continue-time2" class="label-radio">
+                                        <input type="radio" hidden id="continue-time2" name="continued_time" value="72">
+                                        <label for="continue-time2" class="time-radio"></label>
                                         <span>72小时</span>
                                     </label>
-                                    <label for="continue-time3">
-                                        <input type="radio" class="form-control" id="continue-time3" name="continued_time" value="120">
+                                    <label for="continue-time3" class="label-radio">
+                                        <input type="radio" hidden id="continue-time3" name="continued_time" value="120">
+                                        <label for="continue-time3" class="time-radio"></label>
                                         <span>120小时</span>
                                     </label>
                                 </div>
@@ -164,19 +148,23 @@
                             <div class="choose-title">拼豆成功后优惠有效期</div>
                             <div class="fixed-time">
                                 <div class="fixed-time-option1">
-                                    <input type="radio" id="effectRadio1" value="1" checked hidden name="is_effective_fixed">
-                                    <label for="effectRadio1" class="time-radio"></label>
-                                    <span>固定日期</span>
+                                    <label for="effectRadio1" class="label-radio">
+                                        <input type="radio" id="effectRadio1" value="1" checked hidden name="is_effective_fixed">
+                                        <label for="effectRadio1" class="time-radio"></label>
+                                        <span>固定日期</span>
+                                    </label>
                                     <span class="time-kind">生效时间：</span>
-                                    <input type="text" class="effect-time" name="effective_start_at" data-am-datepicker placeholder="请选择日期">
+                                    <input type="text" class="effect-time" autocomplete="off" name="effective_start_at" data-am-datepicker placeholder="请选择日期">
                                     <span class="time-kind">过期时间：</span>
-                                    <input type="text" class="expired-time" name="effective_end_at" data-am-datepicker placeholder="请选择日期">
+                                    <input type="text" class="expired-time" autocomplete="off" name="effective_end_at" data-am-datepicker placeholder="请选择日期">
                                     
                                 </div>
                                 <div class="fixed-time-option2">
-                                    <input type="radio" id="effectRadio2" value="0" hidden name="is_effective_fixed">
-                                    <label for="effectRadio2" class="time-radio"></label>
-                                    <span>拼豆成功后当日开始</span>
+                                    <label for="effectRadio2" class="label-radio">
+                                        <input type="radio" id="effectRadio2" value="0" hidden name="is_effective_fixed">
+                                        <label for="effectRadio2" class="time-radio"></label>
+                                        <span>拼豆成功后当日开始</span>
+                                    </label>
                                     <input type="number" name="effective_days" id="" class="effective-days" placeholder="请输入天数">
                                     <span>天内有效</span>
                                     <span class="effective-remark">(生效天数必须在1-365之间)</span>
@@ -186,51 +174,67 @@
                         <div class="dividing"></div>
                         <div class="effective-time">
                             <div class="random-time option-disabled">
-                                <input type="radio" id="timeRadio1" value="0" checked hidden name="is_usetime_limit">
-                                <label for="timeRadio1" class="time-radio"></label>
-                                <span>有效期内任意时间段可用</span>
+                                <label for="timeRadio1" class="label-radio">
+                                    <input type="radio" id="timeRadio1" value="0" checked hidden name="is_usetime_limit">
+                                    <label for="timeRadio1" class="time-radio"></label>
+                                    <span>有效期内任意时间段可用</span>
+                                </label>
                             </div>
                             <div class="sectiom-time">
-                                <div>
+                                <label for="timeRadio2" class="label-radio">
                                     <input type="radio" id="timeRadio2" value="1" hidden name="is_usetime_limit">
                                     <label for="timeRadio2" class="time-radio"></label>
                                     <span>有效期内部分时间段可用</span>
-                                </div>
+                                </label>
                                 <div class="section-time-weekends">
                                     <div class="weekends-day">
-                                        <input type="checkbox" id="weekendCheckbox1" value="1" hidden name="days[]">
-                                        <label for="weekendCheckbox1" class="weekend-checkbox"></label>
-                                        <span>周一</span>
+                                        <label for="weekendCheckbox1" class="label-radio">
+                                            <input type="checkbox" id="weekendCheckbox1" value="1" hidden name="days[]">
+                                            <label for="weekendCheckbox1" class="weekend-checkbox"></label>
+                                            <span>周一</span>
+                                        </label>
                                     </div>
                                     <div class="weekends-day">
-                                        <input type="checkbox" id="weekendCheckbox2" value="2" hidden name="days[]">
-                                        <label for="weekendCheckbox2" class="weekend-checkbox"></label>
-                                        <span>周二</span>
+                                        <label for="weekendCheckbox2" class="label-radio">
+                                            <input type="checkbox" id="weekendCheckbox2" value="2" hidden name="days[]">
+                                            <label for="weekendCheckbox2" class="weekend-checkbox"></label>
+                                            <span>周二</span>
+                                        </label>
                                     </div>
                                     <div class="weekends-day">
-                                        <input type="checkbox" id="weekendCheckbox3" value="3" hidden name="days[]">
-                                        <label for="weekendCheckbox3" class="weekend-checkbox"></label>
-                                        <span>周三</span>
+                                        <label for="weekendCheckbox3" class="label-radio">
+                                            <input type="checkbox" id="weekendCheckbox3" value="3" hidden name="days[]">
+                                            <label for="weekendCheckbox3" class="weekend-checkbox"></label>
+                                            <span>周三</span>
+                                        </label>
                                     </div>
                                     <div class="weekends-day">
-                                        <input type="checkbox" id="weekendCheckbox4" value="4" hidden name="days[]">
-                                        <label for="weekendCheckbox4" class="weekend-checkbox"></label>
-                                        <span>周四</span>
+                                        <label for="weekendCheckbox4" class="label-radio">
+                                            <input type="checkbox" id="weekendCheckbox4" value="4" hidden name="days[]">
+                                            <label for="weekendCheckbox4" class="weekend-checkbox"></label>
+                                            <span>周四</span>
+                                        </label>
                                     </div>
                                     <div class="weekends-day">
-                                        <input type="checkbox" id="weekendCheckbox5" value="5" hidden name="days[]">
-                                        <label for="weekendCheckbox5" class="weekend-checkbox"></label>
-                                        <span>周五</span>
+                                        <label for="weekendCheckbox5" class="label-radio">
+                                            <input type="checkbox" id="weekendCheckbox5" value="5" hidden name="days[]">
+                                            <label for="weekendCheckbox5" class="weekend-checkbox"></label>
+                                            <span>周五</span>
+                                        </label>
                                     </div>
                                     <div class="weekends-day">
-                                        <input type="checkbox" id="weekendCheckbox6" value="1" hidden name="is_weekend">
-                                        <label for="weekendCheckbox6" class="weekend-checkbox"></label>
-                                        <span>周末</span>
+                                        <label for="weekendCheckbox6" class="label-radio">
+                                            <input type="checkbox" id="weekendCheckbox6" value="1" hidden name="is_weekend">
+                                            <label for="weekendCheckbox6" class="weekend-checkbox"></label>
+                                            <span>周末</span>
+                                        </label>
                                     </div>
                                     <div class="weekends-day">
-                                        <input type="checkbox" id="weekendCheckbox7" value="1" hidden name="is_festival">
-                                        <label for="weekendCheckbox7" class="weekend-checkbox"></label>
-                                        <span>节假日</span>
+                                        <label for="weekendCheckbox7" class="label-radio">
+                                            <input type="checkbox" id="weekendCheckbox7" value="1" hidden name="is_festival">
+                                            <label for="weekendCheckbox7" class="weekend-checkbox"></label>
+                                            <span>节假日</span>
+                                        </label>
                                     </div>
                                 </div>
                                 <div class="hours-choose">
@@ -473,12 +477,12 @@ $(".list").on("click", ".selected-image .delete-image", function () {
 })
 
 function modify (that, len) {
-    for (let i = 0; i < len; i++) {
-        let a = $(that).parent().parent().siblings().children(".package-info")[i]
-        let b = $(a).text()
-        let c = $(that).parent().parent().siblings().children(".form-control")[i]
-        $(c).val(b)
-    }
+    // for (let i = 0; i < len; i++) {
+    //     let a = $(that).parent().parent().siblings().children(".package-info")[i]
+    //     let b = $(a).text()
+    //     let c = $(that).parent().parent().siblings().children(".form-control")[i]
+    //     $(c).val(b)
+    // }
     $(that).parent().parent().siblings().children(".form-control").show()
     $(that).parent().parent().siblings().children(".package-info").hide()
     $(that).hide()
@@ -498,33 +502,6 @@ function save (that, len) {
     $(that).siblings().css('display', 'inline-block')
 }
 
-// function getPackageData () {
-//     var package = []
-//     let pLength = $(".package-data > .pdd-table-tr").length
-//     for (let i = 0; i < pLength; i++) {
-//         var pdata = {}
-//         // for (let j = 0; j < 3; j++) {
-//         pdata.name = $(".package-data > .pdd-table-tr:eq("+ i +") .package-info:eq("+ 0 +")").text()
-//         pdata.amount = $(".package-data > .pdd-table-tr:eq("+ i +") .package-info:eq("+ 1 +")").text()
-//         pdata.price = $(".package-data > .pdd-table-tr:eq("+ i +") .package-info:eq("+ 2 +")").text()
-//         // }
-//         package[i] = pdata
-//     }
-// }
-
-// function getRemarkData () {
-//     var package = []
-//     let pLength = $(".package-data > .pdd-table-tr").length
-//     for (let i = 0; i < pLength; i++) {
-//         var pdata = {}
-//         // for (let j = 0; j < 3; j++) {
-//         pdata.name = $(".package-data > .pdd-table-tr:eq("+ i +") .package-info:eq("+ 0 +")").text()
-//         pdata.amount = $(".package-data > .pdd-table-tr:eq("+ i +") .package-info:eq("+ 1 +")").text()
-//         pdata.price = $(".package-data > .pdd-table-tr:eq("+ i +") .package-info:eq("+ 2 +")").text()
-//         // }
-//         package[i] = pdata
-//     }
-// }
 var i = 0
 function addPackageInfo () {
     var packageName = $("#package-name").val()
@@ -581,41 +558,15 @@ function addRemarkInfo () {
     $("#package-remark").val("")
 }
 
-
-
-
-
-
-
-
-
-
-
-function getCheckVal () {
-    var obj = $("input[name='weekend-checkbox']");
-    var checkVal = [];
-    for(k in obj){
-        if(obj[k].checked){
-            checkVal.push(obj[k].value);
-        }
-    }
-    console.log(checkVal)
-}
-
 $('input[type=radio][name=is_effective_fixed]').change(function() {
     if (this.value == 1) {
-        $(this).parent().removeClass("option-disabled")
-        $(this).parent().siblings().addClass("option-disabled")
-        $(this).parent().siblings().children(".effective-days").attr("disabled", true)
-        $(this).parent().children(".effect-time").attr("disabled", false)
-        $(this).parent().children(".expired-time").attr("disabled", false)
-    }
-    else if (this.value == 0) {
-        $(this).parent().removeClass("option-disabled")
-        $(this).parent().siblings().addClass("option-disabled")
-        $(this).parent().siblings().children(".effect-time").attr("disabled", true)
-        $(this).parent().siblings().children(".expired-time").attr("disabled", true)
-        $(this).parent().children(".effective-days").attr("disabled", false)
+        $(this).parent().parent().siblings().children(".effective-days").attr("disabled", true)
+        $(this).parent().parent().children(".effect-time").attr("disabled", false)
+        $(this).parent().parent().children(".expired-time").attr("disabled", false)
+    } else if (this.value == 0) {
+        $(this).parent().parent().siblings().children(".effect-time").attr("disabled", true)
+        $(this).parent().parent().siblings().children(".expired-time").attr("disabled", true)
+        $(this).parent().parent().children(".effective-days").attr("disabled", false)
     }
 })
 
@@ -625,19 +576,10 @@ $('.sectiom-time #timeRadio2').attr("disabled", false)
 
 $('input[type=radio][name=is_usetime_limit]').change(function() {
     if (this.value == 0) {
-        $(this).parent().removeClass("option-disabled")
-        $(this).parent().siblings().addClass("option-disabled")
-        // let a = $(this).parent().siblings().children(".section-time-weekends").children()
-        // for (let i = 0; i < a.length; i++) {
-        //     $(a[i]).children('input').attr("disabled", true)
-        // }
-        $(this).parent().siblings().find("input").attr("disabled", true)
-        $(this).parent().siblings().find("#timeRadio2").attr("disabled", false)
-    }
-    else if (this.value == 1) {
-        $(this).parent().parent().removeClass("option-disabled")
-        $(this).parent().parent().siblings().addClass("option-disabled")
-        $(this).parent().parent().find("input").attr("disabled", false)
+        $(this).parent().parent().siblings().find("input").prop({"disabled": true, "checked": false})
+        $(this).parent().parent().siblings().find("#timeRadio2").attr("disabled", false)
+    } else if (this.value == 1) {
+        $(this).parent().parent().find("input").prop({"disabled": false, "checked": true})
     }
 })
 
@@ -670,12 +612,6 @@ function addCustomize () {
 }
 
 function modifyCustomize (that) {
-    // for (let i = 0; i < 2; i++) {
-    //     let a = $(that).parent().siblings().children(".package-info")[i]
-    //     let b = $(a).text()
-    //     let c = $(that).parent().parent().siblings().children(".form-control")[i]
-    //     $(c).val(b)
-    // }
     $(that).parent().siblings(".add-time-text").hide()
     $(that).parent().siblings(".add-time-box").css("display", 'inline-block')
     $(that).hide()
@@ -697,21 +633,9 @@ function saveCustomize (that) {
 
 
 $(".bottom-submit-btn").on("click", function () {
-    // var aa = $("#submit").serialize()
-    // console.log(aa)
+    var aa = $("#submit").serialize()
+    console.log(aa)
     $("#submit").submit()
-    // var productUrlArr = []
-    // var listUrlArr = []
-    // let a = $('.product .selected-image')
-    // let b = $('.list .selected-image')
-    // for (let i = 0; i < a.length; i++) {
-    //     productUrlArr.push($(a[i]).attr("data-url"))
-    // }
-    // console.log(productUrlArr)
-
-    // for (let i = 0; i < b.length; i++) {
-    //     listUrlArr.push($(a[i]).attr("data-url"))
-    // }
 })
 
 $(".bottom-reset-btn").on("click", function () {
