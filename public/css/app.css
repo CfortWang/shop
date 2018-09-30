@@ -854,7 +854,7 @@ input:-moz-placeholder {
     cursor: pointer;
     color: #57A0FF;
 }
-.create-pdd{
+.create-pdd, .create-ad{
     width: 150px;
     height: 55px;
     background: #57A0FF;
@@ -866,6 +866,9 @@ input:-moz-placeholder {
     font-family: "PingFangSC-Light";
     margin-left: 50%;
     cursor: pointer;
+}
+.create-ad{
+    margin-left: 0px;
 }
 
 .am-selected{

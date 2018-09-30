@@ -110,7 +110,7 @@
                         </a>
                         <ul class="tpl-left-nav-sub-menu" >
                             <li>
-                                <a href="/ad/list">
+                                <a href="/ad/adList">
                                     <span>@lang('app.advertisement.setting')</span>
                                 </a>
                             </li>
