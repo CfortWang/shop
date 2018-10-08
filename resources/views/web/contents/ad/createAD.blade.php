@@ -45,7 +45,7 @@
                                 <div class="form-group clear-fix">
                                     <label class="am-u-lg-2 am-u-md-2 am-u-sm-3">关联喜豆码</label>
                                     <div class="am-u-lg-4 am-u-md-5 am-u-sm-6 am-u-end">
-                                        <select class="pkg-data" data-am-selected></select>
+                                        <select class="pkg-data" data-am-selected="{maxHeight: 100}"></select>
                                     </div>
                                 </div>
                             </div>
