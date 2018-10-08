@@ -38,6 +38,8 @@ class CustomerController extends Controller
                     ->groupBy('UserScanLog.user')
                     ->where('UserScanLog.buyer',$buyer)
                     ->where('u.id', 'like', '%'.$searchValue.'%')
+                    ->limit($limit)
+                    ->offset(($page-1)*$limit) 
                     ->get();  
         }else{
             $items=DB::table('UserScanLog')
@@ -45,6 +47,8 @@ class CustomerController extends Controller
             ->select('u.id','u.nickname','UserScanLog.user','u.gender','u.birthday', DB::raw('count(UserScanLog.user) AS scannedCount'))
             ->groupBy('UserScanLog.user')
             ->where('UserScanLog.buyer',$buyer)
+            ->limit($limit)
+            ->offset(($page-1)*$limit) 
             ->get();
         }
         $count=count($items);
