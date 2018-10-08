@@ -2,145 +2,200 @@
 @section('title', $title)
 @section('css')
 <link rel="stylesheet" href="/css/app.css">
-<link rel="stylesheet" type="text/css" media="all" href="/css/daterangepicker.css" />
-<link rel="stylesheet" type="text/css" media="all" href="/css/bootstrap-datetimepicker.min.css" />
+<link rel="stylesheet" href="/css/amazeui.datetimepicker.css">
 @endsection('css')
 @section('content')
     <div class="tpl-page-container tpl-page-header-fixed">
         <div class="tpl-content-wrapper">
-            <div class="row">
-                <div class="am-u-md-12 am-u-sm-12 row-mb pdd">
-                    <div class="tpl-portlet">
-                        <div class="tpl-portlet-title">
-                            <div class="search-box">
-                                <input type="text" class="search-input" name="search" placeholder="请输入手机号查找">
-                                <button class="search-btn">搜索</button>
-                            </div>
-                            <!-- <select data-am-selected>
-                                <option value="1" selected>进行中</option>
-                                <option value="2">未开始</option>
-                                <option value="3">已结束</option>
-                            </select> -->
-                            <div class="create-pdd">
-                                <span>新建拼豆豆</span>
-                            </div>
-                        </div>
-                        <div class="tpl-echarts" id="coupon-table">
-                            <div class="coupon-table">
-                                <div class="table-title clear-fix">
-                                    <div class="name">优惠券名称</div>
-                                    <div class="worth">价值</div>
-                                    <div class="condition">领取限制</div>
-                                    <div class="effective">有效期</div>
-                                    <div class="getTimes">领取人数/次</div>
-                                    <div class="use">已使用</div>
-                                    <div class="getRate">领取率</div>
-                                    <div class="useRate">使用率</div>
-                                    <div class="status">状态</div>
-                                    <div class="operating">操作</div>
+            <form id="submit" action="/api/ad/createAd" method="post"  enctype="multipart/form-data">
+                <div class="tpl-portlet">
+                    <div class="row ad-row">
+                        <div class="am-u-md-12 am-u-sm-12">
+                            <div class="form-container">
+                                <div class="form-title">广告信息</div>
+                                <div class="form-group clear-fix">
+                                    <label class="am-u-lg-2 am-u-md-2 am-u-sm-3">广告标题</label>
+                                    <div class="am-u-lg-10 am-u-md-10 am-u-sm-9">
+                                        <input type="text" class="form-control" id="name" name="title" placeholder="最多可输入20个字符" maxlength="20">
+                                    </div>
                                 </div>
-                                <div class="table-content"></div>
-                            </div>
-                            <div class="pagination">
-                                <div class="page-down">
-                                    <img src="/img/main/icon_page_left.png" alt="">
+                                <div class="form-group image-group clear-fix">
+                                    <label class="am-u-lg-2 am-u-md-2 am-u-sm-3">广告图片</label>
+                                    <div class="am-u-lg-10 am-u-md-10 am-u-sm-9 product">
+                                        <a href="javascript:;" class="file">+添加图片
+                                            <input type="file" class="" id="product-image" name="image[]" onchange="selectImage(this, '.product')">
+                                        </a>
+                                        <span class="image-remark">建议尺寸:1204*1204像素，仅支持gif,jpeg,png,bmp 4种格式，大小不超过3.0M</span>
+                                    </div>
                                 </div>
-                                <div class="page-number">1</div>
-                                <div class="page-up">
-                                    <img src="/img/main/icon_page_right.png" alt="">
+                                <div class="form-group clear-fix">
+                                    <label class="am-u-lg-2 am-u-md-2 am-u-sm-3">投放时间</label>
+                                    <div class="am-u-lg-10 am-u-md-10 am-u-sm-9">
+                                        <input type="text" class="form-control timepicker" id="ad-startDate" autocomplete="off" data-am-datepicker name="start_date">
+                                        <span>-</span>
+                                        <input type="text" class="form-control timepicker" id="ad-endDate" autocomplete="off" data-am-datepicker name="end_date">
+                                    </div>
+                                </div>
+                                <div class="form-group clear-fix">
+                                    <label class="am-u-lg-2 am-u-md-2 am-u-sm-3">跳转链接</label>
+                                    <div class="am-u-lg-10 am-u-md-10 am-u-sm-9">
+                                        <input type="text" class="form-control" id="new-price" name="landing_url" placeholder="输入广告的跳转链接，为空则不跳转">
+                                    </div>
+                                </div>
+                                <div class="form-group clear-fix">
+                                    <label class="am-u-lg-2 am-u-md-2 am-u-sm-3">关联喜豆码</label>
+                                    <div class="am-u-lg-4 am-u-md-5 am-u-sm-6 am-u-end">
+                                        <select class="pkg-data" data-am-selected></select>
+                                    </div>
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            </form>
         </div>
     </div>
 @endsection
 @section('script')
+<script src="/js/amazeui.datetimepicker.min.js"></script>
 <script>
-    var limit = 8
-    var type = 'scan'
-    var page = 1
-    var pageCount
-    var drawList = function () {
-        $.ajax({
-            url: 'http://shop.test/api/customer/scannedUserList',
-            type: 'get',
-            dataType: 'json',
-            data: {
-                type: type,
-                limit: limit,
-                page: page
-            },
-            success: function (res) {
-                $(".table-content").empty()
-                let resData = res.data.scanUserList
-                console.log(resData)
-                let count = res.data.count
-                pageCount = Math.ceil(count / limit)
-                console.log(pageCount)
-                var $tr = '<div class="table-tr clear-fix"><div class="table-td-id"></div><div class="table-td-nickname"></div><div class="table-td-sex"></div><div class="table-td-age"></div><div class="table-td-first"><p class="years"></p><p class="hours"></p></div><div class="table-td-last"><p class="years"></p><p class="hours"></p></div><div class="table-td-frequency"></div><div class="table-td-count"></div><div class="see-more">查看更多</div></div>'
-                for (let i = 0; i < resData.length; i++) {
-                    $('.table-content').append($tr)
-                    if (resData[i].id == null || resData[i].id == '') {
-                        var id = '——'
-                    } else {
-                        var id = "+" + resData[i].id.split('@')[1] + " " + resData[i].id.split('@')[0]
-                    }
-                    let seq = resData[i].user
-                    let nickname = resData[i].nickname
-                    let gender = resData[i].gender
-                    let age = resData[i].age
-                    let firstTimeYears = resData[i].firstTime.split(' ')[0]
-                    let firstTimeHours = resData[i].firstTime.split(' ')[1]
-                    let endTimeYears = resData[i].endTime.split(' ')[0]
-                    let endTimeHours = resData[i].endTime.split(' ')[1]
-                    let percent = resData[i].rate
-                    let count = resData[i].scannedCount
-                    if (gender == null || gender == '') {
-                        gender = '——'
-                    }
-                    if (nickname == null || nickname == '') {
-                        nickname = '——'
-                    }
-                    $(".table-content .table-tr:eq("+ i +")").attr('data-seq', seq)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-id").text(id)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-nickname").text(nickname)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-sex").text(gender)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-age").text(age)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-first .years").text(firstTimeYears)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-first .hours").text(firstTimeHours)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-last .years").text(endTimeYears)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-last .hours").text(endTimeHours)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-frequency").text(percent)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-count").text(count)
-                }
-            },
-            error: function (ex) {
-                console.log(ex)
-            }
-        })
-    }
-    // drawList();
 
-    $(".page-down").click(function () {
-        if (page > 1) {
-            page--
-            drawList();
-            $(".page-number").text(page)
-        } else {
-            console.log("当前已是第一页")
+var nowTemp = new Date();
+var nowDay = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0).valueOf();
+var nowMoth = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), 1, 0, 0, 0, 0).valueOf();
+var nowYear = new Date(nowTemp.getFullYear(), 0, 1, 0, 0, 0, 0).valueOf();
+var $startDate = $('#ad-startDate');
+
+// 广告投放时间
+var checkin = $startDate.datepicker({
+    onRender: function(date, viewMode) {
+    // 默认 days 视图，与当前日期比较
+    var viewDate = nowDay;
+    switch (viewMode) {
+        // moths 视图，与当前月份比较
+        case 1:
+        viewDate = nowMoth;
+        break;
+        // years 视图，与当前年份比较
+        case 2:
+        viewDate = nowYear;
+        break;
+    }
+
+    return date.valueOf() < viewDate ? 'am-disabled' : '';
+    }
+}).on('changeDate.datepicker.amui', function(ev) {
+    if (ev.date.valueOf() > checkout.date.valueOf()) {
+        var newDate = new Date(ev.date)
+        newDate.setDate(newDate.getDate() + 1);
+        checkout.setValue(newDate);
+    }
+    checkin.close();
+    $('#ad-endDate')[0].focus();
+}).data('amui.datepicker');
+
+var checkout = $('#ad-endDate').datepicker({
+    onRender: function(date, viewMode) {
+    var inTime = checkin.date;
+    var inDay = inTime.valueOf();
+    var inMoth = new Date(inTime.getFullYear(), inTime.getMonth(), 1, 0, 0, 0, 0).valueOf();
+    var inYear = new Date(inTime.getFullYear(), 0, 1, 0, 0, 0, 0).valueOf();
+
+    // 默认 days 视图，与当前日期比较
+    var viewDate = inDay;
+
+    switch (viewMode) {
+        // moths 视图，与当前月份比较
+        case 1:
+        viewDate = inMoth;
+        break;
+        // years 视图，与当前年份比较
+        case 2:
+        viewDate = inYear;
+        break;
+    }
+
+    return date.valueOf() <= viewDate ? 'am-disabled' : '';
+    }
+}).on('changeDate.datepicker.amui', function(ev) {
+    checkout.close();
+}).data('amui.datepicker');
+
+
+function selectImage(file) {
+    if (!file.files || !file.files[0]) {
+        return;
+    }
+    var reader = new FileReader();
+    reader.onload = function (evt) {
+        var sonNum = $('.product').children().length
+        if (sonNum > 2) {
+            console.log("最多只能选择1张图片")
+            return false
+        }
+        var $imgBox = '<div class="selected-image"><div class="delete-image"><img src="/img/main/close.png" alt=""></div><img class="image" alt="" src="' +evt.target.result + '"><input class="img-value" type="text" name="image[]" hidden></div>'
+        $('.product').append($imgBox)
+        image = evt.target.result;
+        $('.product .image-remark').hide()
+    }
+    reader.readAsDataURL(file.files[0]);
+    var fd = new FormData()
+    fd.append('file', file.files[0])
+    upLoadImage(fd);
+    $(".product .file").hide()
+}
+
+function upLoadImage (file) {
+    $.ajax({
+        url: 'http://shop.test/api/event/upload',
+        type: 'post',
+        dataType: 'json',
+        data: file,
+        processData: false,
+        contentType: false,
+        success: function (res) {
+            let url = res.data.url
+            $('.product .selected-image:last-child .img-value').val(url)
+            // console.log($('.product .selected-image:last-child .img-value'))
+        },
+        error: function (ex) {
+            console.log(ex)
         }
     })
-    $(".page-up").click(function () {
-        if (page < pageCount) {
-            page++;
-            drawList();
-            $(".page-number").text(page)
-        } else {
-            console.log("已无更多数据")
+    // console.log(file)
+}
+
+
+
+function getPkgCode (file) {
+    $.ajax({
+        url: 'http://shop.test/api/ad/pkgList',
+        type: 'get',
+        dataType: 'json',
+        success: function (res) {
+            let resData = res.data
+            for (let i = 0; i < res.data.length; i++) {
+                let $pkgData = '<option value="' + resData[i].pkg_seq + '">' + resData[i].pkg_code + '</option>'
+                $(".pkg-data").append($pkgData)
+            }
+        },
+        error: function (ex) {
+            console.log(ex)
         }
     })
+    // console.log(file)
+}
+getPkgCode();
+
+$(".product").on("click", ".selected-image .delete-image", function () {
+    $(this).parent().remove()
+    var sonNum = $(".product").children().length
+    if (sonNum == 2) {
+        $(".product .image-remark").show()
+        $(".product .file").show()
+    }
+
+})
+
 </script>
 @endsection

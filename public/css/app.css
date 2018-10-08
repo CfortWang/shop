@@ -699,7 +699,7 @@ ul.tpl-dropdown-content li>a.tpl-dropdown-content-message:last-child {
     float: left;
     width: 50%;
 }
-.scan-user-table .table-title, #pdd-table .table-title, .coupon-table .table-title, .coupon-details-table .table-title, .pdd .table-title{
+.scan-user-table .table-title, #pdd-table .table-title, .coupon-table .table-title, .coupon-details-table .table-title, .pdd .table-title, #ad-table .table-title{
     height:64px;
     /* line-height: 64px; */
     display: flex;
@@ -708,7 +708,7 @@ ul.tpl-dropdown-content li>a.tpl-dropdown-content-message:last-child {
     border-radius:5px 5px 0px 0px;
     color: #ffffff;
 }
-.scan-user-table .table-tr, #pdd-table .table-tr, .coupon-table .table-tr, .coupon-details-table .table-tr, .pdd .table-tr{
+.scan-user-table .table-tr, #pdd-table .table-tr, .coupon-table .table-tr, .coupon-details-table .table-tr, .pdd .table-tr, #ad-table .table-tr{
     height: 70px;
 }
 
@@ -867,14 +867,11 @@ input:-moz-placeholder {
     margin-left: 50%;
     cursor: pointer;
 }
-.create-ad{
-    margin-left: 0px;
-}
 
 .am-selected{
-    position: absolute;
+    /* position: absolute;
     left: 45%;
-    top: 20px;
+    top: 20px; */
 }
 
 #submit .row{
@@ -1070,6 +1067,7 @@ input[type="number"]{
 .image{
     width: 100%;
     height: 100%;
+    border-radius: 4px;
 }
 
 .pdd-table-head > div{
@@ -1374,6 +1372,35 @@ input:-webkit-autofill {
     -webkit-box-shadow: inset 0 0 0 1000px #fff;
     background-color: transparent;
 }
+
+.ad-title{
+    justify-content: flex-end;
+}
+
+#ad-table .table-title > div, #ad-table .table-tr > div{
+    display: inline-block;
+    text-align: center;
+    float: left;
+    width: 16.66%;
+}
+.ad-row{
+    min-height: 600px;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
