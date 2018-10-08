@@ -57,16 +57,17 @@ Route::group(['namespace' => 'Api'], function() {
     });
     //Package
     Route::group(['prefix' => 'packages'], function() {
-        Route::get('package_sales',                   'PackagesController@packageSales');
+        Route::get('package_sales',                   'PackagesController@packageSales');//购买记录列表
         Route::get('buyer_request',                   'PackagesController@buyerRequest');
-        Route::get('package_sales/{seq}/detail',      'PackagesController@salesDetail');
-        Route::get('package_sales/{seq}/item',        'PackagesController@salesItem');
+        Route::get('package_sales/detail',            'PackagesController@salesDetail');//销售记录详情
+        Route::get('package_sales/item',              'PackagesController@salesItem');//购买记录详情列表
         Route::post('refund/{seq}',                    'PackagesController@refundSales');
         Route::patch('package_sales/{seq}/received',  'PackagesController@received');
-        Route::get('package_sales/{seq}/item_detail', 'PackagesController@itemDetail');
+        Route::get('package_sales/item_detail',       'PackagesController@itemDetail');//改变物流状态
         Route::post('buying_create',                  'PackagesController@buyingCreate');
-        Route::get('my_package',                      'PackagesController@myPackageList');
-        Route::get('my_package/codes/{seq}',          'PackagesController@codeList');
+        Route::get('my_package',                      'PackagesController@myPackageList');//我的喜豆码列表
+        Route::get('my_package/codeDetailList',        'PackagesController@codeList');//我的喜豆码详情列表
+        Route::get('my_package/myPackageDetail',       'PackagesController@myPackageDetail');//我的喜豆码详情
         Route::post('my_package/codes/activation',    'PackagesController@codeActivation');
     });
     //Account Info

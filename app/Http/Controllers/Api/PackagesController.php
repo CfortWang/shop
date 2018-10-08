@@ -23,107 +23,113 @@ class PackagesController extends Controller
     public function __construct()
     {
     }
-
+    //购买记录列表
     public function packageSales(Request $request)
     {
         $buyer = $request->session()->get('buyer.seq');
-        $offset = $request->start;
-        $limit = $request->length;
-        $searchValue = $request->search['value'];
-        $orderColumnsNo = $request->order[0]['column'];
-        $orderType = $request->order[0]['dir'];
-
-        $columnArray = array('total_quantity', 'payment_type', 'created_at', 'status');
-
+        $buyer=1;
+        $limit=$request->input('limit')?$request->input('limit'):20;
+        $page=$request->input('page')?$request->input('page'):1;
+        $searchValue = $request->input('value');
+        // $orderColumnsNo = $request->order[0]['column'];
+        // $orderType = $request->order[0]['dir'];
+        // $columnArray = array('total_quantity', 'payment_type', 'created_at', 'status');
         $items = Q35Sales::where('buyer',$buyer);
-        
-        $recordsTotal = $items->count();
-        
-        if (!empty($request->search['value'])) {
-            $items = $items->where(function ($query) use ($searchValue) {
-                $query
-                ->where('total_quantity', 'like', '%'.$searchValue.'%')
-                ->orWhere('payment_type', 'like', '%'.$searchValue.'%');
-            });
+        if ($searchValue) {
+            $items = $items->where('total_quantity', 'like', '%'.$searchValue.'%')
+                           ->orWhere('payment_type', 'like', '%'.$searchValue.'%');
         }
         if($request->status){
             $items =  $items->where('status',$request->status);
         }
-        $recordsFiltered = $items->count();
+        $count = $items->count();
         $items = $items->select('total_quantity', 'payment_type', 'created_at', 'status', 'seq')
-                ->orderBy($columnArray[$orderColumnsNo], $orderType)
-                ->offset($offset)
-                ->limit($limit)
+                // ->orderBy($columnArray[$orderColumnsNo], $orderType)
+                ->limit($limit)  
+                ->offset(($page-1)*$limit) 
                 ->get();
-        return $this->response4DataTables($items, $recordsTotal, $recordsFiltered);
+        return $this->responseOk('',$items);
     }
-
-    public function salesDetail(Request $request,$seq)
+    public function salesDetail(Request $request)
     {
+        $seq=$request->input('seq');
         $buyer = $request->session()->get('buyer.seq');
+        $buyer=1;
         $Q35Sales = Q35Sales::where('buyer',$buyer)
                             ->where('seq',$seq)
+                            ->select('buyer','sales_partner','total_sales_price','total_quantity','total_shipping_price','total_price','payment_type',
+                            'pay_status','status')
                             ->first();
+        if(empty($Q35Sales)){
+            return $this->responseNotFound('There is no seq');
+        }
         $sales = SalesPartner::where('seq',$Q35Sales->sales_partner)->select('partner_account')->first();
         $partner_id = PartnerAccount::where('seq',$sales->partner_account)->select('id')->first();
+        $buyerId = Buyer::where('seq',$Q35Sales->buyer)->select('id')->first();
         $Q35Sales->partner = $partner_id->id;
+        $Q35Sales->buyer_id = $buyerId->id;
+        
         if (empty($Q35Sales)){
-            return $this->responseNotFound('There is no data', 401);//error code 404,401
+            return $this->responseNotFound('There is no data');//error code 404,401
         }else{
-            return $this->responseOK('success',$Q35Sales);
+            $data['buyer']= $buyerId->id;
+            $data['sales_partner']= $partner_id->id;
+            $data['total_sales_price']= $Q35Sales->total_sales_price;
+            $data['total_quantity']= $Q35Sales->total_quantity;
+            $data['total_shipping_price']= $Q35Sales->total_shipping_price;
+            $data['total_price']= $Q35Sales->total_price;
+            $data['payment_type']= $Q35Sales->payment_type;
+            $data['pay_status']= $Q35Sales->pay_status;
+            $data['status']=$Q35Sales->status;
+            return $this->responseOK('',$data);
         }
 
     }
-
-    public function salesItem(Request $request,$seq)
+    //购买记录详情列表
+    public function salesItem(Request $request)
     {
         $buyer = $request->session()->get('buyer.seq');
-        $offset = $request->start;
-        $limit = $request->length;
-        $searchValue = $request->search['value'];
-        $orderColumnsNo = $request->order[0]['column'];
-        $orderType = $request->order[0]['dir'];
+        $buyer=14;
+        $limit=$request->input('limit')?$request->input('limit'):20;
+        $page=$request->input('page')?$request->input('page'):1;
+        $seq=$request->input('seq');
+        $searchValue = $request->input('value');
+        // $orderColumnsNo = $request->order[0]['column'];
+        // $orderType = $request->order[0]['dir'];
 
         // $salesItem = Q35SalesItem::where('q35sales', $seq)->where('type', $request->type)->first();
         // $salesItemSeq = $salesItem->seq;
         // $salesItemseq = null;
-
-        $columnArray = array('code','type', 'start_q35code', 'end_q35code', 'status');
-
+        // $columnArray = array('code','type', 'start_q35code', 'end_q35code', 'status');
         $items = Q35Package::join('Q35SalesItem as SI', 'SI.seq', '=', 'Q35Package.q35sales_item')
         ->where('SI.q35sales', $seq)
         ->where('SI.type', $request->type);
-        
-        $recordsTotal = $items->count();
-        
-        if (!empty($request->search['value'])) {
-            $items = $items->where(function ($query) use ($searchValue) {
-                $query
-                ->where('seq', $searchValue);
-            });
+        if ($searchValue) {
+             $items=$items->where('seq', $searchValue);
         }
         if($request->status){
             $items =  $items->where('status',$request->status);
         }
-        $recordsFiltered = $items->count();
+        $count = $items->count();
         $items = $items->select('Q35Package.code', 'Q35Package.type', 'Q35Package.start_q35code', 'Q35Package.end_q35code', 'Q35Package.status', 'Q35Package.seq')
-                ->orderBy($columnArray[$orderColumnsNo], $orderType)
-                ->offset($offset)
-                ->limit($limit)
+                // ->orderBy($columnArray[$orderColumnsNo], $orderType)
+                ->limit($limit)  
+                ->offset(($page-1)*$limit) 
                 ->get();
-        return $this->response4DataTables($items, $recordsTotal, $recordsFiltered);
+        return $this->responseOk('',$items);
     }
-
-    public function itemDetail(Request $request,$seq)
+    //喜豆码物流状态
+    public function itemDetail(Request $request)
     {
         $buyer = $request->session()->get('buyer.seq');
+        $buyer=14;
+        $seq=$request->input('seq');
         $Q35SalesItem = Q35SalesItem::where('buyer',$buyer)
                                     ->where('q35sales',$seq);
-        
         if($request->type){
             $Q35SalesItem =  $Q35SalesItem->where('type',$request->type);
         }
-        $Q35SalesItem = $Q35SalesItem->first();
+        $Q35SalesItem = $Q35SalesItem->select('quantity','shipping_status')->first();
         if (empty($Q35SalesItem)){
             return $this->responseNotFound('There is no data', 401);//error code 404,401
         }else{
@@ -242,51 +248,31 @@ class PackagesController extends Controller
 
         return $this->responseOK('success', $BuyingRequest);
     }
-
+    //我的喜豆码列表
     public function myPackageList(Request $request)
     {
         $buyer = $request->session()->get('buyer.seq');
-        $offset = $request->start;
-        $limit = $request->length;
-        $searchValue = $request->search['value'];
-        $orderColumnsNo = $request->order[0]['column'];
-        $orderType = $request->order[0]['dir'];
-
-        $columnArray = array('code', 'total_cnt', 'used_cnt', 'sold_at', 'activated_at', 'status', 'seq');
-
+        $buyer=1;
+        $limit = $request->input('limit')?$request->input('limit'):20;
+        $page = $request->input('page')?$request->input('page'):1;
         $packages = Q35Sales::where('buyer',$buyer)
         ->where('status', 'completed')
         ->where('pay_status', 'paid')
         ->select('seq')
         ->get();
-
         $packages = $packages->map(function($package){
             return $package->seq;
         });
-
         $items = Q35Package::whereIn('q35sales', $packages);
-        
-        $recordsTotal = $items->count();
-        
-        if (!empty($request->search['value'])) {
-            $items = $items->where(function ($query) use ($searchValue) {
-                $query
-                ->where('code', 'like', '%'.$searchValue.'%');
-                // ->orWhere('total_cnt', 'like', '%'.$searchValue.'%')
-                // ->orWhere('used_cnt', 'like', '%'.$searchValue.'%');
-            });
-        }
-
         if($request->status){
             $items =  $items->where('status',$request->status);
         }
         $recordsFiltered = $items->count();
         $items = $items->select('code', 'total_cnt', 'used_cnt', 'sold_at', 'activated_at', 'status', 'seq')
-                ->orderBy($columnArray[$orderColumnsNo], $orderType)
-                ->offset($offset)
-                ->limit($limit)
+                ->limit($limit)  
+                ->offset(($page-1)*$limit) 
                 ->get();
-        return $this->response4DataTables($items, $recordsTotal, $recordsFiltered);
+        return $this->responseOk('',$items);
     }
 
     public function refundSales(Request $request, $seq)
@@ -327,40 +313,51 @@ class PackagesController extends Controller
 
         return $this->responseOK('Ok', $Q35SalesItem);
     }
-
-    public function codeList(Request $request, $seq)
+    //喜豆码详情列表
+    public function codeList(Request $request)
     {
         $buyer = $request->session()->get('buyer.seq');
-        $offset = $request->start;
-        $limit = $request->length;
-        $searchValue = $request->search['value'];
+        $buyer=1;
+        $limit = $request->input('limit')?$request->input('limit'):20;
+        $page = $request->input('page')?$request->input('page'):1;
+        $seq = $request->input('seq');
+        $searchValue = $request->input('value');
+        // dd($searchValue);
         $orderColumnsNo = $request->order[0]['column'];
         $orderType = $request->order[0]['dir'];
-
-        $columnArray = array('code', 'activated_at', 'used_at', 'status');
-
+        // $columnArray = array('code', 'activated_at', 'used_at', 'status');
         $items = Q35SingleCode::where('q35package', $seq);
-        
-        $recordsTotal = $items->count();
-        
-        if (!empty($request->search['value'])) {
-            $items = $items->where(function ($query) use ($searchValue) {
-                $query
-                ->where('seq', $searchValue);
-            });
+        $count = $items->count();
+        if ($searchValue) {
+            $items =  $items->where('seq',$searchValue);
         }
         if($request->status){
             $items =  $items->where('status',$request->status);
         }
-        $recordsFiltered = $items->count();
         $items = $items->select('seq', 'seq as code', 'activated_at', 'used_at', 'status')
-                ->orderBy($columnArray[$orderColumnsNo], $orderType)
-                ->offset($offset)
+                // ->orderBy($columnArray[$orderColumnsNo], $orderType)
                 ->limit($limit)
+                ->offset(($page-1)*$limit) 
                 ->get();
-        return $this->response4DataTables($items, $recordsTotal, $recordsFiltered);
+    
+        return $this->responseok('',$items);
     }
+    public function myPackageDetail(Request $request)
+   {
+    // $buyer = $request->session()->get('buyer.seq');
+    $buyer=1;
+    $seq = $request->input('seq');
+    $package = Q35Package::where('seq', $seq)->select('seq','q35sales','code','type','start_q35code','end_q35code','status','total_cnt','used_cnt','sold_at','activated_at')->first();
+    if(empty($package)){
+        return $this->responseBadRequest('seq is error');//
+    }
+    $checkBuyer = Q35Sales::where('seq', $package->q35sales)->first();
 
+    if ($buyer !== $checkBuyer->buyer) {
+      return $this->responseBadRequest('Wrong Request', 401);//error code 400,401
+    }
+    return $this->responseok('',$package);
+   }
     public function codeActivation(Request $request)
     {
         $buyer = $request->session()->get('buyer.seq');
