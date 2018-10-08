@@ -28,58 +28,56 @@ class CustomerController extends Controller
     public function scannedUserList(Request $request){
         // $buyer = $request->session()->get('buyer.seq');
         $buyer=1;
-        // $limit = $request->input('limit')?$request->input('limit'):20;
-        // $page = $request->input('page')?$request->input('page'):1;
-        $xxx=UserScanLog::where('UserScanLog.buyer',$buyer)  
-                          ->leftJoin('User as u', 'u.seq', '=', 'UserScanLog.user')
-                        //  ->select('u.id','u.nickname','u.gender','u.birthday')
-                          ->select(DB::raw('count(user) as sum_countt','u.nickname','u.gender','u.birthday'))
-                          ->groupBy('UserScanLog.user')
-                          ->get();
-        // dd(count($xxx));
-    
-        // $items = DB::table('UserScanLog')
-        // ->where('UserScanLog.buyer',$buyer)  
-        // ->select(  
-        //     'UserScanLog.user',
-        //      DB::raw('count(UserScanLog.user) AS scannedCount'))  
-        //     ->groupBy('UserScanLog.user') 
-        //     ->limit($limit)
-        //     ->offset(($page-1)*$limit) 
-        //     ->get();
-        // foreach($items as $k=>$v){
-        //     $user=User::where('seq',$v->user)->select('nickname','gender','birthday','id')->first();
-        //     $firstTime=UserScanLog::where('user',$v->user)->where('buyer',$buyer)->select('created_at')->orderBy('created_at','asc')->first();
-        //     $endTime=UserScanLog::where('user',$v->user)->where('buyer',$buyer)->select('created_at')->orderBy('created_at','desc')->first();
-        //     $list['id']= $user['id'];;
-        //     $list['nickname']=$user['nickname'];
-        //     $list['gender']=$user['gender'];
-        //     if( $list['gender']=='male'){
-        //         $list['gender']='男';
-        //     }
-        //     if( $list['gender']=='female'){
-        //         $list['gender']='女';
-        //     }
-        //     $list['age']=Carbon::parse($user['birthday'])->diffInYears();
-        //     $list['rate']= rand(1,9)/10;;
-        //     $list['scannedCount']=$v->scannedCount;
-        //     $list['firstTime']= Carbon::createFromTimestamp(strtotime($firstTime['created_at']))
-        //     ->timezone(session('tz'))
-        //     ->toDateTimeString();
-        //     $list['endTime']=Carbon::createFromTimestamp(strtotime($endTime['created_at']))
-        //     ->timezone(session('tz'))
-        //     ->toDateTimeString();
-        //     $list['user']=$v->user;
-        //     $data[]=$list;
-        // }
-        // $newData['scanUserList']=$data;
-        // $newData['count']=$count;
-        // $items = $items->select('user_phone_num', 'user_name','created_at','q35code_code','q35package_code')
-        //         ->orderBy()
-        //         ->offset($offset)
-        //         ->limit($limit)
-        //         ->get();
-        return $this->responseOk('',$xxx);
+        $limit = $request->input('limit')?$request->input('limit'):20;
+        $page = $request->input('page')?$request->input('page'):1;
+        $searchValue = $request->input('phoneNum');
+        if($searchValue){
+            $items=DB::table('UserScanLog')
+                    ->leftJoin('User as u', 'u.seq', '=', 'UserScanLog.user')
+                    ->select('u.id','u.nickname','UserScanLog.user','u.gender','u.birthday', DB::raw('count(UserScanLog.user) AS scannedCount'))
+                    ->groupBy('UserScanLog.user')
+                    ->where('UserScanLog.buyer',$buyer)
+                    ->where('u.id', 'like', '%'.$searchValue.'%')
+                    ->get();  
+        }else{
+            $items=DB::table('UserScanLog')
+            ->leftJoin('User as u', 'u.seq', '=', 'UserScanLog.user')
+            ->select('u.id','u.nickname','UserScanLog.user','u.gender','u.birthday', DB::raw('count(UserScanLog.user) AS scannedCount'))
+            ->groupBy('UserScanLog.user')
+            ->where('UserScanLog.buyer',$buyer)
+            ->get();
+        }
+        $count=count($items);
+        foreach($items as $k=>$v){
+            $firstTime=UserScanLog::where('user',$v->user)->where('buyer',$buyer)->select('created_at')->orderBy('created_at','asc')->first();
+            $endTime=UserScanLog::where('user',$v->user)->where('buyer',$buyer)->select('created_at')->orderBy('created_at','desc')->first();
+            $list['id']=$v->id;;
+            $list['nickname']=$v->nickname;
+            $list['gender']=$v->gender;
+            if( $list['gender']=='male'){
+                $list['gender']='男';
+            }
+            if( $list['gender']=='female'){
+                $list['gender']='女';
+            }
+            $list['age']=Carbon::parse($v->birthday)->diffInYears();
+            $list['rate']= rand(1,9)/10;;
+            $list['scannedCount']=$v->scannedCount;
+            $list['firstTime']= Carbon::createFromTimestamp(strtotime($firstTime['created_at']))
+                                        ->timezone(session('tz'))
+                                        ->toDateTimeString();
+            $list['endTime']=Carbon::createFromTimestamp(strtotime($endTime['created_at']))
+                                        ->timezone(session('tz'))
+                                        ->toDateTimeString();
+            $list['user']=$v->user;
+            $data[]=$list;
+        }
+        if(empty($data)){
+            return $this->responseBadRequest('there is no data');
+        }
+        $newData['scanUserList']=$data;
+        $newData['count']=$count;
+        return $this->responseOk('',$newData);
     }
     public function scannedUserDetail(Request $request){
        // $buyer = $request->session()->get('buyer.seq');
