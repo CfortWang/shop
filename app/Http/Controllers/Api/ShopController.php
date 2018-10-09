@@ -19,6 +19,7 @@ use App\Models\Buyer;
 use App\Models\ShopCategory;
 use App\Models\ShopDetailImage;
 use App\Models\ShopImageFile;
+use App\Models\ShopCoupon;
 
 class ShopController extends Controller
 {
@@ -245,5 +246,142 @@ class ShopController extends Controller
         } 
 
         return $this->responseOK('success','');
+    }
+    public function createCoupon(request $request){
+        $buyer=14;
+        $input=Input::only('coupon_name','quantity','coupon_type','discount_money','discount_percent',
+                          'max_discount_money','limit_type','limit_money','image','limit_count','coupon_date_type','start_at','expired_at','days',
+                          'available_time_type',  'available_time','business_hours','is_special_goods','','condition','goods_name','remark');
+         $message = [
+            "required" => ":attribute ".trans('common.verification.cannotEmpty'),
+            "integer" => ":attribute ".trans('common.createCoupon.verification.requiredNumber'),
+        ];
+        $validator = Validator::make($input,[
+        'coupon_name'             => 'required|string',
+        'quantity'                => 'required|integer|min:1|max:1000000',
+        'coupon_type'             => 'required|in:0,1',
+        'discount_money'          => 'nullable|numeric|min:0.01',
+        'discount_percent'        => 'nullable|numeric',
+        'max_discount_money'      => 'nullable|numeric',
+        'limit_type'              => 'required|in:0,1',
+        'limit_money'             => 'nullable|numeric',
+        'image'                   => 'required|image',
+        'limit_count'             => 'required|integer',
+        'coupon_date_type'        => 'required|in:0,1',
+        'start_at'                => 'nullable|date',
+        'expired_at'              => 'nullable|date',
+        'days'                    => 'nullable|integer',
+        'available_time'          => 'required|string',
+        'business_hours'          => 'nullable|date',
+        'condition'               => 'nullable|string',
+        'is_special_goods'        => 'required|in:0,1',
+        'goods_name'              => 'nullable|string',
+        'remark'                  => 'nullable',
+        ],$message);
+        if ($validator->fails()) {
+            $message = $validator->errors()->first();
+            return $this->responseBadRequest($message);
+        }       
+        $couponName=$request->input('coupon_name');
+        $quantity=$request->input('quantity');
+        $couponType=$request->input('coupon_type');
+        $discountMoney=$request->input('discount_money');
+        $discountPercent=$request->input('discount_percent');
+        $maxDiscountMoney=$request->input('max_discount_money');
+        $limitMoney=$request->input('limit_money');
+        $limitType=$request->input('limit_type');
+        $image=$request->file('image');
+        $limitCount=$request->input('limit_count');
+        $couponDateType=$request->input('coupon_date_type');
+        $startAt=$request->input('start_at'); 
+        $expiredAt=$request->input('expired_at');
+        $days=$request->input('days'); 
+        $availableTimeType=$request->input('available_time_type');
+        $availableTime=$request->input('available_time');
+        $businessHours=$request->input('business_hours'); 
+        $condition=$request->input('condition');
+        $isSpecialGoods=$request->input('is_special_goods');
+        $goodsName=$request->input('goods_name'); 
+        $remark=$request->input('remark');
+        //验证优惠类型
+        if($couponType==0){
+            $discountPercent="null";
+            $maxDiscountMoney="null";
+             //面值
+            if(empty($discountMoney)){
+                return $this->responseNotFound(trans('shop.verification.emptyDiscountMoney'));
+            }
+        }
+        if($couponType==1){
+            $discountMoney="null";
+             //折扣率
+            if(empty($discountPercent)){
+                return $this->responseNotFound(trans('shop.verification.emptyDiscountPercent'));
+            }
+            //最大优惠
+            if(empty($maxDiscountMoney)){
+                return $this->responseNotFound(trans('shop.verification.emptyMaxDiscountMoney'));
+           }
+           if($discountPercent<1 || $discountPercent>9.9){
+            return $this->responseNotFound(trans('shop.verification.discountPercentError'));
+           }
+        }
+        //验证使用门槛类型
+        if($limitType==0){
+            $limitMoney=0;
+        }
+        if($limitType==1){
+            if(empty($limitMoney)){
+                return $this->responseNotFound(trans('shop.verification.emptyLimitMoney'));
+            }
+            if($limitMoney <= 0){
+                return $this->responseNotFound(trans('shop.verification.limitMoneyError'));
+            }
+        }
+        //验证优惠券有效期
+        if( $couponDateType==0){
+           $days="null";
+           if(empty($startAt)){
+                return $this->responseNotFound(trans('shop.verification.emptyStartAt'));
+            }
+            if(empty($expiredAt)){
+                return $this->responseNotFound(trans('shop.verification.emptyExpiredAt'));
+            }
+            if($startAt >= $expiredAt){
+                return $this->responseNotFound(trans('shop.verification.timeError'));
+            }
+        }
+        if($couponDateType==1){
+            $startAt="null";
+            $expiredAt="null";
+            if(empty($days)){
+                return $this->responseNotFound(trans('shop.verification.emptyDays'));
+            }  
+            if($days<1 || $days>365){
+                return $this->responseNotFound(trans('shop.verification.daysError'));
+            }   
+        }
+        
+        $data = ShopCoupon::create([
+            'coupon_name'            => $couponName,
+            'quantity'               => $quantity,
+            'coupon_type'            => $couponType,
+            'discount_money'         => $discountMoney,
+            'discount_percent'       => $discountPercent,
+            'max_discount_money'     => $maxDiscountMoney,
+            // 'shop_image_file'  => $adImage->seq,
+            'start_at'               => $startAt,
+            'expired_at'             => $expiredAt,
+            'days'                   => $days,
+            'available_time'         => $availableTime,
+            'business_hours'         =>$businessHours,
+            'condtion'               => $condition,
+            'is_special_goods'       =>$isSpecialGoods,
+            'goods_name'             => $goodsName,
+            'remark'                 =>$remark,
+            'status'                 =>'registered',
+            'buyer_id'               =>$buyer
+          
+        ]);
     }
 }
