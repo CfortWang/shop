@@ -16,7 +16,7 @@
                                 <div class="form-group clear-fix">
                                     <label class="am-u-lg-2 am-u-md-2 am-u-sm-3">广告标题</label>
                                     <div class="am-u-lg-10 am-u-md-10 am-u-sm-9">
-                                        <input type="text" class="form-control" id="name" name="title" placeholder="最多可输入20个字符" maxlength="20">
+                                        <input type="text" class="form-control" id="title" name="title" placeholder="最多可输入20个字符" maxlength="20">
                                     </div>
                                 </div>
                                 <div class="form-group image-group clear-fix">
@@ -39,19 +39,21 @@
                                 <div class="form-group clear-fix">
                                     <label class="am-u-lg-2 am-u-md-2 am-u-sm-3">跳转链接</label>
                                     <div class="am-u-lg-10 am-u-md-10 am-u-sm-9">
-                                        <input type="text" class="form-control" id="new-price" name="landing_url" placeholder="输入广告的跳转链接，为空则不跳转">
+                                        <input type="text" class="form-control" id="landing-url" name="landing_url" placeholder="输入广告的跳转链接，为空则不跳转">
                                     </div>
                                 </div>
                                 <div class="form-group clear-fix">
                                     <label class="am-u-lg-2 am-u-md-2 am-u-sm-3">关联喜豆码</label>
                                     <div class="am-u-lg-4 am-u-md-5 am-u-sm-6 am-u-end">
-                                        <select class="pkg-data" data-am-selected="{maxHeight: 100}"></select>
+                                        <select class="pkg-data" multiple data-am-selected="{maxHeight: 100}"></select>
                                     </div>
                                 </div>
+                                <div class="am-u-lg-10 am-u-md-10 am-u-sm-9 am-u-end package-box"></div>
                             </div>
                         </div>
                     </div>
                 </div>
+                <div class="create-ad-btn"><div>创建广告</div></div>
             </form>
         </div>
     </div>
@@ -139,33 +141,10 @@ function selectImage(file) {
         $('.product .image-remark').hide()
     }
     reader.readAsDataURL(file.files[0]);
-    var fd = new FormData()
-    fd.append('file', file.files[0])
-    upLoadImage(fd);
+    adData = new FormData()
+    adData.append('ad_image_file', file.files[0])
     $(".product .file").hide()
 }
-
-function upLoadImage (file) {
-    $.ajax({
-        url: 'http://shop.test/api/event/upload',
-        type: 'post',
-        dataType: 'json',
-        data: file,
-        processData: false,
-        contentType: false,
-        success: function (res) {
-            let url = res.data.url
-            $('.product .selected-image:last-child .img-value').val(url)
-            // console.log($('.product .selected-image:last-child .img-value'))
-        },
-        error: function (ex) {
-            console.log(ex)
-        }
-    })
-    // console.log(file)
-}
-
-
 
 function getPkgCode (file) {
     $.ajax({
@@ -195,6 +174,98 @@ $(".product").on("click", ".selected-image .delete-image", function () {
         $(".product .file").show()
     }
 
+})
+
+$("body").on("click", ".am-selected-list > li", function () {
+    let selectedPkg = $(".package-box > div").length
+    let liClass = $(this).attr("class")
+    let pkgCode = $(this).children('span').text()
+    let pkgValue = $(this).attr("data-value")
+    if (liClass == null || liClass == "") {
+        for (let i = 0; i < selectedPkg; i++) {
+            let unselect = $(".package-box .package:eq("+ i +")").attr("data-value")
+            if (unselect == pkgValue) {
+                $(".package-box .package:eq("+ i +")").remove()
+            }
+        }
+    } else {
+        let $pkg = '<div class="package" data-value="' + pkgValue + '"><div class="delete-pkg"><img src="/img/main/delete.png" alt=""></div><div class="package-code">' + pkgCode + '</div></div>'
+        $(".package-box").append($pkg)
+    }
+})
+
+$(".package-box").on("click", ".delete-pkg", function () {
+    $(this).parent().remove()
+    let optionList = $(".am-selected-list > li").length
+    let pkgList = $(".package-box .package").length
+    let pkgValue = $(this).parent().attr("data-value")
+    let pkgArr = []
+    for (let j = 0; j < pkgList; j++) {
+        pkgArr[j] = $(".package-box .package:eq("+ j +") .package-code").text()
+    }
+    for (let i = 0; i < optionList; i++) {
+        let unselect = $(".am-selected-list > li:eq("+ i +")").attr("data-value")
+        let pkgCode = $(".am-selected-list > li:eq("+ i +") span").text()
+        if (unselect == pkgValue) {
+            $(".am-selected-list > li:eq("+ i +")").removeClass("am-checked")
+            $(".am-selected-status").text(pkgArr.join(','))
+        }
+    }
+})
+
+
+function createAd (adInfo) {
+    $.ajax({
+        url: 'http://shop.test/api/ad/createAd',
+        type: 'post',
+        dataType: 'json',
+        data: adInfo,
+        processData: false,
+        contentType: false,
+        success: function (res) {
+            console.log(res)
+        },
+        error: function (ex) {
+            console.log(ex)
+        }
+    })
+}
+
+
+$(".create-ad-btn").on("click", function () {
+    let adName = $("#title").val()
+    let adStartDate = $("#ad-startDate").val()
+    let adEndDate = $("#ad-endDate").val()
+    let adLandingUrl = $("#landing-url").val()
+    let pkgList = $(".package-box .package").length
+    let pkgArr = []
+    for (let j = 0; j < pkgList; j++) {
+        pkgArr[j] = $(".package-box .package:eq("+ j +") .package-code").text()
+    }
+    if (adName == '' || adName == null) {
+        alert("广告标题不能为空")
+        return false
+    }
+    if (adStartDate == '' || adStartDate == null) {
+        alert("广告投放开始时间不能为空")
+        return false
+    }
+    if (adEndDate == '' || adEndDate == null) {
+        alert("广告投放结束时间不能为空")
+        return false
+    }
+    if (adLandingUrl == '' || adLandingUrl == null) {
+        alert("广告跳转链接不能为空")
+        return false
+    }
+    
+    adData.append("title", adName)
+    adData.append("start_date", adStartDate)
+    adData.append("end_date", adEndDate)
+    adData.append("landing_url", adLandingUrl)
+    adData.append("pkg_list", pkgArr)
+
+    createAd(adData)
 })
 
 </script>
