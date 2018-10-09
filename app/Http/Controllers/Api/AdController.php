@@ -142,9 +142,9 @@ class AdController extends Controller
         $landingUrl = $request->input('landing_url');
         $start_date=$request->input('start_date');
         $end_date=$request->input('end_date');
-        if($start_date >= $end_date){
-            return $this->responseBadRequest('结束时间必须大于开始时间');
-        }
+        // if($start_date >= $end_date){
+        //     return $this->responseBadRequest('结束时间必须大于开始时间');
+        // }
         $exits = ShopAD::where('buyer', $buyer)->where('title',$title)->first();
         if($exits){
             return $this->responseBadRequest('already exist title', 401);//error code 409,401

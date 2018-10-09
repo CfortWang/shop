@@ -271,6 +271,7 @@ class ShopController extends Controller
         'start_at'                => 'nullable|date',
         'expired_at'              => 'nullable|date',
         'days'                    => 'nullable|integer',
+        'available_time_type'     => 'required|in:0,1',
         'available_time'          => 'required|string',
         'business_hours'          => 'nullable|date',
         'condition'               => 'nullable|string',
@@ -361,7 +362,13 @@ class ShopController extends Controller
                 return $this->responseNotFound(trans('shop.verification.daysError'));
             }   
         }
-        
+        //验证有效时间段
+        if ($availableTimeType==0){
+            $availableTime=0;
+         }
+         if ($availableTimeType==1){
+            $availableTime=0;
+         }
         $data = ShopCoupon::create([
             'coupon_name'            => $couponName,
             'quantity'               => $quantity,
