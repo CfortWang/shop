@@ -26,8 +26,8 @@ class AdController extends Controller
         // $seq = $request->session()->get('buyer.seq');
         // $input=Input::only('limit','page');
         $seq=14;
-        $limit = $request->input('limit');
-        $page = $request->input('page');
+        $limit = $request->input('limit')?$request->input('limit'):20;
+        $page = $request->input('page')?$request->input('page'):1;
         $count = ShopAD::where('buyer',$seq)->get();
         $count=count($count);
         $items = ShopAD::where('buyer',$seq)->select('title', 'view_cnt', 'start_date','end_date', 'status', 'seq')
@@ -129,8 +129,8 @@ class AdController extends Controller
         $validator = Validator::make($input, [
             'title'           => 'required|string|min:1',
             'ad_image_file'   => 'required|image',
-            'start_date'      => 'required|date',
-            'end_date'        => 'required|date',
+            'start_date'      => 'required|string',
+            'end_date'        => 'required|string',
             'landing_url'     => 'required|string',
             'pkg_list'        => 'nullable'
         ],$message);
