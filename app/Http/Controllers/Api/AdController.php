@@ -129,8 +129,8 @@ class AdController extends Controller
         $validator = Validator::make($input, [
             'title'           => 'required|string|min:1',
             'ad_image_file'   => 'required|image',
-            'start_date'      => 'required|string',
-            'end_date'        => 'required|string',
+            'start_date'      => 'required|date',
+            'end_date'        => 'required|date',
             'landing_url'     => 'required|string',
             'pkg_list'        => 'nullable'
         ],$message);
