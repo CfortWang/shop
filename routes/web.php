@@ -39,6 +39,11 @@ Route::group(['namespace' => 'Web'], function() {
             Route::get('/groupon/create',                       'EventController@createGroup');
             Route::get('/coupon',                       'EventController@coupon');
             Route::get('/coupon/create',                       'EventController@createCoupon');
+            Route::get('/message',                       'EventController@message');
+            Route::get('/message/create',                       'EventController@createMessage');
+            Route::get('/groupon/details',                       'EventController@grouponDetails');
+            Route::get('/coupon/details',                       'EventController@couponDetails');
+            Route::get('/message/details',                       'EventController@messageDetails');
         });
         //ad
         Route::group(['prefix'  => 'ad'], function() {
@@ -54,9 +59,10 @@ Route::group(['namespace' => 'Web'], function() {
         });
         //account
         Route::group(['prefix'  => 'account'], function() {
-        Route::get('/detail',                       'AccountController@detail');
-        Route::get('/cashout',                      'AccountController@cashout');
-        Route::get('/point',                        'AccountController@point');
-    });
+            Route::get('/detail',                       'AccountController@detail');
+            Route::get('/cashout',                      'AccountController@cashout');
+            Route::get('/point',                        'AccountController@point');
+        });
+
     });
 });
