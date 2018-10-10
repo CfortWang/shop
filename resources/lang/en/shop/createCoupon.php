@@ -14,6 +14,9 @@ return [
         'emptyDays'                      => '有效期内总天数不能为空',
         'daysError'                      => '生效天数必须在1-365之间',
         'discountPercentError'           => '折扣率在1.0-9.9之间',
+        'emptyAvailableTime'           => '星期不能为空',
+        'emptyBusinessHours'           => '营业时间不能为空',
+        'emptyGoodsName'               => '商品名称不能为空',
     ],
 
 ];

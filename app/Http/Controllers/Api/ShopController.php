@@ -272,8 +272,8 @@ class ShopController extends Controller
         'expired_at'              => 'nullable|date',
         'days'                    => 'nullable|integer',
         'available_time_type'     => 'required|in:0,1',
-        'available_time'          => 'required|string',
-        'business_hours'          => 'nullable|date',
+        'available_time'          => 'nullable|string',
+        'business_hours'          => 'nullable|string',
         'condition'               => 'nullable|string',
         'is_special_goods'        => 'required|in:0,1',
         'goods_name'              => 'nullable|string',
@@ -366,9 +366,28 @@ class ShopController extends Controller
         if ($availableTimeType==0){
             $availableTime=0;
          }
-         if ($availableTimeType==1){
-            $availableTime=0;
+        if ($availableTimeType==1){
+             if(empty($availableTime)){
+                return $this->responseNotFound(trans('shop.verification.emptyAvailableTime'));
+             }
+             if(empty($businessHours)){
+                return $this->responseNotFound(trans('shop.verification.emptyBusinessHours'));
+             }
          }
+        //验证优惠使用条件
+        if ( $isSpecialGoods==0){
+            $goodsName="null";
+         }
+        if ( $isSpecialGoods==1){
+            if(empty($goodsName)){
+                return $this->responseNotFound(trans('shop.verification.emptyGoodsName'));
+             }
+         }
+         if($image){
+             $couponImage = FileHelper::shopCouponImage($file);
+         }
+         dd($couponImage);
+         $item->profile_image_file = $userImage['url'];
         $data = ShopCoupon::create([
             'coupon_name'            => $couponName,
             'quantity'               => $quantity,
@@ -377,6 +396,8 @@ class ShopController extends Controller
             'discount_percent'       => $discountPercent,
             'max_discount_money'     => $maxDiscountMoney,
             // 'shop_image_file'  => $adImage->seq,
+            'limit_money'            =>$limitMoney,
+            'limit_count'            =>$limitCount,
             'start_at'               => $startAt,
             'expired_at'             => $expiredAt,
             'days'                   => $days,

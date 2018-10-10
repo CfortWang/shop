@@ -24,7 +24,9 @@ class ShopAD extends Model
         'landing_url',
         'status',
         'buyer',
-        'shop_image_file'
+        'shop_image_file',
+        'start_date',
+        'end_date'
     ];
 }
 
