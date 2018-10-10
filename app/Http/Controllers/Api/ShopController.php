@@ -446,6 +446,8 @@ class ShopController extends Controller
         if($valueStatus){
             $items=$items->where('status', $valueStatus);            
          }
+        $count=$items->orderBy('id','desc')->get();
+        $count=count($count);
         $items=$items->orderBy('id','desc')->limit($limit)->offset(($page-1)*$limit)->get();
         foreach($items as $k=>$v){
           $data['id']=$v['id'];
@@ -505,8 +507,9 @@ class ShopController extends Controller
           }
           $list[]=$data;
         }
-      
-        return $this->responseOk('',$list);
+        $newData['count']=$count;
+        $newData['data']=$list;
+        return $this->responseOk('',$newData);
     }
     public function couponStatus(Request $request)
     {
