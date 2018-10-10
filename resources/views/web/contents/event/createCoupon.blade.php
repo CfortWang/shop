@@ -125,7 +125,7 @@
             </div>
 
             <div class="tpl-portlet">
-                <div class="row">
+                <div class="row coupon-row">
                     <div class="am-u-md-12 am-u-sm-12">
                         <div class="form-container">
                             <div class="form-title">优惠券基本规则</div>
@@ -233,7 +233,7 @@
                                 </div>
 
                                 <div class="dividing"></div>
-                                <div class="use-rule">
+                                <div class="use-rule clear-fix">
                                     <div class="am-u-lg-2 am-u-md-2 am-u-sm-3 rule-title">
                                     优惠使用须知
                                     </div>
@@ -241,6 +241,13 @@
                                         <textarea class="rule-text" name="rule" id="" cols="" rows="" placeholder="填写活动详细说明，支持换行（不超过300字符）" maxlength="300"></textarea>
                                     </div>
                                 </div>
+                                <div class="form-group clear-fix">
+                                    <label class="am-u-lg-2 am-u-md-2 am-u-sm-3">关联喜豆码</label>
+                                    <div class="am-u-lg-4 am-u-md-5 am-u-sm-6 am-u-end">
+                                        <select class="pkg-data" multiple data-am-selected="{maxHeight: 100}"></select>
+                                    </div>
+                                </div>
+                                <div class="am-u-lg-10 am-u-md-10 am-u-sm-9 am-u-end package-box"></div>
                             </div>
                         </div>
                     </div>
@@ -406,10 +413,6 @@ function selectImage(file, selector) {
             console.log("最多只能选择15张图片")
             return false
         }
-        if (selector == '.list' && sonNum > 2) {
-            console.log("最多只能选择1张图片")
-            return false
-        }
         var $imgBox = '<div class="selected-image"><div class="delete-image"><img src="/img/main/close.png" alt=""></div><img class="image" alt="" src="' +evt.target.result + '"><input class="img-value" type="text" name="image[]" hidden></div>'
         $(selector).append($imgBox)
         image = evt.target.result;
@@ -454,105 +457,61 @@ $(".product").on("click", ".selected-image .delete-image", function () {
     }
 
 })
-$(".list").on("click", ".selected-image .delete-image", function () {
+
+function getPkgCode (file) {
+    $.ajax({
+        url: 'http://shop.test/api/ad/pkgList',
+        type: 'get',
+        dataType: 'json',
+        success: function (res) {
+            let resData = res.data
+            for (let i = 0; i < res.data.length; i++) {
+                let $pkgData = '<option value="' + resData[i].pkg_seq + '">' + resData[i].pkg_code + '</option>'
+                $(".pkg-data").append($pkgData)
+            }
+        },
+        error: function (ex) {
+            console.log(ex)
+        }
+    })
+    // console.log(file)
+}
+getPkgCode();
+
+$("body").on("click", ".am-selected-list > li", function () {
+    let selectedPkg = $(".package-box > div").length
+    let liClass = $(this).attr("class")
+    let pkgCode = $(this).children('span').text()
+    let pkgValue = $(this).attr("data-value")
+    if (liClass == null || liClass == "") {
+        for (let i = 0; i < selectedPkg; i++) {
+            let unselect = $(".package-box .package:eq("+ i +")").attr("data-value")
+            if (unselect == pkgValue) {
+                $(".package-box .package:eq("+ i +")").remove()
+            }
+        }
+    } else {
+        let $pkg = '<div class="package" data-value="' + pkgValue + '"><div class="delete-pkg"><img src="/img/main/delete.png" alt=""></div><div class="package-code">' + pkgCode + '</div></div>'
+        $(".package-box").append($pkg)
+    }
+})
+
+$(".package-box").on("click", ".delete-pkg", function () {
     $(this).parent().remove()
-    var sonNum = $(".list").children().length
-    if (sonNum == 2) {
-        $(".list .image-remark").show()
+    let optionList = $(".am-selected-list > li").length
+    let pkgList = $(".package-box .package").length
+    let pkgValue = $(this).parent().attr("data-value")
+    let pkgArr = []
+    for (let j = 0; j < pkgList; j++) {
+        pkgArr[j] = $(".package-box .package:eq("+ j +") .package-code").text()
     }
-})
-
-function modify (that, len) {
-    // for (let i = 0; i < len; i++) {
-    //     let a = $(that).parent().parent().siblings().children(".package-info")[i]
-    //     let b = $(a).text()
-    //     let c = $(that).parent().parent().siblings().children(".form-control")[i]
-    //     $(c).val(b)
-    // }
-    $(that).parent().parent().siblings().children(".form-control").show()
-    $(that).parent().parent().siblings().children(".package-info").hide()
-    $(that).hide()
-    $(that).siblings().css('display', 'inline-block')
-}
-
-function save (that, len) {
-    for (let i = 0; i < len; i++) {
-        let c = $(that).parent().parent().siblings().children(".package-info")[i]
-        let a = $(that).parent().parent().siblings().children(".form-control")[i]
-        let b = $(a).val()
-        $(c).text(b)
-    }
-    $(that).parent().parent().siblings().children(".form-control").hide()
-    $(that).parent().parent().siblings().children(".package-info").show()
-    $(that).hide()
-    $(that).siblings().css('display', 'inline-block')
-}
-
-var i = 0
-function addPackageInfo () {
-    var packageName = $("#package-name").val()
-    var packageAmount = $("#package-amount").val()
-    var packagePrice = $("#package-price").val()
-    if (packageName == '' || packageName == null) {
-        alert("套餐内容不能为空")
-        return false;
-    }
-    if (packageAmount == '' || packageAmount == null) {
-        alert("套餐数量不能为空")
-        return false;
-    }
-    if (packageAmount < 1) {
-        alert("套餐数量必须大于1")
-        return false;
-    }
-    if (packagePrice == '' || packagePrice == null) {
-        alert("套餐价格不能为空")
-        return false;
-    }
-    if (packagePrice < 0) {
-        alert("套餐价格不能小于0")
-        return false;
-    }
-    let productName = 'product[' + i + '][name]'
-    let productPrice = 'product[' + i + '][price]'
-    let productQuantity = 'product[' + i + '][quantity]'
-    i++
-    var $package = '<div class="pdd-table-tr clear-fix"><div class="am-u-lg-4 am-u-md-4 am-u-sm-4"><div class="package-info">'+ packageName +'</div><input type="text" class="form-control" value="'+ packageName +'" name="' + productName + '"></div><div class="am-u-lg-2 am-u-md-3 am-u-sm-3"><div class="package-info">' + packageAmount + '</div><input type="number" class="form-control" value="'+ packageAmount +'" name="' + productQuantity + '"></div><div class="am-u-lg-2 am-u-md-3 am-u-sm-3"><div class="package-info">' + packagePrice + '</div><input type="number" class="form-control" value="'+ packagePrice +'" name="' + productPrice + '"></div><div class="am-u-lg-4 am-u-md-2 am-u-sm-2 am-u-end"><div class="operating"><div class="motify" onclick="modify(this, 3)">修改</div><div class="save" onclick="save(this, 3)">保存</div><div class="delete">删除</div></div></div></div>'
-    $(".package-data").append($package)
-    $("#package-name").val("")
-    $("#package-amount").val("")
-    $("#package-price").val("")
-}
-
-$(".package-data").on("click", ".pdd-table-tr .operating .delete", function () {
-    $(this).parent().parent().parent().remove()
-})
-$(".remark-data").on("click", ".pdd-table-tr .operating .delete", function () {
-    $(this).parent().parent().parent().remove()
-})
-
-var j = 0
-function addRemarkInfo () {
-    let remarkData = $("#package-remark").val()
-    if (remarkData == '' || remarkData == null) {
-        alert("备注内容不能为空")
-        return false;
-    }
-    let remarkContent = 'remark[' + j + ']'
-    var $remark = '<div class="pdd-table-tr clear-fix remark-tr"><div class="am-u-lg-5 am-u-md-5 am-u-sm-6"><div class="package-info">' + remarkData + '</div><input type="text" class="form-control" value="'+ remarkData +'" name="' + remarkContent + '"></div><div class="am-u-lg-7 am-u-md-7 am-u-sm-6 am-u-end"><div class="operating"><div class="motify" onclick="modify(this, 1)">修改</div><div class="save" onclick="save(this, 1)">保存</div><div class="delete">删除</div></div></div></div>'
-    $(".remark-data").append($remark)
-    $("#package-remark").val("")
-}
-
-$('input[type=radio][name=is_effective_fixed]').change(function() {
-    if (this.value == 1) {
-        $(this).parent().parent().siblings().children(".effective-days").attr("disabled", true)
-        $(this).parent().parent().children(".effect-time").attr("disabled", false)
-        $(this).parent().parent().children(".expired-time").attr("disabled", false)
-    } else if (this.value == 0) {
-        $(this).parent().parent().siblings().children(".effect-time").attr("disabled", true)
-        $(this).parent().parent().siblings().children(".expired-time").attr("disabled", true)
-        $(this).parent().parent().children(".effective-days").attr("disabled", false)
+    for (let i = 0; i < optionList; i++) {
+        let unselect = $(".am-selected-list > li:eq("+ i +")").attr("data-value")
+        let pkgCode = $(".am-selected-list > li:eq("+ i +") span").text()
+        if (unselect == pkgValue) {
+            $(".am-selected-list > li:eq("+ i +")").removeClass("am-checked")
+            $(".am-selected-status").text(pkgArr.join(','))
+        }
     }
 })
 
@@ -617,6 +576,9 @@ function saveCustomize (that) {
     $(that).siblings().css('display', 'inline-block')
 }
 
+$(".customize").on("click", ".customize-time .operating .delete", function () {
+    $(this).parent().parent().remove()
+})
 
 $(".bottom-submit-btn").on("click", function () {
     var aa = $("#submit").serialize()

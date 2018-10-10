@@ -48,7 +48,7 @@
     var keyword = ''
     var drawList = function () {
         $.ajax({
-            url: 'http://shop.test/api/event/groupon',
+            url: 'http://shop.test/api/shop/couponList',
             type: 'get',
             dataType: 'json',
             data: {

@@ -631,6 +631,9 @@ function saveCustomize (that) {
     $(that).siblings().css('display', 'inline-block')
 }
 
+$(".customize").on("click", ".customize-time .operating .delete", function () {
+    $(this).parent().parent().remove()
+})
 
 $(".bottom-submit-btn").on("click", function () {
     var aa = $("#submit").serialize()
