@@ -102,6 +102,11 @@ class AdController extends Controller
                         ->leftJoin('ShopImageFile as F','F.seq', '=', 'ShopAD.shop_image_file')
                         ->select('ShopAD.seq', 'ShopAD.title','ShopAD.start_date','ShopAD.end_date','ShopAD.landing_url','F.url as shop_image_file')
                         ->first();
+        $pkgList=Shop2Q35Package::where('buyer',$buyer)->where('shop_ad',$seq)
+                                ->leftJoin('Q35Package as P','P.seq', '=', 'Shop2Q35Package.q35package')
+                                ->select('P.code')
+                                ->get();
+        $item['pkgList']=$pkgList;
         if(empty($item)){
             return $this->responseNotFound('seq is error');
         }
@@ -132,16 +137,13 @@ class AdController extends Controller
         $landingUrl = $request->input('landing_url');
         $start_date=$request->input('start_date');
         $end_date=$request->input('end_date');
-        // if($start_date >= $end_date){
-        //     return $this->responseBadRequest('结束时间必须大于开始时间');
-        // }
+        if($start_date >= $end_date){
+            return $this->responseBadRequest('结束时间必须大于开始时间');
+        }
         $exits = ShopAD::where('buyer', $buyer)->where('title',$title)->first();
         if($exits){
             return $this->responseBadRequest('already exist title', 401);//error code 409,401
         }
-        $pkgSeqList = $request->input('pkg_list');
-        $pkgSeqList = ParamValidationHelper::isValidSeqListStr($pkgSeqList);
-      
         $image = $request->file('ad_image_file');
         // list($imageWidth, $imageHeight) = getimagesize($image);
         // if ($imageWidth !== 1280 || $imageHeight !== 480) {
@@ -158,53 +160,25 @@ class AdController extends Controller
             'buyer'            => $buyer,
             'shop_image_file'  => $adImage->seq
         ]);
-     
-        if ($pkgSeqList) {
-            $packages = Q35Package::whereIn('seq', $pkgSeqList)->get();
-            foreach ($packages as $package) {
+        $pkgSeqList = $request->input('pkg_list');
+        $seqList = explode(',',  $pkgSeqList);
+        $packages = Q35Package::whereIn('seq', $seqList)->select('start_q35code','end_q35code','seq')->get(); 
+        if($seqList){
+            foreach($packages as $k1=>$v1){
                 Shop2Q35Package::create([
-                    'type'             => 'ad',
-                    'start_num'        => $package->start_q35code,
-                    'end_num'          => $package->end_q35code,
-                    'status'           => 'registered',
-                    'buyer'            => $buyer,
-                    'shop_ad'          => $shopAd->seq,
-                    'q35package'       => $package->seq
-                ]);
-            }
+                            'type'             => 'ad',
+                            'start_num'        => $v1['start_q35code'],
+                            'end_num'          => $v1['end_q35code'],
+                            'status'           => 'registered',
+                            'buyer'            => $buyer,
+                            'shop_ad'          => $shopAd->seq,
+                            'q35package'       => $v1['seq']
+                        ]);
+                }
+            
         }
         
-        return $this->responseOK('success', $shopAd);
-    }
-    //获取单条广告
-    public function getOneAd(Request $request)
-    {
-        $buyer = $request->session()->get('buyer.seq');
-        $buyer=14;
-        $seq=$request->input('seq');
-        $shopAd=ShopAd::where('seq',$seq)->select('seq','title', 'landing_url' , 
-        'ad_image_file', 'pkg_list','start_date','end_date')->first();
-        // $pkgSeqList = $request->input('pkg_list');
-        // $pkgSeqList = ParamValidationHelper::isValidSeqListStr($pkgSeqList);
-        // $shop2Buyer = Shop2Q35Package::where('shop_ad',$seq)->get();
-        // foreach ($shop2Buyer as $item) {
-        //     $item->forceDelete();
-        // }
-        // if ($pkgSeqList) {
-        //     $packages = Q35Package::whereIn('seq', $pkgSeqList)->get();
-        //     foreach ($packages as $package) {
-        //         Shop2Q35Package::create([
-        //             'type'             => 'ad',
-        //             'start_num'        => $package->start_q35code,
-        //             'end_num'          => $package->end_q35code,
-        //             'status'           => 'registered',
-        //             'buyer'            => $buyer,
-        //             'shop_ad'          => $shopAD->seq,
-        //             'q35package'       => $package->seq
-        //         ]);
-        //     }
-        // }
-        return $this->responseOK('success', $ShopAD);
+        return $this->responseOK('success', $packages);
     }
     //修改广告
     public function modifyAd(Request $request)
@@ -256,9 +230,8 @@ class AdController extends Controller
         }else if(!$shopAD->shop_image_file){
             return $this->responseBadRequest('Upload picture first', 403);//error code 400,403
         }
-        // $pkgSeqList = $request->input('pkg_list');
-        // $pkgSeqList = ParamValidationHelper::isValidSeqListStr($pkgSeqList);
-        // $shop2Buyer = Shop2Q35Package::where('shop_ad',$seq)->get();
+        $pkgSeqList = $request->input('pkg_list');
+         
 
         // foreach ($shop2Buyer as $item) {
         //     $item->forceDelete();

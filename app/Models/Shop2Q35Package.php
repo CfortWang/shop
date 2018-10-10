@@ -28,6 +28,7 @@ class Shop2Q35Package extends Model
         'buyer',
         'shop_event',
         'shop_ad',
+        'shop_coupon',
         'q35package'
     ];
 }

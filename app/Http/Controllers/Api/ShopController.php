@@ -16,6 +16,7 @@ use App\Models\PartnerAccount;
 use App\Models\Q35SalesItem;
 use App\Models\BuyingRequest;
 use App\Models\Buyer;
+use App\Models\Shop2Q35Package;
 use App\Models\ShopCategory;
 use App\Models\ShopDetailImage;
 use App\Models\ShopImageFile;
@@ -253,7 +254,7 @@ class ShopController extends Controller
         $buyer=14;
         $input=Input::only('coupon_name','quantity','coupon_type','discount_money','discount_percent',
                           'max_discount_money','limit_type','limit_money','image','limit_count','coupon_date_type','start_at','expired_at','days',
-                          'available_time_type',  'available_time','business_hours','is_special_goods','','condition','goods_name','remark');
+                          'available_time_type',  'available_time','business_hours','is_special_goods','pkgList','condition','goods_name','remark');
          $message = [
             "required" => ":attribute ".trans('common.verification.cannotEmpty'),
             "integer" => ":attribute ".trans('common.createCoupon.verification.requiredNumber'),
@@ -280,6 +281,7 @@ class ShopController extends Controller
         'is_special_goods'        => 'required|in:0,1',
         'goods_name'              => 'nullable|string',
         'remark'                  => 'nullable',
+        'pkgList'                  => 'nullable',
         ],$message);
         if ($validator->fails()) {
             $message = $validator->errors()->first();
@@ -411,8 +413,24 @@ class ShopController extends Controller
             'remark'                 =>$remark,
             'status'                 =>'registered',
             'buyer_id'               =>$buyer
-          
         ]);
+        $pkgSeqList = $request->input('pkgList');
+        $seqList = explode(',',  $pkgSeqList);
+        $packages = Q35Package::whereIn('seq', $seqList)->select('start_q35code','end_q35code','seq')->get(); 
+        if($seqList){
+            foreach($packages as $k1=>$v1){
+                Shop2Q35Package::create([
+                            'type'             => 'coupon',
+                            'start_num'        => $v1['start_q35code'],
+                            'end_num'          => $v1['end_q35code'],
+                            'status'           => 'registered',
+                            'buyer'            => $buyer,
+                            'shop_coupon'      => $data->id,
+                            'q35package'       => $v1['seq']
+                        ]);
+                }
+            
+        }
         return $this->responseOk('',$data);
     }
     public function couponList(request $request){
@@ -533,7 +551,12 @@ class ShopController extends Controller
         $buyer = $request->session()->get('buyer.seq');
         $buyer=14;
         $id=$request->input('id');
-        $item = ShopCoupon::where('shop_coupon.id',$id)->where('buyer_id',$buyer)->first();       
+        $item = ShopCoupon::where('shop_coupon.id',$id)->where('buyer_id',$buyer)->first();      
+        $pkgList=Shop2Q35Package::where('buyer',$buyer)->where('shop_ad',$seq)
+                                ->leftJoin('Q35Package as P','P.seq', '=', 'Shop2Q35Package.q35package')
+                                ->select('P.code')
+                                ->get();
+        $item['pkgList']=$pkgList; 
         if(empty($item)){
             return $this->responseNotFound('id is error');
         }
