@@ -129,8 +129,8 @@ class AdController extends Controller
         $validator = Validator::make($input, [
             'title'           => 'required|string|min:1',
             'ad_image_file'   => 'required|image',
-            'start_date'      => 'required|date',
-            'end_date'        => 'required|date',
+            'start_date'      => 'required|string',
+            'end_date'        => 'required|string',
             'landing_url'     => 'required|string',
             'pkg_list'        => 'nullable'
         ],$message);
@@ -142,15 +142,16 @@ class AdController extends Controller
         $landingUrl = $request->input('landing_url');
         $start_date=$request->input('start_date');
         $end_date=$request->input('end_date');
-        if($start_date >= $end_date){
-            return $this->responseBadRequest('结束时间必须大于开始时间');
-        }
+        // if($start_date >= $end_date){
+        //     return $this->responseBadRequest('结束时间必须大于开始时间');
+        // }
         $exits = ShopAD::where('buyer', $buyer)->where('title',$title)->first();
         if($exits){
             return $this->responseBadRequest('already exist title', 401);//error code 409,401
         }
         $pkgSeqList = $request->input('pkg_list');
         $pkgSeqList = ParamValidationHelper::isValidSeqListStr($pkgSeqList);
+      
         $image = $request->file('ad_image_file');
         // list($imageWidth, $imageHeight) = getimagesize($image);
         // if ($imageWidth !== 1280 || $imageHeight !== 480) {
@@ -161,13 +162,13 @@ class AdController extends Controller
         $shopAd = ShopAD::create([
             'title'            => $input['title'],
             'landing_url'      => $landingUrl,
-            'start_date'      => $start_date,
+            'start_date'       => $start_date,
             'end_date'         => $end_date,
             'status'           => 'registered',
             'buyer'            => $buyer,
             'shop_image_file'  => $adImage->seq
         ]);
-
+     
         if ($pkgSeqList) {
             $packages = Q35Package::whereIn('seq', $pkgSeqList)->get();
             foreach ($packages as $package) {
@@ -182,7 +183,38 @@ class AdController extends Controller
                 ]);
             }
         }
+        
         return $this->responseOK('success', $shopAd);
+    }
+    //获取单条广告
+    public function getOneAd(Request $request)
+    {
+        $buyer = $request->session()->get('buyer.seq');
+        $buyer=14;
+        $seq=$request->input('seq');
+        $shopAd=ShopAd::where('seq',$seq)->select('seq','title', 'landing_url' , 
+        'ad_image_file', 'pkg_list','start_date','end_date')->first();
+        // $pkgSeqList = $request->input('pkg_list');
+        // $pkgSeqList = ParamValidationHelper::isValidSeqListStr($pkgSeqList);
+        // $shop2Buyer = Shop2Q35Package::where('shop_ad',$seq)->get();
+        // foreach ($shop2Buyer as $item) {
+        //     $item->forceDelete();
+        // }
+        // if ($pkgSeqList) {
+        //     $packages = Q35Package::whereIn('seq', $pkgSeqList)->get();
+        //     foreach ($packages as $package) {
+        //         Shop2Q35Package::create([
+        //             'type'             => 'ad',
+        //             'start_num'        => $package->start_q35code,
+        //             'end_num'          => $package->end_q35code,
+        //             'status'           => 'registered',
+        //             'buyer'            => $buyer,
+        //             'shop_ad'          => $shopAD->seq,
+        //             'q35package'       => $package->seq
+        //         ]);
+        //     }
+        // }
+        return $this->responseOK('success', $ShopAD);
     }
     //修改广告
     public function modifyAd(Request $request)

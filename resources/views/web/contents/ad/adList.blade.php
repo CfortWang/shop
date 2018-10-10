@@ -157,5 +157,13 @@
         var that = $(this)
         changeStatus(id, status, that);
     })
+
+    // 修改
+    $(".table-content").on("click", ".table-tr .operating .modify", function () {
+        var id = $(this).parent().attr("data-id")
+        // var status = $(this).parent().attr("data-status")
+        // var that = $(this)
+        // changeStatus(id, status, that);
+    })
 </script>
 @endsection

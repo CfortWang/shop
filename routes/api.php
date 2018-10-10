@@ -50,10 +50,11 @@ Route::group(['namespace' => 'Api'], function() {
     });
     //shop
     Route::group(['prefix'  => 'shop'], function() {
-        Route::get('info',                  'ShopController@info');
-        Route::get('category',              'ShopController@category');
-        Route::post('modify',               'ShopController@modify');
-        Route::put('deleteImage',           'ShopController@deleteImage');
+        Route::get('/info',                  'ShopController@info');
+        Route::get('/category',              'ShopController@category');
+        Route::post('/modify',               'ShopController@modify');
+        Route::put('/deleteImage',           'ShopController@deleteImage');
+        Route::post('/createCoupon',          'ShopController@createCoupon');  //创建优惠券
     });
     //Package
     Route::group(['prefix' => 'packages'], function() {
