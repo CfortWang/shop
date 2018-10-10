@@ -35,11 +35,6 @@ class Controller extends BaseController
                 }    
             });
         }
-        header('Access-Control-Allow-Origin:http://wang.beanpop.cn:8081');
-        header('Access-Control-Allow-Headers:Origin, Content-Type, Cookie, X-CSRF-TOKEN, Accept, Authorization, X-XSRF-TOKEN');
-        header('Access-Control-Expose-Headers:Authorization, authenticated');
-        header('Access-Control-Allow-Methods:GET, POST, PATCH, PUT, OPTIONS');
-        header('Access-Control-Allow-Credentials:true');
         return response()->json([
             'code'      =>  static::$httpOK,
             'message'   => $msg,

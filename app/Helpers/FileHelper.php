@@ -12,6 +12,7 @@ class FileHelper
     public static $shopDetailImageFilePath = '/shop/detail/';
     public static $giftResultImagePath = '/shop/gift/';
     public static $adImagePath = '/shop/ad/';
+    public static $couponImagePath = '/shop/coupon/';
 
     public static $groupImagePath = '/shop/groupon/';
     
@@ -34,7 +35,10 @@ class FileHelper
     {
         return static::uploadAdImage(static::$adImagePath, $file);
     }
-
+    public static function shopCouponImage($file) 
+    {
+        return static::uploadImage(static::$couponImagePath, $file);
+    }
     public static function groupOnImage($file)
     {
         return static::uploadImage(static::$groupImagePath, $file,true);

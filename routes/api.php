@@ -55,6 +55,7 @@ Route::group(['namespace' => 'Api'], function() {
         Route::post('/modify',               'ShopController@modify');
         Route::put('/deleteImage',           'ShopController@deleteImage');
         Route::post('/createCoupon',          'ShopController@createCoupon');  //创建优惠券
+        Route::get('/couponList',             'ShopController@couponList');   //优惠券列表
     });
     //Package
     Route::group(['prefix' => 'packages'], function() {
@@ -87,6 +88,7 @@ Route::group(['namespace' => 'Api'], function() {
         Route::put('status',                      'GroupOnController@status'); 
         Route::post('groupon',                   'GroupOnController@create');
         Route::post('upload',                   'GroupOnController@upload');
+        Route::get('groupon/{id}',                   'GroupOnController@detail');
     });
 
 

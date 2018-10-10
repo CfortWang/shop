@@ -66,6 +66,7 @@ class GroupOnController extends Controller
     {
         $buyer_id = $this->buyer_id;
         $input=Input::only('title','price','discounted_price','group_size','remark','rule','open_time','close_time','start_use_time','end_use_time','is_weekend','is_festival','logo','image','product','continued_time','is_effective_fixed','is_usetime_limit','effective_start_at','effective_end_at','time_limit','days','effective_days');
+        return $this->responseOk('',$input);
         $message =  $messages = [
             "required" => ":attribute ".trans('common.verification.cannotEmpty'),
         ];
@@ -136,17 +137,12 @@ class GroupOnController extends Controller
             foreach ($input['time_limit'] as $key => $value) {
                 if($value['start_at']&&$value['end_at']&&$limit<4){
                     $data['time_limit'.$limit.'_start_at'] = $value['start_at'];
-                    $limit  = $limit + 1;
+                    $data['time_limit'.$limit.'_end_at'] = $value['end_at'];
+                    $limit = $limit + 1;
                 }
             }
             $day = 0;
-            foreach ($input['days'] as $key => $value) {
-                $temp = 1;
-                for ($i=0; $i < $value; $i++) { 
-                    $temp = $temp*10;
-                }
-                $day = $day+$temp;
-            }
+            $day = implode('',$input['days']);
             $data['days_limit'] = $day;
             $data['is_weekend'] = $input['is_weekend'];
             $data['is_festival'] = $input['is_festival'];
@@ -217,5 +213,41 @@ class GroupOnController extends Controller
         $url = 'beta-media.beanpop.cn/temp/shop/groupon/2b6a1cdb30e0bc8060728166aeb227fd.png';
         
         // $path = 
+    }
+
+    public function modify()
+    {
+        
+    }
+
+    public function detail(Request $request,$id)
+    {
+        $data = GrouponProduct::where('id',$id)->select("title","price","discounted_price","group_size","remark","rule","continued_time","is_weekend","is_festival","product_status","effective_day","open_time","close_time","start_use_time","end_use_time","image as logo","groupon_price","is_effective_fixed","effective_start_at","effective_end_at","is_usetime_limit","time_limit1_start_at","time_limit2_start_at","time_limit3_start_at","time_limit1_end_at","time_limit2_end_at","time_limit3_end_at","days_limit","effective_days")->first();
+        if($data){
+            $data['product'] = GrouponItem::where('groupon_product_id',$id)->select('title','price','quantity')->get();
+            $data['image'] = GrouponImage::where('groupon_product_id',$id)->select('image_url')->get();
+            if($data['is_usetime_limit']){
+                $data['days'] = str_split($data['days_limit']);
+            }
+            $data['remark'] = explode('/',$data['remark']);
+
+            $time_limit = [];
+            for ($i=1; $i < 4; $i++) { 
+                if($data['time_limit'.$i.'_end_at']){
+                    unset($limit);
+                    $limit['start_at'] = $data['time_limit'.$i.'_start_at'];
+                    $limit['end_at'] = $data['time_limit'.$i.'_end_at'];
+                    $time_limit[] = $limit;
+                }else{
+                    break;
+                }
+            }
+            unset($data['time_limit1_end_at'],$data['time_limit2_end_at'],$data['time_limit3_end_at'],$data['time_limit1_start_at'],$data['time_limit2_start_at'],$data['time_limit3_start_at']);
+            $data['time_limit'] = $time_limit;
+            $data['continued_time'] = $data['continued_time']/60;
+        }else{
+            return $this->responseBadRequest('');
+        }
+        return $this->responseOk('',$data);
     }
 }

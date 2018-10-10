@@ -20,6 +20,8 @@ use App\Models\ShopCategory;
 use App\Models\ShopDetailImage;
 use App\Models\ShopImageFile;
 use App\Models\ShopCoupon;
+use App\Models\ShopCouponRecord;
+use Illuminate\Support\Facades\DB;
 
 class ShopController extends Controller
 {
@@ -272,8 +274,8 @@ class ShopController extends Controller
         'expired_at'              => 'nullable|date',
         'days'                    => 'nullable|integer',
         'available_time_type'     => 'required|in:0,1',
-        'available_time'          => 'required|string',
-        'business_hours'          => 'nullable|date',
+        'available_time'          => 'nullable|string',
+        'business_hours'          => 'nullable|string',
         'condition'               => 'nullable|string',
         'is_special_goods'        => 'required|in:0,1',
         'goods_name'              => 'nullable|string',
@@ -366,9 +368,28 @@ class ShopController extends Controller
         if ($availableTimeType==0){
             $availableTime=0;
          }
-         if ($availableTimeType==1){
-            $availableTime=0;
+        if ($availableTimeType==1){
+             if(empty($availableTime)){
+                return $this->responseNotFound(trans('shop.verification.emptyAvailableTime'));
+             }
+             if(empty($businessHours)){
+                return $this->responseNotFound(trans('shop.verification.emptyBusinessHours'));
+             }
          }
+        //验证优惠使用条件
+        if ( $isSpecialGoods==0){
+            $goodsName="null";
+         }
+        if ( $isSpecialGoods==1){
+            if(empty($goodsName)){
+                return $this->responseNotFound(trans('shop.verification.emptyGoodsName'));
+             }
+         }
+        
+         if($image){
+             $couponImage = FileHelper::shopCouponImage($image);
+         }
+       
         $data = ShopCoupon::create([
             'coupon_name'            => $couponName,
             'quantity'               => $quantity,
@@ -376,13 +397,15 @@ class ShopController extends Controller
             'discount_money'         => $discountMoney,
             'discount_percent'       => $discountPercent,
             'max_discount_money'     => $maxDiscountMoney,
-            // 'shop_image_file'  => $adImage->seq,
+            'image'                  => $couponImage['url'],
+            'limit_money'            =>$limitMoney,
+            'limit_count'            =>$limitCount,
             'start_at'               => $startAt,
             'expired_at'             => $expiredAt,
             'days'                   => $days,
             'available_time'         => $availableTime,
             'business_hours'         =>$businessHours,
-            'condtion'               => $condition,
+            'condition'               => $condition,
             'is_special_goods'       =>$isSpecialGoods,
             'goods_name'             => $goodsName,
             'remark'                 =>$remark,
@@ -390,5 +413,37 @@ class ShopController extends Controller
             'buyer_id'               =>$buyer
           
         ]);
+        return $this->responseOk('',$data);
+    }
+    public function couponList(request $request){
+        $buyer=14;
+        $limit = $request->input('limit')?$request->input('limit'):20;
+        $page = $request->input('page')?$request->input('page'):1;
+         // $searchValue = $request->input('phoneNum');
+        $items=ShopCoupon::where('buyer_id',$buyer)->orderBy('id','desc')->get();
+        foreach($items as $k=>$v){
+          $data['id']=$v['id'];
+          $data['coupon_name']=$v['coupon_name'];
+          if($v['coupon_type']=='0'){
+              $data['value']=$v['discount_money'];
+          }else{
+              $data['value']=$v['discount_percent']; 
+          }
+          $data['limit_money']=$v['limit_money'];
+          if($v['limit_money']==0){
+            $data['limit_money']='';
+          }
+          $used=ShopCouponRecord::where('shop_coupon_id',$v['id'])->where('buyer_id',$buyer)->where('status','used')->get();
+          $receive=ShopCouponRecord::where('shop_coupon_id',$v['id'])->where('buyer_id',$buyer)->get();
+          $receiveCount=count($receive);
+          $data['usedCount']=count($used);
+          if(empty($data['usedCount'])){
+            $data['usedCount']='--';
+          }
+          $data['Receiving rate']=($receiveCount / $v['quantity'])* 100 ."%";
+          $list[]=$data;
+        }
+      
+        return $this->responseOk('',$list);
     }
 }
