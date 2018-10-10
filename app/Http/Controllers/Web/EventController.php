@@ -39,4 +39,33 @@ class EventController extends Controller
       ]);
   }
 
+  public function message() {
+    return view('web.contents.event.message',[
+      'title' => '消息通知',
+    ]);
+  }
+
+  public function createMessage() {
+    return view('web.contents.event.createMessage',[
+        'title' => '新建消息',
+      ]);
+  }
+
+  public function grouponDetails() {
+    return view('web.contents.event.grouponDetails',[
+        'title' => '拼豆豆详情',
+      ]);
+  }
+
+  public function couponDetails() {
+    return view('web.contents.event.couponDetails',[
+        'title' => '优惠券详情',
+      ]);
+  }
+
+  public function messageDetails() {
+    return view('web.contents.event.messageDetails',[
+        'title' => '消息详情',
+      ]);
+  }
 }
