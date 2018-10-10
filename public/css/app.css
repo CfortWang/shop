@@ -916,10 +916,10 @@ input:-moz-placeholder {
     display: flex;
 }
 
-.form-group .old-price, .form-group .new-price, .form-group .group-size{
+.form-group .old-price, .form-group .new-price, .form-group .group-size, .form-group .coupon-input{
     flex: 1;
     padding: 2px 26px 3px 10px;
-    min-width: 150px;
+    /* min-width: 150px; */
     height: 40px;
     line-height: 1.42857;
     color: #333333;
@@ -936,7 +936,7 @@ input:-moz-placeholder {
 }
 
 .input-outer{
-    width: 20%;
+    /* width: 20%; */
     border: 1px solid #dddddd;
     border-radius:4px;
     display: flex;
@@ -949,7 +949,8 @@ input:-moz-placeholder {
 .price-unit{
     display: inline-block;
     background: #F8F9FC;
-    width: 49px;
+    /* width: 49px; */
+    padding: 0px 15px;
     height: 40px;
     text-align: center;
     line-height: 40px;
@@ -1372,7 +1373,27 @@ input:-webkit-autofill {
     -webkit-box-shadow: inset 0 0 0 1000px #fff;
     background-color: transparent;
 }
+/* Coupon */
+.coupon-modus > div:first-child{
+    margin-bottom: 20px;
+}
+.form-group .coupon-input{
+    max-width: 100px;
+}
+.coupon-modus .label-radio{
+    height: 40px;
+    line-height: 36px;
+}
+.chooies{
+    text-align: right;
+    line-height: 40px;
+    padding-right: 10px;
+}
 
+
+
+
+/* AD */
 .ad-title{
     justify-content: flex-end;
 }
@@ -1437,6 +1458,13 @@ input:-webkit-autofill {
     border-radius: 5px;
     cursor: pointer;
 }
+
+
+
+
+
+
+
 
 
 
