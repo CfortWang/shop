@@ -42,11 +42,12 @@ Route::group(['namespace' => 'Api'], function() {
     });
     //ad
     Route::group(['prefix'  => 'ad'], function() {
-        Route::get('/list',                  'AdController@adList');//广告列表
+        Route::get('/list',                    'AdController@adList');//广告列表
         Route::post('/adStatus',               'AdController@adStatus');//广告上下架
         Route::post('/modifyAd',               'AdController@modifyAd');//修改广告
         Route::get('/pkgList',                 'AdController@pkgList');//喜豆码列表
         Route::post('/createAd',               'AdController@createAd');
+        Route::get('/adDetail',                'AdController@detail');
     });
     //shop
     Route::group(['prefix'  => 'shop'], function() {
@@ -56,7 +57,8 @@ Route::group(['namespace' => 'Api'], function() {
         Route::put('/deleteImage',           'ShopController@deleteImage');
         Route::post('/createCoupon',          'ShopController@createCoupon');  //创建优惠券
         Route::get('/couponList',             'ShopController@couponList');   //优惠券列表
-        Route::put('/couponStatus',            'ShopController@couponStatus');// 
+        Route::put('/couponStatus',           'ShopController@couponStatus');// 
+        Route::get('/couponDetail',           'ShopController@detail');
     });
     //Package
     Route::group(['prefix' => 'packages'], function() {

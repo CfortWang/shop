@@ -519,4 +519,24 @@ class ShopController extends Controller
         $shopCoupon->save();
         return $this->responseOk('',$shopCoupon);
     }
+    public function deleteCoupon(Request $request){
+       $id=$request->input('id');
+       $shopCoupon=ShopCoupon::where('id',$id)->first();
+       if(empty($shopCoupon)){
+        return $this->responseBadRequest('id is error');
+       }
+       $shopCoupon->delete();
+       return $this->responseOk('删除成功');
+    }
+    public function detail(Request $request)
+    {
+        $buyer = $request->session()->get('buyer.seq');
+        $buyer=14;
+        $id=$request->input('id');
+        $item = ShopCoupon::where('shop_coupon.id',$id)->where('buyer_id',$buyer)->first();       
+        if(empty($item)){
+            return $this->responseNotFound('id is error');
+        }
+        return $this->responseOk('', $item);
+    }
 }

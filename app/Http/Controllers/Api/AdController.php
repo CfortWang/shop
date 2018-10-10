@@ -93,27 +93,17 @@ class AdController extends Controller
         $ShopAd->save();
         return $this->responseOk('', $ShopAd);
     }
-    public function detail(Request $request, $seq)
+    public function detail(Request $request)
     {
         $buyer = $request->session()->get('buyer.seq');
-
-        $validator = Validator::make(['seq' => $seq],[
-            'seq'  => 'required|numeric|min:1',
-        ]);
-
-        if ($validator->fails()) {
-            return $this->responseBadRequest('id wrong.');
-        }
-
+        $buyer=14;
+        $seq=$request->input('seq');
         $item = ShopAD::where('ShopAD.seq',$seq)->where('buyer',$buyer)
                         ->leftJoin('ShopImageFile as F','F.seq', '=', 'ShopAD.shop_image_file')
-                        ->select('ShopAD.seq', 'ShopAD.title','ShopAD.type' ,'ShopAD.landing_url','ShopAD.status','F.full_path as shop_image_file')
+                        ->select('ShopAD.seq', 'ShopAD.title','ShopAD.start_date','ShopAD.end_date','ShopAD.landing_url','F.url as shop_image_file')
                         ->first();
-        $mediaHost = Config::get('bw.media.host');
-        $item->mediaHost = $mediaHost;
-        
         if(empty($item)){
-            return $this->responseNotFound('No data','','');
+            return $this->responseNotFound('seq is error');
         }
         return $this->responseOk('', $item);
     }
