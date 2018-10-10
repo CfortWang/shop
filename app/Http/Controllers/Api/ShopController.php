@@ -419,15 +419,25 @@ class ShopController extends Controller
         $buyer=14;
         $limit = $request->input('limit')?$request->input('limit'):20;
         $page = $request->input('page')?$request->input('page'):1;
-         // $searchValue = $request->input('phoneNum');
-        $items=ShopCoupon::where('buyer_id',$buyer)->orderBy('id','desc')->get();
+        $valueName= $request->input('coupon_name');
+        $valueStatus= $request->input('status');
+        $items=ShopCoupon::where('buyer_id',$buyer);
+        if($valueName){
+           $items=$items->where('coupon_name', 'like', '%'.$valueName.'%');              
+        }
+        if($valueStatus){
+            $items=$items->where('status', $valueStatus);            
+         }
+        $items=$items->orderBy('id','desc')->limit($limit)->offset(($page-1)*$limit)->get();
         foreach($items as $k=>$v){
           $data['id']=$v['id'];
           $data['coupon_name']=$v['coupon_name'];
+          $discountMoney=$v['discount_money'];
+          $discountPercent=$v['discount_percent'];
           if($v['coupon_type']=='0'){
-              $data['value']=$v['discount_money'];
+              $data['value']="￥$discountMoney";
           }else{
-              $data['value']=$v['discount_percent']; 
+              $data['value']=$discountPercent +'折'; 
           }
           $data['limit_money']=$v['limit_money'];
           if($v['limit_money']==0){
@@ -435,15 +445,78 @@ class ShopController extends Controller
           }
           $used=ShopCouponRecord::where('shop_coupon_id',$v['id'])->where('buyer_id',$buyer)->where('status','used')->get();
           $receive=ShopCouponRecord::where('shop_coupon_id',$v['id'])->where('buyer_id',$buyer)->get();
+          //已领取数量
           $receiveCount=count($receive);
-          $data['usedCount']=count($used);
-          if(empty($data['usedCount'])){
-            $data['usedCount']='--';
+          //领取限制
+          $limitCount=$v['limit_count'];
+          if($v['limit_count']==0){
+              $data['limit_count']="不限张数";
+          }else{
+            $data['limit_count']="一人 $limitCount 张";
           }
-          $data['Receiving rate']=($receiveCount / $v['quantity'])* 100 ."%";
+          $data['usedCount']=count($used);
+          //库存
+          $data['reserve']=$v['quantity']-count($used);
+          //有效期
+          $days=$v['days'];
+          $startAt=$v['start_at'];
+          $expiredAt=$v['expired_at'];
+          if(empty($v['days'])){
+              $data['period_time']=$startAt +'至'+ $expiredAt;
+          }else{
+            $data['period_time']="领券次日开始 $days 天内有效";  
+          }
+          $data['receiving_rate']=($receiveCount / $v['quantity'])* 100 ."%";
+          $data['used_rate']=($receiveCount / $v['quantity'])* 100 ."%";
+          if(empty($data['usedCount'])){
+            $data['usedCount']="--";
+            $data['used_rate']="--";
+          }
+          if(empty($receiveCount)){
+            $data['receiving_rate']="--";
+          }
+          $data['statusValue']=$v['status'];
+          if($v['status']=='registered'){
+              $data['status']="未开始";
+          }
+          if($v['status']=='processed'){
+            $data['status']="进行中";
+          }
+          if($v['status']=='overed'){
+            $data['status']="已结束";
+          }
           $list[]=$data;
         }
       
         return $this->responseOk('',$list);
+    }
+    public function couponStatus(Request $request)
+    {
+        $buyer_id = 14;
+        $input=Input::only('id','status');
+        $message = [
+            "required" => ":attribute ".trans('common.verification.cannotEmpty'),
+        ];
+        $validator = Validator::make($input, [
+            'id'                => 'required|numeric',
+            'status'                => 'required|in:0,1',
+        ],$message);
+        if ($validator->fails()) {
+            $message = $validator->errors()->first();
+            return $this->responseBadRequest($message);
+        }
+        $id = $input['id'];
+        $status = $input['status'];
+        $shopCoupon = ShopCoupon::where('id',$id)->where('buyer_id',$buyer_id)->first();
+        if(empty($shopCoupon)){
+            return $this->responseBadRequest('id is error');
+        }
+        if($status==1){
+            $shopCoupon->status="registered";
+        }else{
+            $shopCoupon->status="progressed";
+        }
+        $shopCoupon->save();
+        return $this->responseOk('',$shopCoupon);
     }
 }
