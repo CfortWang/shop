@@ -66,7 +66,6 @@ class GroupOnController extends Controller
     {
         $buyer_id = $this->buyer_id;
         $input=Input::only('title','price','discounted_price','group_size','remark','rule','open_time','close_time','start_use_time','end_use_time','is_weekend','is_festival','logo','image','product','continued_time','is_effective_fixed','is_usetime_limit','effective_start_at','effective_end_at','time_limit','days','effective_days');
-        return $this->responseOk('',$input);
         $message =  $messages = [
             "required" => ":attribute ".trans('common.verification.cannotEmpty'),
         ];
