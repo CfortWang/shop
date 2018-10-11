@@ -587,13 +587,18 @@ class ShopController extends Controller
         return $this->responseOk('', $item);
     }
     public function statusList(Request $requst){
-        $k['v1']['status']="processed";
-        $k['v1']['value']="进行中";
-        $k['v2']['status']="registered";
-        $k['v2']['value']="未开始";
-        $k['v3']['status']="overed";
-        $k['v3']['value']="已结束"; 
-        return $this->responseOk('', $k);
+        $data=array(
+          0=>array('status'=>"processed",'value'=>'进行中'),  
+          1=>array('status'=>"registered",'value'=>'未开始'),  
+          2=>array('status'=>"overed",'value'=>'已结束'),  
+        );
+        // $k['v1']['status']="processed";
+        // $k['v1']['value']="进行中";
+        // $k['v2']['status']="registered";
+        // $k['v2']['value']="未开始";
+        // $k['v3']['status']="overed";
+        // $k['v3']['value']="已结束"; 
+        return $this->responseOk('', $data);
     }
     public function modifyCoupon(Request $request){
         $input=Input::only('coupon_name','quantity','coupon_type','discount_money','discount_percent',
