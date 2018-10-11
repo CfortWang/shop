@@ -59,6 +59,7 @@ Route::group(['namespace' => 'Api'], function() {
         Route::get('/couponList',             'ShopController@couponList');   //优惠券列表
         Route::put('/couponStatus',           'ShopController@couponStatus');// 
         Route::get('/couponDetail',           'ShopController@detail');
+        Route::delete('/deleteCoupon',        'ShopController@deleteCoupon');
     });
     //Package
     Route::group(['prefix' => 'packages'], function() {
