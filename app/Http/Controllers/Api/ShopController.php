@@ -463,10 +463,27 @@ class ShopController extends Controller
           if($v['limit_money']==0){
             $data['limit_money']='';
           }
+         
           $used=ShopCouponRecord::where('shop_coupon_id',$v['id'])->where('buyer_id',$buyer)->where('status','used')->get();
           $receive=ShopCouponRecord::where('shop_coupon_id',$v['id'])->where('buyer_id',$buyer)->get();
           //已领取数量
           $receiveCount=count($receive);
+          if(empty($receiveCount)){
+              $data['receiveCount']="";
+          }else{
+              $data['receiveCount']=$receiveCount;
+          }
+          //领取人数
+          $peopleCount=DB::table('shop_coupon_record')
+                        ->select( DB::raw('count(shop_coupon_record.user_id) AS userCount'))
+                        ->groupBy('shop_coupon_record.user_id')
+                        ->where('shop_coupon_record.shop_coupon_id',$v['id'])
+                        ->first();  
+          if($peopleCount){
+              $data['userCount']=$peopleCount['userCount'];
+          }else{
+              $data['userCount']="";
+          }
           //领取限制
           $limitCount=$v['limit_count'];
           if($v['limit_count']==0){
@@ -507,9 +524,10 @@ class ShopController extends Controller
           }
           $list[]=$data;
         }
+     
         $newData['count']=$count;
         $newData['data']=$list;
-        return $this->responseOk('',$newData);
+        return $this->responseOk('',$items);
     }
     public function couponStatus(Request $request)
     {
