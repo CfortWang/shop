@@ -130,10 +130,10 @@ class GroupOnController extends Controller
                 }
             }
             $day = 0;
-            $day = implode('',$input['days']);
+            $day = isset($input['days'])?implode('',$input['days']):0;
             $data['days_limit'] = $day;
-            $data['is_weekend'] = $input['is_weekend'];
-            $data['is_festival'] = $input['is_festival'];
+            $data['is_weekend'] = isset($input['is_weekend'])?$input['is_weekend']:0;
+            $data['is_festival'] = isset($input['is_festival'])?$input['is_festival']:0;
         }
         $res = GrouponProduct::create($data);
         foreach ($input['image'] as $key => $value) {
