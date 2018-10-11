@@ -651,5 +651,36 @@ $('.start-hours, .end-hours').datetimepicker({
     todayHighlight: true,
     startView: 'hour'
 });
+
+var getArgs = function () {
+    var url = location.search
+    var args = {}
+    if (url.indexOf("?") != -1) {
+        var str = url.substr(1)
+        var strs = str.split("&")
+        for (let i = 0; i < strs.length; i++) {
+            args[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1])
+        }
+    }
+    return args
+}
+var ss = getArgs();
+console.log(ss['id'])
+
+var aa = function () {
+    $.ajax({
+        url: 'http://shop.test/api/event/groupon/' + ss['id'],
+        type: 'get',
+        dataType: 'json',
+        success: function (res) {
+            console.log(res)
+        },
+        error: function (ex) {
+            console.log(ex)
+        }
+    })
+}
+aa();
+
 </script>
 @endsection
