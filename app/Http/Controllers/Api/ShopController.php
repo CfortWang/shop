@@ -250,7 +250,7 @@ class ShopController extends Controller
 
         return $this->responseOK('success','');
     }
-    public function createCoupon(request $request){
+    public function createCoupon(Request $request){
         $buyer=14;
         $input=Input::only('coupon_name','quantity','coupon_type','discount_money','discount_percent',
                           'max_discount_money','limit_type','limit_money','image','limit_count','coupon_date_type','start_at','expired_at','days',
@@ -433,7 +433,7 @@ class ShopController extends Controller
         }
         return $this->responseOk('',$data);
     }
-    public function couponList(request $request){
+    public function couponList(Request $request){
         $buyer=14;
         $limit = $request->input('limit')?$request->input('limit'):20;
         $page = $request->input('page')?$request->input('page'):1;
@@ -475,14 +475,15 @@ class ShopController extends Controller
           }
           //领取人数
           $peopleCount=DB::table('shop_coupon_record')
-                        ->select( DB::raw('count(shop_coupon_record.user_id) AS userCount'))
+                        ->select(DB::raw('count(shop_coupon_record.user_id) AS userCount'))
                         ->groupBy('shop_coupon_record.user_id')
-                        ->where('shop_coupon_record.shop_coupon_id',$v['id'])
-                        ->first();  
+                        ->where('shop_coupon_record.shop_coupon_id',$v->id)
+                        ->first();
+         
           if($peopleCount){
-              $data['userCount']=$peopleCount['userCount'];
+              $data['peopleCount']=$peopleCount['userCount'];
           }else{
-              $data['userCount']="";
+              $data['peopleCount']="";
           }
           //领取限制
           $limitCount=$v['limit_count'];
@@ -527,7 +528,7 @@ class ShopController extends Controller
      
         $newData['count']=$count;
         $newData['data']=$list;
-        return $this->responseOk('',$items);
+        return $this->responseOk('',$newData);
     }
     public function couponStatus(Request $request)
     {
