@@ -12,7 +12,7 @@
                     <div class="tpl-portlet">
                         <div class="tpl-portlet-title">
                             <div class="search-box">
-                                <input type="text" class="search-input" name="search" placeholder="请输入商品名称查找">
+                                <input type="text" class="search-input" name="search" placeholder="请输入优惠券名称查找">
                                 <button class="search-btn">搜索</button>
                             </div>
                             <div class="create-pdd">
@@ -34,6 +34,15 @@
                                     <div class="operating">操作</div>
                                 </div>
                                 <div class="table-content"></div>
+                            </div>
+                            <div class="pagination">
+                                <div class="page-down">
+                                    <img src="/img/main/icon_page_left.png" alt="">
+                                </div>
+                                <div class="page-number">1</div>
+                                <div class="page-up">
+                                    <img src="/img/main/icon_page_right.png" alt="">
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -66,40 +75,61 @@
                 console.log(resData)
                 let count = res.data.count
                 pageCount = Math.ceil(count / limit)
-                var $tr = '<div class="table-tr clear-fix"><div class="table-td-name"></div><div class="table-td-price"><p class="new-price"></p><p class="old-price"><del></del></p></div><div class="table-td-effective"></div><div class="table-td-organize"></div><div class="table-td-join"></div><div class="table-td-success"></div><div class="table-td-used"></div><div class="table-td-notuse"></div><div class="table-td-rate"></div><div class="operating"><span class="shelf"></span><span class="obtained"></span><span class="modify">&nbsp;&nbsp;&nbsp;&nbsp;修改</span></div></div>'
+                var $tr = '<div class="table-tr clear-fix"><div class="table-td-name"></div><div class="table-td-price"><p class="new-price"></p><p class="old-price"></p></div><div class="table-td-condition"><p class="new-price"></p><p class="old-price"></p></div><div class="table-td-effective"></div><div class="table-td-getTimes"></div><div class="table-td-used"></div><div class="table-td-getRate"></div><div class="table-td-useRate"></div><div class="table-td-status"></div><div class="operating"><span class="shelf"></span><span class="delete"></span><span class="obtained"></span><span class="modify" style="display:none">&nbsp;&nbsp;&nbsp;&nbsp;修改</span></div></div>'
                 for (let i = 0; i < resData.length; i++) {
                     $('.table-content').append($tr)
                     let couponName = resData[i].coupon_name
                     let newPrice = resData[i].value
                     let oldPrice = resData[i].limit_money
                     let limitCount = resData[i].limit_count
-                    let reserve = resData[i].reserve
+                    let reserve = "库存：" + resData[i].reserve
                     let effective = resData[i].period_time
+                    let peopleCount = resData[i].peopleCount
+                    let receiveCount = resData[i].receiveCount
+                    let useCount = resData[i].usedCount
                     let receive = resData[i].receiving_rate
                     let use = resData[i].used_rate
                     let status = resData[i].status
                     let statusValue = resData[i].statusValue
                     let id = resData[i].id
-                    if (statusValue == 'activity') {
+
+                    if (oldPrice == '' || oldPrice == null) {
+                        oldPrice = "最低消费：—"
+                    } else {
+                        oldPrice = "最低消费：" + oldPrice
+                    }
+
+                    if (peopleCount == '' || peopleCount == null) {
+                        peopleCount = '-'
+                    }
+                    if (receiveCount == '' || receiveCount == null) {
+                        receiveCount = '-'
+                    }
+                    let statistics = peopleCount + '/' + receiveCount
+
+
+                    if (statusValue == 'processed') {
                         $(".table-content .table-tr:eq("+ i +") .operating .obtained").text("下架")
                     }
-                    if (status == "registered") {
+                    if (statusValue == "registered") {
                         $(".table-content .table-tr:eq("+ i +") .operating .shelf").text("上架")
+                        $(".table-content .table-tr:eq("+ i +") .operating .modify").css("display", 'inline')
                     }
-                    if (status == "stopped") {
-                        $(".table-content .table-tr:eq("+ i +") .operating .shelf").text("删除")
+                    if (statusValue == "overed") {
+                        $(".table-content .table-tr:eq("+ i +") .operating .delete").text("删除")
                     }
-                    $(".table-content .table-tr:eq("+ i +") .operating").attr({"data-id": id, "data-status": status})
+                    $(".table-content .table-tr:eq("+ i +") .operating").attr({"data-id": id, "data-status": statusValue})
                     $(".table-content .table-tr:eq("+ i +") .table-td-name").text(couponName)
                     $(".table-content .table-tr:eq("+ i +") .table-td-price .new-price").text(newPrice)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-price .old-price del").text(oldPrice)
+                    $(".table-content .table-tr:eq("+ i +") .table-td-price .old-price").text(oldPrice)
+                    $(".table-content .table-tr:eq("+ i +") .table-td-condition .new-price").text(limitCount)
+                    $(".table-content .table-tr:eq("+ i +") .table-td-condition .old-price").text(reserve)
                     $(".table-content .table-tr:eq("+ i +") .table-td-effective").text(effective)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-organize").text(groupNum)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-join").text(joinNum)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-success").text(successNum)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-used").text(usedNum)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-notuse").text(unusedNum)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-rate").text(rate)
+                    $(".table-content .table-tr:eq("+ i +") .table-td-getTimes").text(statistics)
+                    $(".table-content .table-tr:eq("+ i +") .table-td-used").text(useCount)
+                    $(".table-content .table-tr:eq("+ i +") .table-td-getRate").text(receive)
+                    $(".table-content .table-tr:eq("+ i +") .table-td-useRate").text(use)
+                    $(".table-content .table-tr:eq("+ i +") .table-td-status").text(status)
 
                 }
             },
@@ -112,7 +142,7 @@
 
     var changeStatus = function (event1, event2, that) {
         $.ajax({
-            url: 'http://shop.test/api/event/status',
+            url: 'http://shop.test/api/shop/couponStatus',
             type: 'put',
             dataType: 'json',
             data: {
@@ -120,17 +150,45 @@
                 status: event2
             },
             success: function (res) {
+                let resData = res.data
                 if (res.code != 200) {
                     console.log(res.message);
                 } else {
-                    if (that.parent().attr("data-status") == 0) {
-                        that.parent().attr("data-status", 1)
-                        that.text("上架")
-                    } else {
-                        that.parent().attr("data-status", 0)
+                    if (that.parent().attr("data-status") == "registered") {
+                        that.parent().attr("data-status", "processed")
+                        that.parent().parent().children(".table-td-status").text("进行中")
                         that.text("下架")
+                        that.parent().children(".modify").css("display", "none")
+                    } else {
+                        that.parent().attr("data-status", "registered")
+                        that.parent().parent().children(".table-td-status").text("未开始")
+                        that.parent().children(".modify").css("display", "inline")
+                        that.text("上架")
                     }
                 }
+            },
+            error: function (ex) {
+                console.log(ex)
+            }
+        })
+    }
+
+    var deleteCoupon = function (event1, event2, that) {
+        $.ajax({
+            url: 'http://shop.test/api/shop/deleteCoupon',
+            type: 'delete',
+            dataType: 'json',
+            data: {
+                id: event1
+            },
+            success: function (res) {
+                if (res.code != 200) {
+                    console.log(res.message);
+                } else {
+                    drawList();
+                    alert(res.message);
+                }
+
             },
             error: function (ex) {
                 console.log(ex)
@@ -153,6 +211,32 @@
         var status = $(this).parent().attr("data-status")
         var that = $(this)
         changeStatus(id, status, that);
+    })
+
+    $(".table-content").on("click", ".table-tr .operating .delete", function () {
+        var id = $(this).parent().attr("data-id")
+        var status = $(this).parent().attr("data-status")
+        var that = $(this)
+        deleteCoupon(id, status, that);
+    })
+
+    $(".page-down").click(function () {
+        if (page > 1) {
+            page--
+            drawList();
+            $(".page-number").text(page)
+        } else {
+            console.log("当前已是第一页")
+        }
+    })
+    $(".page-up").click(function () {
+        if (page < pageCount) {
+            page++;
+            drawList();
+            $(".page-number").text(page)
+        } else {
+            console.log("已无更多数据")
+        }
     })
 </script>
 @endsection
