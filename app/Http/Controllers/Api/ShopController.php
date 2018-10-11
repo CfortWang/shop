@@ -449,7 +449,8 @@ class ShopController extends Controller
         $count=$items->orderBy('id','desc')->get();
         $count=count($count);
         $items=$items->orderBy('id','desc')->limit($limit)->offset(($page-1)*$limit)->get();
-        if(empty($items)){
+        $length=count($items);
+        if ( $length == 0){
             return $this->responseNotFound('no data');
         }
         foreach($items as $k=>$v){
