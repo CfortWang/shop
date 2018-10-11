@@ -435,8 +435,8 @@ class ShopController extends Controller
     }
     public function couponList(Request $request){
         $buyer=14;
-        $limit = $request->input('limit')?$request->input('limit'):20;
-        $page = $request->input('page')?$request->input('page'):1;
+        $limit = $request->input('limit');
+        $page = $request->input('page');
         $valueName= $request->input('coupon_name');
         $valueStatus= $request->input('status');
         $items=ShopCoupon::where('buyer_id',$buyer);
@@ -449,7 +449,9 @@ class ShopController extends Controller
         $count=$items->orderBy('id','desc')->get();
         $count=count($count);
         $items=$items->orderBy('id','desc')->limit($limit)->offset(($page-1)*$limit)->get();
+      
         foreach($items as $k=>$v){
+           
           $data['id']=$v['id'];
           $data['coupon_name']=$v['coupon_name'];
           $discountMoney=$v['discount_money'];
@@ -463,7 +465,6 @@ class ShopController extends Controller
           if($v['limit_money']==0){
             $data['limit_money']='';
           }
-         
           $used=ShopCouponRecord::where('shop_coupon_id',$v['id'])->where('buyer_id',$buyer)->where('status','used')->get();
           $receive=ShopCouponRecord::where('shop_coupon_id',$v['id'])->where('buyer_id',$buyer)->get();
           //已领取数量
@@ -477,11 +478,10 @@ class ShopController extends Controller
           $peopleCount=DB::table('shop_coupon_record')
                         ->select(DB::raw('count(shop_coupon_record.user_id) AS userCount'))
                         ->groupBy('shop_coupon_record.user_id')
-                        ->where('shop_coupon_record.shop_coupon_id',$v->id)
+                        ->where('shop_coupon_record.shop_coupon_id',$v['id'])
                         ->first();
-         
-          if($peopleCount){
-              $data['peopleCount']=$peopleCount['userCount'];
+          if(isset($peopleCount->userCount)&&$peopleCount->userCount){
+              $data['peopleCount']=$peopleCount->userCount;
           }else{
               $data['peopleCount']="";
           }
@@ -525,7 +525,7 @@ class ShopController extends Controller
           }
           $list[]=$data;
         }
-     
+        
         $newData['count']=$count;
         $newData['data']=$list;
         return $this->responseOk('',$newData);
