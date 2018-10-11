@@ -449,6 +449,9 @@ class ShopController extends Controller
         $count=$items->orderBy('id','desc')->get();
         $count=count($count);
         $items=$items->orderBy('id','desc')->limit($limit)->offset(($page-1)*$limit)->get();
+        if(empty($items)){
+            return $this->responseNotFound('no data');
+        }
         foreach($items as $k=>$v){
           $data['id']=$v['id'];
           $data['coupon_name']=$v['coupon_name'];
@@ -582,5 +585,50 @@ class ShopController extends Controller
         }
         return $this->responseOk('', $item);
     }
-  
+    public function statusList(Request $requst){
+        $k['v1']['status']="processed";
+        $k['v1']['value']="进行中";
+        $k['v2']['status']="registered";
+        $k['v2']['value']="未开始";
+        $k['v3']['status']="overed";
+        $k['v3']['value']="已结束"; 
+        return $this->responseOk('', $k);
+    }
+    public function modifyCoupon(Request $request){
+        $input=Input::only('coupon_name','quantity','coupon_type','discount_money','discount_percent',
+                          'max_discount_money','limit_type','limit_money','image','limit_count','coupon_date_type','start_at','expired_at','days',
+                          'available_time_type',  'available_time','business_hours','is_special_goods','pkgList','condition','goods_name','remark');
+         $message = [
+            "required" => ":attribute ".trans('common.verification.cannotEmpty'),
+            "integer" => ":attribute ".trans('common.createCoupon.verification.requiredNumber'),
+        ];
+        $validator = Validator::make($input,[
+        'coupon_name'             => 'required|string',
+        'quantity'                => 'required|integer|min:1|max:1000000',
+        'coupon_type'             => 'required|in:0,1',
+        'discount_money'          => 'nullable|numeric|min:0.01',
+        'discount_percent'        => 'nullable|numeric',
+        'max_discount_money'      => 'nullable|numeric',
+        'limit_type'              => 'required|in:0,1',
+        'limit_money'             => 'nullable|numeric',
+        'image'                   => 'required|image',
+        'limit_count'             => 'required|integer',
+        'coupon_date_type'        => 'required|in:0,1',
+        'start_at'                => 'nullable|date',
+        'expired_at'              => 'nullable|date',
+        'days'                    => 'nullable|integer',
+        'available_time_type'     => 'required|in:0,1',
+        'available_time'          => 'nullable|string',
+        'business_hours'          => 'nullable|string',
+        'condition'               => 'nullable|string',
+        'is_special_goods'        => 'required|in:0,1',
+        'goods_name'              => 'nullable|string',
+        'remark'                  => 'nullable',
+        'pkgList'                  => 'nullable',
+        ],$message);
+        if ($validator->fails()) {
+            $message = $validator->errors()->first();
+            return $this->responseBadRequest($message);
+        }  
+    }
 }

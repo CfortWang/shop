@@ -60,6 +60,7 @@ Route::group(['namespace' => 'Api'], function() {
         Route::put('/couponStatus',           'ShopController@couponStatus');// 
         Route::get('/couponDetail',           'ShopController@detail');
         Route::delete('/deleteCoupon',        'ShopController@deleteCoupon');
+        Route::get('/statusList',        'ShopController@statusList');
     });
     //Package
     Route::group(['prefix' => 'packages'], function() {
