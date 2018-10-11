@@ -552,7 +552,7 @@ class ShopController extends Controller
         if($status=='processed'){
             $shopCoupon->status="registered";
         }else{
-            $shopCoupon->status="progressed";
+            $shopCoupon->status="processed";
         }
         $shopCoupon->save();
         return $this->responseOk('',$shopCoupon);
