@@ -1138,6 +1138,9 @@ input[type="number"]{
     color: #333;
     height: 40px;
     line-height: 40px;
+    overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 .pdd-table-tr .operating > div{
@@ -1175,7 +1178,7 @@ input[type="number"]{
 }
 .remark-tr .operating{
     text-align: left;
-    margin-left: -32px;
+    margin-left: 30px;
 }
 
 .dividing{
