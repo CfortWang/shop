@@ -547,7 +547,7 @@ class ShopController extends Controller
         $status = $input['status'];
         $shopCoupon = ShopCoupon::where('id',$id)->where('buyer_id',$buyer_id)->first();
         if(empty($shopCoupon)){
-            return $this->responseBadRequest('id is error');
+            return $this->responseBadRequest('id is error',401);
         }
         if($status=='processed'){
             $shopCoupon->status="registered";
@@ -582,4 +582,5 @@ class ShopController extends Controller
         }
         return $this->responseOk('', $item);
     }
+  
 }
