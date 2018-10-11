@@ -144,5 +144,10 @@
         var that = $(this)
         changeStatus(id, status, that);
     })
+
+    $(".table-content").on("click", ".table-tr .operating .modify", function () {
+        var id = $(this).parent().attr("data-id")
+        window.location.href = '/event/groupon/details?id=' + id
+    })
 </script>
 @endsection
