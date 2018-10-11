@@ -85,10 +85,15 @@ Route::group(['namespace' => 'Api'], function() {
 
     Route::group(['prefix'  => 'event'], function() {
         Route::get('groupon',                      'GroupOnController@list'); 
-        Route::put('status',                      'GroupOnController@status'); 
         Route::post('groupon',                   'GroupOnController@create');
-        Route::post('upload',                   'GroupOnController@upload');
         Route::get('groupon/{id}',                   'GroupOnController@detail');
+        Route::put('status',                      'GroupOnController@status'); 
+        Route::post('upload',                   'GroupOnController@upload');
+
+        Route::get('message',                      'MessageController@list'); 
+        Route::post('message',                      'MessageController@create');
+        Route::get('message/{id}',                   'MessageController@detail');
+
     });
 
 

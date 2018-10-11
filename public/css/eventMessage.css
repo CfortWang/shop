@@ -1,0 +1,33 @@
+.table-title{
+    height:64px;
+    display: flex;
+    align-items: center;
+    background:rgba(87,160,255,1);
+    border-radius:5px 5px 0px 0px;
+    color: #ffffff;
+}
+.table-tr{
+    height:64px;
+    display: flex;
+    align-items: center;
+    border-radius:5px 5px 0px 0px;
+}
+.event-message .table-title > div, .event-message .table-tr > div{
+    display: inline-block;
+    text-align: center;
+    float: left;
+    width: 25%;
+}
+.create-message{
+    width: 150px;
+    height: 55px;
+    background: #57A0FF;
+    color: #FFF;
+    border-radius: 3px;
+    text-align: center;
+    line-height: 55px;
+    font-size: 16px;
+    font-family: "PingFangSC-Light";
+    margin-left: 50%;
+    cursor: pointer;
+}
