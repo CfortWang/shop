@@ -15,6 +15,13 @@
                                 <input type="text" class="search-input" name="search" placeholder="请输入优惠券名称查找">
                                 <button class="search-btn">搜索</button>
                             </div>
+                            <div class="status-filter">
+                                <select data-am-selected="{btnStyle: 'secondary'}">
+                                    <option value="processed">进行中</option>
+                                    <option value="registered">未开始</option>
+                                    <option value="overed">已删除</option>
+                                </select>
+                            </div>
                             <div class="create-pdd">
                                 <span>新建优惠券</span>
                             </div>
@@ -57,7 +64,7 @@
     var page = 1
     var pageCount
     var keyword = ''
-    var status = ''
+    var selectStatus = ''
     var drawList = function () {
         $.ajax({
             url: 'http://shop.test/api/shop/couponList',
@@ -67,10 +74,11 @@
                 limit: limit,
                 page: page,
                 coupon_name: keyword,
-                status: status
+                status: selectStatus
             },
             success: function (res) {
                 $(".table-content").empty()
+                console.log(selectStatus)
                 let resData = res.data.data
                 console.log(resData)
                 let count = res.data.count
@@ -200,6 +208,11 @@
         keyword = $(".search-input").val()
         drawList();
         $(".search-input").val("")
+    })
+
+    $("body").on("click", ".am-selected-list > li", function () {
+        selectStatus = $(this).attr("data-value")
+        drawList();
     })
 
     $(".create-pdd").on("click", function () {

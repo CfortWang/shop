@@ -789,6 +789,7 @@ input:-moz-placeholder {
 .tab{
     width: 30%;
     min-width: 300px;
+    height: 42px;
     font-size: 0px;
     border: 0.81px solid rgba(221,221,221,1);
     border-radius: 5px;
@@ -854,6 +855,10 @@ input:-moz-placeholder {
     cursor: pointer;
     color: #57A0FF;
 }
+.status-filter{
+    height: 45px;
+}
+
 .create-pdd, .create-ad{
     width: 150px;
     height: 55px;
@@ -864,7 +869,7 @@ input:-moz-placeholder {
     line-height: 55px;
     font-size: 16px;
     font-family: "PingFangSC-Light";
-    margin-left: 50%;
+    /* margin-left: 50%; */
     cursor: pointer;
 }
 
@@ -1916,6 +1921,8 @@ input:-webkit-autofill {
     border-bottom: 1px solid #eef1f5;
     margin-bottom: 10px;
     display: flex;
+    align-items: center;
+    justify-content: space-between;
     /* overflow: hidden; */
 }
 
