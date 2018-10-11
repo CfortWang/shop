@@ -449,9 +449,7 @@ class ShopController extends Controller
         $count=$items->orderBy('id','desc')->get();
         $count=count($count);
         $items=$items->orderBy('id','desc')->limit($limit)->offset(($page-1)*$limit)->get();
-      
         foreach($items as $k=>$v){
-           
           $data['id']=$v['id'];
           $data['coupon_name']=$v['coupon_name'];
           $discountMoney=$v['discount_money'];
@@ -539,7 +537,7 @@ class ShopController extends Controller
         ];
         $validator = Validator::make($input, [
             'id'                => 'required|numeric',
-            'status'                => 'required|in:0,1',
+            'status'                => 'required|in:registered,processed',
         ],$message);
         if ($validator->fails()) {
             $message = $validator->errors()->first();
@@ -551,7 +549,7 @@ class ShopController extends Controller
         if(empty($shopCoupon)){
             return $this->responseBadRequest('id is error');
         }
-        if($status==1){
+        if($status=='processed'){
             $shopCoupon->status="registered";
         }else{
             $shopCoupon->status="progressed";
