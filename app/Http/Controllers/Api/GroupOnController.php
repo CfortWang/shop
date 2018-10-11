@@ -78,8 +78,6 @@ class GroupOnController extends Controller
             'rule'                 => 'required|string',
             'open_time'            => 'required|date',
             'close_time'           => 'required|date',
-            // 'start_use_time'       => 'required',
-            // 'end_use_time'         => 'required',
             'continued_time'          => 'required|numeric',
             'is_weekend'           => 'nullable|boolean',
             'is_festival'          => 'nullable|boolean',
@@ -99,13 +97,7 @@ class GroupOnController extends Controller
             $message = $validator->errors()->first();
             return $this->responseBadRequest($message);
         }
-        // $image = FileHelper::groupOnImage($input['image']);
-        
         $res  = 1;
-        // dd(1);
-        // dd($image['url']);
-        // dd($input['image']);
-        // dd($input['product']);
         $data['title'] = $input['title'];
         $data['price'] = $input['price'];
         $data['discounted_price'] = $input['discounted_price'];
@@ -116,9 +108,6 @@ class GroupOnController extends Controller
         $data['product_status'] = 1;
         $data['open_time'] = $input['open_time'];
         $data['close_time'] = $input['close_time'];
-        // $data['start_use_time'] = $input['start_use_time'];
-        // $data['end_use_time'] = $input['end_use_time'];
-        
         $data['effective_day'] = Carbon::now()->addWeeks(3);
         $data['continued_time'] = $input['continued_time']*60;
         $data['groupon_price'] = 0.01;

@@ -173,7 +173,7 @@
                         <img src="/img/main/icon_right.png" alt="">
                     </div>
                 </div>
-                <div class="header-title">数据/新增扫码用户</div>
+                <div class="header-title">@yield('nav')</div>
             </div>
             <div class="content-outer">
                 @yield('content')
