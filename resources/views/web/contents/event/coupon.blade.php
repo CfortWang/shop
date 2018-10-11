@@ -17,9 +17,9 @@
                             </div>
                             <div class="status-filter">
                                 <select data-am-selected="{btnStyle: 'secondary'}">
-                                    <option value="processed">进行中</option>
-                                    <option value="registered">未开始</option>
-                                    <option value="overed">已删除</option>
+                                    <option class="qq" value="processed"></option>
+                                    <option value="registered"></option>
+                                    <option value="overed"></option>
                                 </select>
                             </div>
                             <div class="create-pdd">
@@ -147,6 +147,25 @@
         })
     }
     drawList();
+
+    var getStatus = function () {
+        $.ajax({
+            url: 'http://shop.test/api/shop/statusList',
+            type: 'get',
+            dataType: 'json',
+            success: function (res) {
+                console.log(res)
+                let resData = res.data
+                for (let i = 0; i < 3; i++) {
+                    $(".status-filter select option:eq("+ i +")").text(resData[i].value)
+                }
+            },
+            error: function (ex) {
+                console.log(ex)
+            }
+        })
+    }
+    getStatus();
 
     var changeStatus = function (event1, event2, that) {
         $.ajax({

@@ -1350,7 +1350,7 @@ input[type="checkbox"]:checked + .weekend-checkbox{
 
 input[disabled]{
     cursor: not-allowed!important;
-    background-color: #F3F4F7;
+    background-color: #F3F4F7!important;
 }
 .bottom-btn{
     text-align: center;

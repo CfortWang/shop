@@ -7,7 +7,7 @@
 @section('content')
 <div class="tpl-page-container tpl-page-header-fixed">
     <div class="tpl-content-wrapper">
-        <form id="submit" action="/api/event/groupon" method="post"  enctype="multipart/form-data">
+        <form id="submit" action="/api/shop/createCoupon" method="post"  enctype="multipart/form-data" target="_self">
             <div class="tpl-portlet">
                 <div class="row">
                     <div class="am-u-md-12 am-u-sm-12">
@@ -16,14 +16,14 @@
                             <div class="form-group clear-fix">
                                 <label class="am-u-lg-2 am-u-md-2 am-u-sm-3">优惠券名称</label>
                                 <div class="am-u-lg-10 am-u-md-10 am-u-sm-9">
-                                    <input type="text" class="form-control" id="name" name="title" placeholder="最多可输入10个字符" maxlength="10">
+                                    <input type="text" class="form-control" id="name" name="coupon_name" placeholder="最多可输入10个字符" maxlength="10">
                                 </div>
                             </div>
                             <div class="form-group clear-fix">
                                 <label class="am-u-lg-2 am-u-md-2 am-u-sm-3">发放总量</label>
                                 <div class="am-u-lg-10 am-u-md-10 am-u-sm-9 has-remark">
                                     <div class="input-outer">
-                                        <input type="number" class="old-price" id="old-price" name="price" placeholder="输入拼豆商品原价">
+                                        <input type="number" class="old-price" id="quantity" name="quantity" placeholder="">
                                         <div class="price-unit">张</div>
                                     </div>
                                     <span class="image-remark">发放数量是一个在0-10000000的整数</span>
@@ -33,16 +33,16 @@
                                 <label class="am-u-lg-2 am-u-md-2 am-u-sm-3">优惠形式</label>
                                 <div class="am-u-lg-10 am-u-md-10 am-u-sm-9 coupon-modus">
                                     <div class="am-u-lg-12 am-u-md-12 am-u-sm-12">
-                                        <label for="continue-time1" class="label-radio am-u-lg-2 am-u-md-4 am-u-sm-6">
-                                            <input type="radio" checked hidden id="continue-time1" name="continued_time" value="48">
-                                            <label for="continue-time1" class="time-radio"></label>
+                                        <label for="coupon_type1" class="label-radio am-u-lg-2 am-u-md-4 am-u-sm-6">
+                                            <input type="radio" checked hidden id="coupon_type1" name="coupon_type" value="0">
+                                            <label for="coupon_type1" class="time-radio"></label>
                                             <span>指定金额(代金券)</span>
                                         </label>
                                         <div class="am-u-lg-10 am-u-md-8 am-u-sm-6">
                                         <span class="am-u-lg-2 am-u-md-2 am-u-sm-4 chooies">面值</span>
                                             <div class="am-u-lg-10 am-u-md-10 am-u-sm-8 has-remark">
                                                 <div class="input-outer">
-                                                    <input type="number" class="coupon-input" id="old-price" name="price" placeholder="">
+                                                    <input type="number" class="coupon-input" id="discount_money" name="discount_money" placeholder="">
                                                     <div class="price-unit">元</div>
                                                 </div>
                                                 <span class="image-remark">优惠券面试必须大于等于0.01元</span>
@@ -50,15 +50,15 @@
                                         </div>
                                     </div>
                                     <div class="am-u-lg-12 am-u-md-12 am-u-sm-12">
-                                        <label for="continue-time2" class="label-radio am-u-lg-2 am-u-md-4 am-u-sm-12">
-                                            <input type="radio" hidden id="continue-time2" name="continued_time" value="72">
-                                            <label for="continue-time2" class="time-radio"></label>
+                                        <label for="coupon_type2" class="label-radio am-u-lg-2 am-u-md-4 am-u-sm-12">
+                                            <input type="radio" hidden id="coupon_type2" name="coupon_type" value="1">
+                                            <label for="coupon_type2" class="time-radio"></label>
                                             <span>折扣(折扣券)</span>
                                         </label>
                                         <div class="am-u-lg-3 am-u-md-4 am-u-sm-12">
                                             <div class="am-u-lg-12 am-u-md-12 am-u-sm-12 has-remark">
                                                 <div class="input-outer">
-                                                    <input type="number" class="coupon-input" id="old-price" name="price" placeholder="1.0~9.9">
+                                                    <input type="number" class="coupon-input" id="discount_percent" name="discount_percent" placeholder="1.0~9.9">
                                                     <div class="price-unit">折</div>
                                                 </div>
                                                 <!-- <span class="image-remark">优惠券面试必须大于等于0.01元</span> -->
@@ -68,7 +68,7 @@
                                             <span class="am-u-lg-2 am-u-md-2 am-u-sm-4 chooies">最高优惠</span>
                                             <div class="am-u-lg-10 am-u-md-10 am-u-sm-8 has-remark">
                                                 <div class="input-outer">
-                                                    <input type="number" class="coupon-input" id="old-price" name="price" placeholder="">
+                                                    <input type="number" class="coupon-input" id="max_discount_money" name="max_discount_money" placeholder="">
                                                     <div class="price-unit">元</div>
                                                 </div>
                                                 <!-- <span class="image-remark">优惠券面试必须大于等于0.01元</span> -->
@@ -81,9 +81,9 @@
                                 <label class="am-u-lg-2 am-u-md-2 am-u-sm-3">使用门槛</label>
                                 <div class="am-u-lg-10 am-u-md-10 am-u-sm-9 coupon-modus">
                                     <div class="am-u-lg-12 am-u-md-12 am-u-sm-12">
-                                        <label for="continue-time1" class="label-radio am-u-lg-2 am-u-md-4 am-u-sm-6">
-                                            <input type="radio" checked hidden id="continue-time1" name="continued_time" value="48">
-                                            <label for="continue-time1" class="time-radio"></label>
+                                        <label for="limit_type1" class="label-radio am-u-lg-2 am-u-md-4 am-u-sm-6">
+                                            <input type="radio" checked hidden id="limit_type1" name="limit_type" value="0">
+                                            <label for="limit_type1" class="time-radio"></label>
                                             <span>不限制</span>
                                         </label>
                                         <div class="am-u-lg-10 am-u-md-8 am-u-sm-6">
@@ -93,15 +93,15 @@
                                         </div>
                                     </div>
                                     <div class="am-u-lg-12 am-u-md-12 am-u-sm-12">
-                                        <label for="continue-time2" class="label-radio am-u-lg-1 am-u-md-2 am-u-sm-4">
-                                            <input type="radio" hidden id="continue-time2" name="continued_time" value="72">
-                                            <label for="continue-time2" class="time-radio"></label>
+                                        <label for="limit_type2" class="label-radio am-u-lg-1 am-u-md-2 am-u-sm-4">
+                                            <input type="radio" hidden id="limit_type2" name="limit_type" value="1">
+                                            <label for="limit_type2" class="time-radio"></label>
                                             <span>满</span>
                                         </label>
                                         <div class="am-u-lg-11 am-u-md-10 am-u-sm-8">
                                             <div class="am-u-lg-12 am-u-md-12 am-u-sm-12 has-remark">
                                                 <div class="input-outer">
-                                                    <input type="number" class="coupon-input" id="old-price" name="price" placeholder="">
+                                                    <input type="number" class="coupon-input" id="limit_money" name="limit_money" placeholder="">
                                                     <div class="price-unit">元可使用</div>
                                                 </div>
                                                 <span class="image-remark">请设置大于0的金额数字</span>
@@ -114,7 +114,7 @@
                                 <label class="am-u-lg-2 am-u-md-2 am-u-sm-3">商品图片</label>
                                 <div class="am-u-lg-10 am-u-md-10 am-u-sm-9 product">
                                     <a href="javascript:;" class="file">+添加图片
-                                        <input type="file" class="" id="product-image" name="image[]" onchange="selectImage(this, '.product')">
+                                        <input type="file" class="" id="product-image" name="image" onchange="selectImage(this, '.product')">
                                     </a>
                                     <span class="image-remark">建议尺寸:720*280像素,最多上传1张,仅支持gif,jpeg,png,bmp 4种格式,大小不超过3.0M</span>
                                 </div>
@@ -129,28 +129,29 @@
                     <div class="am-u-md-12 am-u-sm-12">
                         <div class="form-container">
                             <div class="form-title">优惠券基本规则</div>
+                            <input type="text" name="limit_count">
                             <div class="choose-time">
                                 <div class="choose-title">优惠有效期</div>
                                 <div class="fixed-time">
                                     <div class="fixed-time-option1">
                                         <label for="effectRadio1" class="label-radio">
-                                            <input type="radio" id="effectRadio1" value="1" checked hidden name="is_effective_fixed">
+                                            <input type="radio" id="effectRadio1" value="0" checked hidden name="coupon_date_type">
                                             <label for="effectRadio1" class="time-radio"></label>
                                             <span>固定日期</span>
                                         </label>
                                         <span class="time-kind">生效时间：</span>
-                                        <input type="text" class="effect-time" autocomplete="off" name="effective_start_at" data-am-datepicker placeholder="请选择日期">
+                                        <input type="text" class="effect-time" autocomplete="off" name="start_at" data-am-datepicker placeholder="请选择日期">
                                         <span class="time-kind">过期时间：</span>
-                                        <input type="text" class="expired-time" autocomplete="off" name="effective_end_at" data-am-datepicker placeholder="请选择日期">
+                                        <input type="text" class="expired-time" autocomplete="off" name="expired_at" data-am-datepicker placeholder="请选择日期">
                                         
                                     </div>
                                     <div class="fixed-time-option2">
                                         <label for="effectRadio2" class="label-radio">
-                                            <input type="radio" id="effectRadio2" value="0" hidden name="is_effective_fixed">
+                                            <input type="radio" id="effectRadio2" value="1" hidden name="coupon_date_type">
                                             <label for="effectRadio2" class="time-radio"></label>
-                                            <span>拼豆成功后当日开始</span>
+                                            <span>领券成功后当日开始</span>
                                         </label>
-                                        <input type="number" name="effective_days" id="" class="effective-days" placeholder="请输入天数">
+                                        <input type="number" name="days" id="" class="effective-days" placeholder="请输入天数">
                                         <span>天内有效</span>
                                         <span class="effective-remark">(生效天数必须在1-365之间)</span>
                                     </div>
@@ -159,14 +160,14 @@
                                 <div class="effective-time">
                                     <div class="random-time option-disabled">
                                         <label for="timeRadio1" class="label-radio">
-                                            <input type="radio" id="timeRadio1" value="0" checked hidden name="is_usetime_limit">
+                                            <input type="radio" id="timeRadio1" value="0" checked hidden name="available_time_type">
                                             <label for="timeRadio1" class="time-radio"></label>
                                             <span>有效期内任意时间段可用</span>
                                         </label>
                                     </div>
                                     <div class="sectiom-time">
                                         <label for="timeRadio2" class="label-radio">
-                                            <input type="radio" id="timeRadio2" value="1" hidden name="is_usetime_limit">
+                                            <input type="radio" id="timeRadio2" value="1" hidden name="available_time_type">
                                             <label for="timeRadio2" class="time-radio"></label>
                                             <span>有效期内部分时间段可用</span>
                                         </label>
@@ -402,24 +403,24 @@ $(".effective-days").blur(function () {
     }
 })
 
-function selectImage(file, selector) {
+function selectImage(file) {
     if (!file.files || !file.files[0]) {
         return;
     }
     var reader = new FileReader();
     reader.onload = function (evt) {
-        var sonNum = $(selector).children().length
-        if (selector == '.product' && sonNum > 16) {
-            console.log("最多只能选择15张图片")
+        var sonNum = $('.product').children().length
+        if (sonNum > 2) {
+            console.log("最多只能选择1张图片")
             return false
         }
         var $imgBox = '<div class="selected-image"><div class="delete-image"><img src="/img/main/close.png" alt=""></div><img class="image" alt="" src="' +evt.target.result + '"><input class="img-value" type="text" name="image[]" hidden></div>'
-        $(selector).append($imgBox)
+        $('.product').append($imgBox)
         image = evt.target.result;
-        let remark = selector + ' .image-remark'
-        $(remark).hide()
+        $('.product .image-remark').hide()
     }
     reader.readAsDataURL(file.files[0]);
+    $(".product .file").hide()
     var fd = new FormData()
     fd.append('file', file.files[0])
     upLoadImage(fd, selector);
@@ -454,6 +455,7 @@ $(".product").on("click", ".selected-image .delete-image", function () {
     var sonNum = $(".product").children().length
     if (sonNum == 2) {
         $(".product .image-remark").show()
+        $(".product .file").show()
     }
 
 })
@@ -515,11 +517,45 @@ $(".package-box").on("click", ".delete-pkg", function () {
     }
 })
 
+$('input[type=radio][name=coupon_type]').change(function() {
+    if (this.value == 0) {
+        $(this).parent().parent().find("#discount_money").attr("disabled", false)
+        $(this).parent().parent().siblings().find("#discount_percent, #max_discount_money").attr("disabled", true)
+        // $(this).parent().parent().children(".expired-time").attr("disabled", false)
+    } else if (this.value == 1) {
+        $(this).parent().parent().siblings().find("#discount_money").attr("disabled", true)
+        $(this).parent().parent().find("#discount_percent, #max_discount_money").attr("disabled", false)
+    }
+})
+
+$('input[type=radio][name=limit_type]').change(function() {
+    if (this.value == 0) {
+        $(this).parent().parent().siblings().find("#limit_money").attr("disabled", true)
+    } else if (this.value == 1) {
+        $(this).parent().parent().find("#limit_money").attr("disabled", false)
+    }
+})
+
+$('input[type=radio][name=coupon_date_type]').change(function() {
+    if (this.value == 0) {
+        $(this).parent().parent().siblings().children(".effective-days").attr("disabled", true)
+        $(this).parent().parent().children(".effect-time").attr("disabled", false)
+        $(this).parent().parent().children(".expired-time").attr("disabled", false)
+    } else if (this.value == 1) {
+        $(this).parent().parent().siblings().children(".effect-time").attr("disabled", true)
+        $(this).parent().parent().siblings().children(".expired-time").attr("disabled", true)
+        $(this).parent().parent().children(".effective-days").attr("disabled", false)
+    }
+})
+
+
+$('#discount_percent, #max_discount_money, #limit_money').attr("disabled", true)
 $('.fixed-time-option2 .effective-days').attr("disabled", true)
 $('.sectiom-time').find("input").attr("disabled", true)
 $('.sectiom-time #timeRadio2').attr("disabled", false)
 
-$('input[type=radio][name=is_usetime_limit]').change(function() {
+
+$('input[type=radio][name=available_time_type]').change(function() {
     if (this.value == 0) {
         $(this).parent().parent().siblings().find("input").prop({"disabled": true, "checked": false})
         $(this).parent().parent().siblings().find("#timeRadio2").attr("disabled", false)
