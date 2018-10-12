@@ -255,7 +255,8 @@ class ShopController extends Controller
         $input=Input::only('coupon_name','quantity','coupon_type','discount_money','discount_percent',
                           'max_discount_money','limit_type','limit_money','image','limit_count','coupon_date_type','start_at','expired_at','days',
                           'available_time_type',  'available_time','business_hours','is_special_goods','pkgList','condition','goods_name','remark');
-         $message = [
+        dd($input);
+        $message = [
             "required" => ":attribute ".trans('common.verification.cannotEmpty'),
             "integer" => ":attribute ".trans('common.createCoupon.verification.requiredNumber'),
         ];
@@ -278,7 +279,7 @@ class ShopController extends Controller
         'available_time'          => 'nullable|string',
         'business_hours'          => 'nullable|string',
         'condition'               => 'nullable|string',
-        'is_special_goods'        => 'required|in:0,1',
+        // 'is_special_goods'        => 'required|in:0,1',
         'goods_name'              => 'nullable|string',
         'remark'                  => 'nullable',
         'pkgList'                  => 'nullable',
@@ -286,7 +287,7 @@ class ShopController extends Controller
         if ($validator->fails()) {
             $message = $validator->errors()->first();
             return $this->responseBadRequest($message);
-        }       
+        }
         $couponName=$request->input('coupon_name');
         $quantity=$request->input('quantity');
         $couponType=$request->input('coupon_type');

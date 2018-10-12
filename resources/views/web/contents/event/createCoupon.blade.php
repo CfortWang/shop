@@ -114,7 +114,7 @@
                                 <label class="am-u-lg-2 am-u-md-2 am-u-sm-3">商品图片</label>
                                 <div class="am-u-lg-10 am-u-md-10 am-u-sm-9 product">
                                     <a href="javascript:;" class="file">+添加图片
-                                        <input type="file" class="" id="product-image" name="image" onchange="selectImage(this, '.product')">
+                                        <input type="file" class="" id="product-image" name="file" onchange="selectImage(this, '.product')">
                                     </a>
                                     <span class="image-remark">建议尺寸:720*280像素,最多上传1张,仅支持gif,jpeg,png,bmp 4种格式,大小不超过3.0M</span>
                                 </div>
@@ -129,8 +129,17 @@
                     <div class="am-u-md-12 am-u-sm-12">
                         <div class="form-container">
                             <div class="form-title">优惠券基本规则</div>
-                            <input type="text" name="limit_count">
                             <div class="choose-time">
+                                <div class="form-group clear-fix">
+                                    <label class="am-u-lg-2 am-u-md-2 am-u-sm-3">发放总量</label>
+                                    <div class="am-u-lg-10 am-u-md-10 am-u-sm-9 has-remark">
+                                        <div class="input-outer">
+                                            <select name="" id="" data-am-selected>
+                                                
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
                                 <div class="choose-title">优惠有效期</div>
                                 <div class="fixed-time">
                                     <div class="fixed-time-option1">
@@ -414,7 +423,7 @@ function selectImage(file) {
             console.log("最多只能选择1张图片")
             return false
         }
-        var $imgBox = '<div class="selected-image"><div class="delete-image"><img src="/img/main/close.png" alt=""></div><img class="image" alt="" src="' +evt.target.result + '"><input class="img-value" type="text" name="image[]" hidden></div>'
+        var $imgBox = '<div class="selected-image"><div class="delete-image"><img src="/img/main/close.png" alt=""></div><img class="image" alt="" src="' +evt.target.result + '"><input class="img-value" type="text" name="image" hidden></div>'
         $('.product').append($imgBox)
         image = evt.target.result;
         $('.product .image-remark').hide()
@@ -423,10 +432,10 @@ function selectImage(file) {
     $(".product .file").hide()
     var fd = new FormData()
     fd.append('file', file.files[0])
-    upLoadImage(fd, selector);
+    upLoadImage(fd);
 }
 
-function upLoadImage (file, kind) {
+function upLoadImage (file) {
     $.ajax({
         url: 'http://shop.test/api/event/upload',
         type: 'post',
@@ -436,12 +445,7 @@ function upLoadImage (file, kind) {
         contentType: false,
         success: function (res) {
             let url = res.data.url
-            let selector = kind + ' .selected-image:last-child .img-value'
-            if (kind == '.list') {
-                $(".list .selected-image input[name='image[]']").attr("name", 'logo')
-            }
-            $(selector).val(url)
-            // console.log($(selector))
+            $('.product .selected-image:last-child .img-value').val(url)
         },
         error: function (ex) {
             console.log(ex)
