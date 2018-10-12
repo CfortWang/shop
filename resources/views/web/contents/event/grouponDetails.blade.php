@@ -290,7 +290,7 @@ var getArgs = function () {
     return args
 }
 var args = getArgs();
-$("input[type=text][name=id]").val(args[id])
+$("input[type=text][name=id]").val(args['id'])
 var drawData = function () {
     $.ajax({
         url: 'http://shop.test/api/event/groupon/' + args['id'],
@@ -312,7 +312,7 @@ var drawData = function () {
             $("input#group-size").val(resData.group_size)
             $(".product .image-remark").hide()
             for (let i = 0; i < resData.image.length; i++) {
-                var $imgBox = '<div class="selected-image"><div class="delete-image"><img src="/img/main/close.png" alt=""></div><img class="image" alt="" src="' + 'http://' + resData.image[i].image_url + '"><input class="img-value" type="text" name="image[]" hidden></div>'
+                var $imgBox = '<div class="selected-image"><div class="delete-image"><img src="/img/main/close.png" alt=""></div><img class="image" alt="" src="' + resData.image[i].image_url + '"><input class="img-value" type="text" name="image[]" hidden></div>'
                 $('.product').append($imgBox)
             }
             $(".list .image-remark").hide()
@@ -595,7 +595,7 @@ $(".list").on("click", ".selected-image .delete-image", function () {
 
 $(".package-data").on("click", ".operating > div", function () {
     $("input[type=text][name=is_product_modify]").val('1')
-}
+})
 
 function modify (that, len) {
     // for (let i = 0; i < len; i++) {

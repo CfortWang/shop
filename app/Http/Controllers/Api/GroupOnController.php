@@ -102,7 +102,7 @@ class GroupOnController extends Controller
         $data['price'] = $input['price'];
         $data['discounted_price'] = $input['discounted_price'];
         $data['group_size'] = $input['group_size'];
-        $data['remark'] = isset($input['remark'])?implode('/n',$input['remark']):'';
+        $data['remark'] = isset($input['remark'])?implode('孻孼孽孾',$input['remark']):'';
         $data['rule'] = $input['rule'];
         $data['buyer_id'] = $buyer_id;
         $data['product_status'] = 0;
