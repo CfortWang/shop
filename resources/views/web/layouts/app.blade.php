@@ -123,7 +123,7 @@
                         </a>
                         <ul class="tpl-left-nav-sub-menu">
                             <li>
-                                <a href="shop/info">
+                                <a href="/shop/info">
                                     <span>@lang('app.shop.info')</span>
                                 </a>
                                 <a href="/shop/code">

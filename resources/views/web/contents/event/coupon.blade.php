@@ -3,7 +3,6 @@
 @section('css')
 <link rel="stylesheet" href="/css/app.css">
 <link rel="stylesheet" type="text/css" media="all" href="/css/daterangepicker.css" />
-<link rel="stylesheet" type="text/css" media="all" href="/css/bootstrap-datetimepicker.min.css" />
 @endsection('css')
 @section('content')
     <div class="tpl-page-container tpl-page-header-fixed">
@@ -13,16 +12,18 @@
                     <div class="tpl-portlet">
                         <div class="tpl-portlet-title">
                             <div class="search-box">
-                                <input type="text" class="search-input" name="search" placeholder="请输入手机号查找">
+                                <input type="text" class="search-input" name="search" placeholder="请输入优惠券名称查找">
                                 <button class="search-btn">搜索</button>
                             </div>
-                            <!-- <select data-am-selected>
-                                <option value="1" selected>进行中</option>
-                                <option value="2">未开始</option>
-                                <option value="3">已结束</option>
-                            </select> -->
+                            <div class="status-filter">
+                                <select data-am-selected="{btnStyle: 'secondary'}">
+                                    <option class="qq" value="processed"></option>
+                                    <option value="registered"></option>
+                                    <option value="overed"></option>
+                                </select>
+                            </div>
                             <div class="create-pdd">
-                                <span>新建拼豆豆</span>
+                                <span>新建优惠券</span>
                             </div>
                         </div>
                         <div class="tpl-echarts" id="coupon-table">
@@ -60,61 +61,84 @@
 @section('script')
 <script>
     var limit = 8
-    var type = 'scan'
     var page = 1
     var pageCount
+    var keyword = ''
+    var selectStatus = ''
     var drawList = function () {
         $.ajax({
-            url: 'http://shop.test/api/customer/scannedUserList',
+            url: 'http://shop.test/api/shop/couponList',
             type: 'get',
             dataType: 'json',
             data: {
-                type: type,
                 limit: limit,
-                page: page
+                page: page,
+                coupon_name: keyword,
+                status: selectStatus
             },
             success: function (res) {
                 $(".table-content").empty()
-                let resData = res.data.scanUserList
+                console.log(selectStatus)
+                let resData = res.data.data
                 console.log(resData)
                 let count = res.data.count
                 pageCount = Math.ceil(count / limit)
-                console.log(pageCount)
-                var $tr = '<div class="table-tr clear-fix"><div class="table-td-id"></div><div class="table-td-nickname"></div><div class="table-td-sex"></div><div class="table-td-age"></div><div class="table-td-first"><p class="years"></p><p class="hours"></p></div><div class="table-td-last"><p class="years"></p><p class="hours"></p></div><div class="table-td-frequency"></div><div class="table-td-count"></div><div class="see-more">查看更多</div></div>'
+                var $tr = '<div class="table-tr clear-fix"><div class="table-td-name"></div><div class="table-td-price"><p class="new-price"></p><p class="old-price"></p></div><div class="table-td-condition"><p class="new-price"></p><p class="old-price"></p></div><div class="table-td-effective"></div><div class="table-td-getTimes"></div><div class="table-td-used"></div><div class="table-td-getRate"></div><div class="table-td-useRate"></div><div class="table-td-status"></div><div class="operating"><span class="shelf"></span><span class="delete"></span><span class="obtained"></span><span class="modify" style="display:none">&nbsp;&nbsp;&nbsp;&nbsp;修改</span></div></div>'
                 for (let i = 0; i < resData.length; i++) {
                     $('.table-content').append($tr)
-                    if (resData[i].id == null || resData[i].id == '') {
-                        var id = '——'
+                    let couponName = resData[i].coupon_name
+                    let newPrice = resData[i].value
+                    let oldPrice = resData[i].limit_money
+                    let limitCount = resData[i].limit_count
+                    let reserve = "库存：" + resData[i].reserve
+                    let effective = resData[i].period_time
+                    let peopleCount = resData[i].peopleCount
+                    let receiveCount = resData[i].receiveCount
+                    let useCount = resData[i].usedCount
+                    let receive = resData[i].receiving_rate
+                    let use = resData[i].used_rate
+                    let status = resData[i].status
+                    let statusValue = resData[i].statusValue
+                    let id = resData[i].id
+
+                    if (oldPrice == '' || oldPrice == null) {
+                        oldPrice = "最低消费：—"
                     } else {
-                        var id = "+" + resData[i].id.split('@')[1] + " " + resData[i].id.split('@')[0]
+                        oldPrice = "最低消费：" + oldPrice
                     }
-                    let seq = resData[i].user
-                    let nickname = resData[i].nickname
-                    let gender = resData[i].gender
-                    let age = resData[i].age
-                    let firstTimeYears = resData[i].firstTime.split(' ')[0]
-                    let firstTimeHours = resData[i].firstTime.split(' ')[1]
-                    let endTimeYears = resData[i].endTime.split(' ')[0]
-                    let endTimeHours = resData[i].endTime.split(' ')[1]
-                    let percent = resData[i].rate
-                    let count = resData[i].scannedCount
-                    if (gender == null || gender == '') {
-                        gender = '——'
+
+                    if (peopleCount == '' || peopleCount == null) {
+                        peopleCount = '-'
                     }
-                    if (nickname == null || nickname == '') {
-                        nickname = '——'
+                    if (receiveCount == '' || receiveCount == null) {
+                        receiveCount = '-'
                     }
-                    $(".table-content .table-tr:eq("+ i +")").attr('data-seq', seq)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-id").text(id)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-nickname").text(nickname)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-sex").text(gender)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-age").text(age)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-first .years").text(firstTimeYears)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-first .hours").text(firstTimeHours)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-last .years").text(endTimeYears)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-last .hours").text(endTimeHours)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-frequency").text(percent)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-count").text(count)
+                    let statistics = peopleCount + '/' + receiveCount
+
+
+                    if (statusValue == 'processed') {
+                        $(".table-content .table-tr:eq("+ i +") .operating .obtained").text("下架")
+                    }
+                    if (statusValue == "registered") {
+                        $(".table-content .table-tr:eq("+ i +") .operating .shelf").text("上架")
+                        $(".table-content .table-tr:eq("+ i +") .operating .modify").css("display", 'inline')
+                    }
+                    if (statusValue == "overed") {
+                        $(".table-content .table-tr:eq("+ i +") .operating .delete").text("删除")
+                    }
+                    $(".table-content .table-tr:eq("+ i +") .operating").attr({"data-id": id, "data-status": statusValue})
+                    $(".table-content .table-tr:eq("+ i +") .table-td-name").text(couponName)
+                    $(".table-content .table-tr:eq("+ i +") .table-td-price .new-price").text(newPrice)
+                    $(".table-content .table-tr:eq("+ i +") .table-td-price .old-price").text(oldPrice)
+                    $(".table-content .table-tr:eq("+ i +") .table-td-condition .new-price").text(limitCount)
+                    $(".table-content .table-tr:eq("+ i +") .table-td-condition .old-price").text(reserve)
+                    $(".table-content .table-tr:eq("+ i +") .table-td-effective").text(effective)
+                    $(".table-content .table-tr:eq("+ i +") .table-td-getTimes").text(statistics)
+                    $(".table-content .table-tr:eq("+ i +") .table-td-used").text(useCount)
+                    $(".table-content .table-tr:eq("+ i +") .table-td-getRate").text(receive)
+                    $(".table-content .table-tr:eq("+ i +") .table-td-useRate").text(use)
+                    $(".table-content .table-tr:eq("+ i +") .table-td-status").text(status)
+
                 }
             },
             error: function (ex) {
@@ -122,7 +146,111 @@
             }
         })
     }
-    // drawList();
+    drawList();
+
+    var getStatus = function () {
+        $.ajax({
+            url: 'http://shop.test/api/shop/statusList',
+            type: 'get',
+            dataType: 'json',
+            success: function (res) {
+                console.log(res)
+                let resData = res.data
+                for (let i = 0; i < 3; i++) {
+                    $(".status-filter select option:eq("+ i +")").text(resData[i].value)
+                }
+            },
+            error: function (ex) {
+                console.log(ex)
+            }
+        })
+    }
+    getStatus();
+
+    var changeStatus = function (event1, event2, that) {
+        $.ajax({
+            url: 'http://shop.test/api/shop/couponStatus',
+            type: 'put',
+            dataType: 'json',
+            data: {
+                id: event1,
+                status: event2
+            },
+            success: function (res) {
+                let resData = res.data
+                if (res.code != 200) {
+                    console.log(res.message);
+                } else {
+                    if (that.parent().attr("data-status") == "registered") {
+                        that.parent().attr("data-status", "processed")
+                        that.parent().parent().children(".table-td-status").text("进行中")
+                        that.text("下架")
+                        that.parent().children(".modify").css("display", "none")
+                    } else {
+                        that.parent().attr("data-status", "registered")
+                        that.parent().parent().children(".table-td-status").text("未开始")
+                        that.parent().children(".modify").css("display", "inline")
+                        that.text("上架")
+                    }
+                }
+            },
+            error: function (ex) {
+                console.log(ex)
+            }
+        })
+    }
+
+    var deleteCoupon = function (event1, event2, that) {
+        $.ajax({
+            url: 'http://shop.test/api/shop/deleteCoupon',
+            type: 'delete',
+            dataType: 'json',
+            data: {
+                id: event1
+            },
+            success: function (res) {
+                if (res.code != 200) {
+                    console.log(res.message);
+                } else {
+                    drawList();
+                    alert(res.message);
+                }
+
+            },
+            error: function (ex) {
+                console.log(ex)
+            }
+        })
+    }
+
+    $(".search-btn").on("click", function () {
+        keyword = $(".search-input").val()
+        drawList();
+        $(".search-input").val("")
+    })
+
+    $("body").on("click", ".am-selected-list > li", function () {
+        selectStatus = $(this).attr("data-value")
+        drawList();
+    })
+
+    $(".create-pdd").on("click", function () {
+        window.location.href = "/event/coupon/create"
+    })
+
+    $(".table-content").on("click", ".table-tr .operating .obtained, .table-tr .operating .shelf", function () {
+        var id = $(this).parent().attr("data-id")
+        var status = $(this).parent().attr("data-status")
+        var that = $(this)
+        changeStatus(id, status, that);
+    })
+
+    $(".table-content").on("click", ".table-tr .operating .delete", function () {
+        var id = $(this).parent().attr("data-id")
+        var status = $(this).parent().attr("data-status")
+        var that = $(this)
+        deleteCoupon(id, status, that);
+    })
 
     $(".page-down").click(function () {
         if (page > 1) {

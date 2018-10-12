@@ -789,6 +789,7 @@ input:-moz-placeholder {
 .tab{
     width: 30%;
     min-width: 300px;
+    height: 42px;
     font-size: 0px;
     border: 0.81px solid rgba(221,221,221,1);
     border-radius: 5px;
@@ -854,6 +855,10 @@ input:-moz-placeholder {
     cursor: pointer;
     color: #57A0FF;
 }
+.status-filter{
+    height: 45px;
+}
+
 .create-pdd, .create-ad{
     width: 150px;
     height: 55px;
@@ -864,7 +869,7 @@ input:-moz-placeholder {
     line-height: 55px;
     font-size: 16px;
     font-family: "PingFangSC-Light";
-    margin-left: 50%;
+    /* margin-left: 50%; */
     cursor: pointer;
 }
 
@@ -916,10 +921,10 @@ input:-moz-placeholder {
     display: flex;
 }
 
-.form-group .old-price, .form-group .new-price, .form-group .group-size{
+.form-group .old-price, .form-group .new-price, .form-group .group-size, .form-group .coupon-input{
     flex: 1;
     padding: 2px 26px 3px 10px;
-    min-width: 150px;
+    /* min-width: 150px; */
     height: 40px;
     line-height: 1.42857;
     color: #333333;
@@ -936,7 +941,7 @@ input:-moz-placeholder {
 }
 
 .input-outer{
-    width: 20%;
+    /* width: 20%; */
     border: 1px solid #dddddd;
     border-radius:4px;
     display: flex;
@@ -949,7 +954,8 @@ input:-moz-placeholder {
 .price-unit{
     display: inline-block;
     background: #F8F9FC;
-    width: 49px;
+    /* width: 49px; */
+    padding: 0px 15px;
     height: 40px;
     text-align: center;
     line-height: 40px;
@@ -1132,6 +1138,9 @@ input[type="number"]{
     color: #333;
     height: 40px;
     line-height: 40px;
+    overflow: hidden;
+	text-overflow: ellipsis;
+	white-space: nowrap;
 }
 
 .pdd-table-tr .operating > div{
@@ -1169,7 +1178,7 @@ input[type="number"]{
 }
 .remark-tr .operating{
     text-align: left;
-    margin-left: -32px;
+    margin-left: 30px;
 }
 
 .dividing{
@@ -1344,7 +1353,7 @@ input[type="checkbox"]:checked + .weekend-checkbox{
 
 input[disabled]{
     cursor: not-allowed!important;
-    background-color: #F3F4F7;
+    background-color: #F3F4F7!important;
 }
 .bottom-btn{
     text-align: center;
@@ -1372,7 +1381,34 @@ input:-webkit-autofill {
     -webkit-box-shadow: inset 0 0 0 1000px #fff;
     background-color: transparent;
 }
+/* Coupon */
+.coupon-row{
+    min-height: 800px;
+}
+.coupon-modus > div:first-child{
+    margin-bottom: 20px;
+}
+.form-group .coupon-input{
+    max-width: 100px;
+}
+.coupon-modus .label-radio{
+    height: 40px;
+    line-height: 36px;
+}
+.chooies{
+    text-align: right;
+    line-height: 40px;
+    padding-right: 10px;
+}
 
+.coupon-row .use-rule{
+    margin-bottom: 40px;
+}
+
+
+
+
+/* AD */
 .ad-title{
     justify-content: flex-end;
 }
@@ -1386,6 +1422,7 @@ input:-webkit-autofill {
 .ad-row{
     min-height: 600px;
 }
+
 
 .package-box{
     float: right;
@@ -1437,6 +1474,13 @@ input:-webkit-autofill {
     border-radius: 5px;
     cursor: pointer;
 }
+
+
+
+
+
+
+
 
 
 
@@ -1880,6 +1924,8 @@ input:-webkit-autofill {
     border-bottom: 1px solid #eef1f5;
     margin-bottom: 10px;
     display: flex;
+    align-items: center;
+    justify-content: space-between;
     /* overflow: hidden; */
 }
 

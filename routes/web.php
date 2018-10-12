@@ -54,8 +54,8 @@ Route::group(['namespace' => 'Web'], function() {
         Route::group(['prefix'  => 'shop'], function() {
             Route::get('/info',                       'ShopController@info');
             Route::get('/code',                       'ShopController@code');
-            Route::get('/codeDetails',                       'ShopController@codeDetails');
-            Route::get('/codeHistory',                       'ShopController@purchaseHistory');
+            Route::get('/code/details',                       'ShopController@codeDetails');
+            Route::get('/code/history',                       'ShopController@purchaseHistory');
         });
         //account
         Route::group(['prefix'  => 'account'], function() {

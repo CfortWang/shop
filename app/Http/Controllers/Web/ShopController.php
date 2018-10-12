@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\DB;
 
 use Validator;
 
-class EventController extends Controller
+class ShopController extends Controller
 {
   public function __construct()
   {

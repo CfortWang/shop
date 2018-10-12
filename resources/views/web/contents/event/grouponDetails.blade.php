@@ -80,17 +80,16 @@
                                 <label class="am-u-lg-2 am-u-md-2 am-u-sm-3">商品图片</label>
                                 <div class="am-u-lg-10 am-u-md-10 am-u-sm-9 product">
                                     <a href="javascript:;" class="file">+添加图片
-                                        <input type="file" class="" id="product-image" name="file" onchange="selectImage(this, '.product')">
+                                        <input type="file" class="" id="product-image" name="image[]" onchange="selectImage(this, '.product')">
                                     </a>
                                     <span class="image-remark">建议尺寸:1204*1204像素,最多上传15张,仅支持gif,jpeg,png,bmp 4种格式,大小不超过3.0M</span>
-                                    <span id="percentage"></span>
                                 </div>
                             </div>
                             <div class="form-group image-group clear-fix">
                                 <label class="am-u-lg-2 am-u-md-2 am-u-sm-3">列表封面图</label>
                                 <div class="am-u-lg-10 am-u-md-10 am-u-sm-9 list">
                                     <a href="javascript:;" class="file">+添加图片
-                                        <input type="file" class="" id="product-image" name="logo_file" onchange="selectImage(this, '.list')">
+                                        <input type="file" class="" id="product-image" name="image[]" onchange="selectImage(this, '.list')">
                                     </a>
                                     <span class="image-remark">建议尺寸:1204*1204像素,最多上传1张,仅支持gif,jpeg,png,bmp 4种格式,大小不超过3.0M</span>
                                 </div>
@@ -445,27 +444,6 @@ function upLoadImage (file, kind) {
         data: file,
         processData: false,
         contentType: false,
-        xhr: function(){
-            myXhr = $.ajaxSettings.xhr();
-            if(myXhr.upload){
-                myXhr.upload.addEventListener('progress',function(e) {
-                    if (e.lengthComputable) {
-                        var percent = Math.floor(e.loaded/e.total*100);
-                        if(percent <= 100) {
-                            // $("#J_progress_bar").progress('set progress', percent);
-                            $("#percentage").text('已上传：'+percent+'%');
-                            console.log("1")
-                        }
-                        if(percent >= 100) {
-                            $("#percentage").text('文件上传完毕，请等待...');
-                            // $("#percentage").addClass('success');
-                            console.log("2")
-                        }
-                    }
-                }, false);
-            }
-            return myXhr;
-        },
         success: function (res) {
             let url = res.data.url
             let selector = kind + ' .selected-image:last-child .img-value'
@@ -575,7 +553,6 @@ function addRemarkInfo () {
         return false;
     }
     let remarkContent = 'remark[' + j + ']'
-    j++
     var $remark = '<div class="pdd-table-tr clear-fix remark-tr"><div class="am-u-lg-5 am-u-md-5 am-u-sm-6"><div class="package-info">' + remarkData + '</div><input type="text" class="form-control" value="'+ remarkData +'" name="' + remarkContent + '"></div><div class="am-u-lg-7 am-u-md-7 am-u-sm-6 am-u-end"><div class="operating"><div class="motify" onclick="modify(this, 1)">修改</div><div class="save" onclick="save(this, 1)">保存</div><div class="delete">删除</div></div></div></div>'
     $(".remark-data").append($remark)
     $("#package-remark").val("")
@@ -674,5 +651,36 @@ $('.start-hours, .end-hours').datetimepicker({
     todayHighlight: true,
     startView: 'hour'
 });
+
+var getArgs = function () {
+    var url = location.search
+    var args = {}
+    if (url.indexOf("?") != -1) {
+        var str = url.substr(1)
+        var strs = str.split("&")
+        for (let i = 0; i < strs.length; i++) {
+            args[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1])
+        }
+    }
+    return args
+}
+var ss = getArgs();
+console.log(ss['id'])
+
+var aa = function () {
+    $.ajax({
+        url: 'http://shop.test/api/event/groupon/' + ss['id'],
+        type: 'get',
+        dataType: 'json',
+        success: function (res) {
+            console.log(res)
+        },
+        error: function (ex) {
+            console.log(ex)
+        }
+    })
+}
+aa();
+
 </script>
 @endsection
