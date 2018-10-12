@@ -100,13 +100,13 @@
                     }
                     var operate = '';
                     if(messageStatus==0){
-                        operate+='<a>修改</a> ';
+                        operate+='<a href="/event/message/details">修改</a> ';
                         operate+='<a>删除</a>';
                     }else if(messageStatus==1){
                         operate+='<a>发送</a> ';
                         operate+='<a>删除</a>';
                     }else if(messageStatus==2){
-                        operate+='<a>修改</a> ';
+                        operate+='<a href="/event/message/details">修改</a> ';
                         operate+='<a>删除</a>';
                         $(".table-content .table-tr:eq("+ i +") .status-remark").text(remark)
                     }

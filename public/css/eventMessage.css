@@ -46,5 +46,13 @@
     padding-right: 10px;
 }
 [class*=am-u-]+[class*=am-u-]:last-child {
-    /* float: right; */
+    float: left;
+}
+#send_at_text{
+    position: relative;
+    width: 160px;
+    display: inline-block;
+}
+.message-label{
+    font-weight: 300;
 }
