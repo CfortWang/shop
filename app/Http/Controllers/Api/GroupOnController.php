@@ -322,7 +322,15 @@ class GroupOnController extends Controller
         $data = GrouponProduct::where('id',$id)->select("title","price","discounted_price","group_size","remark","rule","continued_time","is_weekend","is_festival","product_status","effective_day","open_time","close_time","start_use_time","end_use_time","image as logo","groupon_price","is_effective_fixed","effective_start_at","effective_end_at","is_usetime_limit","time_limit1_start_at","time_limit2_start_at","time_limit3_start_at","time_limit1_end_at","time_limit2_end_at","time_limit3_end_at","days_limit","effective_days")->first();
         if($data){
             $data['product'] = GrouponItem::where('groupon_product_id',$id)->select('title','price','quantity')->get();
-            $data['image'] = GrouponImage::where('groupon_product_id',$id)->select('image_url')->get();
+            $image = GrouponImage::where('groupon_product_id',$id)->select('image_url')->get();
+            if($image){
+                foreach ($image as $key => $value) {
+                    $image[$key]['image_url'] = 'http://'.$value['image_url'];
+                }
+                $data['image'] = $image;
+            }else{
+                $data['image'] = [];
+            }
             if($data['is_usetime_limit']){
                 $data['days'] = str_split($data['days_limit']);
             }
