@@ -240,10 +240,10 @@ class ShopController extends Controller
         if(empty($exitDetailImage)){
             return $this->responseNotFound('There is no detailSeq', 401);//error code 404,401
         }
-        if ($imageType  == = 'shop_logo') {
+        if ($imageType  == 'shop_logo') {
             $Buyer->shop_logo_image_file = null;
             $Buyer->save();
-        } else if ($imageType  == = 'shop_detail') {
+        } else if ($imageType == 'shop_detail') {
             ShopDetailImage::where('buyer', $buyer)
                 ->where('seq',$input['detailSeq'] )
                 ->delete();
@@ -256,6 +256,7 @@ class ShopController extends Controller
         $input=Input::only('coupon_name','quantity','coupon_type','discount_money','discount_percent',
                           'max_discount_money','limit_type','limit_money','image','limit_count','coupon_date_type','start_at','expired_at','days',
                           'available_time_type', 'available_time','business_hours','is_special_goods','pkgList','condition','goods_name','remark');
+                          dd($input);
          $message = [
             "required" => ":attribute ".trans('common.verification.cannotEmpty'),
             "integer" => ":attribute ".trans('common.createCoupon.verification.requiredNumber'),
@@ -354,6 +355,7 @@ class ShopController extends Controller
             }
         }
         if($couponDateType == 1){
+            dd(1);
             if(empty($days)){
                 return $this->responseNotFound(trans('shop.verification.emptyDays'));
             }  
