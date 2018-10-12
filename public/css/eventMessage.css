@@ -45,3 +45,6 @@
     text-align: right;
     padding-right: 10px;
 }
+[class*=am-u-]+[class*=am-u-]:last-child {
+    /* float: right; */
+}
