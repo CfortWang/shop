@@ -312,11 +312,11 @@ var drawData = function () {
             $("input#group-size").val(resData.group_size)
             $(".product .image-remark").hide()
             for (let i = 0; i < resData.image.length; i++) {
-                var $imgBox = '<div class="selected-image"><div class="delete-image"><img src="/img/main/close.png" alt=""></div><img class="image" alt="" src="' + resData.image[i].image_url + '"><input class="img-value" type="text" name="image[]" hidden></div>'
+                var $imgBox = '<div class="selected-image"><div class="delete-image"><img src="/img/main/close.png" alt=""></div><img class="image" alt="" src="' + 'http://' + resData.image[i].image_url + '"><input class="img-value" type="text" name="image[]" hidden value="' + resData.image[i].image_url + '"></div>'
                 $('.product').append($imgBox)
             }
             $(".list .image-remark").hide()
-            var $imgBox = '<div class="selected-image"><div class="delete-image"><img src="/img/main/close.png" alt=""></div><img class="image" alt="" src="' + 'http://' + resData.logo + '"><input class="img-value" type="text" name="image[]" hidden></div>'
+            var $imgBox = '<div class="selected-image"><div class="delete-image"><img src="/img/main/close.png" alt=""></div><img class="image" alt="" src="' + 'http://' + resData.logo + '"><input class="img-value" type="text" name="image[]" hidden value="' + resData.logo + '"></div>'
             $('.list').append($imgBox)
 
             for (let i = 0; i < resData.product.length; i++) {
@@ -761,8 +761,6 @@ $(".customize").on("click", ".customize-time .operating .delete", function () {
 })
 
 $(".bottom-submit-btn").on("click", function () {
-    var aa = $("#submit").serialize()
-    console.log(aa)
     $("#submit").submit()
 })
 
