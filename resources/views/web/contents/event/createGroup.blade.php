@@ -174,7 +174,7 @@
                         </div>
                         <div class="dividing"></div>
                         <div class="effective-time">
-                            <div class="random-time option-disabled">
+                            <div class="random-time">
                                 <label for="timeRadio1" class="label-radio">
                                     <input type="radio" id="timeRadio1" value="0" checked hidden name="is_usetime_limit">
                                     <label for="timeRadio1" class="time-radio"></label>

@@ -173,7 +173,7 @@
                         </div>
                         <div class="dividing"></div>
                         <div class="effective-time">
-                            <div class="random-time option-disabled">
+                            <div class="random-time">
                                 <label for="timeRadio1" class="label-radio">
                                     <input type="radio" id="timeRadio1" value="0" checked hidden name="is_usetime_limit">
                                     <label for="timeRadio1" class="time-radio"></label>
@@ -344,7 +344,7 @@ var drawData = function () {
                 $("input[type=text][name=effective_start_at]").val(resData.effective_start_at.split(' ')[0])
                 $("input[type=text][name=effective_end_at]").val(resData.effective_end_at.split(' ')[0])
             } else {
-                $("input[type=text][name=effective_days]").val(resData.effective_days)
+                $("input[type=number][name=effective_days]").val(resData.effective_days)
             }
 
             for (let i = 0; i < 2; i++) {
