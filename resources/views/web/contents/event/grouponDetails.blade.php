@@ -80,7 +80,7 @@
                                 <label class="am-u-lg-2 am-u-md-2 am-u-sm-3">商品图片</label>
                                 <div class="am-u-lg-10 am-u-md-10 am-u-sm-9 product">
                                     <a href="javascript:;" class="file">+添加图片
-                                        <input type="file" class="" id="product-image" name="image[]" onchange="selectImage(this, '.product')">
+                                        <input type="file" class="" id="product-image" name="file[]" onchange="selectImage(this, '.product')">
                                     </a>
                                     <span class="image-remark">建议尺寸:1204*1204像素,最多上传15张,仅支持gif,jpeg,png,bmp 4种格式,大小不超过3.0M</span>
                                 </div>
@@ -89,7 +89,7 @@
                                 <label class="am-u-lg-2 am-u-md-2 am-u-sm-3">列表封面图</label>
                                 <div class="am-u-lg-10 am-u-md-10 am-u-sm-9 list">
                                     <a href="javascript:;" class="file">+添加图片
-                                        <input type="file" class="" id="product-image" name="image[]" onchange="selectImage(this, '.list')">
+                                        <input type="file" class="" id="product-image" name="file[]" onchange="selectImage(this, '.list')">
                                     </a>
                                     <span class="image-remark">建议尺寸:1204*1204像素,最多上传1张,仅支持gif,jpeg,png,bmp 4种格式,大小不超过3.0M</span>
                                 </div>
@@ -259,8 +259,8 @@
                         </div>
 
                         <input type="text" hidden name="id">
-                        <input type="text" hidden name="is_image_modify" value='0'>
-                        <input type="text" hidden name="is_product_modify" value='0'>
+                        <input type="text" hidden name="is_image_modify" value="0">
+                        <input type="text" hidden name="is_product_modify" value="0">
                     </div>
                 </div>
             </div>
@@ -276,7 +276,7 @@
 @section('script')
 <script src="/js/amazeui.datetimepicker.min.js"></script>
 <script>
-
+console.log($("input[name=is_image_modify]").val())
 var getArgs = function () {
     var url = location.search
     var args = {}
@@ -290,6 +290,9 @@ var getArgs = function () {
     return args
 }
 var args = getArgs();
+pro = ''
+rem = ''
+tim = ''
 $("input[type=text][name=id]").val(args['id'])
 var drawData = function () {
     $.ajax({
@@ -301,8 +304,8 @@ var drawData = function () {
             $("input#title").val(resData.title)
             $("input#old-price").val(resData.price)
             $("input#new-price").val(resData.discounted_price)
-            $("input#pdd-startDate").val(resData.open_time)
-            $("input#pdd-endDate").val(resData.close_time)
+            $("input#pdd-startDate").val(resData.open_time.split(' ')[0])
+            $("input#pdd-endDate").val(resData.close_time.split(' ')[0])
             for (let i = 0; i < 3; i++) {
                 if ($("input[type=radio][name=continued_time]:eq("+ i +")").val() == resData.continued_time) {
                     $("input[type=radio][name=continued_time]:eq("+ i +")").attr("checked", 'checked')
@@ -316,9 +319,10 @@ var drawData = function () {
                 $('.product').append($imgBox)
             }
             $(".list .image-remark").hide()
-            var $imgBox = '<div class="selected-image"><div class="delete-image"><img src="/img/main/close.png" alt=""></div><img class="image" alt="" src="' + 'http://' + resData.logo + '"><input class="img-value" type="text" name="image[]" hidden value="' + resData.logo + '"></div>'
+            var $imgBox = '<div class="selected-image"><div class="delete-image"><img src="/img/main/close.png" alt=""></div><img class="image" alt="" src="' + 'http://' + resData.logo + '"><input class="img-value" type="text" name="logo" hidden value="' + resData.logo + '"></div>'
             $('.list').append($imgBox)
 
+            pro = resData.product.length
             for (let i = 0; i < resData.product.length; i++) {
                 let product = resData.product
                 let productName = 'product[' + i + '][name]'
@@ -328,6 +332,7 @@ var drawData = function () {
                 $(".package-data").append($package)
             }
 
+            rem = resData.remark.length
             for (let i = 0; i < resData.remark.length; i++) {
                 let remark = resData.remark
                 let remarkContent = 'remark[' + i + ']'
@@ -364,6 +369,7 @@ var drawData = function () {
                 if (resData.is_festival) {
                     $("input[type=checkbox][name='is_festival']").attr("checked", 'checked')
                 }
+                tim = resData.time_limit.length
                 for (let i = 0; i < resData.time_limit.length; i++) {
                     let startTime = 'time_limit[' + i + '][start_at]'
                     let endTime = 'time_limit[' + i + '][end_at]'
@@ -385,8 +391,6 @@ var drawData = function () {
     })
 }
 drawData();
-
-
 
 var nowTemp = new Date();
 var nowDay = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0).valueOf();
@@ -623,7 +627,11 @@ function save (that, len) {
     $(that).siblings().css('display', 'inline-block')
 }
 
-var i = 0
+setTimeout(() => {
+    i = pro
+    j = rem
+    k = tim
+}, 1000);
 function addPackageInfo () {
     var packageName = $("#package-name").val()
     var packageAmount = $("#package-amount").val()
@@ -667,7 +675,6 @@ $(".remark-data").on("click", ".pdd-table-tr .operating .delete", function () {
     $(this).parent().parent().parent().remove()
 })
 
-var j = 0
 function addRemarkInfo () {
     let remarkData = $("#package-remark").val()
     if (remarkData == '' || remarkData == null) {
@@ -675,6 +682,7 @@ function addRemarkInfo () {
         return false;
     }
     let remarkContent = 'remark[' + j + ']'
+    j++
     var $remark = '<div class="pdd-table-tr clear-fix remark-tr"><div class="am-u-lg-5 am-u-md-5 am-u-sm-6"><div class="package-info">' + remarkData + '</div><input type="text" class="form-control" value="'+ remarkData +'" name="' + remarkContent + '"></div><div class="am-u-lg-7 am-u-md-7 am-u-sm-6 am-u-end"><div class="operating"><div class="motify" onclick="modify(this, 1)">修改</div><div class="save" onclick="save(this, 1)">保存</div><div class="delete">删除</div></div></div></div>'
     $(".remark-data").append($remark)
     $("#package-remark").val("")

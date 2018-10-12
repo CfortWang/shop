@@ -208,7 +208,7 @@ class GroupOnController extends Controller
     public function modify()
     {
         $buyer_id = $this->buyer_id;
-        $input=Input::only('id','title','price','discounted_price','group_size','remark','rule','open_time','close_time','start_use_time','end_use_time','is_weekend','is_festival','logo','image','product','continued_time','is_effective_fixed','is_usetime_limit','effective_start_at','effective_end_at','time_limit','days','effective_days');
+        $input=Input::only('id','title','price','discounted_price','group_size','remark','rule','open_time','close_time','start_use_time','end_use_time','is_weekend','is_festival','logo','image','product','continued_time','is_effective_fixed','is_usetime_limit','effective_start_at','effective_end_at','time_limit','days','effective_days','is_image_modify','is_product_modify');
         $message =  $messages = [
             "required" => ":attribute ".trans('common.verification.cannotEmpty'),
         ];
@@ -268,6 +268,12 @@ class GroupOnController extends Controller
         }
         if($product->is_usetime_limit==1){
             $limit = 1;
+            $product->time_limit1_start_at = NULL;
+            $product->time_limit1_end_at = NULL;
+            $product->time_limit2_start_at = NULL;
+            $product->time_limit2_end_at = NULL;
+            $product->time_limit3_start_at = NULL;
+            $product->time_limit3_end_at = NULL;
             if(isset($input['time_limit'])){
                 foreach ($input['time_limit'] as $key => $value) {
                     if($value['start_at']&&$value['end_at']&&$limit<4){
@@ -296,7 +302,7 @@ class GroupOnController extends Controller
             GrouponImage::where('groupon_product_id',$product->id)->delete();
             foreach ($input['image'] as $key => $value) {
                 if($value){
-                    $image['groupon_product_id'] = $res->id;
+                    $image['groupon_product_id'] = $product->id;
                     $image['image_url'] = $value;
                     GrouponImage::create($image);
                 }
@@ -309,7 +315,7 @@ class GroupOnController extends Controller
                     $item['title'] = $value['name'];
                     $item['price'] = $value['price']?$value['price']:0;
                     $item['quantity'] = $value['quantity']?$value['quantity']:1;
-                    $item['groupon_product_id'] = $res->id;
+                    $item['groupon_product_id'] = $product->id;
                     GrouponItem::create($item);
                 }
             }
