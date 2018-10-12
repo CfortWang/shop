@@ -7,7 +7,7 @@
 @section('content')
 <div class="tpl-page-container tpl-page-header-fixed">
     <div class="tpl-content-wrapper">
-        <form id="submit" action="/api/event/groupon" method="post"  enctype="multipart/form-data">
+        <form id="submit" action="/api/event/mgroupon" method="post"  enctype="multipart/form-data">
             <div class="tpl-portlet">
                 <div class="row">
                     <div class="am-u-md-12 am-u-sm-12">
@@ -257,6 +257,10 @@
                                 <textarea class="rule-text" name="rule" id="" cols="" rows="" placeholder="多行输入"></textarea>
                             </div>
                         </div>
+
+                        <input type="text" hidden name="id">
+                        <input type="text" hidden name="is_image_modify" value='0'>
+                        <input type="text" hidden name="is_product_modify" value='0'>
                     </div>
                 </div>
             </div>
@@ -286,6 +290,7 @@ var getArgs = function () {
     return args
 }
 var args = getArgs();
+$("input[type=text][name=id]").val(args[id])
 var drawData = function () {
     $.ajax({
         url: 'http://shop.test/api/event/groupon/' + args['id'],
@@ -561,6 +566,7 @@ function upLoadImage (file, kind) {
                 $(".list .selected-image input[name='image[]']").attr("name", 'logo')
             }
             $(selector).val(url)
+            $("input[type=text][name=is_image_modify]").val('1')
             // console.log($(selector))
         },
         error: function (ex) {
@@ -572,6 +578,7 @@ function upLoadImage (file, kind) {
 
 $(".product").on("click", ".selected-image .delete-image", function () {
     $(this).parent().remove()
+    $("input[type=text][name=is_image_modify]").val('1')
     var sonNum = $(".product").children().length
     if (sonNum == 2) {
         $(".product .image-remark").show()
@@ -585,6 +592,10 @@ $(".list").on("click", ".selected-image .delete-image", function () {
         $(".list .image-remark").show()
     }
 })
+
+$(".package-data").on("click", ".operating > div", function () {
+    $("input[type=text][name=is_product_modify]").val('1')
+}
 
 function modify (that, len) {
     // for (let i = 0; i < len; i++) {
@@ -646,6 +657,7 @@ function addPackageInfo () {
     $("#package-name").val("")
     $("#package-amount").val("")
     $("#package-price").val("")
+    $("input[type=text][name=is_product_modify]").val('1')
 }
 
 $(".package-data").on("click", ".pdd-table-tr .operating .delete", function () {
