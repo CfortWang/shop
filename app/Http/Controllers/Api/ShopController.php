@@ -38,13 +38,13 @@ class ShopController extends Controller
                     ->leftJoin('ShopImageFile as F','F.seq', '=', 'Buyer.shop_logo_image_file')
                     ->select('Buyer.name as shop_name','Buyer.phone_num',
                     'Buyer.open_time','Buyer.close_time','Buyer.province','Buyer.city','Buyer.area','Buyer.address_detail','F.url','Buyer.lat','Buyer.lng')
-                    ->first(); 
+                    ->first();
         $data=ShopDetailImage:: where('buyer',$buyer)
                     ->leftJoin('ShopImageFile as F','F.seq', '=', 'ShopDetailImage.shop_image_file')
                     ->select('ShopDetailImage.order_num','ShopDetailImage.seq',
                     'F.url')
                     ->orderBy('ShopDetailImage.order_num','desc')
-                    ->get(); 
+                    ->get();
         $items['detailImage']=$data;
         if(empty($items)){
             return $this->responseNotFound('No data','');
@@ -114,10 +114,10 @@ class ShopController extends Controller
         $logo = $request->file('cropped_logo_image');
         if($logo){
             // list($imageWidth, $imageHeight) = getimagesize($logo);
-            // if ($imageWidth !== 180 || $imageHeight !== 180) {
+            // if ($imageWidth ! ==  180 || $imageHeight ! ==  180) {
             //     return $this->responseBadRequest('Wrong Image size', 402);//error code 400,402
             // }
-            $shopLogoImage = FileHelper::shopLogoImage($logo); 
+            $shopLogoImage = FileHelper::shopLogoImage($logo);
             $shopLogoImage = ShopImageFile::create($shopLogoImage);
             $Buyer->shop_logo_image_file = $shopLogoImage->seq;
         }
@@ -240,10 +240,10 @@ class ShopController extends Controller
         if(empty($exitDetailImage)){
             return $this->responseNotFound('There is no detailSeq', 401);//error code 404,401
         }
-        if ($imageType === 'shop_logo') {
+        if ($imageType  == = 'shop_logo') {
             $Buyer->shop_logo_image_file = null;
             $Buyer->save();
-        } else if ($imageType === 'shop_detail') {
+        } else if ($imageType  == = 'shop_detail') {
             ShopDetailImage::where('buyer', $buyer)
                 ->where('seq',$input['detailSeq'] )
                 ->delete();
@@ -269,7 +269,7 @@ class ShopController extends Controller
             'max_discount_money'      => 'nullable|numeric',
             'limit_type'              => 'required|in:0,1',
             'limit_money'             => 'nullable|numeric',
-            'image'                   => 'required|image',
+            'image'                   => 'required|string',
             'limit_count'             => 'required|integer',
             'coupon_date_type'        => 'required|in:0,1',
             'start_at'                => 'nullable|date',
@@ -296,30 +296,27 @@ class ShopController extends Controller
         $maxDiscountMoney = $request->input('max_discount_money');
         $limitMoney = $request->input('limit_money');
         $limitType = $request->input('limit_type');
-        $image=$request->file('image');
+        $image = $request->file('image');
         $limitCount = $request->input('limit_count');
         $couponDateType = $request->input('coupon_date_type');
-        $startAt = $request->input('start_at'); 
+        $startAt = $request->input('start_at');
         $expiredAt = $request->input('expired_at');
-        $days = $request->input('days'); 
+        $days = $request->input('days');
         $availableTimeType = $request->input('available_time_type');
         $availableTime = $request->input('available_time');
-        $businessHours = $request->input('business_hours'); 
+        $businessHours = $request->input('business_hours');
         $condition = $request->input('condition');
         $isSpecialGoods = $request->input('is_special_goods');
-        $goodsName = $request->input('goods_name'); 
+        $goodsName = $request->input('goods_name');
         $remark = $request->input('remark');
         //验证优惠类型
-        if($couponType==0){
-            $discountPercent="null";
-            $maxDiscountMoney="null";
+        if($couponType == 0){
              //面值
             if(empty($discountMoney)){
                 return $this->responseNotFound(trans('shop.verification.emptyDiscountMoney'));
             }
         }
-        if($couponType==1){
-            $discountMoney="null";
+        if($couponType == 1){
              //折扣率
             if(empty($discountPercent)){
                 return $this->responseNotFound(trans('shop.verification.emptyDiscountPercent'));
@@ -333,10 +330,10 @@ class ShopController extends Controller
            }
         }
         //验证使用门槛类型
-        if($limitType==0){
+        if($limitType == 0){
             $limitMoney=0;
         }
-        if($limitType==1){
+        if($limitType == 1){
             if(empty($limitMoney)){
                 return $this->responseNotFound(trans('shop.verification.emptyLimitMoney'));
             }
@@ -345,8 +342,7 @@ class ShopController extends Controller
             }
         }
         //验证优惠券有效期
-        if( $couponDateType==0){
-           $days="null";
+        if( $couponDateType == 0){
            if(empty($startAt)){
                 return $this->responseNotFound(trans('shop.verification.emptyStartAt'));
             }
@@ -357,9 +353,7 @@ class ShopController extends Controller
                 return $this->responseNotFound(trans('shop.verification.timeError'));
             }
         }
-        if($couponDateType==1){
-            $startAt="null";
-            $expiredAt="null";
+        if($couponDateType == 1){
             if(empty($days)){
                 return $this->responseNotFound(trans('shop.verification.emptyDays'));
             }  
@@ -368,10 +362,10 @@ class ShopController extends Controller
             }   
         }
         //验证有效时间段
-        if ($availableTimeType==0){
+        if ($availableTimeType == 0){
             $availableTime=0;
          }
-        if ($availableTimeType==1){
+        if ($availableTimeType == 1){
              if(empty($availableTime)){
                 return $this->responseNotFound(trans('shop.verification.emptyAvailableTime'));
              }
@@ -380,18 +374,12 @@ class ShopController extends Controller
              }
          }
         //验证优惠使用条件
-        if ( $isSpecialGoods==0){
-            $goodsName="null";
-         }
-        if ( $isSpecialGoods==1){
+        if ( $isSpecialGoods == 1){
             if(empty($goodsName)){
                 return $this->responseNotFound(trans('shop.verification.emptyGoodsName'));
              }
          }
         
-         if($image){
-             $couponImage = FileHelper::shopCouponImage($image);
-         }
        
         $data = ShopCoupon::create([
             'coupon_name'            => $couponName,
@@ -400,7 +388,7 @@ class ShopController extends Controller
             'discount_money'         => $discountMoney,
             'discount_percent'       => $discountPercent,
             'max_discount_money'     => $maxDiscountMoney,
-            'image'                  => $couponImage['url'],
+            'image'                  => $image,
             'limit_money'            => $limitMoney,
             'limit_count'            => $limitCount,
             'start_at'               => $startAt,
@@ -417,20 +405,20 @@ class ShopController extends Controller
         ]);
         $pkgSeqList = $request->input('pkgList');
         $seqList = explode(',',  $pkgSeqList);
-        $packages = Q35Package::whereIn('seq', $seqList)->select('start_q35code','end_q35code','seq')->get(); 
-        if($seqList){
-            foreach($packages as $k1=>$v1){
-                Shop2Q35Package::create([
-                    'type'             => 'coupon',
-                    'start_num'        => $v1['start_q35code'],
-                    'end_num'          => $v1['end_q35code'],
-                    'status'           => 'registered',
-                    'buyer'            => $buyer,
-                    'shop_coupon'      => $data->id,
-                    'q35package'       => $v1['seq']
-                ]);
-            }
-        }
+        $packages = Q35Package::whereIn('seq', $seqList)->select('start_q35code','end_q35code','seq')->get();
+        // if($seqList){
+        //     foreach($packages as $k1=>$v1){
+        //         Shop2Q35Package::create([
+        //             'type'             => 'coupon',
+        //             'start_num'        => $v1['start_q35code'],
+        //             'end_num'          => $v1['end_q35code'],
+        //             'status'           => 'registered',
+        //             'buyer'            => $buyer,
+        //             'shop_coupon'      => $data->id,
+        //             'q35package'       => $v1['seq']
+        //         ]);
+        //     }
+        // }
         return $this->responseOk('',$data);
     }
     public function couponList(Request $request){
@@ -441,10 +429,10 @@ class ShopController extends Controller
         $valueStatus= $request->input('status');
         $items=ShopCoupon::where('buyer_id',$buyer);
         if($valueName){
-           $items=$items->where('coupon_name', 'like', '%'.$valueName.'%');              
+           $items=$items->where('coupon_name', 'like', '%'.$valueName.'%');             
         }
         if($valueStatus){
-            $items=$items->where('status', $valueStatus);            
+            $items=$items->where('status', $valueStatus);           
          }
         $count=$items->orderBy('id','desc')->get();
         $count=count($count);
@@ -458,13 +446,13 @@ class ShopController extends Controller
             $data['coupon_name']=$v['coupon_name'];
             $discountMoney=$v['discount_money'];
             $discountPercent=$v['discount_percent'];
-            if($v['coupon_type']=='0'){
+            if($v['coupon_type'] == '0'){
                 $data['value']="￥$discountMoney";
             }else{
-                $data['value']=$discountPercent +'折'; 
+                $data['value']=$discountPercent +'折';
             }
             $data['limit_money']=$v['limit_money'];
-            if($v['limit_money']==0){
+            if($v['limit_money'] == 0){
                 $data['limit_money']='';
             }
             $used=ShopCouponRecord::where('shop_coupon_id',$v['id'])->where('buyer_id',$buyer)->where('status','used')->get();
@@ -489,7 +477,7 @@ class ShopController extends Controller
             }
             //领取限制
             $limitCount=$v['limit_count'];
-            if($v['limit_count']==0){
+            if($v['limit_count'] == 0){
                 $data['limit_count']="不限张数";
             }else{
                 $data['limit_count']="一人 $limitCount 张";
@@ -504,7 +492,7 @@ class ShopController extends Controller
             if(empty($v['days'])){
                 $data['period_time']=$startAt +'至'+ $expiredAt;
             }else{
-                $data['period_time']="领券次日开始 $days 天内有效";  
+                $data['period_time']="领券次日开始 $days 天内有效"; 
             }
             $data['receiving_rate']=($receiveCount / $v['quantity'])* 100 ."%";
             $data['used_rate']=($receiveCount / $v['quantity'])* 100 ."%";
@@ -516,13 +504,13 @@ class ShopController extends Controller
                 $data['receiving_rate']="--";
             }
             $data['statusValue']=$v['status'];
-            if($v['status']=='registered'){
+            if($v['status'] == 'registered'){
                 $data['status']="未开始";
             }
-            if($v['status']=='processed'){
+            if($v['status'] == 'processed'){
                 $data['status']="进行中";
             }
-            if($v['status']=='overed'){
+            if($v['status'] == 'overed'){
                 $data['status']="已结束";
             }
             $list[] = $data;
@@ -553,7 +541,7 @@ class ShopController extends Controller
         if(empty($shopCoupon)){
             return $this->responseBadRequest('id is error',401);
         }
-        if($status=='processed'){
+        if($status == 'processed'){
             $shopCoupon->status="registered";
         }else{
             $shopCoupon->status="processed";
@@ -575,12 +563,12 @@ class ShopController extends Controller
         $buyer = $request->session()->get('buyer.seq');
         $buyer = $this->buyer_id;
         $id = $request->input('id');
-        $item = ShopCoupon::where('shop_coupon.id',$id)->where('buyer_id',$buyer)->first();      
+        $item = ShopCoupon::where('shop_coupon.id',$id)->where('buyer_id',$buyer)->first();     
         $pkgList=Shop2Q35Package::where('buyer',$buyer)->where('shop_ad',$seq)
                                 ->leftJoin('Q35Package as P','P.seq', '=', 'Shop2Q35Package.q35package')
                                 ->select('P.code')
                                 ->get();
-        $item['pkgList']=$pkgList; 
+        $item['pkgList']=$pkgList;
         if(empty($item)){
             return $this->responseNotFound('id is error');
         }
@@ -597,7 +585,7 @@ class ShopController extends Controller
         // $k['v2']['status']="registered";
         // $k['v2']['value']="未开始";
         // $k['v3']['status']="overed";
-        // $k['v3']['value']="已结束"; 
+        // $k['v3']['value']="已结束";
         return $this->responseOk('', $data);
     }
     public function modifyCoupon(Request $request){
