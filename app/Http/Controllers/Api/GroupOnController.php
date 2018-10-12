@@ -326,7 +326,7 @@ class GroupOnController extends Controller
             $image = GrouponImage::where('groupon_product_id',$id)->select('image_url')->get();
             if($image){
                 foreach ($image as $key => $value) {
-                    $image[$key]['image_url'] = 'http://'.$value['image_url'];
+                    $image[$key]['image_url'] = $value['image_url'];
                 }
                 $data['image'] = $image;
             }else{
