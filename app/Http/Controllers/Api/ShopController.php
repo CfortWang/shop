@@ -28,11 +28,12 @@ class ShopController extends Controller
 {
     public function __construct()
     {
+        $this->buyer_id = 14;
     }
 
     public function info(Request $request){
         $seq = $request->session()->get('buyer.seq');
-        $buyer=14;
+        $buyer = $this->buyer_id;
         $items = Buyer::where('Buyer.seq',$buyer) 
                     ->leftJoin('ShopImageFile as F','F.seq', '=', 'Buyer.shop_logo_image_file')
                     ->select('Buyer.name as shop_name','Buyer.phone_num',
@@ -217,7 +218,7 @@ class ShopController extends Controller
     public function deleteImage(Request $request)
     {
         $buyer = $request->session()->get('buyer.seq');
-        $buyer=14;
+        $buyer = $this->buyer_id;
         $input = Input::only([
             'image_type',
             'detailSeq'
@@ -244,70 +245,70 @@ class ShopController extends Controller
             $Buyer->save();
         } else if ($imageType === 'shop_detail') {
             ShopDetailImage::where('buyer', $buyer)
-            ->where('seq',$input['detailSeq'] )
-            ->delete();
+                ->where('seq',$input['detailSeq'] )
+                ->delete();
         } 
 
         return $this->responseOK('success','');
     }
     public function createCoupon(Request $request){
-        $buyer=14;
+        $buyer = $this->buyer_id;
         $input=Input::only('coupon_name','quantity','coupon_type','discount_money','discount_percent',
                           'max_discount_money','limit_type','limit_money','image','limit_count','coupon_date_type','start_at','expired_at','days',
-                          'available_time_type',  'available_time','business_hours','is_special_goods','pkgList','condition','goods_name','remark');
+                          'available_time_type', 'available_time','business_hours','is_special_goods','pkgList','condition','goods_name','remark');
          $message = [
             "required" => ":attribute ".trans('common.verification.cannotEmpty'),
             "integer" => ":attribute ".trans('common.createCoupon.verification.requiredNumber'),
         ];
         $validator = Validator::make($input,[
-        'coupon_name'             => 'required|string',
-        'quantity'                => 'required|integer|min:1|max:1000000',
-        'coupon_type'             => 'required|in:0,1',
-        'discount_money'          => 'nullable|numeric|min:0.01',
-        'discount_percent'        => 'nullable|numeric',
-        'max_discount_money'      => 'nullable|numeric',
-        'limit_type'              => 'required|in:0,1',
-        'limit_money'             => 'nullable|numeric',
-        'image'                   => 'required|image',
-        'limit_count'             => 'required|integer',
-        'coupon_date_type'        => 'required|in:0,1',
-        'start_at'                => 'nullable|date',
-        'expired_at'              => 'nullable|date',
-        'days'                    => 'nullable|integer',
-        'available_time_type'     => 'required|in:0,1',
-        'available_time'          => 'nullable|string',
-        'business_hours'          => 'nullable|string',
-        'condition'               => 'nullable|string',
-        'is_special_goods'        => 'required|in:0,1',
-        'goods_name'              => 'nullable|string',
-        'remark'                  => 'nullable',
-        'pkgList'                  => 'nullable',
+            'coupon_name'             => 'required|string',
+            'quantity'                => 'required|integer|min:1|max:1000000',
+            'coupon_type'             => 'required|in:0,1',
+            'discount_money'          => 'nullable|numeric|min:0.01',
+            'discount_percent'        => 'nullable|numeric',
+            'max_discount_money'      => 'nullable|numeric',
+            'limit_type'              => 'required|in:0,1',
+            'limit_money'             => 'nullable|numeric',
+            'image'                   => 'required|image',
+            'limit_count'             => 'required|integer',
+            'coupon_date_type'        => 'required|in:0,1',
+            'start_at'                => 'nullable|date',
+            'expired_at'              => 'nullable|date',
+            'days'                    => 'nullable|integer',
+            'available_time_type'     => 'required|in:0,1',
+            'available_time'          => 'nullable|string',
+            'business_hours'          => 'nullable|string',
+            'condition'               => 'nullable|string',
+            'is_special_goods'        => 'required|in:0,1',
+            'goods_name'              => 'nullable|string',
+            'remark'                  => 'nullable',
+            'pkgList'                 => 'nullable',
         ],$message);
         if ($validator->fails()) {
             $message = $validator->errors()->first();
             return $this->responseBadRequest($message);
         }       
-        $couponName=$request->input('coupon_name');
-        $quantity=$request->input('quantity');
-        $couponType=$request->input('coupon_type');
-        $discountMoney=$request->input('discount_money');
-        $discountPercent=$request->input('discount_percent');
-        $maxDiscountMoney=$request->input('max_discount_money');
-        $limitMoney=$request->input('limit_money');
-        $limitType=$request->input('limit_type');
+        $couponName = $request->input('coupon_name');
+        $quantity = $request->input('quantity');
+        $couponType = $request->input('coupon_type');
+        $discountMoney = $request->input('discount_money');
+        $discountPercent = $request->input('discount_percent');
+        $maxDiscountMoney = $request->input('max_discount_money');
+        $limitMoney = $request->input('limit_money');
+        $limitType = $request->input('limit_type');
         $image=$request->file('image');
-        $limitCount=$request->input('limit_count');
-        $couponDateType=$request->input('coupon_date_type');
-        $startAt=$request->input('start_at'); 
-        $expiredAt=$request->input('expired_at');
-        $days=$request->input('days'); 
-        $availableTimeType=$request->input('available_time_type');
-        $availableTime=$request->input('available_time');
-        $businessHours=$request->input('business_hours'); 
-        $condition=$request->input('condition');
-        $isSpecialGoods=$request->input('is_special_goods');
-        $goodsName=$request->input('goods_name'); 
-        $remark=$request->input('remark');
+        $limitCount = $request->input('limit_count');
+        $couponDateType = $request->input('coupon_date_type');
+        $startAt = $request->input('start_at'); 
+        $expiredAt = $request->input('expired_at');
+        $days = $request->input('days'); 
+        $availableTimeType = $request->input('available_time_type');
+        $availableTime = $request->input('available_time');
+        $businessHours = $request->input('business_hours'); 
+        $condition = $request->input('condition');
+        $isSpecialGoods = $request->input('is_special_goods');
+        $goodsName = $request->input('goods_name'); 
+        $remark = $request->input('remark');
         //验证优惠类型
         if($couponType==0){
             $discountPercent="null";
@@ -400,19 +401,19 @@ class ShopController extends Controller
             'discount_percent'       => $discountPercent,
             'max_discount_money'     => $maxDiscountMoney,
             'image'                  => $couponImage['url'],
-            'limit_money'            =>$limitMoney,
-            'limit_count'            =>$limitCount,
+            'limit_money'            => $limitMoney,
+            'limit_count'            => $limitCount,
             'start_at'               => $startAt,
             'expired_at'             => $expiredAt,
             'days'                   => $days,
             'available_time'         => $availableTime,
-            'business_hours'         =>$businessHours,
-            'condition'               => $condition,
-            'is_special_goods'       =>$isSpecialGoods,
+            'business_hours'         => $businessHours,
+            'condition'              => $condition,
+            'is_special_goods'       => $isSpecialGoods,
             'goods_name'             => $goodsName,
-            'remark'                 =>$remark,
-            'status'                 =>'registered',
-            'buyer_id'               =>$buyer
+            'remark'                 => $remark,
+            'status'                 => 'registered',
+            'buyer_id'               => $buyer
         ]);
         $pkgSeqList = $request->input('pkgList');
         $seqList = explode(',',  $pkgSeqList);
@@ -420,21 +421,20 @@ class ShopController extends Controller
         if($seqList){
             foreach($packages as $k1=>$v1){
                 Shop2Q35Package::create([
-                            'type'             => 'coupon',
-                            'start_num'        => $v1['start_q35code'],
-                            'end_num'          => $v1['end_q35code'],
-                            'status'           => 'registered',
-                            'buyer'            => $buyer,
-                            'shop_coupon'      => $data->id,
-                            'q35package'       => $v1['seq']
-                        ]);
-                }
-            
+                    'type'             => 'coupon',
+                    'start_num'        => $v1['start_q35code'],
+                    'end_num'          => $v1['end_q35code'],
+                    'status'           => 'registered',
+                    'buyer'            => $buyer,
+                    'shop_coupon'      => $data->id,
+                    'q35package'       => $v1['seq']
+                ]);
+            }
         }
         return $this->responseOk('',$data);
     }
     public function couponList(Request $request){
-        $buyer=14;
+        $buyer = $this->buyer_id;
         $limit = $request->input('limit');
         $page = $request->input('page');
         $valueName= $request->input('coupon_name');
@@ -454,82 +454,82 @@ class ShopController extends Controller
             return $this->responseNotFound('no data');
         }
         foreach($items as $k=>$v){
-          $data['id']=$v['id'];
-          $data['coupon_name']=$v['coupon_name'];
-          $discountMoney=$v['discount_money'];
-          $discountPercent=$v['discount_percent'];
-          if($v['coupon_type']=='0'){
-              $data['value']="￥$discountMoney";
-          }else{
-              $data['value']=$discountPercent +'折'; 
-          }
-          $data['limit_money']=$v['limit_money'];
-          if($v['limit_money']==0){
-            $data['limit_money']='';
-          }
-          $used=ShopCouponRecord::where('shop_coupon_id',$v['id'])->where('buyer_id',$buyer)->where('status','used')->get();
-          $receive=ShopCouponRecord::where('shop_coupon_id',$v['id'])->where('buyer_id',$buyer)->get();
-          //已领取数量
-          $receiveCount=count($receive);
-          if(empty($receiveCount)){
-              $data['receiveCount']="";
-          }else{
-              $data['receiveCount']=$receiveCount;
-          }
-          //领取人数
-          $peopleCount=DB::table('shop_coupon_record')
-                        ->select(DB::raw('count(shop_coupon_record.user_id) AS userCount'))
-                        ->groupBy('shop_coupon_record.user_id')
-                        ->where('shop_coupon_record.shop_coupon_id',$v['id'])
-                        ->first();
-          if(isset($peopleCount->userCount)&&$peopleCount->userCount){
-              $data['peopleCount']=$peopleCount->userCount;
-          }else{
-              $data['peopleCount']="";
-          }
-          //领取限制
-          $limitCount=$v['limit_count'];
-          if($v['limit_count']==0){
-              $data['limit_count']="不限张数";
-          }else{
-            $data['limit_count']="一人 $limitCount 张";
-          }
-          $data['usedCount']=count($used);
-          //库存
-          $data['reserve']=$v['quantity']-count($used);
-          //有效期
-          $days=$v['days'];
-          $startAt=$v['start_at'];
-          $expiredAt=$v['expired_at'];
-          if(empty($v['days'])){
-              $data['period_time']=$startAt +'至'+ $expiredAt;
-          }else{
-            $data['period_time']="领券次日开始 $days 天内有效";  
-          }
-          $data['receiving_rate']=($receiveCount / $v['quantity'])* 100 ."%";
-          $data['used_rate']=($receiveCount / $v['quantity'])* 100 ."%";
-          if(empty($data['usedCount'])){
-            $data['usedCount']="--";
-            $data['used_rate']="--";
-          }
-          if(empty($receiveCount)){
-            $data['receiving_rate']="--";
-          }
-          $data['statusValue']=$v['status'];
-          if($v['status']=='registered'){
-              $data['status']="未开始";
-          }
-          if($v['status']=='processed'){
-            $data['status']="进行中";
-          }
-          if($v['status']=='overed'){
-            $data['status']="已结束";
-          }
-          $list[]=$data;
+            $data['id']=$v['id'];
+            $data['coupon_name']=$v['coupon_name'];
+            $discountMoney=$v['discount_money'];
+            $discountPercent=$v['discount_percent'];
+            if($v['coupon_type']=='0'){
+                $data['value']="￥$discountMoney";
+            }else{
+                $data['value']=$discountPercent +'折'; 
+            }
+            $data['limit_money']=$v['limit_money'];
+            if($v['limit_money']==0){
+                $data['limit_money']='';
+            }
+            $used=ShopCouponRecord::where('shop_coupon_id',$v['id'])->where('buyer_id',$buyer)->where('status','used')->get();
+            $receive=ShopCouponRecord::where('shop_coupon_id',$v['id'])->where('buyer_id',$buyer)->get();
+            //已领取数量
+            $receiveCount=count($receive);
+            if(empty($receiveCount)){
+                $data['receiveCount']="";
+            }else{
+                $data['receiveCount']=$receiveCount;
+            }
+            //领取人数
+            $peopleCount=DB::table('shop_coupon_record')
+                ->select(DB::raw('count(shop_coupon_record.user_id) AS userCount'))
+                ->groupBy('shop_coupon_record.user_id')
+                ->where('shop_coupon_record.shop_coupon_id',$v['id'])
+                ->first();
+            if(isset($peopleCount->userCount)&&$peopleCount->userCount){
+                $data['peopleCount']=$peopleCount->userCount;
+            }else{
+                $data['peopleCount']="";
+            }
+            //领取限制
+            $limitCount=$v['limit_count'];
+            if($v['limit_count']==0){
+                $data['limit_count']="不限张数";
+            }else{
+                $data['limit_count']="一人 $limitCount 张";
+            }
+            $data['usedCount']=count($used);
+            //库存
+            $data['reserve']=$v['quantity']-count($used);
+            //有效期
+            $days=$v['days'];
+            $startAt=$v['start_at'];
+            $expiredAt=$v['expired_at'];
+            if(empty($v['days'])){
+                $data['period_time']=$startAt +'至'+ $expiredAt;
+            }else{
+                $data['period_time']="领券次日开始 $days 天内有效";  
+            }
+            $data['receiving_rate']=($receiveCount / $v['quantity'])* 100 ."%";
+            $data['used_rate']=($receiveCount / $v['quantity'])* 100 ."%";
+            if(empty($data['usedCount'])){
+                $data['usedCount']="--";
+                $data['used_rate']="--";
+            }
+            if(empty($receiveCount)){
+                $data['receiving_rate']="--";
+            }
+            $data['statusValue']=$v['status'];
+            if($v['status']=='registered'){
+                $data['status']="未开始";
+            }
+            if($v['status']=='processed'){
+                $data['status']="进行中";
+            }
+            if($v['status']=='overed'){
+                $data['status']="已结束";
+            }
+            $list[] = $data;
         }
         
-        $newData['count']=$count;
-        $newData['data']=$list;
+        $newData['count'] = $count;
+        $newData['data'] = $list;
         return $this->responseOk('',$newData);
     }
     public function couponStatus(Request $request)
@@ -562,7 +562,7 @@ class ShopController extends Controller
         return $this->responseOk('',$shopCoupon);
     }
     public function deleteCoupon(Request $request){
-       $id=$request->input('id');
+       $id = $request->input('id');
        $shopCoupon=ShopCoupon::where('id',$id)->first();
        if(empty($shopCoupon)){
         return $this->responseBadRequest('id is error');
@@ -573,8 +573,8 @@ class ShopController extends Controller
     public function detail(Request $request)
     {
         $buyer = $request->session()->get('buyer.seq');
-        $buyer=14;
-        $id=$request->input('id');
+        $buyer = $this->buyer_id;
+        $id = $request->input('id');
         $item = ShopCoupon::where('shop_coupon.id',$id)->where('buyer_id',$buyer)->first();      
         $pkgList=Shop2Q35Package::where('buyer',$buyer)->where('shop_ad',$seq)
                                 ->leftJoin('Q35Package as P','P.seq', '=', 'Shop2Q35Package.q35package')
@@ -588,9 +588,9 @@ class ShopController extends Controller
     }
     public function statusList(Request $requst){
         $data=array(
-          0=>array('status'=>"processed",'value'=>'进行中'),  
-          1=>array('status'=>"registered",'value'=>'未开始'),  
-          2=>array('status'=>"overed",'value'=>'已结束'),  
+            0=>array('status'=>"processed",'value'=>'进行中'),  
+            1=>array('status'=>"registered",'value'=>'未开始'),  
+            2=>array('status'=>"overed",'value'=>'已结束'),  
         );
         // $k['v1']['status']="processed";
         // $k['v1']['value']="进行中";

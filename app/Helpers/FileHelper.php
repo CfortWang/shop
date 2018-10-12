@@ -12,8 +12,8 @@ class FileHelper
     public static $shopDetailImageFilePath = '/shop/detail/';
     public static $giftResultImagePath = '/shop/gift/';
     public static $adImagePath = '/shop/ad/';
+    public static $shopCouponImagePath = '/shop/coupon/';
     public static $couponImagePath = '/shop/coupon/';
-
     public static $groupImagePath = '/shop/groupon/';
     
     public static function shopLogoImage($file) 
@@ -37,11 +37,15 @@ class FileHelper
     }
     public static function shopCouponImage($file) 
     {
-        return static::uploadImage(static::$couponImagePath, $file);
+        return static::uploadImage(static::$shopCouponImagePath, $file);
     }
     public static function groupOnImage($file)
     {
         return static::uploadImage(static::$groupImagePath, $file,true);
+    }
+    public static function couponImage($file)
+    {
+        return static::uploadImage(static::$couponImagePath, $file,true);
     }
     public static function uploadImage($filePath, $file ,$temp=false)
     {
