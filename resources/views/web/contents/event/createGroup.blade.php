@@ -174,7 +174,7 @@
                         </div>
                         <div class="dividing"></div>
                         <div class="effective-time">
-                            <div class="random-time option-disabled">
+                            <div class="random-time">
                                 <label for="timeRadio1" class="label-radio">
                                     <input type="radio" id="timeRadio1" value="0" checked hidden name="is_usetime_limit">
                                     <label for="timeRadio1" class="time-radio"></label>
@@ -626,6 +626,11 @@ function addCustomize () {
     $(".start-hours").val("")
     $(".end-hours").val("")
 
+    if ($(".customize-time").length >= 3) {
+        $(".hours-choose .add-time").hide()
+        $(".section-time .start-hours, .section-time .end-hours").attr("disabled", true)
+    }
+
     $('.add-start-hours, .add-end-hours').datetimepicker({
         format: 'hh:ii',
         autoclose: true,
@@ -656,6 +661,8 @@ function saveCustomize (that) {
 
 $(".customize").on("click", ".customize-time .operating .delete", function () {
     $(this).parent().parent().remove()
+    $(".hours-choose .add-time").show()
+    $(".section-time .start-hours, .section-time .end-hours").attr("disabled", false)
 })
 
 $(".bottom-submit-btn").on("click", function () {
