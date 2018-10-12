@@ -70,6 +70,5 @@
 @section('script')
 <script src="/js/amazeui.datetimepicker.min.js"></script>
 <script>
-
 </script>
 @endsection
