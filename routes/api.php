@@ -92,6 +92,8 @@ Route::group(['namespace' => 'Api'], function() {
         Route::get('groupon',                      'GroupOnController@list'); 
         Route::post('groupon',                   'GroupOnController@create');
         Route::get('groupon/{id}',                   'GroupOnController@detail');
+        Route::post('mgroupon',                   'GroupOnController@modify');
+
         Route::put('status',                      'GroupOnController@status'); 
         Route::post('upload',                   'GroupOnController@upload');
 
