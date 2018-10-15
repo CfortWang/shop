@@ -304,8 +304,8 @@ var drawData = function () {
             $("input#title").val(resData.title)
             $("input#old-price").val(resData.price)
             $("input#new-price").val(resData.discounted_price)
-            $("input#pdd-startDate").val(resData.open_time.split(' ')[0])
-            $("input#pdd-endDate").val(resData.close_time.split(' ')[0])
+            $("input#pdd-startDate").val(resData.open_time)
+            $("input#pdd-endDate").val(resData.close_time)
             for (let i = 0; i < 3; i++) {
                 if ($("input[type=radio][name=continued_time]:eq("+ i +")").val() == resData.continued_time) {
                     $("input[type=radio][name=continued_time]:eq("+ i +")").attr("checked", 'checked')
@@ -346,8 +346,8 @@ var drawData = function () {
                 }
             }
             if (resData.is_effective_fixed) {
-                $("input[type=text][name=effective_start_at]").val(resData.effective_start_at.split(' ')[0])
-                $("input[type=text][name=effective_end_at]").val(resData.effective_end_at.split(' ')[0])
+                $("input[type=text][name=effective_start_at]").val(resData.effective_start_at)
+                $("input[type=text][name=effective_end_at]").val(resData.effective_end_at)
             } else {
                 $("input[type=number][name=effective_days]").val(resData.effective_days)
             }

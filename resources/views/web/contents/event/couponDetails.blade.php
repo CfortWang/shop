@@ -16,7 +16,7 @@
                             <div class="form-group clear-fix">
                                 <label class="am-u-lg-2 am-u-md-2 am-u-sm-3">优惠券名称</label>
                                 <div class="am-u-lg-10 am-u-md-10 am-u-sm-9">
-                                    <input type="text" class="form-control" id="name" name="coupon_name" placeholder="最多可输入10个字符" maxlength="10">
+                                    <input type="text" class="form-control" id="coupon_name" name="coupon_name" placeholder="最多可输入10个字符" maxlength="10">
                                 </div>
                             </div>
                             <div class="form-group clear-fix">
@@ -333,19 +333,38 @@ var drawData = function () {
         dataType: 'json',
         success: function (res) {
             console.log(res)
-            // let resData = res.data
-            // $("input#title").val(resData.title)
-            // $("input#old-price").val(resData.price)
-            // $("input#new-price").val(resData.discounted_price)
-            // $("input#pdd-startDate").val(resData.open_time.split(' ')[0])
-            // $("input#pdd-endDate").val(resData.close_time.split(' ')[0])
-            // for (let i = 0; i < 3; i++) {
-            //     if ($("input[type=radio][name=continued_time]:eq("+ i +")").val() == resData.continued_time) {
-            //         $("input[type=radio][name=continued_time]:eq("+ i +")").attr("checked", 'checked')
-            //     }
-            // }
-            // // 渲染商品/封面图
-            // $("input#group-size").val(resData.group_size)
+            let resData = res.data
+            $("input#coupon_name").val(resData.coupon_name)
+            $("input#quantity").val(resData.quantity)
+            for (let i = 0; i < 2; i++) {
+                if ($("input[type=radio][name=coupon_type]:eq("+ i +")").val() == resData.coupon_type) {
+                    $("input[type=radio][name=coupon_type]:eq("+ i +")").attr("checked", 'checked')
+                }
+            }
+            // $('.fixed-time-option2 .effective-days').attr("disabled", true)
+            // $('.sectiom-time').find("input").attr("disabled", true)
+            // $('.sectiom-time #timeRadio2').attr("disabled", false)
+            if (resData.coupon_type) {
+                $("input[type=text][name=discount_percent]").val(resData.discount_percent)
+                $("input[type=text][name=max_discount_money]").val(resData.max_discount_money)
+                $('#discount_percent, #max_discount_money').attr("disabled", false)
+            } else {
+                $("input[type=number][name=discount_money]").val(resData.discount_money)
+                $('#discount_percent, #max_discount_money').attr("disabled", true)
+            }
+
+            for (let i = 0; i < 2; i++) {
+                if ($("input[type=radio][name=limit_type]:eq("+ i +")").val() == resData.limit_type) {
+                    $("input[type=radio][name=limit_type]:eq("+ i +")").attr("checked", 'checked')
+                }
+            }
+            if (resData.limit_type) {
+                $("input[type=number][name=limit_money]").val(resData.limit_money)
+                $('#limit_money').attr("disabled", false)
+            } else {
+                $('#limit_money').attr("disabled", true)
+            }
+            // 渲染商品图
             // $(".product .image-remark").hide()
             // for (let i = 0; i < resData.image.length; i++) {
             //     var $imgBox = '<div class="selected-image"><div class="delete-image"><img src="/img/main/close.png" alt=""></div><img class="image" alt="" src="' + 'http://' + resData.image[i].image_url + '"><input class="img-value" type="text" name="image[]" hidden value="' + resData.image[i].image_url + '"></div>'
@@ -702,10 +721,10 @@ $('input[type=radio][name=coupon_date_type]').change(function() {
 })
 
 
-$('#discount_percent, #max_discount_money, #limit_money').attr("disabled", true)
-$('.fixed-time-option2 .effective-days').attr("disabled", true)
-$('.sectiom-time').find("input").attr("disabled", true)
-$('.sectiom-time #timeRadio2').attr("disabled", false)
+// $('#discount_percent, #max_discount_money, #limit_money').attr("disabled", true)
+// $('.fixed-time-option2 .effective-days').attr("disabled", true)
+// $('.sectiom-time').find("input").attr("disabled", true)
+// $('.sectiom-time #timeRadio2').attr("disabled", false)
 
 
 $('input[type=radio][name=available_time_type]').change(function() {
