@@ -613,9 +613,10 @@ class ShopController extends Controller
         return $this->responseOk('', $data);
     }
     public function modifyCoupon(Request $request){
-        $input=Input::only('coupon_name','quantity','coupon_type','discount_money','discount_percent',
+        $buyer = $this->buyer_id;
+        $input=Input::only('id','is_code_changed','coupon_name','quantity','coupon_type','discount_money','discount_percent',
                           'max_discount_money','limit_type','limit_money','image','limit_count','coupon_date_type','start_at','expired_at','days',
-                          'available_time_type',  'available_time','business_hours','is_special_goods','pkgList','condition','goods_name','remark');
+                          'available_time_type', 'available_time','business_hours','is_special_goods','pkgList','condition','goods_name','remark','is_festival','is_weekend');
          $message = [
             "required" => ":attribute ".trans('common.verification.cannotEmpty'),
             "integer" => ":attribute ".trans('common.createCoupon.verification.requiredNumber'),
@@ -629,24 +630,176 @@ class ShopController extends Controller
             'max_discount_money'      => 'nullable|numeric',
             'limit_type'              => 'required|in:0,1',
             'limit_money'             => 'nullable|numeric',
-            'image'                   => 'required|image',
+            'image'                   => 'required|string',
             'limit_count'             => 'required|integer',
             'coupon_date_type'        => 'required|in:0,1',
             'start_at'                => 'nullable|date',
             'expired_at'              => 'nullable|date',
             'days'                    => 'nullable|integer',
             'available_time_type'     => 'required|in:0,1',
-            'available_time'          => 'nullable|string',
+            'available_time'          => 'nullable|array',
             'business_hours'          => 'nullable|string',
             'condition'               => 'nullable|string',
             'is_special_goods'        => 'required|in:0,1',
             'goods_name'              => 'nullable|string',
             'remark'                  => 'nullable',
             'pkgList'                 => 'nullable',
+            'is_festival'             => 'nullable|in:0,1',
+            'is_weekend'              => 'nullable|in:0,1',
+            'id'                      => 'required|integer',
+            'is_code_changed'         => 'required|in:0,1'
         ],$message);
         if ($validator->fails()) {
             $message = $validator->errors()->first();
             return $this->responseBadRequest($message);
-        }  
+        }   
+        $id = $request->input('id');
+        $item = ShopCoupon::where('shop_coupon.id',$id)->where('buyer_id',$buyer)->first();
+        if(empty($item)){
+            return $this->responseNotFound('id is error');
+        }
+        $couponName = $request->input('coupon_name');
+        $quantity = $request->input('quantity');
+        $couponType = $request->input('coupon_type');
+        $discountMoney = $request->input('discount_money');
+        $discountPercent = $request->input('discount_percent');
+        $maxDiscountMoney = $request->input('max_discount_money');
+        $limitMoney = $request->input('limit_money');
+        $limitType = $request->input('limit_type');
+        $image = $request->input('image');
+        $limitCount = $request->input('limit_count');
+        $couponDateType = $request->input('coupon_date_type');
+        $startAt = $request->input('start_at');
+        $expiredAt = $request->input('expired_at');
+        $days = $request->input('days');
+        $availableTimeType = $request->input('available_time_type');
+        $availableTime = $request->input('available_time');
+        $businessHours = $request->input('business_hours');
+        $condition = $request->input('condition');
+        $isSpecialGoods = $request->input('is_special_goods');
+        $goodsName = $request->input('goods_name');
+        $remark = $request->input('remark');
+        $is_festival = $request->input('is_festival');
+        $is_weekend = $request->input('is_weekend');
+        $id = $request->input('id');
+        $is_code_changed = $request->input('is_code_changed');
+        //验证优惠类型
+        if($couponType == 0){
+             //面值
+            if(empty($discountMoney)){
+                return $this->responseNotFound(trans('shop.verification.emptyDiscountMoney'));
+            }
+        }
+        if($couponType == 1){
+             //折扣率
+            if(empty($discountPercent)){
+                return $this->responseNotFound(trans('shop.verification.emptyDiscountPercent'));
+            }
+            //最大优惠
+            if(empty($maxDiscountMoney)){
+                return $this->responseNotFound(trans('shop.verification.emptyMaxDiscountMoney'));
+           }
+           if($discountPercent<1 || $discountPercent>9.9){
+            return $this->responseNotFound(trans('shop.verification.discountPercentError'));
+           }
+        }
+        //验证使用门槛类型
+        if($limitType == 0){
+            $limitMoney=0;
+        }
+        if($limitType == 1){
+            if(empty($limitMoney)){
+                return $this->responseNotFound(trans('shop.verification.emptyLimitMoney'));
+            }
+            if($limitMoney <= 0){
+                return $this->responseNotFound(trans('shop.verification.limitMoneyError'));
+            }
+        }
+        //验证优惠券有效期
+        if( $couponDateType == 0){
+           if(empty($startAt)){
+                return $this->responseNotFound(trans('shop.verification.emptyStartAt'));
+            }
+            if(empty($expiredAt)){
+                return $this->responseNotFound(trans('shop.verification.emptyExpiredAt'));
+            }
+            if($startAt >= $expiredAt){
+                return $this->responseNotFound(trans('shop.verification.timeError'));
+            }
+        }
+        if($couponDateType == 1){
+            if(empty($days)){
+                return $this->responseNotFound(trans('shop.verification.emptyDays'));
+            }  
+            if($days<1 || $days>365){
+                return $this->responseNotFound(trans('shop.verification.daysError'));
+            }   
+        }
+        //验证有效时间段
+        if ($availableTimeType == 0){
+            $availableTime=0;
+         }
+        if ($availableTimeType == 1){
+             if(empty($availableTime)){
+                return $this->responseNotFound(trans('shop.verification.emptyAvailableTime'));
+             }else{
+                $availableTime = implode('',$availableTime);
+             }
+            //  if(empty($businessHours)){
+            //     return $this->responseNotFound(trans('shop.verification.emptyBusinessHours'));
+            //  }
+         }
+        //验证优惠使用条件
+        if ( $isSpecialGoods == 1){
+            if(empty($goodsName)){
+                return $this->responseNotFound(trans('shop.verification.emptyGoodsName'));
+            }
+        }
+       
+        $item->coupon_name = $couponName;
+        $item->quantity = $quantity;
+        $item->coupon_type = $couponType;
+        $item->discount_money = $discountMoney;
+        $item->discount_percent = $discountPercent;
+        $item->max_discount_money = $maxDiscountMoney;
+        $item->image = $image;
+        $item->limit_money = $limitMoney;
+        $item->limit_count = $limitCount;
+        $item->start_at = $startAt;
+        $item->expired_at = $expiredAt;
+        $item->days = $days;
+        $item->available_time = $availableTime;
+        $item->business_hours = $businessHours;
+        $item->condition = $condition;
+        $item->is_special_goods = $isSpecialGoods;
+        $item->goods_name = $goodsName;
+        $item->remark = $remark;
+        $item->status='registered';
+        $item->buyer_id = $buyer;
+        $item->is_weekend = $is_weekend;
+        $item->is_festival = $is_festival;
+        $item->save();
+        $pkgSeqList = $request->input('pkgList');
+        $isChanged = $request->input('is_code_changed');
+        if($isChanged){
+            Shop2Q35Package::where('shop_coupon',$item->id)->delete();
+            if($pkgSeqList){
+                $packages = Q35Package::whereIn('seq', $pkgSeqList)->select('start_q35code','end_q35code','seq')->get();
+                if($packages){
+                    foreach($packages as $k1=>$v1){
+                        Shop2Q35Package::create([
+                            'type'             => 'coupon',
+                            'start_num'        => $v1['start_q35code'],
+                            'end_num'          => $v1['end_q35code'],
+                            'status'           => 'registered',
+                            'buyer'            => $buyer,
+                            'shop_coupon'      => $item->id,
+                            'q35package'       => $v1['seq']
+                        ]);
+                    }
+                }
+            }
+        }
+        return $this->responseOk('',$item);  
     }
 }
