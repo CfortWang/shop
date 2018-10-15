@@ -49,6 +49,10 @@ Route::group(['namespace' => 'Api'], function() {
         Route::post('/createAd',               'AdController@createAd');
         Route::get('/adDetail',                'AdController@detail');
     });
+    //common
+    Route::group(['prefix'  => 'common'], function() {
+        Route::get('/pkgList',                 'AdController@pkgList');//喜豆码列表
+    });
     //shop
     Route::group(['prefix'  => 'shop'], function() {
         Route::get('/info',                  'ShopController@info');
