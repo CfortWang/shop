@@ -459,7 +459,7 @@ class ShopController extends Controller
             if($v['coupon_type'] == '0'){
                 $data['value']="￥$discountMoney";
             }else{
-                $data['value']=$discountPercent +'折';
+                $data['value']=$discountPercent .'折';
             }
             $data['limit_money']=$v['limit_money'];
             if($v['limit_money'] == 0){
