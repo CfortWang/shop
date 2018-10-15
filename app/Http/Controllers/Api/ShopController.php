@@ -591,6 +591,11 @@ class ShopController extends Controller
                 $time = explode(':',$item['end_time']);
                 $item['end_time'] = $time[0].':'.$time[1];
             }
+            $item['available_time_type'] = $item['available_time']?1:0;
+            if($item['available_time']){
+                $item['available_time'] = str_split($item['available_time']);
+            }
+            $item['coupon_date_type'] = $item['days']?1:0;
         }
         $pkgList=Shop2Q35Package::where('buyer',$buyer)->where('shop_coupon',$id)
                                 ->leftJoin('Q35Package as P','P.seq', '=', 'Shop2Q35Package.q35package')
