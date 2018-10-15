@@ -260,6 +260,7 @@ class ShopController extends Controller
                           'available_time_type', 'available_time','business_hours','is_special_goods','pkgList','condition','goods_name','remark','is_festival','is_weekend'
                           ,'time_limit'
                         );
+                        dd($input);
          $message = [
             "required" => ":attribute ".trans('common.verification.cannotEmpty'),
             "integer" => ":attribute ".trans('common.createCoupon.verification.requiredNumber'),

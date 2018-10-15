@@ -406,9 +406,11 @@ var drawData = function () {
                 }
             }
             if (resData.available_time_type) {
-                for (let i = 0; i < 5; i++) {
-                    if ($("input[type=checkbox][name='available_time[]']:eq("+ i +")").val() == resData.available_time[i]) {
-                        $("input[type=checkbox][name='available_time[]']:eq("+ i +")").attr("checked", 'checked')
+                for (let j = 0; j < 5; j++) {
+                    for (let i = 0; i < 5; i++) {
+                        if ($("input[type=checkbox][name='available_time[]']:eq("+ i +")").val() == resData.available_time[j]) {
+                            $("input[type=checkbox][name='available_time[]']:eq("+ i +")").attr("checked", 'checked')
+                        }
                     }
                 }
                 if (resData.is_weekend) {
@@ -417,18 +419,18 @@ var drawData = function () {
                 if (resData.is_festival) {
                     $("input[type=checkbox][name='is_festival']").attr("checked", 'checked')
                 }
-                // tim = resData.time_limit.length
-                // for (let i = 0; i < resData.time_limit.length; i++) {
-                //     let startTime = 'time_limit[' + i + '][start_at]'
-                //     let endTime = 'time_limit[' + i + '][end_at]'
-                //     let time = resData.time_limit
-                //     var $customizeTime = '<div class="customize-time"><div class="add-time-text"><span class="customize-time-text">' + time[i].start_at + '</span><span>&nbsp;-&nbsp;</span><span class="customize-time-text">' + time[i].end_at + '</span></div><div class="add-time-box"><input type="text" class="add-start-hours" value="' + time[i].start_at + '" name="' + startTime + '"><span>&nbsp;-&nbsp;</span><input type="text" class="add-end-hours" value="' + time[i].end_at + '" name="' + endTime + '"></div><div class="operating"><div class="motify" onclick="modifyCustomize(this)">修改</div><div class="save" onclick="saveCustomize(this)">保存</div><div class="delete">删除</div></div></div>'
-                //     $(".customize").append($customizeTime)
-                // }
-                // if ($(".customize-time").length >= 3) {
-                //     $(".hours-choose .add-time").hide()
-                //     $(".section-time .start-hours, .section-time .end-hours").attr("disabled", true)
-                // }
+                tim = resData.time_limit.length
+                for (let i = 0; i < resData.time_limit.length; i++) {
+                    let startTime = 'time_limit[' + i + '][start_at]'
+                    let endTime = 'time_limit[' + i + '][end_at]'
+                    let time = resData.time_limit
+                    var $customizeTime = '<div class="customize-time"><div class="add-time-text"><span class="customize-time-text">' + time[i].start_at + '</span><span>&nbsp;-&nbsp;</span><span class="customize-time-text">' + time[i].end_at + '</span></div><div class="add-time-box"><input type="text" class="add-start-hours" value="' + time[i].start_at + '" name="' + startTime + '"><span>&nbsp;-&nbsp;</span><input type="text" class="add-end-hours" value="' + time[i].end_at + '" name="' + endTime + '"></div><div class="operating"><div class="motify" onclick="modifyCustomize(this)">修改</div><div class="save" onclick="saveCustomize(this)">保存</div><div class="delete">删除</div></div></div>'
+                    $(".customize").append($customizeTime)
+                }
+                if ($(".customize-time").length >= 3) {
+                    $(".hours-choose .add-time").hide()
+                    $(".section-time .start-hours, .section-time .end-hours").attr("disabled", true)
+                }
             } else {
                 $("input[type=text][name=start_at]").val(resData.start_at)
                 $("input[type=text][name=expired_at]").val(resData.expired_at)
@@ -455,8 +457,10 @@ var drawData = function () {
                 }
             }
 
+            $(".rule-text").val(resData.remark)
+
             // 喜豆码
-            let pkgdata = resData.pkgList
+            pkgdata = resData.pkgList
             for (let i = 0; i < pkgdata.length; i++) {
                 let $pkg = '<div class="package" data-value="' + pkgdata[i].seq + '"><div class="delete-pkg"><img src="/img/main/delete.png" alt=""></div><div class="package-code">' + pkgdata[i].code + '</div></div>'
                 $(".package-box").append($pkg)
@@ -648,6 +652,12 @@ function getPkgCode (file) {
             for (let i = 0; i < res.data.length; i++) {
                 let $pkgData = '<option value="' + resData[i].pkg_seq + '">' + resData[i].pkg_code + '</option>'
                 $(".pkg-data").append($pkgData)
+            }
+            if (pkgdata != null || pkgdata != '') {
+                for (let i = 0; i < pkgdata.length; i++) {
+                    let $pkgData = '<option value="' + pkgdata[i].seq + '">' + pkgdata[i].code + '</option>'
+                    $(".pkg-data").append($pkgData)
+                }
             }
         },
         error: function (ex) {

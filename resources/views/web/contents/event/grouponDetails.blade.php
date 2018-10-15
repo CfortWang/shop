@@ -358,9 +358,11 @@ var drawData = function () {
                 }
             }
             if (resData.is_usetime_limit) {
-                for (let i = 0; i < 5; i++) {
-                    if ($("input[type=checkbox][name='days[]']:eq("+ i +")").val() == resData.days[i]) {
-                        $("input[type=checkbox][name='days[]']:eq("+ i +")").attr("checked", 'checked')
+                for (let j = 0; j < 5; j++) {
+                    for (let i = 0; i < 5; i++) {
+                        if ($("input[type=checkbox][name='days[]']:eq("+ i +")").val() == resData.days[j]) {
+                            $("input[type=checkbox][name='days[]']:eq("+ i +")").attr("checked", 'checked')
+                        }
                     }
                 }
                 if (resData.is_weekend) {
