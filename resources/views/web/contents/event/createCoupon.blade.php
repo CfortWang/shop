@@ -282,7 +282,7 @@
                                     优惠使用须知
                                     </div>
                                     <div class="am-u-lg-10 am-u-md-10 am-u-sm-9 rule-box">
-                                        <textarea class="rule-text" name="rule" id="" cols="" rows="" placeholder="填写活动详细说明，支持换行（不超过300字符）" maxlength="300"></textarea>
+                                        <textarea class="rule-text" name="remark" id="" cols="" rows="" placeholder="填写活动详细说明，支持换行（不超过300字符）" maxlength="300"></textarea>
                                     </div>
                                 </div>
                                 <div class="form-group clear-fix pkg">

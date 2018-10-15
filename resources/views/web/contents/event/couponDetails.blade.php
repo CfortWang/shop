@@ -282,7 +282,7 @@
                                     优惠使用须知
                                     </div>
                                     <div class="am-u-lg-10 am-u-md-10 am-u-sm-9 rule-box">
-                                        <textarea class="rule-text" name="rule" id="" cols="" rows="" placeholder="填写活动详细说明，支持换行（不超过300字符）" maxlength="300"></textarea>
+                                        <textarea class="rule-text" name="remark" id="" cols="" rows="" placeholder="填写活动详细说明，支持换行（不超过300字符）" maxlength="300"></textarea>
                                     </div>
                                 </div>
                                 <div class="form-group clear-fix pkg">
@@ -323,8 +323,6 @@ var getArgs = function () {
     return args
 }
 var args = getArgs();
-pro = ''
-rem = ''
 tim = ''
 var drawData = function () {
     $.ajax({
@@ -408,9 +406,29 @@ var drawData = function () {
                 }
             }
             if (resData.available_time_type) {
-                $("input[type=number][name=days]").val(resData.days)
-                $('.effect-time, .expired-time').attr("disabled", true)
-                $('#days').attr("disabled", false)
+                for (let i = 0; i < 5; i++) {
+                    if ($("input[type=checkbox][name='available_time[]']:eq("+ i +")").val() == resData.available_time[i]) {
+                        $("input[type=checkbox][name='available_time[]']:eq("+ i +")").attr("checked", 'checked')
+                    }
+                }
+                if (resData.is_weekend) {
+                    $("input[type=checkbox][name='is_weekend']").attr("checked", 'checked')
+                }
+                if (resData.is_festival) {
+                    $("input[type=checkbox][name='is_festival']").attr("checked", 'checked')
+                }
+                // tim = resData.time_limit.length
+                // for (let i = 0; i < resData.time_limit.length; i++) {
+                //     let startTime = 'time_limit[' + i + '][start_at]'
+                //     let endTime = 'time_limit[' + i + '][end_at]'
+                //     let time = resData.time_limit
+                //     var $customizeTime = '<div class="customize-time"><div class="add-time-text"><span class="customize-time-text">' + time[i].start_at + '</span><span>&nbsp;-&nbsp;</span><span class="customize-time-text">' + time[i].end_at + '</span></div><div class="add-time-box"><input type="text" class="add-start-hours" value="' + time[i].start_at + '" name="' + startTime + '"><span>&nbsp;-&nbsp;</span><input type="text" class="add-end-hours" value="' + time[i].end_at + '" name="' + endTime + '"></div><div class="operating"><div class="motify" onclick="modifyCustomize(this)">修改</div><div class="save" onclick="saveCustomize(this)">保存</div><div class="delete">删除</div></div></div>'
+                //     $(".customize").append($customizeTime)
+                // }
+                // if ($(".customize-time").length >= 3) {
+                //     $(".hours-choose .add-time").hide()
+                //     $(".section-time .start-hours, .section-time .end-hours").attr("disabled", true)
+                // }
             } else {
                 $("input[type=text][name=start_at]").val(resData.start_at)
                 $("input[type=text][name=expired_at]").val(resData.expired_at)
@@ -425,70 +443,24 @@ var drawData = function () {
                 }
             }
             if (resData.is_special_goods) {
-                $("input[type=number][name=days]").val(resData.days)
-                $('.effect-time, .expired-time').attr("disabled", true)
-                $('#days').attr("disabled", false)
+                $("#goods_name").attr("disabled", false)
+                $("input[type=text][name=goods_name]").val(resData.goods_name)
             } else {
-                $("input[type=text][name=start_at]").val(resData.start_at)
-                $("input[type=text][name=expired_at]").val(resData.expired_at)
-                $('.sectiom-time').find("input").attr("disabled", true)
-                $('.sectiom-time #timeRadio2').attr("disabled", false)
+                $("#goods_name").attr("disabled", true)
             }
 
+            for (let i = 0; i < 2; i++) {
+                if ($("input[type=radio][name=condition]:eq("+ i +")").val() == resData.condition) {
+                    $("input[type=radio][name=condition]:eq("+ i +")").attr("checked", 'checked')
+                }
+            }
 
-
-            // rem = resData.remark.length
-            // for (let i = 0; i < resData.remark.length; i++) {
-            //     let remark = resData.remark
-            //     let remarkContent = 'remark[' + i + ']'
-            //     var $remark = '<div class="pdd-table-tr clear-fix remark-tr"><div class="am-u-lg-5 am-u-md-5 am-u-sm-6"><div class="package-info">' + remark[i] + '</div><input type="text" class="form-control" value="'+ remark[i] +'" name="' + remarkContent + '"></div><div class="am-u-lg-7 am-u-md-7 am-u-sm-6 am-u-end"><div class="operating"><div class="motify" onclick="modify(this, 1)">修改</div><div class="save" onclick="save(this, 1)">保存</div><div class="delete">删除</div></div></div></div>'
-            //     $(".remark-data").append($remark)
-            // }
-
-            // for (let i = 0; i < 2; i++) {
-            //     if ($("input[type=radio][name=is_effective_fixed]:eq("+ i +")").val() == resData.is_effective_fixed) {
-            //         $("input[type=radio][name=is_effective_fixed]:eq("+ i +")").attr("checked", 'checked')
-            //     }
-            // }
-            // if (resData.is_effective_fixed) {
-            //     $("input[type=text][name=effective_start_at]").val(resData.effective_start_at.split(' ')[0])
-            //     $("input[type=text][name=effective_end_at]").val(resData.effective_end_at.split(' ')[0])
-            // } else {
-            //     $("input[type=number][name=effective_days]").val(resData.effective_days)
-            // }
-
-            // for (let i = 0; i < 2; i++) {
-            //     if ($("input[type=radio][name=is_usetime_limit]:eq("+ i +")").val() == resData.is_usetime_limit) {
-            //         $("input[type=radio][name=is_usetime_limit]:eq("+ i +")").attr("checked", 'checked')
-            //     }
-            // }
-            // if (resData.is_usetime_limit) {
-            //     for (let i = 0; i < 5; i++) {
-            //         if ($("input[type=checkbox][name='days[]']:eq("+ i +")").val() == resData.days[i]) {
-            //             $("input[type=checkbox][name='days[]']:eq("+ i +")").attr("checked", 'checked')
-            //         }
-            //     }
-            //     if (resData.is_weekend) {
-            //         $("input[type=checkbox][name='is_weekend']").attr("checked", 'checked')
-            //     }
-            //     if (resData.is_festival) {
-            //         $("input[type=checkbox][name='is_festival']").attr("checked", 'checked')
-            //     }
-            //     tim = resData.time_limit.length
-            //     for (let i = 0; i < resData.time_limit.length; i++) {
-            //         let startTime = 'time_limit[' + i + '][start_at]'
-            //         let endTime = 'time_limit[' + i + '][end_at]'
-            //         let time = resData.time_limit
-            //         var $customizeTime = '<div class="customize-time"><div class="add-time-text"><span class="customize-time-text">' + time[i].start_at + '</span><span>&nbsp;-&nbsp;</span><span class="customize-time-text">' + time[i].end_at + '</span></div><div class="add-time-box"><input type="text" class="add-start-hours" value="' + time[i].start_at + '" name="' + startTime + '"><span>&nbsp;-&nbsp;</span><input type="text" class="add-end-hours" value="' + time[i].end_at + '" name="' + endTime + '"></div><div class="operating"><div class="motify" onclick="modifyCustomize(this)">修改</div><div class="save" onclick="saveCustomize(this)">保存</div><div class="delete">删除</div></div></div>'
-            //         $(".customize").append($customizeTime)
-            //     }
-            //     if ($(".customize-time").length >= 3) {
-            //         $(".hours-choose .add-time").hide()
-            //         $(".section-time .start-hours, .section-time .end-hours").attr("disabled", true)
-            //     }
-            // }
-
-            // $(".rule-text").val(resData.rule)
+            // 喜豆码
+            let pkgdata = resData.pkgList
+            for (let i = 0; i < pkgdata.length; i++) {
+                let $pkg = '<div class="package" data-value="' + pkgdata[i].seq + '"><div class="delete-pkg"><img src="/img/main/delete.png" alt=""></div><div class="package-code">' + pkgdata[i].code + '</div></div>'
+                $(".package-box").append($pkg)
+            }
         },
         error: function (ex) {
             console.log(ex)
@@ -613,25 +585,6 @@ var checkout = $('.expired-time').datepicker({
 }).on('changeDate.datepicker.amui', function(ev) {
     checkout.close();
 }).data('amui.datepicker');
-
-
-// 判定成团人数
-$(".group-size").blur(function () {
-    if ($(this).val() > 20) {
-        alert("成团人数不得超过20人")
-    }
-})
-
-
-// 判定拼豆豆有效天数
-$(".effective-days").blur(function () {
-    if ($(this).val() == null || $(this).val() == '') {
-    } else {
-        if ($(this).val() > 365 || $(this).val() < 1) {
-            alert("生效天数不合法")
-        }
-    }
-})
 
 function selectImage(file) {
     if (!file.files || !file.files[0]) {
@@ -761,6 +714,14 @@ $('input[type=radio][name=limit_type]').change(function() {
     }
 })
 
+$('input[type=radio][name=is_special_goods]').change(function() {
+    if (this.value == 0) {
+        $(this).parent().parent().find("#goods_name").attr("disabled", true)
+    } else if (this.value == 1) {
+        $(this).parent().parent().find("#goods_name").attr("disabled", false)
+    }
+})
+
 $('input[type=radio][name=coupon_date_type]').change(function() {
     if (this.value == 0) {
         $(this).parent().parent().siblings().children(".effective-days").attr("disabled", true)
@@ -789,7 +750,9 @@ $('input[type=radio][name=available_time_type]').change(function() {
     }
 })
 
-var k = 0
+setTimeout(() => {
+    k = tim
+}, 1000);
 function addCustomize () {
     let startHours = $(".start-hours").val()
     let endHours = $(".end-hours").val()
@@ -857,7 +820,7 @@ $(".bottom-submit-btn").on("click", function () {
 })
 
 $(".bottom-reset-btn").on("click", function () {
-    window.location.href = '/event/groupon/create'
+    window.location.href = window.location.href
 })
 
 $('.start-hours, .end-hours').datetimepicker({
