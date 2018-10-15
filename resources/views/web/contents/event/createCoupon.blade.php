@@ -622,8 +622,25 @@ $(".customize").on("click", ".customize-time .operating .delete", function () {
 
 $(".bottom-submit-btn").on("click", function () {
     var aa = $("#submit").serialize()
-    console.log(aa)
-    $("#submit").submit()
+    // $("#submit").submit();
+    $.ajax({
+        type: "POST",
+        dataType: 'JSON',
+        url: $("#submit").attr('action'),
+        data: $("#submit").serialize(),
+        success: function(data, status, x) {
+            console.log(data);
+            console.log(status);
+            // if (status == 'success') {
+            //     setTimeout(function() {
+            //         _global.prompt(data.code, data.status);
+            //     }, 500);
+            //     setTimeout(function() {
+            //         $("#submit").find('[type="submit"]').prop('disabled', false).removeClass('btn-loading');
+            //     }, 1000);
+            // }
+        }
+    });
 })
 
 $(".bottom-reset-btn").on("click", function () {

@@ -255,7 +255,7 @@ class ShopController extends Controller
         $buyer = $this->buyer_id;
         $input=Input::only('coupon_name','quantity','coupon_type','discount_money','discount_percent',
                           'max_discount_money','limit_type','limit_money','image','limit_count','coupon_date_type','start_at','expired_at','days',
-                          'available_time_type', 'available_time','business_hours','is_special_goods','pkgList','condition','goods_name','remark');
+                          'available_time_type', 'available_time','business_hours','is_special_goods','pkgList','condition','goods_name','remark','is_festival','is_weekend');
          $message = [
             "required" => ":attribute ".trans('common.verification.cannotEmpty'),
             "integer" => ":attribute ".trans('common.createCoupon.verification.requiredNumber'),
@@ -412,8 +412,8 @@ class ShopController extends Controller
             'is_festival'            => $is_festival,
         ]);
         $pkgSeqList = $request->input('pkgList');
-        $seqList = explode(',',  $pkgSeqList);
-        $packages = Q35Package::whereIn('seq', $seqList)->select('start_q35code','end_q35code','seq')->get();
+        // $seqList = explode(',',  $pkgSeqList);
+        $packages = Q35Package::whereIn('seq', $pkgSeqList)->select('start_q35code','end_q35code','seq')->get();
         // if($seqList){
         //     foreach($packages as $k1=>$v1){
         //         Shop2Q35Package::create([
