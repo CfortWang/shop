@@ -276,7 +276,7 @@
 @section('script')
 <script src="/js/amazeui.datetimepicker.min.js"></script>
 <script>
-console.log($("input[name=is_image_modify]").val())
+
 var getArgs = function () {
     var url = location.search
     var args = {}
@@ -557,7 +557,7 @@ function selectImage(file, selector) {
 
 function upLoadImage (file, kind) {
     $.ajax({
-        url: 'http://shop.test/api/event/upload',
+        url: 'http://shop.test/api/event/upload?type=groupon',
         type: 'post',
         dataType: 'json',
         data: file,

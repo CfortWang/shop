@@ -310,6 +310,121 @@
 <script src="/js/amazeui.datetimepicker.min.js"></script>
 <script>
 
+var getArgs = function () {
+    var url = location.search
+    var args = {}
+    if (url.indexOf("?") != -1) {
+        var str = url.substr(1)
+        var strs = str.split("&")
+        for (let i = 0; i < strs.length; i++) {
+            args[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1])
+        }
+    }
+    return args
+}
+var args = getArgs();
+pro = ''
+rem = ''
+tim = ''
+var drawData = function () {
+    $.ajax({
+        url: 'http://shop.test/api/shop/couponDetail?id=' + args['id'],
+        type: 'get',
+        dataType: 'json',
+        success: function (res) {
+            console.log(res)
+            // let resData = res.data
+            // $("input#title").val(resData.title)
+            // $("input#old-price").val(resData.price)
+            // $("input#new-price").val(resData.discounted_price)
+            // $("input#pdd-startDate").val(resData.open_time.split(' ')[0])
+            // $("input#pdd-endDate").val(resData.close_time.split(' ')[0])
+            // for (let i = 0; i < 3; i++) {
+            //     if ($("input[type=radio][name=continued_time]:eq("+ i +")").val() == resData.continued_time) {
+            //         $("input[type=radio][name=continued_time]:eq("+ i +")").attr("checked", 'checked')
+            //     }
+            // }
+            // // 渲染商品/封面图
+            // $("input#group-size").val(resData.group_size)
+            // $(".product .image-remark").hide()
+            // for (let i = 0; i < resData.image.length; i++) {
+            //     var $imgBox = '<div class="selected-image"><div class="delete-image"><img src="/img/main/close.png" alt=""></div><img class="image" alt="" src="' + 'http://' + resData.image[i].image_url + '"><input class="img-value" type="text" name="image[]" hidden value="' + resData.image[i].image_url + '"></div>'
+            //     $('.product').append($imgBox)
+            // }
+            // $(".list .image-remark").hide()
+            // var $imgBox = '<div class="selected-image"><div class="delete-image"><img src="/img/main/close.png" alt=""></div><img class="image" alt="" src="' + 'http://' + resData.logo + '"><input class="img-value" type="text" name="logo" hidden value="' + resData.logo + '"></div>'
+            // $('.list').append($imgBox)
+
+            // pro = resData.product.length
+            // for (let i = 0; i < resData.product.length; i++) {
+            //     let product = resData.product
+            //     let productName = 'product[' + i + '][name]'
+            //     let productPrice = 'product[' + i + '][price]'
+            //     let productQuantity = 'product[' + i + '][quantity]'
+            //     var $package = '<div class="pdd-table-tr clear-fix"><div class="am-u-lg-4 am-u-md-4 am-u-sm-4"><div class="package-info">'+ product[i].title +'</div><input type="text" class="form-control" value="'+ product[i].title +'" name="' + productName + '"></div><div class="am-u-lg-2 am-u-md-3 am-u-sm-3"><div class="package-info">' + product[i].quantity + '</div><input type="number" class="form-control" value="'+ product[i].quantity +'" name="' + productQuantity + '"></div><div class="am-u-lg-2 am-u-md-3 am-u-sm-3"><div class="package-info">' + product[i].price + '</div><input type="number" class="form-control" value="'+ product[i].price +'" name="' + productPrice + '"></div><div class="am-u-lg-4 am-u-md-2 am-u-sm-2 am-u-end"><div class="operating"><div class="motify" onclick="modify(this, 3)">修改</div><div class="save" onclick="save(this, 3)">保存</div><div class="delete">删除</div></div></div></div>'
+            //     $(".package-data").append($package)
+            // }
+
+            // rem = resData.remark.length
+            // for (let i = 0; i < resData.remark.length; i++) {
+            //     let remark = resData.remark
+            //     let remarkContent = 'remark[' + i + ']'
+            //     var $remark = '<div class="pdd-table-tr clear-fix remark-tr"><div class="am-u-lg-5 am-u-md-5 am-u-sm-6"><div class="package-info">' + remark[i] + '</div><input type="text" class="form-control" value="'+ remark[i] +'" name="' + remarkContent + '"></div><div class="am-u-lg-7 am-u-md-7 am-u-sm-6 am-u-end"><div class="operating"><div class="motify" onclick="modify(this, 1)">修改</div><div class="save" onclick="save(this, 1)">保存</div><div class="delete">删除</div></div></div></div>'
+            //     $(".remark-data").append($remark)
+            // }
+
+            // for (let i = 0; i < 2; i++) {
+            //     if ($("input[type=radio][name=is_effective_fixed]:eq("+ i +")").val() == resData.is_effective_fixed) {
+            //         $("input[type=radio][name=is_effective_fixed]:eq("+ i +")").attr("checked", 'checked')
+            //     }
+            // }
+            // if (resData.is_effective_fixed) {
+            //     $("input[type=text][name=effective_start_at]").val(resData.effective_start_at.split(' ')[0])
+            //     $("input[type=text][name=effective_end_at]").val(resData.effective_end_at.split(' ')[0])
+            // } else {
+            //     $("input[type=number][name=effective_days]").val(resData.effective_days)
+            // }
+
+            // for (let i = 0; i < 2; i++) {
+            //     if ($("input[type=radio][name=is_usetime_limit]:eq("+ i +")").val() == resData.is_usetime_limit) {
+            //         $("input[type=radio][name=is_usetime_limit]:eq("+ i +")").attr("checked", 'checked')
+            //     }
+            // }
+            // if (resData.is_usetime_limit) {
+            //     for (let i = 0; i < 5; i++) {
+            //         if ($("input[type=checkbox][name='days[]']:eq("+ i +")").val() == resData.days[i]) {
+            //             $("input[type=checkbox][name='days[]']:eq("+ i +")").attr("checked", 'checked')
+            //         }
+            //     }
+            //     if (resData.is_weekend) {
+            //         $("input[type=checkbox][name='is_weekend']").attr("checked", 'checked')
+            //     }
+            //     if (resData.is_festival) {
+            //         $("input[type=checkbox][name='is_festival']").attr("checked", 'checked')
+            //     }
+            //     tim = resData.time_limit.length
+            //     for (let i = 0; i < resData.time_limit.length; i++) {
+            //         let startTime = 'time_limit[' + i + '][start_at]'
+            //         let endTime = 'time_limit[' + i + '][end_at]'
+            //         let time = resData.time_limit
+            //         var $customizeTime = '<div class="customize-time"><div class="add-time-text"><span class="customize-time-text">' + time[i].start_at + '</span><span>&nbsp;-&nbsp;</span><span class="customize-time-text">' + time[i].end_at + '</span></div><div class="add-time-box"><input type="text" class="add-start-hours" value="' + time[i].start_at + '" name="' + startTime + '"><span>&nbsp;-&nbsp;</span><input type="text" class="add-end-hours" value="' + time[i].end_at + '" name="' + endTime + '"></div><div class="operating"><div class="motify" onclick="modifyCustomize(this)">修改</div><div class="save" onclick="saveCustomize(this)">保存</div><div class="delete">删除</div></div></div>'
+            //         $(".customize").append($customizeTime)
+            //     }
+            //     if ($(".customize-time").length >= 3) {
+            //         $(".hours-choose .add-time").hide()
+            //         $(".section-time .start-hours, .section-time .end-hours").attr("disabled", true)
+            //     }
+            // }
+
+            // $(".rule-text").val(resData.rule)
+        },
+        error: function (ex) {
+            console.log(ex)
+        }
+    })
+}
+drawData();
+
 var nowTemp = new Date();
 var nowDay = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), nowTemp.getDate(), 0, 0, 0, 0).valueOf();
 var nowMoth = new Date(nowTemp.getFullYear(), nowTemp.getMonth(), 1, 0, 0, 0, 0).valueOf();
@@ -665,14 +780,6 @@ $(".bottom-submit-btn").on("click", function () {
         success: function(data, status, x) {
             console.log(data);
             console.log(status);
-            // if (status == 'success') {
-            //     setTimeout(function() {
-            //         _global.prompt(data.code, data.status);
-            //     }, 500);
-            //     setTimeout(function() {
-            //         $("#submit").find('[type="submit"]').prop('disabled', false).removeClass('btn-loading');
-            //     }, 1000);
-            // }
         }
     });
 })

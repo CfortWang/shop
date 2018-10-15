@@ -252,6 +252,11 @@
         deleteCoupon(id, status, that);
     })
 
+    $(".table-content").on("click", ".table-tr .operating .modify", function () {
+        var id = $(this).parent().attr("data-id")
+        window.location.href = '/event/coupon/details?id=' + id
+    })
+
     $(".page-down").click(function () {
         if (page > 1) {
             page--
