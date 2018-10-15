@@ -240,10 +240,10 @@ class ShopController extends Controller
         if(empty($exitDetailImage)){
             return $this->responseNotFound('There is no detailSeq', 401);//error code 404,401
         }
-        if ($imageType  == = 'shop_logo') {
+        if ($imageType  == 'shop_logo') {
             $Buyer->shop_logo_image_file = null;
             $Buyer->save();
-        } else if ($imageType  == = 'shop_detail') {
+        } else if ($imageType  == 'shop_detail') {
             ShopDetailImage::where('buyer', $buyer)
                 ->where('seq',$input['detailSeq'] )
                 ->delete();
@@ -276,13 +276,15 @@ class ShopController extends Controller
             'expired_at'              => 'nullable|date',
             'days'                    => 'nullable|integer',
             'available_time_type'     => 'required|in:0,1',
-            'available_time'          => 'nullable|string',
+            'available_time'          => 'nullable|array',
             'business_hours'          => 'nullable|string',
             'condition'               => 'nullable|string',
             'is_special_goods'        => 'required|in:0,1',
             'goods_name'              => 'nullable|string',
             'remark'                  => 'nullable',
             'pkgList'                 => 'nullable',
+            'is_festival'             => 'nullable|in:0,1',
+            'is_weekend'              => 'nullable|in:0,1',
         ],$message);
         if ($validator->fails()) {
             $message = $validator->errors()->first();
@@ -309,6 +311,8 @@ class ShopController extends Controller
         $isSpecialGoods = $request->input('is_special_goods');
         $goodsName = $request->input('goods_name');
         $remark = $request->input('remark');
+        $is_festival = $request->input('is_festival');
+        $is_weekend = $request->input('is_weekend');
         //验证优惠类型
         if($couponType == 0){
              //面值
@@ -368,6 +372,8 @@ class ShopController extends Controller
         if ($availableTimeType == 1){
              if(empty($availableTime)){
                 return $this->responseNotFound(trans('shop.verification.emptyAvailableTime'));
+             }else{
+                $availableTime = implode('',$availableTime);
              }
              if(empty($businessHours)){
                 return $this->responseNotFound(trans('shop.verification.emptyBusinessHours'));
@@ -401,7 +407,9 @@ class ShopController extends Controller
             'goods_name'             => $goodsName,
             'remark'                 => $remark,
             'status'                 => 'registered',
-            'buyer_id'               => $buyer
+            'buyer_id'               => $buyer,
+            'is_weekend'             => $is_weekend,
+            'is_festival'            => $is_festival,
         ]);
         $pkgSeqList = $request->input('pkgList');
         $seqList = explode(',',  $pkgSeqList);
