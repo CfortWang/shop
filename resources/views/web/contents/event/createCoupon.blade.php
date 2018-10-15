@@ -133,10 +133,15 @@
                                 <div class="form-group clear-fix">
                                     <label class="am-u-lg-2 am-u-md-2 am-u-sm-3">发放总量</label>
                                     <div class="am-u-lg-10 am-u-md-10 am-u-sm-9 has-remark">
+                                        <select name="limit_count" id="" data-am-selected>
+                                            <option value="0">不限张</option>
+                                            <option value="1">1张</option>
+                                            <option value="2">2张</option>
+                                            <option value="5">5张</option>
+                                            <option value="-">其他</option>
+                                        </select>
                                         <div class="input-outer">
-                                            <select name="" id="" data-am-selected>
-                                                
-                                            </select>
+                                            <input type="text" class="coupon-input" value="123123">
                                         </div>
                                     </div>
                                 </div>
@@ -152,7 +157,6 @@
                                         <input type="text" class="effect-time" autocomplete="off" name="start_at" data-am-datepicker placeholder="请选择日期">
                                         <span class="time-kind">过期时间：</span>
                                         <input type="text" class="expired-time" autocomplete="off" name="expired_at" data-am-datepicker placeholder="请选择日期">
-                                        
                                     </div>
                                     <div class="fixed-time-option2">
                                         <label for="effectRadio2" class="label-radio">
@@ -167,7 +171,7 @@
                                 </div>
                                 <div class="dividing"></div>
                                 <div class="effective-time">
-                                    <div class="random-time option-disabled">
+                                    <div class="random-time">
                                         <label for="timeRadio1" class="label-radio">
                                             <input type="radio" id="timeRadio1" value="0" checked hidden name="available_time_type">
                                             <label for="timeRadio1" class="time-radio"></label>
@@ -183,49 +187,49 @@
                                         <div class="section-time-weekends">
                                             <div class="weekends-day">
                                                 <label for="weekendCheckbox1" class="label-radio">
-                                                    <input type="checkbox" id="weekendCheckbox1" value="1" hidden name="days[]">
+                                                    <input type="checkbox" id="weekendCheckbox1" value="1" hidden name="available_time[]">
                                                     <label for="weekendCheckbox1" class="weekend-checkbox"></label>
                                                     <span>周一</span>
                                                 </label>
                                             </div>
                                             <div class="weekends-day">
                                                 <label for="weekendCheckbox2" class="label-radio">
-                                                    <input type="checkbox" id="weekendCheckbox2" value="2" hidden name="days[]">
+                                                    <input type="checkbox" id="weekendCheckbox2" value="2" hidden name="available_time[]">
                                                     <label for="weekendCheckbox2" class="weekend-checkbox"></label>
                                                     <span>周二</span>
                                                 </label>
                                             </div>
                                             <div class="weekends-day">
                                                 <label for="weekendCheckbox3" class="label-radio">
-                                                    <input type="checkbox" id="weekendCheckbox3" value="3" hidden name="days[]">
+                                                    <input type="checkbox" id="weekendCheckbox3" value="3" hidden name="available_time[]">
                                                     <label for="weekendCheckbox3" class="weekend-checkbox"></label>
                                                     <span>周三</span>
                                                 </label>
                                             </div>
                                             <div class="weekends-day">
                                                 <label for="weekendCheckbox4" class="label-radio">
-                                                    <input type="checkbox" id="weekendCheckbox4" value="4" hidden name="days[]">
+                                                    <input type="checkbox" id="weekendCheckbox4" value="4" hidden name="available_time[]">
                                                     <label for="weekendCheckbox4" class="weekend-checkbox"></label>
                                                     <span>周四</span>
                                                 </label>
                                             </div>
                                             <div class="weekends-day">
                                                 <label for="weekendCheckbox5" class="label-radio">
-                                                    <input type="checkbox" id="weekendCheckbox5" value="5" hidden name="days[]">
+                                                    <input type="checkbox" id="weekendCheckbox5" value="5" hidden name="available_time[]">
                                                     <label for="weekendCheckbox5" class="weekend-checkbox"></label>
                                                     <span>周五</span>
                                                 </label>
                                             </div>
                                             <div class="weekends-day">
                                                 <label for="weekendCheckbox6" class="label-radio">
-                                                    <input type="checkbox" id="weekendCheckbox6" value="1" hidden name="is_weekend">
+                                                    <input type="checkbox" id="weekendCheckbox6" value="6" hidden name="available_time[]">
                                                     <label for="weekendCheckbox6" class="weekend-checkbox"></label>
                                                     <span>周末</span>
                                                 </label>
                                             </div>
                                             <div class="weekends-day">
                                                 <label for="weekendCheckbox7" class="label-radio">
-                                                    <input type="checkbox" id="weekendCheckbox7" value="1" hidden name="is_festival">
+                                                    <input type="checkbox" id="weekendCheckbox7" value="7" hidden name="available_time[]">
                                                     <label for="weekendCheckbox7" class="weekend-checkbox"></label>
                                                     <span>节假日</span>
                                                 </label>
@@ -242,6 +246,35 @@
                                     </div>
                                 </div>
 
+                                <div class="choose-title">优惠使用条件</div>
+                                <div class="fixed-time">
+                                    <div class="fixed-time-option1">
+                                        <label for="is_special_goods1" class="label-radio">
+                                            <input type="radio" id="is_special_goods1" value="0" checked hidden name="is_special_goods">
+                                            <label for="is_special_goods1" class="time-radio"></label>
+                                            <span>全店商品</span>
+                                        </label>
+                                        <label for="is_special_goods2" class="label-radio">
+                                            <input type="radio" id="is_special_goods2" value="1" checked hidden name="is_special_goods">
+                                            <label for="is_special_goods2" class="time-radio"></label>
+                                            <span>指定商品</span>
+                                        </label>
+                                        <input type="text" name="goods_name" id="" class="effective-days" placeholder="请输入商品名">
+                                    </div>
+                                    <div class="fixed-time-option2">
+                                        <label for="condition1" class="label-radio">
+                                            <input type="radio" id="condition1" value="0" checked hidden name="condition">
+                                            <label for="condition1" class="time-radio"></label>
+                                            <span>仅原价购买商品时可用</span>
+                                        </label>
+                                        <label for="condition2" class="label-radio">
+                                            <input type="radio" id="condition2" value="1" checked hidden name="condition">
+                                            <label for="condition2" class="time-radio"></label>
+                                            <span>允许与其他优惠券或优惠叠加使用</span>
+                                        </label>
+                                    </div>
+                                </div>
+
                                 <div class="dividing"></div>
                                 <div class="use-rule clear-fix">
                                     <div class="am-u-lg-2 am-u-md-2 am-u-sm-3 rule-title">
@@ -251,7 +284,7 @@
                                         <textarea class="rule-text" name="rule" id="" cols="" rows="" placeholder="填写活动详细说明，支持换行（不超过300字符）" maxlength="300"></textarea>
                                     </div>
                                 </div>
-                                <div class="form-group clear-fix">
+                                <div class="form-group clear-fix pkg">
                                     <label class="am-u-lg-2 am-u-md-2 am-u-sm-3">关联喜豆码</label>
                                     <div class="am-u-lg-4 am-u-md-5 am-u-sm-6 am-u-end">
                                         <select class="pkg-data" multiple data-am-selected="{maxHeight: 100}"></select>
@@ -484,7 +517,7 @@ function getPkgCode (file) {
 }
 getPkgCode();
 
-$("body").on("click", ".am-selected-list > li", function () {
+$("body").on("click", ".pkg .am-selected-list > li", function () {
     let selectedPkg = $(".package-box > div").length
     let liClass = $(this).attr("class")
     let pkgCode = $(this).children('span').text()
@@ -515,8 +548,8 @@ $(".package-box").on("click", ".delete-pkg", function () {
         let unselect = $(".am-selected-list > li:eq("+ i +")").attr("data-value")
         let pkgCode = $(".am-selected-list > li:eq("+ i +") span").text()
         if (unselect == pkgValue) {
-            $(".am-selected-list > li:eq("+ i +")").removeClass("am-checked")
-            $(".am-selected-status").text(pkgArr.join(','))
+            $(".pkg .am-selected-list > li:eq("+ i +")").removeClass("am-checked")
+            $(".pkg .am-selected-status").text(pkgArr.join(','))
         }
     }
 })

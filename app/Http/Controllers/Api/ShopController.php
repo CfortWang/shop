@@ -243,7 +243,11 @@ class ShopController extends Controller
         if ($imageType  == 'shop_logo') {
             $Buyer->shop_logo_image_file = null;
             $Buyer->save();
+<<<<<<< HEAD
+        } else if ($imageType == 'shop_detail') {
+=======
         } else if ($imageType  == 'shop_detail') {
+>>>>>>> 8d976d0348622fce85f6737c8dec5480fbff654f
             ShopDetailImage::where('buyer', $buyer)
                 ->where('seq',$input['detailSeq'] )
                 ->delete();
@@ -255,7 +259,12 @@ class ShopController extends Controller
         $buyer = $this->buyer_id;
         $input=Input::only('coupon_name','quantity','coupon_type','discount_money','discount_percent',
                           'max_discount_money','limit_type','limit_money','image','limit_count','coupon_date_type','start_at','expired_at','days',
+<<<<<<< HEAD
+                          'available_time_type', 'available_time','business_hours','is_special_goods','pkgList','condition','goods_name','remark');
+                          dd($input);
+=======
                           'available_time_type', 'available_time','business_hours','is_special_goods','pkgList','condition','goods_name','remark','is_festival','is_weekend');
+>>>>>>> 8d976d0348622fce85f6737c8dec5480fbff654f
          $message = [
             "required" => ":attribute ".trans('common.verification.cannotEmpty'),
             "integer" => ":attribute ".trans('common.createCoupon.verification.requiredNumber'),
@@ -358,6 +367,7 @@ class ShopController extends Controller
             }
         }
         if($couponDateType == 1){
+            dd(1);
             if(empty($days)){
                 return $this->responseNotFound(trans('shop.verification.emptyDays'));
             }  
