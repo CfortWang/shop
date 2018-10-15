@@ -58,7 +58,7 @@
                                         <div class="am-u-lg-3 am-u-md-4 am-u-sm-12">
                                             <div class="am-u-lg-12 am-u-md-12 am-u-sm-12 has-remark">
                                                 <div class="input-outer">
-                                                    <input type="number" class="coupon-input" id="discount_percent" name="discount_percent" placeholder="1.0~9.9">
+                                                    <input type="text" class="coupon-input" id="discount_percent" name="discount_percent" placeholder="1.0~9.9">
                                                     <div class="price-unit">折</div>
                                                 </div>
                                                 <!-- <span class="image-remark">优惠券面试必须大于等于0.01元</span> -->
@@ -165,7 +165,7 @@
                                             <label for="effectRadio2" class="time-radio"></label>
                                             <span>领券成功后当日开始</span>
                                         </label>
-                                        <input type="number" name="days" id="" class="effective-days" placeholder="请输入天数">
+                                        <input type="number" name="days" id="days" class="effective-days" placeholder="请输入天数">
                                         <span>天内有效</span>
                                         <span class="effective-remark">(生效天数必须在1-365之间)</span>
                                     </div>
@@ -260,7 +260,7 @@
                                             <label for="is_special_goods2" class="time-radio"></label>
                                             <span>指定商品</span>
                                         </label>
-                                        <input type="text" name="goods_name" id="" class="effective-days" placeholder="请输入商品名">
+                                        <input type="text" name="goods_name" id="goods_name" class="effective-days" placeholder="请输入商品名">
                                     </div>
                                     <div class="fixed-time-option2">
                                         <label for="condition1" class="label-radio">
@@ -336,23 +336,25 @@ var drawData = function () {
             let resData = res.data
             $("input#coupon_name").val(resData.coupon_name)
             $("input#quantity").val(resData.quantity)
+
+            // 优惠形式
             for (let i = 0; i < 2; i++) {
                 if ($("input[type=radio][name=coupon_type]:eq("+ i +")").val() == resData.coupon_type) {
                     $("input[type=radio][name=coupon_type]:eq("+ i +")").attr("checked", 'checked')
                 }
             }
-            // $('.fixed-time-option2 .effective-days').attr("disabled", true)
-            // $('.sectiom-time').find("input").attr("disabled", true)
-            // $('.sectiom-time #timeRadio2').attr("disabled", false)
             if (resData.coupon_type) {
                 $("input[type=text][name=discount_percent]").val(resData.discount_percent)
-                $("input[type=text][name=max_discount_money]").val(resData.max_discount_money)
+                $("input[type=number][name=max_discount_money]").val(resData.max_discount_money)
                 $('#discount_percent, #max_discount_money').attr("disabled", false)
+                $('#discount_money').attr("disabled", true)
             } else {
                 $("input[type=number][name=discount_money]").val(resData.discount_money)
                 $('#discount_percent, #max_discount_money').attr("disabled", true)
+                $('#discount_money').attr("disabled", false)
             }
 
+            // 使用门槛
             for (let i = 0; i < 2; i++) {
                 if ($("input[type=radio][name=limit_type]:eq("+ i +")").val() == resData.limit_type) {
                     $("input[type=radio][name=limit_type]:eq("+ i +")").attr("checked", 'checked')
@@ -365,24 +367,75 @@ var drawData = function () {
                 $('#limit_money').attr("disabled", true)
             }
             // 渲染商品图
-            // $(".product .image-remark").hide()
-            // for (let i = 0; i < resData.image.length; i++) {
-            //     var $imgBox = '<div class="selected-image"><div class="delete-image"><img src="/img/main/close.png" alt=""></div><img class="image" alt="" src="' + 'http://' + resData.image[i].image_url + '"><input class="img-value" type="text" name="image[]" hidden value="' + resData.image[i].image_url + '"></div>'
-            //     $('.product').append($imgBox)
-            // }
-            // $(".list .image-remark").hide()
-            // var $imgBox = '<div class="selected-image"><div class="delete-image"><img src="/img/main/close.png" alt=""></div><img class="image" alt="" src="' + 'http://' + resData.logo + '"><input class="img-value" type="text" name="logo" hidden value="' + resData.logo + '"></div>'
-            // $('.list').append($imgBox)
+            $(".product .image-remark").hide()
+            var $imgBox = '<div class="selected-image"><div class="delete-image"><img src="/img/main/close.png" alt=""></div><img class="image" alt="" src="' + 'http://' + resData.image + '"><input class="img-value" type="text" name="image" hidden value="' + resData.image + '"></div>'
+            $('.product').append($imgBox)
+            $(".product .file").hide()
 
-            // pro = resData.product.length
-            // for (let i = 0; i < resData.product.length; i++) {
-            //     let product = resData.product
-            //     let productName = 'product[' + i + '][name]'
-            //     let productPrice = 'product[' + i + '][price]'
-            //     let productQuantity = 'product[' + i + '][quantity]'
-            //     var $package = '<div class="pdd-table-tr clear-fix"><div class="am-u-lg-4 am-u-md-4 am-u-sm-4"><div class="package-info">'+ product[i].title +'</div><input type="text" class="form-control" value="'+ product[i].title +'" name="' + productName + '"></div><div class="am-u-lg-2 am-u-md-3 am-u-sm-3"><div class="package-info">' + product[i].quantity + '</div><input type="number" class="form-control" value="'+ product[i].quantity +'" name="' + productQuantity + '"></div><div class="am-u-lg-2 am-u-md-3 am-u-sm-3"><div class="package-info">' + product[i].price + '</div><input type="number" class="form-control" value="'+ product[i].price +'" name="' + productPrice + '"></div><div class="am-u-lg-4 am-u-md-2 am-u-sm-2 am-u-end"><div class="operating"><div class="motify" onclick="modify(this, 3)">修改</div><div class="save" onclick="save(this, 3)">保存</div><div class="delete">删除</div></div></div></div>'
-            //     $(".package-data").append($package)
-            // }
+            let limitAmount = resData.limit_count
+            $("select#limit_count").val(limitAmount)
+            if (limitAmount == '0' || limitAmount == '1' || limitAmount == '2' || limitAmount == '5') {
+                $("select#limit_count").find("option[value = '"+limitAmount+"']").attr("selected","selected")
+                for (let i = 0; i < 4; i++) {
+                    if ($(".has-remark .am-selected-list > li:eq("+ i +")").attr("data-value") == limitAmount) {
+                        let text = $(".has-remark .am-selected-list > li:eq("+ i +") span").text()
+                        $("am-selected-status").text(text)
+                    }
+                }
+            }
+
+            // 优惠有效期
+            for (let i = 0; i < 2; i++) {
+                if ($("input[type=radio][name=coupon_date_type]:eq("+ i +")").val() == resData.coupon_date_type) {
+                    $("input[type=radio][name=coupon_date_type]:eq("+ i +")").attr("checked", 'checked')
+                }
+            }
+            if (resData.coupon_date_type) {
+                $("input[type=number][name=days]").val(resData.days)
+                $('.effect-time, .expired-time').attr("disabled", true)
+                $('#days').attr("disabled", false)
+            } else {
+                $("input[type=text][name=start_at]").val(resData.start_at)
+                $("input[type=text][name=expired_at]").val(resData.expired_at)
+                $('.effect-time, .expired-time').attr("disabled", false)
+                $('#days').attr("disabled", true)
+            }
+
+            // 优惠有效时段
+            for (let i = 0; i < 2; i++) {
+                if ($("input[type=radio][name=available_time_type]:eq("+ i +")").val() == resData.available_time_type) {
+                    $("input[type=radio][name=available_time_type]:eq("+ i +")").attr("checked", 'checked')
+                }
+            }
+            if (resData.available_time_type) {
+                $("input[type=number][name=days]").val(resData.days)
+                $('.effect-time, .expired-time').attr("disabled", true)
+                $('#days').attr("disabled", false)
+            } else {
+                $("input[type=text][name=start_at]").val(resData.start_at)
+                $("input[type=text][name=expired_at]").val(resData.expired_at)
+                $('.sectiom-time').find("input").attr("disabled", true)
+                $('.sectiom-time #timeRadio2').attr("disabled", false)
+            }
+
+            // 优惠使用条件
+            for (let i = 0; i < 2; i++) {
+                if ($("input[type=radio][name=is_special_goods]:eq("+ i +")").val() == resData.is_special_goods) {
+                    $("input[type=radio][name=is_special_goods]:eq("+ i +")").attr("checked", 'checked')
+                }
+            }
+            if (resData.is_special_goods) {
+                $("input[type=number][name=days]").val(resData.days)
+                $('.effect-time, .expired-time').attr("disabled", true)
+                $('#days').attr("disabled", false)
+            } else {
+                $("input[type=text][name=start_at]").val(resData.start_at)
+                $("input[type=text][name=expired_at]").val(resData.expired_at)
+                $('.sectiom-time').find("input").attr("disabled", true)
+                $('.sectiom-time #timeRadio2').attr("disabled", false)
+            }
+
+
 
             // rem = resData.remark.length
             // for (let i = 0; i < resData.remark.length; i++) {
