@@ -43,7 +43,7 @@ class LoginController extends Controller
         }
         $request->session()->put('buyer.seq', $buyer->seq);
         $request->session()->put('buyer.id', $buyer->rep_phone_num);
-        dd(Session::all());
+        // dd(Session::all());
         return $this->responseOk('access success');
     }
 

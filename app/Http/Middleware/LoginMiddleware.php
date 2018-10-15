@@ -17,7 +17,7 @@ class LoginMiddleware
     public function handle($request, Closure $next)
     {
         // dd($request->session()->get('buyer'));
-        dd(Session::all());
+        // dd(Session::all());
         if ($request->session()->has('buyer') === false) {
             return redirect()->route('login');
         }
