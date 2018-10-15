@@ -7,7 +7,7 @@
 @section('content')
 <div class="tpl-page-container tpl-page-header-fixed">
     <div class="tpl-content-wrapper">
-        <form id="submit" action="/api/shop/createCoupon" method="post"  enctype="multipart/form-data" target="_self">
+        <form id="submit" action="/api/shop/modifyCoupon" method="post"  enctype="multipart/form-data" target="_self">
             <div class="tpl-portlet">
                 <div class="row">
                     <div class="am-u-md-12 am-u-sm-12">
@@ -293,6 +293,8 @@
                                 </div>
                                 <div class="am-u-lg-10 am-u-md-10 am-u-sm-9 am-u-end package-box"></div>
                             </div>
+                            <input type="text" hidden name="id">
+                            <input type="text" hidden name="is_code_changed" value="1">
                         </div>
                     </div>
                 </div>
@@ -323,6 +325,7 @@ var getArgs = function () {
     return args
 }
 var args = getArgs();
+$("input[type=text][name=id]").val(args['id'])
 tim = ''
 var drawData = function () {
     $.ajax({
@@ -374,10 +377,12 @@ var drawData = function () {
             $("select#limit_count").val(limitAmount)
             if (limitAmount == '0' || limitAmount == '1' || limitAmount == '2' || limitAmount == '5') {
                 $("select#limit_count").find("option[value = '"+limitAmount+"']").attr("selected","selected")
+                $(".has-remark .am-selected-list > li").removeClass("am-checked")
                 for (let i = 0; i < 4; i++) {
                     if ($(".has-remark .am-selected-list > li:eq("+ i +")").attr("data-value") == limitAmount) {
                         let text = $(".has-remark .am-selected-list > li:eq("+ i +") span").text()
-                        $("am-selected-status").text(text)
+                        $(".am-selected-status").text(text)
+                        $(".has-remark .am-selected-list > li:eq("+ i +")").addClass("am-checked")
                     }
                 }
             }
@@ -667,6 +672,9 @@ function getPkgCode (file) {
     // console.log(file)
 }
 getPkgCode();
+
+// let pkgli = $(".pkg .am-selected-list > li")
+
 
 $("body").on("click", ".pkg .am-selected-list > li", function () {
     let selectedPkg = $(".package-box > div").length
