@@ -54,7 +54,6 @@
                     </div>
                 </div>
                 <div class="create-ad-btn"><div>创建广告</div></div>
-                <div class="modify-ad-btn"><div>完成修改</div></div>
             </form>
         </div>
     </div>
@@ -149,7 +148,7 @@ function selectImage(file) {
 
 function getPkgCode (file) {
     $.ajax({
-        url: 'http://shop.test/api/ad/pkgList',
+        url: 'http://shop.test/api/adv/pkgList',
         type: 'get',
         dataType: 'json',
         success: function (res) {
@@ -216,7 +215,7 @@ $(".package-box").on("click", ".delete-pkg", function () {
 
 function createAd (adInfo) {
     $.ajax({
-        url: 'http://shop.test/api/ad/createAd',
+        url: 'http://shop.test/api/adv/createAd',
         type: 'post',
         dataType: 'json',
         data: adInfo,

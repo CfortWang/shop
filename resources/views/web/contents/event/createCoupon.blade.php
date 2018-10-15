@@ -131,8 +131,8 @@
                             <div class="form-title">优惠券基本规则</div>
                             <div class="choose-time">
                                 <div class="form-group clear-fix">
-                                    <label class="am-u-lg-2 am-u-md-2 am-u-sm-3">发放总量</label>
-                                    <div class="am-u-lg-10 am-u-md-10 am-u-sm-9 has-remark">
+                                    <div class="am-u-lg-2 am-u-md-4 am-u-sm-6 coupon-title">发放总量</div>
+                                    <div class="am-u-lg-10 am-u-md-8 am-u-sm-6 has-remark">
                                         <select name="limit_count" id="" data-am-selected>
                                             <option value="0">不限张</option>
                                             <option value="1">1张</option>
@@ -141,7 +141,8 @@
                                             <option value="-">其他</option>
                                         </select>
                                         <div class="input-outer">
-                                            <input type="text" class="coupon-input" value="123123">
+                                            <input type="number" class="old-price" id="" name="limit_count" placeholder="">
+                                            <div class="price-unit">张</div>
                                         </div>
                                     </div>
                                 </div>
@@ -255,7 +256,7 @@
                                             <span>全店商品</span>
                                         </label>
                                         <label for="is_special_goods2" class="label-radio">
-                                            <input type="radio" id="is_special_goods2" value="1" checked hidden name="is_special_goods">
+                                            <input type="radio" id="is_special_goods2" value="1" hidden name="is_special_goods">
                                             <label for="is_special_goods2" class="time-radio"></label>
                                             <span>指定商品</span>
                                         </label>
@@ -268,7 +269,7 @@
                                             <span>仅原价购买商品时可用</span>
                                         </label>
                                         <label for="condition2" class="label-radio">
-                                            <input type="radio" id="condition2" value="1" checked hidden name="condition">
+                                            <input type="radio" id="condition2" value="1" hidden name="condition">
                                             <label for="condition2" class="time-radio"></label>
                                             <span>允许与其他优惠券或优惠叠加使用</span>
                                         </label>
@@ -287,7 +288,7 @@
                                 <div class="form-group clear-fix pkg">
                                     <label class="am-u-lg-2 am-u-md-2 am-u-sm-3">关联喜豆码</label>
                                     <div class="am-u-lg-4 am-u-md-5 am-u-sm-6 am-u-end">
-                                        <select class="pkg-data" multiple data-am-selected="{maxHeight: 100}"></select>
+                                        <select class="pkg-data" name="pkgList[]" multiple data-am-selected="{maxHeight: 100}"></select>
                                     </div>
                                 </div>
                                 <div class="am-u-lg-10 am-u-md-10 am-u-sm-9 am-u-end package-box"></div>
@@ -499,7 +500,7 @@ $(".product").on("click", ".selected-image .delete-image", function () {
 
 function getPkgCode (file) {
     $.ajax({
-        url: 'http://shop.test/api/ad/pkgList',
+        url: 'http://shop.test/api/adv/pkgList',
         type: 'get',
         dataType: 'json',
         success: function (res) {

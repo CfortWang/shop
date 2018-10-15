@@ -41,7 +41,7 @@ Route::group(['namespace' => 'Api'], function() {
         Route::get('/couponDetailUserList',       'CustomerController@couponDetailUserList');//领取优惠券详细用户列表
     });
     //ad
-    Route::group(['prefix'  => 'ad'], function() {
+    Route::group(['prefix'  => 'adv'], function() {
         Route::get('/list',                    'AdController@adList');//广告列表
         Route::post('/adStatus',               'AdController@adStatus');//广告上下架
         Route::post('/modifyAd',               'AdController@modifyAd');//修改广告

@@ -1383,7 +1383,7 @@ input:-webkit-autofill {
 }
 /* Coupon */
 .coupon-row{
-    min-height: 800px;
+    min-height: 1000px;
 }
 .coupon-modus > div:first-child{
     margin-bottom: 20px;
@@ -1404,7 +1404,12 @@ input:-webkit-autofill {
 .coupon-row .use-rule{
     margin-bottom: 40px;
 }
-
+.coupon-title{
+    height: 40px;
+    line-height: 40px;
+    padding-left: 40px;
+    color: #333;
+}
 
 
 
@@ -1456,11 +1461,11 @@ input:-webkit-autofill {
     height: 30px;
     line-height: 30px;
 }
-.create-ad-btn, .modify-ad-btn{
+.create-ad-btn{
     width: 100%;
     text-align: center;
 }
-.create-ad-btn > div, .modify-ad-btn > div{
+.create-ad-btn > div{
     display: inline-block;
     background: #57A0FF;
     color: #fff;
