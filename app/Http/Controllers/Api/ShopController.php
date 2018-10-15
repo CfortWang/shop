@@ -257,7 +257,9 @@ class ShopController extends Controller
         $buyer = $this->buyer_id;
         $input=Input::only('coupon_name','quantity','coupon_type','discount_money','discount_percent',
                           'max_discount_money','limit_type','limit_money','image','limit_count','coupon_date_type','start_at','expired_at','days',
-                          'available_time_type', 'available_time','business_hours','is_special_goods','pkgList','condition','goods_name','remark','is_festival','is_weekend');
+                          'available_time_type', 'available_time','business_hours','is_special_goods','pkgList','condition','goods_name','remark','is_festival','is_weekend'
+                          ,'time_limit'
+                        );
          $message = [
             "required" => ":attribute ".trans('common.verification.cannotEmpty'),
             "integer" => ":attribute ".trans('common.createCoupon.verification.requiredNumber'),
@@ -287,6 +289,7 @@ class ShopController extends Controller
             'pkgList'                 => 'nullable',
             'is_festival'             => 'nullable|in:0,1',
             'is_weekend'              => 'nullable|in:0,1',
+            'time_limit'              => 'nullable|array',
         ],$message);
         if ($validator->fails()) {
             $message = $validator->errors()->first();
@@ -360,7 +363,6 @@ class ShopController extends Controller
             }
         }
         if($couponDateType == 1){
-            dd(1);
             if(empty($days)){
                 return $this->responseNotFound(trans('shop.verification.emptyDays'));
             }  
@@ -373,47 +375,51 @@ class ShopController extends Controller
             $availableTime=0;
          }
         if ($availableTimeType == 1){
-             if(empty($availableTime)){
+            if(empty($availableTime)){
                 return $this->responseNotFound(trans('shop.verification.emptyAvailableTime'));
-             }else{
+            }else{
                 $availableTime = implode('',$availableTime);
-             }
-            //  if(empty($businessHours)){
-            //     return $this->responseNotFound(trans('shop.verification.emptyBusinessHours'));
-            //  }
+            }
+            $limit = 1;
+            if(isset($input['time_limit'])){
+                foreach ($input['time_limit'] as $key => $value) {
+                    if($value['start_at']&&$value['end_at']&&$limit<4){
+                        $data['time_limit'.$limit.'_start_at'] = $value['start_at'];
+                        $data['time_limit'.$limit.'_end_at'] = $value['end_at'];
+                        $limit = $limit + 1;
+                    }
+                }
+            }
          }
         //验证优惠使用条件
         if ( $isSpecialGoods == 1){
             if(empty($goodsName)){
                 return $this->responseNotFound(trans('shop.verification.emptyGoodsName'));
-             }
-         }
-        
-       
-        $data = ShopCoupon::create([
-            'coupon_name'            => $couponName,
-            'quantity'               => $quantity,
-            'coupon_type'            => $couponType,
-            'discount_money'         => $discountMoney,
-            'discount_percent'       => $discountPercent,
-            'max_discount_money'     => $maxDiscountMoney,
-            'image'                  => $image,
-            'limit_money'            => $limitMoney,
-            'limit_count'            => $limitCount,
-            'start_at'               => $startAt,
-            'expired_at'             => $expiredAt,
-            'days'                   => $days,
-            'available_time'         => $availableTime,
-            'business_hours'         => $businessHours,
-            'condition'              => $condition,
-            'is_special_goods'       => $isSpecialGoods,
-            'goods_name'             => $goodsName,
-            'remark'                 => $remark,
-            'status'                 => 'registered',
-            'buyer_id'               => $buyer,
-            'is_weekend'             => $is_weekend,
-            'is_festival'            => $is_festival,
-        ]);
+            }
+        }
+        $data['coupon_name'] = $couponName;
+        $data['quantity'] = $quantity;
+        $data['coupon_type'] = $couponType;
+        $data['discount_money'] = $discountMoney;
+        $data['discount_percent'] = $discountPercent;
+        $data['max_discount_money'] = $maxDiscountMoney;
+        $data['image'] = $image;
+        $data['limit_money'] = $limitMoney;
+        $data['limit_count'] = $limitCount;
+        $data['start_at'] = $startAt;
+        $data['expired_at'] = $expiredAt;
+        $data['days'] = $days;
+        $data['available_time'] = $availableTime;
+        $data['business_hours'] = $businessHours;
+        $data['condition'] = $condition;
+        $data['is_special_goods'] = $isSpecialGoods;
+        $data['goods_name'] = $goodsName;
+        $data['remark'] = $remark;
+        $data['status'] = 'registered';
+        $data['buyer_id'] = $buyer;
+        $data['is_weekend'] = $is_weekend;
+        $data['is_festival'] = $is_festival;
+        $data = ShopCoupon::create($data);
         $pkgSeqList = $request->input('pkgList');
         if($pkgSeqList){
             $packages = Q35Package::whereIn('seq', $pkgSeqList)->select('start_q35code','end_q35code','seq')->get();
@@ -594,6 +600,19 @@ class ShopController extends Controller
             if($item['available_time']){
                 $item['available_time'] = str_split($item['available_time']);
             }
+            $time_limit = [];
+            for ($i=1; $i < 4; $i++) { 
+                if($item['time_limit'.$i.'_end_at']){
+                    unset($limit);
+                    $limit['start_at'] = $item['time_limit'.$i.'_start_at'];
+                    $limit['end_at'] = $item['time_limit'.$i.'_end_at'];
+                    $time_limit[] = $limit;
+                }else{
+                    break;
+                }
+            }
+            unset($item['time_limit1_end_at'],$item['time_limit2_end_at'],$item['time_limit3_end_at'],$item['time_limit1_start_at'],$item['time_limit2_start_at'],$item['time_limit3_start_at']);
+            $item['time_limit'] = $time_limit;
             $item['coupon_date_type'] = $item['days']?1:0;
         }
         $pkgList=Shop2Q35Package::where('buyer',$buyer)->where('shop_coupon',$id)
@@ -621,7 +640,7 @@ class ShopController extends Controller
         $buyer = $this->buyer_id;
         $input=Input::only('id','is_code_changed','coupon_name','quantity','coupon_type','discount_money','discount_percent',
                           'max_discount_money','limit_type','limit_money','image','limit_count','coupon_date_type','start_at','expired_at','days',
-                          'available_time_type', 'available_time','business_hours','is_special_goods','pkgList','condition','goods_name','remark','is_festival','is_weekend');
+                          'available_time_type', 'available_time','business_hours','is_special_goods','pkgList','condition','goods_name','remark','is_festival','is_weekend','time_limit');
          $message = [
             "required" => ":attribute ".trans('common.verification.cannotEmpty'),
             "integer" => ":attribute ".trans('common.createCoupon.verification.requiredNumber'),
@@ -652,7 +671,8 @@ class ShopController extends Controller
             'is_festival'             => 'nullable|in:0,1',
             'is_weekend'              => 'nullable|in:0,1',
             'id'                      => 'required|integer',
-            'is_code_changed'         => 'required|in:0,1'
+            'is_code_changed'         => 'required|in:0,1',
+            'time_limit'              => 'nullable|array',
         ],$message);
         if ($validator->fails()) {
             $message = $validator->errors()->first();
@@ -745,14 +765,35 @@ class ShopController extends Controller
             $availableTime=0;
          }
         if ($availableTimeType == 1){
-             if(empty($availableTime)){
+            if(empty($availableTime)){
                 return $this->responseNotFound(trans('shop.verification.emptyAvailableTime'));
-             }else{
+            }else{
                 $availableTime = implode('',$availableTime);
-             }
-            //  if(empty($businessHours)){
-            //     return $this->responseNotFound(trans('shop.verification.emptyBusinessHours'));
-            //  }
+            }
+            $item->time_limit1_start_at = NULL;
+            $item->time_limit1_end_at = NULL;
+            $item->time_limit2_start_at = NULL;
+            $item->time_limit2_end_at = NULL;
+            $item->time_limit3_start_at = NULL;
+            $item->time_limit3_end_at = NULL;
+            $limit = 1;
+            if(isset($input['time_limit'])){
+                foreach ($input['time_limit'] as $key => $value) {
+                    if($value['start_at']&&$value['end_at']&&$limit<4){
+                        if($limit==1){
+                            $item->time_limit1_start_at = $value['start_at'];
+                            $item->time_limit1_end_at = $value['end_at'];
+                        }elseif ($limit==2) {
+                            $item->time_limit2_start_at = $value['start_at'];
+                            $item->time_limit2_end_at = $value['end_at'];
+                        }elseif ($limit==3) {
+                            $item->time_limit3_start_at = $value['start_at'];
+                            $item->time_limit3_end_at = $value['end_at'];
+                        }
+                        $limit = $limit + 1;
+                    }
+                }
+            }
          }
         //验证优惠使用条件
         if ( $isSpecialGoods == 1){
