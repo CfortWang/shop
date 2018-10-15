@@ -413,7 +413,7 @@ class ShopController extends Controller
             'is_festival'            => $is_festival,
         ]);
         $pkgSeqList = $request->input('pkgList');
-        if($seqList){
+        if($pkgSeqList){
             $packages = Q35Package::whereIn('seq', $pkgSeqList)->select('start_q35code','end_q35code','seq')->get();
             if($packages){
                 foreach($packages as $k1=>$v1){
@@ -607,28 +607,28 @@ class ShopController extends Controller
             "integer" => ":attribute ".trans('common.createCoupon.verification.requiredNumber'),
         ];
         $validator = Validator::make($input,[
-        'coupon_name'             => 'required|string',
-        'quantity'                => 'required|integer|min:1|max:1000000',
-        'coupon_type'             => 'required|in:0,1',
-        'discount_money'          => 'nullable|numeric|min:0.01',
-        'discount_percent'        => 'nullable|numeric',
-        'max_discount_money'      => 'nullable|numeric',
-        'limit_type'              => 'required|in:0,1',
-        'limit_money'             => 'nullable|numeric',
-        'image'                   => 'required|image',
-        'limit_count'             => 'required|integer',
-        'coupon_date_type'        => 'required|in:0,1',
-        'start_at'                => 'nullable|date',
-        'expired_at'              => 'nullable|date',
-        'days'                    => 'nullable|integer',
-        'available_time_type'     => 'required|in:0,1',
-        'available_time'          => 'nullable|string',
-        'business_hours'          => 'nullable|string',
-        'condition'               => 'nullable|string',
-        'is_special_goods'        => 'required|in:0,1',
-        'goods_name'              => 'nullable|string',
-        'remark'                  => 'nullable',
-        'pkgList'                  => 'nullable',
+            'coupon_name'             => 'required|string',
+            'quantity'                => 'required|integer|min:1|max:1000000',
+            'coupon_type'             => 'required|in:0,1',
+            'discount_money'          => 'nullable|numeric|min:0.01',
+            'discount_percent'        => 'nullable|numeric',
+            'max_discount_money'      => 'nullable|numeric',
+            'limit_type'              => 'required|in:0,1',
+            'limit_money'             => 'nullable|numeric',
+            'image'                   => 'required|image',
+            'limit_count'             => 'required|integer',
+            'coupon_date_type'        => 'required|in:0,1',
+            'start_at'                => 'nullable|date',
+            'expired_at'              => 'nullable|date',
+            'days'                    => 'nullable|integer',
+            'available_time_type'     => 'required|in:0,1',
+            'available_time'          => 'nullable|string',
+            'business_hours'          => 'nullable|string',
+            'condition'               => 'nullable|string',
+            'is_special_goods'        => 'required|in:0,1',
+            'goods_name'              => 'nullable|string',
+            'remark'                  => 'nullable',
+            'pkgList'                 => 'nullable',
         ],$message);
         if ($validator->fails()) {
             $message = $validator->errors()->first();
