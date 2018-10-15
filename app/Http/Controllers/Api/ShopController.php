@@ -486,7 +486,7 @@ class ShopController extends Controller
             $startAt=$v['start_at'];
             $expiredAt=$v['expired_at'];
             if(empty($v['days'])){
-                $data['period_time']=$startAt +'至'+ $expiredAt;
+                $data['period_time']=$startAt.'至'.$expiredAt;
             }else{
                 $data['period_time']="领券次日开始 $days 天内有效"; 
             }
