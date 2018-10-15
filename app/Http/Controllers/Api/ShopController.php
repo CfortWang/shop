@@ -413,8 +413,22 @@ class ShopController extends Controller
             'is_festival'            => $is_festival,
         ]);
         $pkgSeqList = $request->input('pkgList');
-        // $seqList = explode(',',  $pkgSeqList);
-        $packages = Q35Package::whereIn('seq', $pkgSeqList)->select('start_q35code','end_q35code','seq')->get();
+        if($seqList){
+            $packages = Q35Package::whereIn('seq', $pkgSeqList)->select('start_q35code','end_q35code','seq')->get();
+            if($packages){
+                foreach($packages as $k1=>$v1){
+                    Shop2Q35Package::create([
+                        'type'             => 'coupon',
+                        'start_num'        => $v1['start_q35code'],
+                        'end_num'          => $v1['end_q35code'],
+                        'status'           => 'registered',
+                        'buyer'            => $buyer,
+                        'shop_coupon'      => $data->id,
+                        'q35package'       => $v1['seq']
+                    ]);
+                }
+            }
+        }
         return $this->responseOk('',$data);
     }
     public function couponList(Request $request){
