@@ -222,14 +222,14 @@
                                             </div>
                                             <div class="weekends-day">
                                                 <label for="weekendCheckbox6" class="label-radio">
-                                                    <input type="checkbox" id="weekendCheckbox6" value="6" hidden name="available_time[]">
+                                                    <input type="checkbox" id="weekendCheckbox6" value="1" hidden name="is_weekend">
                                                     <label for="weekendCheckbox6" class="weekend-checkbox"></label>
                                                     <span>周末</span>
                                                 </label>
                                             </div>
                                             <div class="weekends-day">
                                                 <label for="weekendCheckbox7" class="label-radio">
-                                                    <input type="checkbox" id="weekendCheckbox7" value="7" hidden name="available_time[]">
+                                                    <input type="checkbox" id="weekendCheckbox7" value="1" hidden name="is_festival">
                                                     <label for="weekendCheckbox7" class="weekend-checkbox"></label>
                                                     <span>节假日</span>
                                                 </label>
