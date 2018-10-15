@@ -667,8 +667,19 @@ $(".customize").on("click", ".customize-time .operating .delete", function () {
 
 $(".bottom-submit-btn").on("click", function () {
     var aa = $("#submit").serialize()
-    console.log(aa)
-    $("#submit").submit()
+    $.ajax({
+        type: "POST",
+        dataType: 'JSON',
+        url: $("#submit").attr('action'),
+        data: $("#submit").serialize(),
+        success: function(data, status, x) {
+            console.log(data);
+            if(data.code==400){
+                alert(data.message);
+            }
+            console.log(status);
+        }
+    });
 })
 
 $(".bottom-reset-btn").on("click", function () {

@@ -243,7 +243,11 @@ class ShopController extends Controller
         if ($imageType  == 'shop_logo') {
             $Buyer->shop_logo_image_file = null;
             $Buyer->save();
+<<<<<<< HEAD
         } else if ($imageType == 'shop_detail') {
+=======
+        } else if ($imageType  == 'shop_detail') {
+>>>>>>> 8d976d0348622fce85f6737c8dec5480fbff654f
             ShopDetailImage::where('buyer', $buyer)
                 ->where('seq',$input['detailSeq'] )
                 ->delete();
@@ -255,8 +259,12 @@ class ShopController extends Controller
         $buyer = $this->buyer_id;
         $input=Input::only('coupon_name','quantity','coupon_type','discount_money','discount_percent',
                           'max_discount_money','limit_type','limit_money','image','limit_count','coupon_date_type','start_at','expired_at','days',
+<<<<<<< HEAD
                           'available_time_type', 'available_time','business_hours','is_special_goods','pkgList','condition','goods_name','remark');
                           dd($input);
+=======
+                          'available_time_type', 'available_time','business_hours','is_special_goods','pkgList','condition','goods_name','remark','is_festival','is_weekend');
+>>>>>>> 8d976d0348622fce85f6737c8dec5480fbff654f
          $message = [
             "required" => ":attribute ".trans('common.verification.cannotEmpty'),
             "integer" => ":attribute ".trans('common.createCoupon.verification.requiredNumber'),
@@ -277,13 +285,15 @@ class ShopController extends Controller
             'expired_at'              => 'nullable|date',
             'days'                    => 'nullable|integer',
             'available_time_type'     => 'required|in:0,1',
-            'available_time'          => 'nullable|string',
+            'available_time'          => 'nullable|array',
             'business_hours'          => 'nullable|string',
             'condition'               => 'nullable|string',
             'is_special_goods'        => 'required|in:0,1',
             'goods_name'              => 'nullable|string',
             'remark'                  => 'nullable',
             'pkgList'                 => 'nullable',
+            'is_festival'             => 'nullable|in:0,1',
+            'is_weekend'              => 'nullable|in:0,1',
         ],$message);
         if ($validator->fails()) {
             $message = $validator->errors()->first();
@@ -310,6 +320,8 @@ class ShopController extends Controller
         $isSpecialGoods = $request->input('is_special_goods');
         $goodsName = $request->input('goods_name');
         $remark = $request->input('remark');
+        $is_festival = $request->input('is_festival');
+        $is_weekend = $request->input('is_weekend');
         //验证优惠类型
         if($couponType == 0){
              //面值
@@ -370,6 +382,8 @@ class ShopController extends Controller
         if ($availableTimeType == 1){
              if(empty($availableTime)){
                 return $this->responseNotFound(trans('shop.verification.emptyAvailableTime'));
+             }else{
+                $availableTime = implode('',$availableTime);
              }
              if(empty($businessHours)){
                 return $this->responseNotFound(trans('shop.verification.emptyBusinessHours'));
@@ -403,11 +417,13 @@ class ShopController extends Controller
             'goods_name'             => $goodsName,
             'remark'                 => $remark,
             'status'                 => 'registered',
-            'buyer_id'               => $buyer
+            'buyer_id'               => $buyer,
+            'is_weekend'             => $is_weekend,
+            'is_festival'            => $is_festival,
         ]);
         $pkgSeqList = $request->input('pkgList');
-        $seqList = explode(',',  $pkgSeqList);
-        $packages = Q35Package::whereIn('seq', $seqList)->select('start_q35code','end_q35code','seq')->get();
+        // $seqList = explode(',',  $pkgSeqList);
+        $packages = Q35Package::whereIn('seq', $pkgSeqList)->select('start_q35code','end_q35code','seq')->get();
         // if($seqList){
         //     foreach($packages as $k1=>$v1){
         //         Shop2Q35Package::create([
