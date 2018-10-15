@@ -4,7 +4,7 @@ namespace App\Http\Middleware;
 
 use Closure;
 use App;
-
+use Session;
 class LoginMiddleware
 {
     /**
@@ -16,9 +16,11 @@ class LoginMiddleware
      */
     public function handle($request, Closure $next)
     {
-        // if ($request->session()->has('buyer') === false) {
-        //     return redirect()->route('login');
-        // }
+        // dd($request->session()->get('buyer'));
+        dd(Session::all());
+        if ($request->session()->has('buyer') === false) {
+            return redirect()->route('login');
+        }
         // dd($request->session()->get('buyer'));
         App::setLocale('zh');
         return $next($request);

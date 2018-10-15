@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use App\Helpers\SendCodeHelper;
 use Validator;
 use Hash;
+use Session;
 use App\Models\Buyer;
 use App\Models\PhoneNumCertification;
 
@@ -42,8 +43,7 @@ class LoginController extends Controller
         }
         $request->session()->put('buyer.seq', $buyer->seq);
         $request->session()->put('buyer.id', $buyer->rep_phone_num);
-        $request->session()->put('bw.locale', 'zh');
-        // dd($request->session()->get('buyer'));
+        dd(Session::all());
         return $this->responseOk('access success');
     }
 

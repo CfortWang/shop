@@ -150,7 +150,7 @@
 				type: 'post',
 				success: function(response){
 					// console.log(123123);
-					window.location.href="http://new-shop-background.test" 
+					window.location.href="http://shop.test" 
 				},
 				error: function(e) {
 					console.log(e);
