@@ -18,9 +18,9 @@ class LoginMiddleware
     {
         // dd($request->session()->get('buyer'));
         // dd(Session::all());
-        if ($request->session()->has('buyer') === false) {
-            return redirect()->route('login');
-        }
+        // if ($request->session()->has('buyer') === false) {
+        //     return redirect()->route('login');
+        // }
         // dd($request->session()->get('buyer'));
         App::setLocale('zh');
         return $next($request);
