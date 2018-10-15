@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Api;
 
 use Validator;
 use App;
+use Carbon\Carbon;
+
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Input;
@@ -576,7 +578,19 @@ class ShopController extends Controller
         $item = ShopCoupon::where('shop_coupon.id',$id)->where('buyer_id',$buyer)->first();
         if(empty($item)){
             return $this->responseNotFound('id is error');
-        }  
+        }else{
+            $item['limit_type'] = $item['limit_money']?1:0;
+            $item['start_at'] =  Carbon::parse($item['start_at'])->toDateString();
+            $item['expired_at'] =  Carbon::parse($item['expired_at'])->toDateString();
+            if($item['start_time']){
+                $time = explode(':',$item['start_time']);
+                $item['start_time'] = $time[0].':'.$time[1];
+            }
+            if($item['end_time']){
+                $time = explode(':',$item['end_time']);
+                $item['end_time'] = $time[0].':'.$time[1];
+            }
+        }
         $pkgList=Shop2Q35Package::where('buyer',$buyer)->where('shop_coupon',$id)
                                 ->leftJoin('Q35Package as P','P.seq', '=', 'Shop2Q35Package.q35package')
                                 ->select('P.code','P.seq')
