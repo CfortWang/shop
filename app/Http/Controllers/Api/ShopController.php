@@ -298,7 +298,7 @@ class ShopController extends Controller
         $maxDiscountMoney = $request->input('max_discount_money');
         $limitMoney = $request->input('limit_money');
         $limitType = $request->input('limit_type');
-        $image = $request->file('image');
+        $image = $request->input('image');
         $limitCount = $request->input('limit_count');
         $couponDateType = $request->input('coupon_date_type');
         $startAt = $request->input('start_at');
