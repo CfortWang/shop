@@ -588,14 +588,6 @@ class ShopController extends Controller
             $item['limit_type'] = $item['limit_money']?1:0;
             $item['start_at'] =  Carbon::parse($item['start_at'])->toDateString();
             $item['expired_at'] =  Carbon::parse($item['expired_at'])->toDateString();
-            if($item['start_time']){
-                $time = explode(':',$item['start_time']);
-                $item['start_time'] = $time[0].':'.$time[1];
-            }
-            if($item['end_time']){
-                $time = explode(':',$item['end_time']);
-                $item['end_time'] = $time[0].':'.$time[1];
-            }
             $item['available_time_type'] = $item['available_time']?1:0;
             if($item['available_time']){
                 $item['available_time'] = str_split($item['available_time']);
@@ -604,8 +596,10 @@ class ShopController extends Controller
             for ($i=1; $i < 4; $i++) { 
                 if($item['time_limit'.$i.'_end_at']){
                     unset($limit);
-                    $limit['start_at'] = $item['time_limit'.$i.'_start_at'];
-                    $limit['end_at'] = $item['time_limit'.$i.'_end_at'];
+                    $time = explode(':',$item['time_limit'.$i.'_start_at']);
+                    $limit['start_at'] = $time[0].':'.$time[1];
+                    $time = explode(':',$item['time_limit'.$i.'_end_at']);
+                    $limit['end_at'] = $time[0].':'.$time[1];
                     $time_limit[] = $limit;
                 }else{
                     break;
