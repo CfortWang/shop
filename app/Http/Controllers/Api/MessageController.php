@@ -19,7 +19,7 @@ class MessageController extends Controller
     public function __construct()
     {
         $this->buyer_id = 1;
-        $this->lang = 
+        // $this->lang = 
         $this->objectType[0]['zh'] = '手机号';
         $this->objectType[1]['zh'] = '沉默用户';
         $this->objectType[2]['zh'] = '拼豆成功未使用用户';
@@ -77,10 +77,20 @@ class MessageController extends Controller
         $data['object_type'] = $input['object_type'];
         $data['message_status'] = 0;
         $data['buyer_id'] = $buyer_id;
+
         if($input['send_at']){
             $data['send_at'] = $input['send_at'];
         }
         $res = ShopMessage::create($data);
+        $phone_num = $input['phone_num'];
+        if($data['message_type']&&count($phone_num)){
+            foreach ($phone_num as $key => $value) {
+                $phone_user['phone_num'] = $value;
+                // $phone_user['user_id'] = ;
+                $phone_user['shop_message_id'] = $res->id;
+                ShopMessageUser::create($phone_user);
+            }
+        }
         return $this->responseOk('',$res);
     }
 
@@ -99,7 +109,7 @@ class MessageController extends Controller
             }
             if($data['objectType']==0){
                 $user = ShopMessageUser::where('shop_message_id',$data['id'])->select('phone_num')->get();
-                $data['phone'] = $user['phone_num'];
+                $data['phone'] = $user;
             }
             return $this->responseOk('',$data);
         }else{
