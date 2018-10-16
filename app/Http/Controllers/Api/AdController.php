@@ -161,21 +161,21 @@ class AdController extends Controller
             'shop_image_file'  => $adImage->seq
         ]);
         $pkgSeqList = $request->input('pkg_list');
-        $seqList = explode(',',  $pkgSeqList);
-        $packages = Q35Package::whereIn('seq', $seqList)->select('start_q35code','end_q35code','seq')->get(); 
-        if($seqList){
-            foreach($packages as $k1=>$v1){
-                Shop2Q35Package::create([
-                            'type'             => 'ad',
-                            'start_num'        => $v1['start_q35code'],
-                            'end_num'          => $v1['end_q35code'],
-                            'status'           => 'registered',
-                            'buyer'            => $buyer,
-                            'shop_ad'          => $shopAd->seq,
-                            'q35package'       => $v1['seq']
-                        ]);
+        if($pkgSeqList){
+            $packages = Q35Package::whereIn('seq', $pkgSeqList)->select('start_q35code','end_q35code','seq')->get(); 
+            if($packages){
+                foreach($packages as $k1=>$v1){
+                    Shop2Q35Package::create([
+                        'type'             => 'ad',
+                        'start_num'        => $v1['start_q35code'],
+                        'end_num'          => $v1['end_q35code'],
+                        'status'           => 'registered',
+                        'buyer'            => $buyer,
+                        'shop_ad'          => $shopAd->seq,
+                        'q35package'       => $v1['seq']
+                    ]);
                 }
-            
+            }
         }
         
         return $this->responseOK('success', $packages);
