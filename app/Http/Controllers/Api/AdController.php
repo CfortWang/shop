@@ -215,10 +215,10 @@ class AdController extends Controller
             return $this->responseBadRequest('结束时间必须大于开始时间');
         }
         $title=$request->input('title');
-        $exitTitle=ShopAd::where('title',$title)->first();
-        if($exitTitle){
-            return $this->responseBadRequest('already exist title', 401);//error code 409,401
-        }
+        // $exitTitle=ShopAd::where('title',$title)->first();
+        // if($exitTitle){
+        //     return $this->responseBadRequest('already exist title', 401);//error code 409,401
+        // }
        
         $adImage = $request->file('ad_image_file');
         if($adImage){
@@ -230,7 +230,7 @@ class AdController extends Controller
             $adImage = ShopImageFile::create($adImage);
             $ShopAD->shop_image_file = $adImage->seq;
           
-        }else if(!$shopAD->shop_image_file){
+        }else if(!$ShopAD->shop_image_file){
             return $this->responseBadRequest('Upload picture first', 403);//error code 400,403
         }
         $ShopAD->title = $title;
