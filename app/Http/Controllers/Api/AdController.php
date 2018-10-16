@@ -215,10 +215,10 @@ class AdController extends Controller
             return $this->responseBadRequest('结束时间必须大于开始时间');
         }
         $title=$request->input('title');
-        // $exitTitle=ShopAd::where('title',$title)->first();
-        // if($exitTitle){
-        //     return $this->responseBadRequest('already exist title', 401);//error code 409,401
-        // }
+        $exitTitle=ShopAd::where('title',$title)->where('seq','!=',$id)->first();
+        if($exitTitle){
+            return $this->responseBadRequest('already exist title', 401);//error code 409,401
+        }
        
         $adImage = $request->file('ad_image_file');
         if($adImage){
@@ -242,7 +242,7 @@ class AdController extends Controller
         $pkgSeqList = $request->input('pkg_list');
         $is_modify = $request->input('is_code_modify');
         if(count($pkgSeqList)&&$is_modify){
-            Q35Package::where('shop_ad',$id)->forceDelete();
+            Shop2Q35Package::where('shop_ad',$id)->forceDelete();
             $pkgSeqList = array_unique($pkgSeqList);
             $packages = Q35Package::whereIn('seq', $pkgSeqList)->select('start_q35code','end_q35code','seq')->get(); 
             if($packages){
