@@ -822,7 +822,7 @@ class ShopController extends Controller
         $pkgSeqList = $request->input('pkgList');
         $isChanged = $request->input('is_code_changed');
         if($isChanged){
-            Shop2Q35Package::where('shop_coupon',$item->id)->delete();
+            Shop2Q35Package::where('shop_coupon',$item->id)->forceDelete();
             if($pkgSeqList){
                 $packages = Q35Package::whereIn('seq', $pkgSeqList)->select('start_q35code','end_q35code','seq')->get();
                 if($packages){
