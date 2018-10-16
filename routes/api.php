@@ -106,7 +106,7 @@ Route::group(['namespace' => 'Api'], function() {
         Route::post('message',                      'MessageController@create');
         Route::post('modifyMessage',                      'MessageController@modify');
         Route::get('message/{id}',                   'MessageController@detail');
-
+        Route::put('deleteMessage/{id}',                   'MessageController@delete');
     });
 
 

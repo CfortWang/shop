@@ -161,4 +161,15 @@ class MessageController extends Controller
             return $this->responseBadRequest('');
         }
     }
+
+    public function delete(Request $request,$id)
+    {
+        $buyer_id = $this->buyer_id;
+        $data = ShopMessage::where('id',$id)->where('buyer_id',$buyer_id)->first();
+        if(empty($data)){
+            return $this->responseBadRequest('No data');
+        }
+        $res = ShopMessage::where('id',$id)->where('buyer_id',$buyer_id)->delete();
+        return $this->responseOk('',$res);
+    }
 }
