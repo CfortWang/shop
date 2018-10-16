@@ -17,9 +17,15 @@ class AdController extends Controller
         'title' => '广告列表',
       ]);
   }
-  public function createAd() {
-    return view('web.contents.ad.createAD',[
+  public function adCreate() {
+    return view('web.contents.ad.adCreate',[
         'title' => '新增广告',
+      ]);
+  }
+
+  public function adDetails() {
+    return view('web.contents.ad.adDetails',[
+        'title' => '修改广告',
       ]);
   }
 

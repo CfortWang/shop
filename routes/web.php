@@ -48,7 +48,8 @@ Route::group(['namespace' => 'Web'], function() {
         //ad
         Route::group(['prefix'  => 'ad'], function() {
             Route::get('/adList',                       'AdController@list');
-            Route::get('/createAD',                   'AdController@createAd');
+            Route::get('/create',                   'AdController@adCreate');
+            Route::get('/details',                   'AdController@adDetails');
         });
         //shop
         Route::group(['prefix'  => 'shop'], function() {

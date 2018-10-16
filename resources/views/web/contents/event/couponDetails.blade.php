@@ -738,6 +738,7 @@ $(".package-box").on("click", ".delete-pkg", function () {
         let pkgCode = $(".pkg .am-selected-list > li:eq("+ i +") span").text()
         if (unselect == pkgValue) {
             $(".pkg .am-selected-list > li:eq("+ i +")").removeClass("am-checked")
+            $(".pkg select.pkg-data").find("option[value = '" + unselect +"']").removeAttr("selected")
             $(".pkg .am-selected-status").text(pkgArr.join(','))
         }
     }

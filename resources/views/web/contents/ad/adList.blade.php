@@ -148,7 +148,7 @@
     })
 
     $(".create-ad").on("click", function () {
-        window.location.href = "/ad/createAD"
+        window.location.href = "/ad/create"
     })
 
     $(".table-content").on("click", ".table-tr .operating .obtained, .table-tr .operating .shelf", function () {
