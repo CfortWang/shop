@@ -179,7 +179,7 @@ class AdController extends Controller
             }
         }
         
-        return $this->responseOK('success', $packages);
+        return $this->responseOK('success', $shopAd);
     }
     //修改广告
     public function modifyAd(Request $request)
@@ -197,7 +197,7 @@ class AdController extends Controller
             'start_date'      => 'required|date',
             'end_date'        => 'required|date',
             'pkg_list'        => 'nullable',
-            'id'              => 'required|numeric'
+            'id'              => 'required|numeric',
             'is_code_modify'  => 'required|boolean'
         ],$message);
         if ($validator->fails()) {
