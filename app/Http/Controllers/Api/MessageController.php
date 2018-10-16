@@ -96,7 +96,49 @@ class MessageController extends Controller
 
     public function modify(Request $request)
     {
-        
+        $buyer_id = $this->buyer_id;
+        $input=Input::only('content','message_type','object_type','send_at','phone_num','id','is_phone_num_modify');
+        $message =  $messages = [
+            "required" => ":attribute ".trans('common.verification.cannotEmpty'),
+        ];
+        $validator = Validator::make($input, [
+            'content'                => 'required|string',
+            'message_type'           => 'required|numeric',
+            'object_type'            => 'required|numeric',
+            'send_at'                => 'required|string',
+            'phone_num'              => 'nullable|array',
+            'id'                     => 'required|numeric',
+            'is_phone_num_modify'    => 'required|string',
+        ],$message);
+
+        if ($validator->fails()) {
+            $message = $validator->errors()->first();
+            return $this->responseBadRequest($message);
+        }
+        $id  = $input['id'];
+        $data = ShopMessage::where('id',$id)->where('buyer_id',$buyer_id)->first();
+        if(empty($data)){
+            return $this->responseBadRequest('No data');
+        }
+        $data->content = $input['content'];
+        $data->message_type = $input['message_type'];
+        $data->object_type = $input['object_type'];
+
+        if($input['send_at']){
+            $data->send_at = $input['send_at'];
+        }
+        $res = $data->save();
+        $phone_num = $input['phone_num'];
+        if($data['message_type']&&count($phone_num)&&$input['is_phone_num_modify']){
+            ShopMessageUser::where('shop_message_id',$id)->delete();
+            $phone_num = array_unique($phone_num);
+            foreach ($phone_num as $key => $value) {
+                $phone_user['phone_num'] = $value;
+                $phone_user['shop_message_id'] = $res->id;
+                ShopMessageUser::create($phone_user);
+            }
+        }
+        return $this->responseOk('',$res);
     }
 
     public function detail(Request $request,$id)
@@ -106,6 +148,9 @@ class MessageController extends Controller
         if($data){
             if(!$data['sendAt']){
                 $data['sendAt'] = 0;
+            }else{
+                $time = strtotime($data['sendAt']);
+                $data['sendAt'] = date("Y-m-d h:i", $time);
             }
             if($data['objectType']==0){
                 $user = ShopMessageUser::where('shop_message_id',$data['id'])->select('phone_num')->get();
@@ -115,5 +160,16 @@ class MessageController extends Controller
         }else{
             return $this->responseBadRequest('');
         }
+    }
+
+    public function delete(Request $request,$id)
+    {
+        $buyer_id = $this->buyer_id;
+        $data = ShopMessage::where('id',$id)->where('buyer_id',$buyer_id)->first();
+        if(empty($data)){
+            return $this->responseBadRequest('No data');
+        }
+        $res = ShopMessage::where('id',$id)->where('buyer_id',$buyer_id)->delete();
+        return $this->responseOk('',$res);
     }
 }
