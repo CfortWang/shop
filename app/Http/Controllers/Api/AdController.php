@@ -104,7 +104,7 @@ class AdController extends Controller
                         ->first();
         $pkgList=Shop2Q35Package::where('buyer',$buyer)->where('shop_ad',$seq)
                                 ->leftJoin('Q35Package as P','P.seq', '=', 'Shop2Q35Package.q35package')
-                                ->select('P.code')
+                                ->select('P.code','P.seq')
                                 ->get();
         $item['pkgList']=$pkgList;
         if(empty($item)){
