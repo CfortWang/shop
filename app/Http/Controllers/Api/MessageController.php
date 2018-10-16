@@ -148,6 +148,9 @@ class MessageController extends Controller
         if($data){
             if(!$data['sendAt']){
                 $data['sendAt'] = 0;
+            }else{
+                $time = strtotime($data['sendAt']);
+                $data['sendAt'] = date("Y-m-d h:i", $time);
             }
             if($data['objectType']==0){
                 $user = ShopMessageUser::where('shop_message_id',$data['id'])->select('phone_num')->get();
