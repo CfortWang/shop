@@ -82,13 +82,15 @@ class MessageController extends Controller
             $data['send_at'] = $input['send_at'];
         }
         $res = ShopMessage::create($data);
-        $phone_num = $input['phone_num'];
-        if($data['message_type']&&count($phone_num)){
-            $phone_num = array_unique($phone_num);
-            foreach ($phone_num as $key => $value) {
-                $phone_user['phone_num'] = $value;
-                $phone_user['shop_message_id'] = $res->id;
-                ShopMessageUser::create($phone_user);
+        if($data['object_type']==0){
+            $phone_num = $input['phone_num'];
+            if(count($phone_num)){
+                $phone_num = array_unique($phone_num);
+                foreach ($phone_num as $key => $value) {
+                    $phone_user['phone_num'] = $value;
+                    $phone_user['shop_message_id'] = $res->id;
+                    ShopMessageUser::create($phone_user);
+                }
             }
         }
         return $this->responseOk('',$res);
@@ -129,13 +131,16 @@ class MessageController extends Controller
         }
         $res = $data->save();
         $phone_num = $input['phone_num'];
-        if($data['message_type']&&count($phone_num)&&$input['is_phone_num_modify']){
+        if($data['object_type']==0&&$input['is_phone_num_modify']){
             ShopMessageUser::where('shop_message_id',$id)->delete();
-            $phone_num = array_unique($phone_num);
-            foreach ($phone_num as $key => $value) {
-                $phone_user['phone_num'] = $value;
-                $phone_user['shop_message_id'] = $res->id;
-                ShopMessageUser::create($phone_user);
+            $phone_num = $input['phone_num'];
+            if(count($phone_num)){
+                $phone_num = array_unique($phone_num);
+                foreach ($phone_num as $key => $value) {
+                    $phone_user['phone_num'] = $value;
+                    $phone_user['shop_message_id'] = $res->id;
+                    ShopMessageUser::create($phone_user);
+                }
             }
         }
         return $this->responseOk('',$res);
