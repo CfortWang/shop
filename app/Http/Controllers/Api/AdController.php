@@ -186,7 +186,7 @@ class AdController extends Controller
     {
         $buyer = $request->session()->get('buyer.seq');
         $buyer=14;
-        $input = Input::only('seq','title', 'landing_url' , 'ad_image_file', 'pkg_list','start_date','end_date');
+        $input = Input::only('id','title', 'landing_url' , 'ad_image_file', 'pkg_list','start_date','end_date','is_code_modify');
         $message = array(
             "required" => ":attribute ".trans('common.verification.cannotEmpty'),
         );
@@ -196,14 +196,16 @@ class AdController extends Controller
             'landing_url'     => 'required|string',
             'start_date'      => 'required|date',
             'end_date'        => 'required|date',
-            'pkg_list'        => 'nullable'
+            'pkg_list'        => 'nullable',
+            'id'              => 'required|numeric'
+            'is_code_modify'  => 'required|boolean'
         ],$message);
         if ($validator->fails()) {
             $message = $validator->errors()->first();
             return $this->responseBadRequest($message);
         }   
-        $seq=$request->input('seq');
-        $ShopAD=ShopAd::where('seq',$seq)->where('buyer',$buyer)->first();
+        $id=$request->input('id');
+        $ShopAD=ShopAd::where('seq',$id)->where('buyer',$buyer)->first();
         if(empty($ShopAD)){
            return $this->responseBadRequest('There is no data');
         }
@@ -231,32 +233,32 @@ class AdController extends Controller
         }else if(!$shopAD->shop_image_file){
             return $this->responseBadRequest('Upload picture first', 403);//error code 400,403
         }
-        $pkgSeqList = $request->input('pkg_list');
-         
-
-        // foreach ($shop2Buyer as $item) {
-        //     $item->forceDelete();
-        // }
-        // if ($pkgSeqList) {
-        //     $packages = Q35Package::whereIn('seq', $pkgSeqList)->get();
-
-        //     foreach ($packages as $package) {
-        //         Shop2Q35Package::create([
-        //             'type'             => 'ad',
-        //             'start_num'        => $package->start_q35code,
-        //             'end_num'          => $package->end_q35code,
-        //             'status'           => 'registered',
-        //             'buyer'            => $buyer,
-        //             'shop_ad'          => $shopAD->seq,
-        //             'q35package'       => $package->seq
-        //         ]);
-        //     }
-        // }
         $ShopAD->title = $title;
         $ShopAD->start_date=$start_date;
         $ShopAD->end_date=$end_date;      
         $ShopAD->landing_url = $request->input('landing_url');
         $ShopAD->save();
+
+        $pkgSeqList = $request->input('pkg_list');
+        $is_modify = $request->input('is_code_modify');
+        if(count($pkgSeqList)&&$is_modify){
+            Q35Package::where('shop_ad',$id)->forceDelete();
+            $pkgSeqList = array_unique($pkgSeqList);
+            $packages = Q35Package::whereIn('seq', $pkgSeqList)->select('start_q35code','end_q35code','seq')->get(); 
+            if($packages){
+                foreach($packages as $k1=>$v1){
+                    Shop2Q35Package::create([
+                        'type'             => 'ad',
+                        'start_num'        => $v1['start_q35code'],
+                        'end_num'          => $v1['end_q35code'],
+                        'status'           => 'registered',
+                        'buyer'            => $buyer,
+                        'shop_ad'          => $shopAd->seq,
+                        'q35package'       => $v1['seq']
+                    ]);
+                }
+            }
+        }
         return $this->responseOK('success', $ShopAD);
     }
     public function pkgList(Request $request)
