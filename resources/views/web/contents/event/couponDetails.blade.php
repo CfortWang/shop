@@ -7,7 +7,7 @@
 @section('content')
 <div class="tpl-page-container tpl-page-header-fixed">
     <div class="tpl-content-wrapper">
-        <form id="submit" action="/api/shop/createCoupon" method="post"  enctype="multipart/form-data" target="_self">
+        <form id="submit" action="/api/shop/modifyCoupon" method="post"  enctype="multipart/form-data" target="_self">
             <div class="tpl-portlet">
                 <div class="row">
                     <div class="am-u-md-12 am-u-sm-12">
@@ -293,6 +293,8 @@
                                 </div>
                                 <div class="am-u-lg-10 am-u-md-10 am-u-sm-9 am-u-end package-box"></div>
                             </div>
+                            <input type="text" hidden name="id">
+                            <input type="text" hidden name="is_code_changed" value="1">
                         </div>
                     </div>
                 </div>
@@ -323,6 +325,7 @@ var getArgs = function () {
     return args
 }
 var args = getArgs();
+$("input[type=text][name=id]").val(args['id'])
 tim = ''
 var drawData = function () {
     $.ajax({
@@ -374,10 +377,12 @@ var drawData = function () {
             $("select#limit_count").val(limitAmount)
             if (limitAmount == '0' || limitAmount == '1' || limitAmount == '2' || limitAmount == '5') {
                 $("select#limit_count").find("option[value = '"+limitAmount+"']").attr("selected","selected")
+                $(".has-remark .am-selected-list > li").removeClass("am-checked")
                 for (let i = 0; i < 4; i++) {
                     if ($(".has-remark .am-selected-list > li:eq("+ i +")").attr("data-value") == limitAmount) {
                         let text = $(".has-remark .am-selected-list > li:eq("+ i +") span").text()
-                        $("am-selected-status").text(text)
+                        $(".has-remark .am-selected-status").text(text)
+                        $(".has-remark .am-selected-list > li:eq("+ i +")").addClass("am-checked")
                     }
                 }
             }
@@ -393,9 +398,8 @@ var drawData = function () {
                 $('.effect-time, .expired-time').attr("disabled", true)
                 $('#days').attr("disabled", false)
             } else {
-                $("input[type=text][name=start_at]").val(resData.start_at)
-                // $("input[type=text][name=expired_at]").val(resData.expired_at)
-                $('.expired-time').datepicker('setValue', resData.expired_at)
+                $("input[type=text][name=start_at]").datepicker('setValue', resData.start_at)
+                $("input[type=text][name=expired_at]").datepicker('setValue', resData.expired_at)
                 $('.effect-time, .expired-time').attr("disabled", false)
                 $('#days').attr("disabled", true)
             }
@@ -407,9 +411,11 @@ var drawData = function () {
                 }
             }
             if (resData.available_time_type) {
-                for (let i = 0; i < 5; i++) {
-                    if ($("input[type=checkbox][name='available_time[]']:eq("+ i +")").val() == resData.available_time[i]) {
-                        $("input[type=checkbox][name='available_time[]']:eq("+ i +")").attr("checked", 'checked')
+                for (let j = 0; j < 5; j++) {
+                    for (let i = 0; i < 5; i++) {
+                        if ($("input[type=checkbox][name='available_time[]']:eq("+ i +")").val() == resData.available_time[j]) {
+                            $("input[type=checkbox][name='available_time[]']:eq("+ i +")").attr("checked", 'checked')
+                        }
                     }
                 }
                 if (resData.is_weekend) {
@@ -418,18 +424,18 @@ var drawData = function () {
                 if (resData.is_festival) {
                     $("input[type=checkbox][name='is_festival']").attr("checked", 'checked')
                 }
-                // tim = resData.time_limit.length
-                // for (let i = 0; i < resData.time_limit.length; i++) {
-                //     let startTime = 'time_limit[' + i + '][start_at]'
-                //     let endTime = 'time_limit[' + i + '][end_at]'
-                //     let time = resData.time_limit
-                //     var $customizeTime = '<div class="customize-time"><div class="add-time-text"><span class="customize-time-text">' + time[i].start_at + '</span><span>&nbsp;-&nbsp;</span><span class="customize-time-text">' + time[i].end_at + '</span></div><div class="add-time-box"><input type="text" class="add-start-hours" value="' + time[i].start_at + '" name="' + startTime + '"><span>&nbsp;-&nbsp;</span><input type="text" class="add-end-hours" value="' + time[i].end_at + '" name="' + endTime + '"></div><div class="operating"><div class="motify" onclick="modifyCustomize(this)">修改</div><div class="save" onclick="saveCustomize(this)">保存</div><div class="delete">删除</div></div></div>'
-                //     $(".customize").append($customizeTime)
-                // }
-                // if ($(".customize-time").length >= 3) {
-                //     $(".hours-choose .add-time").hide()
-                //     $(".section-time .start-hours, .section-time .end-hours").attr("disabled", true)
-                // }
+                tim = resData.time_limit.length
+                for (let i = 0; i < resData.time_limit.length; i++) {
+                    let startTime = 'time_limit[' + i + '][start_at]'
+                    let endTime = 'time_limit[' + i + '][end_at]'
+                    let time = resData.time_limit
+                    var $customizeTime = '<div class="customize-time"><div class="add-time-text"><span class="customize-time-text">' + time[i].start_at + '</span><span>&nbsp;-&nbsp;</span><span class="customize-time-text">' + time[i].end_at + '</span></div><div class="add-time-box"><input type="text" class="add-start-hours" value="' + time[i].start_at + '" name="' + startTime + '"><span>&nbsp;-&nbsp;</span><input type="text" class="add-end-hours" value="' + time[i].end_at + '" name="' + endTime + '"></div><div class="operating"><div class="motify" onclick="modifyCustomize(this)">修改</div><div class="save" onclick="saveCustomize(this)">保存</div><div class="delete">删除</div></div></div>'
+                    $(".customize").append($customizeTime)
+                }
+                if ($(".customize-time").length >= 3) {
+                    $(".hours-choose .add-time").hide()
+                    $(".section-time .start-hours, .section-time .end-hours").attr("disabled", true)
+                }
             } else {
                 $("input[type=text][name=start_at]").val(resData.start_at)
                 $("input[type=text][name=expired_at]").val(resData.expired_at)
@@ -456,8 +462,10 @@ var drawData = function () {
                 }
             }
 
+            $(".rule-text").val(resData.remark)
+
             // 喜豆码
-            let pkgdata = resData.pkgList
+            pkgdata = resData.pkgList
             for (let i = 0; i < pkgdata.length; i++) {
                 let $pkg = '<div class="package" data-value="' + pkgdata[i].seq + '"><div class="delete-pkg"><img src="/img/main/delete.png" alt=""></div><div class="package-code">' + pkgdata[i].code + '</div></div>'
                 $(".package-box").append($pkg)
@@ -650,6 +658,27 @@ function getPkgCode (file) {
                 let $pkgData = '<option value="' + resData[i].pkg_seq + '">' + resData[i].pkg_code + '</option>'
                 $(".pkg-data").append($pkgData)
             }
+            if (pkgdata != null || pkgdata != '') {
+                codeArr = []
+                seqArr = []
+                for (let i = 0; i < pkgdata.length; i++) {
+                    let $pkgData = '<option value="' + pkgdata[i].seq + '">' + pkgdata[i].code + '</option>'
+                    $(".pkg-data").append($pkgData)
+                    codeArr[i] = pkgdata[i].code
+                    seqArr[i] = pkgdata[i].seq
+                }
+                // if (limitAmount == '0' || limitAmount == '1' || limitAmount == '2' || limitAmount == '5') {
+                //     $("select.pkg-data").find("option[value = '"+limitAmount+"']").attr("selected","selected")
+                //     $(".pkg .am-selected-list > li").removeClass("am-checked")
+                //     for (let i = 0; i < 4; i++) {
+                //         if ($(".pkg .am-selected-list > li:eq("+ i +")").attr("data-value") == limitAmount) {
+                //             let text = $(".pkg .am-selected-list > li:eq("+ i +") span").text()
+                //             $(".pkg .am-selected-status").text(text)
+                //             $(".pkg .am-selected-list > li:eq("+ i +")").addClass("am-checked")
+                //         }
+                //     }
+                // }
+            }
         },
         error: function (ex) {
             console.log(ex)
@@ -658,6 +687,24 @@ function getPkgCode (file) {
     // console.log(file)
 }
 getPkgCode();
+setTimeout(() => {
+    let allPkgList = $(".pkg .am-selected-list > li")
+    for (let i = 0; i < pkgdata.length; i++) {
+        for (let j = 0; j < allPkgList.length; j++) {
+            let pkgSeq = $(".pkg .am-selected-list > li:eq("+ j +")").attr("data-value")
+            if (pkgSeq == seqArr[i]) {
+                $("select.pkg-data").find("option[value = '"+seqArr[i]+"']").attr("selected","selected")
+                $(".pkg .am-selected-list > li:eq("+ j +")").addClass("am-checked")
+                // $(".pkg .am-selected-list > li").removeClass("am-checked")
+            }
+        }
+    }
+    console.log(codeArr)
+    $(".pkg .am-selected-status").text(codeArr)
+}, 1000);
+
+// let pkgli = $(".pkg .am-selected-list > li")
+
 
 $("body").on("click", ".pkg .am-selected-list > li", function () {
     let selectedPkg = $(".package-box > div").length
@@ -679,16 +726,16 @@ $("body").on("click", ".pkg .am-selected-list > li", function () {
 
 $(".package-box").on("click", ".delete-pkg", function () {
     $(this).parent().remove()
-    let optionList = $(".am-selected-list > li").length
-    let pkgList = $(".package-box .package").length
+    let optionList = $(".pkg .am-selected-list > li").length
+    let pkgList = $(".pkg .package-box .package").length
     let pkgValue = $(this).parent().attr("data-value")
     let pkgArr = []
     for (let j = 0; j < pkgList; j++) {
-        pkgArr[j] = $(".package-box .package:eq("+ j +") .package-code").text()
+        pkgArr[j] = $(".pkg .package-box .package:eq("+ j +") .package-code").text()
     }
     for (let i = 0; i < optionList; i++) {
-        let unselect = $(".am-selected-list > li:eq("+ i +")").attr("data-value")
-        let pkgCode = $(".am-selected-list > li:eq("+ i +") span").text()
+        let unselect = $(".pkg .am-selected-list > li:eq("+ i +")").attr("data-value")
+        let pkgCode = $(".pkg .am-selected-list > li:eq("+ i +") span").text()
         if (unselect == pkgValue) {
             $(".pkg .am-selected-list > li:eq("+ i +")").removeClass("am-checked")
             $(".pkg .am-selected-status").text(pkgArr.join(','))

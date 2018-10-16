@@ -1351,7 +1351,7 @@ input[type="checkbox"]:checked + .weekend-checkbox{
     background-size: 100% 100%;
 }
 
-input[disabled]{
+input[disabled], textarea:disabled{
     cursor: not-allowed!important;
     background-color: #F3F4F7!important;
 }
@@ -1417,6 +1417,20 @@ input:-webkit-autofill {
 
 
 
+/* MESSAGE */
+.table-td-content{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.phone-num-box{
+    margin-top: 10px;
+    display: none;
+}
+
+
+
 /* AD */
 .ad-title{
     justify-content: flex-end;
@@ -1435,6 +1449,7 @@ input:-webkit-autofill {
 
 .package-box{
     float: right;
+    min-height: 120px;
 }
 .package{
     height: 100%;
@@ -3027,5 +3042,8 @@ input:-webkit-autofill {
     }
     .tpl-content-wrapper {
         padding-left: 0;
+    }
+    .empty{
+        display: none;
     }
 }

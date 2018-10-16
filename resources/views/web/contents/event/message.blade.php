@@ -4,8 +4,6 @@
 <link rel="stylesheet" href="/css/app.css">
 <link rel="stylesheet" href="/css/eventMessage.css">
 
-<link rel="stylesheet" type="text/css" media="all" href="/css/daterangepicker.css" />
-<link rel="stylesheet" type="text/css" media="all" href="/css/bootstrap-datetimepicker.min.css" />
 @endsection('css')
 @section('nav')
 <span>营销/消息通知</span>
@@ -95,27 +93,26 @@
                     let status = resData[i].status
                     let messageStatus = resData[i].messageStatus
                     let remark = resData[i].remark
+                    let id = resData[i].id
                     if (sendAt == null || sendAt == '') {
                         sendAt = '立即发送'
                     }
                     var operate = '';
                     if(messageStatus==0){
-                        operate+='<a href="/event/message/details">修改</a> ';
-                        operate+='<a>删除</a>';
+                        operate+='<a class="modify">修改</a> ';
+                        operate+='<a class="delete">删除</a>';
                     }else if(messageStatus==1){
-                        operate+='<a>发送</a> ';
-                        operate+='<a>删除</a>';
+                        // operate+='<a>发送</a> ';
+                        operate+='<a class="delete">删除</a>';
                     }else if(messageStatus==2){
-                        operate+='<a href="/event/message/details">修改</a> ';
-                        operate+='<a>删除</a>';
+                        operate+='<a class="modify">修改</a> ';
+                        operate+='<a class="delete">删除</a>';
                         $(".table-content .table-tr:eq("+ i +") .status-remark").text(remark)
                     }
                     else if(messageStatus==3){
                         operate+='--';
                     }
-                    // if (nickname == null || nickname == '') {
-                    //     nickname = '——'
-                    // }
+
                     $(".table-content .table-tr:eq("+ i +") .table-td-content").text(content)
                     $(".table-content .table-tr:eq("+ i +") .table-td-object").text(object)
                     $(".table-content .table-tr:eq("+ i +") .table-td-sendAt").text(sendAt)
@@ -123,6 +120,7 @@
                     
                     $(".table-content .table-tr:eq("+ i +") .table-td-count").text(count)
                     $(".table-content .table-tr:eq("+ i +") .table-td-operate").html(operate);
+                    $(".table-content .table-tr:eq("+ i +") .table-td-operate").attr({"data-id": id, "data-status": messageStatus})
                 }
             },
             error: function (ex) {
@@ -131,6 +129,26 @@
         })
     }
     drawList();
+
+    var deleteMessage = function (event1, that) {
+        $.ajax({
+            url: 'http://shop.test/api/event/deleteMessage/' + event1,
+            type: 'put',
+            dataType: 'json',
+            success: function (res) {
+                if (res.code != 200) {
+                    console.log(res.message);
+                } else {
+                    drawList();
+                    alert(res.message);
+                }
+
+            },
+            error: function (ex) {
+                console.log(ex)
+            }
+        })
+    }
 
     $(".page-down").click(function () {
         if (page > 1) {
@@ -153,6 +171,17 @@
 
     $('.create-message').click(function() {
         window.location.href = "/event/message/create"
+    })
+
+    $(".table-content").on("click", ".table-tr .table-td-operate .delete", function () {
+        var id = $(this).parent().attr("data-id")
+        var that = $(this)
+        deleteMessage(id, that);
+    })
+
+    $(".table-content").on("click", ".table-tr .table-td-operate .modify", function () {
+        var id = $(this).parent().attr("data-id")
+        window.location.href = '/event/message/details?id=' + id
     })
 </script>
 @endsection

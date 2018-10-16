@@ -14,14 +14,14 @@
                         <div class="form-container">
                             <div class="form-title">优惠券基础信息</div>
                             <div class="form-group clear-fix">
-                                <label class="am-u-lg-2 am-u-md-2 am-u-sm-3">优惠券名称</label>
-                                <div class="am-u-lg-10 am-u-md-10 am-u-sm-9">
+                                <label class="am-u-lg-2 am-u-md-2 am-u-sm-12">优惠券名称</label>
+                                <div class="am-u-lg-10 am-u-md-10 am-u-sm-12">
                                     <input type="text" class="form-control" id="name" name="coupon_name" placeholder="最多可输入10个字符" maxlength="10">
                                 </div>
                             </div>
                             <div class="form-group clear-fix">
-                                <label class="am-u-lg-2 am-u-md-2 am-u-sm-3">发放总量</label>
-                                <div class="am-u-lg-10 am-u-md-10 am-u-sm-9 has-remark">
+                                <label class="am-u-lg-2 am-u-md-2 am-u-sm-12">发放总量</label>
+                                <div class="am-u-lg-10 am-u-md-10 am-u-sm-12 has-remark">
                                     <div class="input-outer">
                                         <input type="number" class="old-price" id="quantity" name="quantity" placeholder="">
                                         <div class="price-unit">张</div>
@@ -30,8 +30,8 @@
                                 </div>
                             </div>
                             <div class="form-group clear-fix">
-                                <label class="am-u-lg-2 am-u-md-2 am-u-sm-3">优惠形式</label>
-                                <div class="am-u-lg-10 am-u-md-10 am-u-sm-9 coupon-modus">
+                                <label class="am-u-lg-2 am-u-md-2 am-u-sm-12">优惠形式</label>
+                                <div class="am-u-lg-10 am-u-md-10 am-u-sm-12 coupon-modus">
                                     <div class="am-u-lg-12 am-u-md-12 am-u-sm-12">
                                         <label for="coupon_type1" class="label-radio am-u-lg-2 am-u-md-4 am-u-sm-6">
                                             <input type="radio" checked hidden id="coupon_type1" name="coupon_type" value="0">
@@ -665,20 +665,12 @@ $(".bottom-submit-btn").on("click", function () {
         success: function(data, status, x) {
             console.log(data);
             console.log(status);
-            // if (status == 'success') {
-            //     setTimeout(function() {
-            //         _global.prompt(data.code, data.status);
-            //     }, 500);
-            //     setTimeout(function() {
-            //         $("#submit").find('[type="submit"]').prop('disabled', false).removeClass('btn-loading');
-            //     }, 1000);
-            // }
         }
     });
 })
 
 $(".bottom-reset-btn").on("click", function () {
-    window.location.href = '/event/groupon/create'
+    window.location.href = window.location.href
 })
 
 $('.start-hours, .end-hours').datetimepicker({
