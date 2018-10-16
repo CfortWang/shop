@@ -138,7 +138,7 @@ class MessageController extends Controller
                 $phone_num = array_unique($phone_num);
                 foreach ($phone_num as $key => $value) {
                     $phone_user['phone_num'] = $value;
-                    $phone_user['shop_message_id'] = $res->id;
+                    $phone_user['shop_message_id'] = $id;
                     ShopMessageUser::create($phone_user);
                 }
             }
