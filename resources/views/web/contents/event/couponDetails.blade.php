@@ -381,7 +381,7 @@ var drawData = function () {
                 for (let i = 0; i < 4; i++) {
                     if ($(".has-remark .am-selected-list > li:eq("+ i +")").attr("data-value") == limitAmount) {
                         let text = $(".has-remark .am-selected-list > li:eq("+ i +") span").text()
-                        $(".am-selected-status").text(text)
+                        $(".has-remark .am-selected-status").text(text)
                         $(".has-remark .am-selected-list > li:eq("+ i +")").addClass("am-checked")
                     }
                 }
@@ -398,9 +398,8 @@ var drawData = function () {
                 $('.effect-time, .expired-time').attr("disabled", true)
                 $('#days').attr("disabled", false)
             } else {
-                $("input[type=text][name=start_at]").val(resData.start_at)
-                // $("input[type=text][name=expired_at]").val(resData.expired_at)
-                $('.expired-time').datepicker('setValue', resData.expired_at)
+                $("input[type=text][name=start_at]").datepicker('setValue', resData.start_at)
+                $("input[type=text][name=expired_at]").datepicker('setValue', resData.expired_at)
                 $('.effect-time, .expired-time').attr("disabled", false)
                 $('#days').attr("disabled", true)
             }
@@ -660,10 +659,25 @@ function getPkgCode (file) {
                 $(".pkg-data").append($pkgData)
             }
             if (pkgdata != null || pkgdata != '') {
+                codeArr = []
+                seqArr = []
                 for (let i = 0; i < pkgdata.length; i++) {
                     let $pkgData = '<option value="' + pkgdata[i].seq + '">' + pkgdata[i].code + '</option>'
                     $(".pkg-data").append($pkgData)
+                    codeArr[i] = pkgdata[i].code
+                    seqArr[i] = pkgdata[i].seq
                 }
+                // if (limitAmount == '0' || limitAmount == '1' || limitAmount == '2' || limitAmount == '5') {
+                //     $("select.pkg-data").find("option[value = '"+limitAmount+"']").attr("selected","selected")
+                //     $(".pkg .am-selected-list > li").removeClass("am-checked")
+                //     for (let i = 0; i < 4; i++) {
+                //         if ($(".pkg .am-selected-list > li:eq("+ i +")").attr("data-value") == limitAmount) {
+                //             let text = $(".pkg .am-selected-list > li:eq("+ i +") span").text()
+                //             $(".pkg .am-selected-status").text(text)
+                //             $(".pkg .am-selected-list > li:eq("+ i +")").addClass("am-checked")
+                //         }
+                //     }
+                // }
             }
         },
         error: function (ex) {
@@ -673,6 +687,21 @@ function getPkgCode (file) {
     // console.log(file)
 }
 getPkgCode();
+setTimeout(() => {
+    let allPkgList = $(".pkg .am-selected-list > li")
+    for (let i = 0; i < pkgdata.length; i++) {
+        for (let j = 0; j < allPkgList.length; j++) {
+            let pkgSeq = $(".pkg .am-selected-list > li:eq("+ j +")").attr("data-value")
+            if (pkgSeq == seqArr[i]) {
+                $("select.pkg-data").find("option[value = '"+seqArr[i]+"']").attr("selected","selected")
+                $(".pkg .am-selected-list > li:eq("+ j +")").addClass("am-checked")
+                // $(".pkg .am-selected-list > li").removeClass("am-checked")
+            }
+        }
+    }
+    console.log(codeArr)
+    $(".pkg .am-selected-status").text(codeArr)
+}, 1000);
 
 // let pkgli = $(".pkg .am-selected-list > li")
 
@@ -697,16 +726,16 @@ $("body").on("click", ".pkg .am-selected-list > li", function () {
 
 $(".package-box").on("click", ".delete-pkg", function () {
     $(this).parent().remove()
-    let optionList = $(".am-selected-list > li").length
-    let pkgList = $(".package-box .package").length
+    let optionList = $(".pkg .am-selected-list > li").length
+    let pkgList = $(".pkg .package-box .package").length
     let pkgValue = $(this).parent().attr("data-value")
     let pkgArr = []
     for (let j = 0; j < pkgList; j++) {
-        pkgArr[j] = $(".package-box .package:eq("+ j +") .package-code").text()
+        pkgArr[j] = $(".pkg .package-box .package:eq("+ j +") .package-code").text()
     }
     for (let i = 0; i < optionList; i++) {
-        let unselect = $(".am-selected-list > li:eq("+ i +")").attr("data-value")
-        let pkgCode = $(".am-selected-list > li:eq("+ i +") span").text()
+        let unselect = $(".pkg .am-selected-list > li:eq("+ i +")").attr("data-value")
+        let pkgCode = $(".pkg .am-selected-list > li:eq("+ i +") span").text()
         if (unselect == pkgValue) {
             $(".pkg .am-selected-list > li:eq("+ i +")").removeClass("am-checked")
             $(".pkg .am-selected-status").text(pkgArr.join(','))
