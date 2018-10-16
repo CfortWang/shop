@@ -244,6 +244,9 @@ class GroupOnController extends Controller
             return $this->responseBadRequest($message);
         }
         $product = GrouponProduct::where('id',$input['id'])->where('buyer_id',$buyer_id)->first();
+        if(!$product){
+            return $this->responseBadRequest('');
+        }
         $product->title = $input['title'];
         $product->price = $input['price'];
         $product->discounted_price = $input['discounted_price'];
