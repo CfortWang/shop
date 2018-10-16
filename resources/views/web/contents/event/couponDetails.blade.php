@@ -667,17 +667,6 @@ function getPkgCode (file) {
                     codeArr[i] = pkgdata[i].code
                     seqArr[i] = pkgdata[i].seq
                 }
-                // if (limitAmount == '0' || limitAmount == '1' || limitAmount == '2' || limitAmount == '5') {
-                //     $("select.pkg-data").find("option[value = '"+limitAmount+"']").attr("selected","selected")
-                //     $(".pkg .am-selected-list > li").removeClass("am-checked")
-                //     for (let i = 0; i < 4; i++) {
-                //         if ($(".pkg .am-selected-list > li:eq("+ i +")").attr("data-value") == limitAmount) {
-                //             let text = $(".pkg .am-selected-list > li:eq("+ i +") span").text()
-                //             $(".pkg .am-selected-status").text(text)
-                //             $(".pkg .am-selected-list > li:eq("+ i +")").addClass("am-checked")
-                //         }
-                //     }
-                // }
             }
         },
         error: function (ex) {
@@ -699,7 +688,6 @@ setTimeout(() => {
             }
         }
     }
-    console.log(codeArr)
     $(".pkg .am-selected-status").text(codeArr)
 }, 1000);
 
@@ -726,12 +714,12 @@ $("body").on("click", ".pkg .am-selected-list > li", function () {
 
 $(".package-box").on("click", ".delete-pkg", function () {
     $(this).parent().remove()
-    let optionList = $(".pkg .am-selected-list > li").length
-    let pkgList = $(".pkg .package-box .package").length
+    let optionList = $(".am-selected-list > li").length
+    let pkgList = $(".package-box .package").length
     let pkgValue = $(this).parent().attr("data-value")
     let pkgArr = []
     for (let j = 0; j < pkgList; j++) {
-        pkgArr[j] = $(".pkg .package-box .package:eq("+ j +") .package-code").text()
+        pkgArr[j] = $(".package-box .package:eq("+ j +") .package-code").text()
     }
     for (let i = 0; i < optionList; i++) {
         let unselect = $(".pkg .am-selected-list > li:eq("+ i +")").attr("data-value")

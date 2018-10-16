@@ -253,7 +253,7 @@ class AdController extends Controller
                         'end_num'          => $v1['end_q35code'],
                         'status'           => 'registered',
                         'buyer'            => $buyer,
-                        'shop_ad'          => $shopAd->seq,
+                        'shop_ad'          => $id,
                         'q35package'       => $v1['seq']
                     ]);
                 }

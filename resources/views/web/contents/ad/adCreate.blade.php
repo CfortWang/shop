@@ -23,7 +23,7 @@
                                     <label class="am-u-lg-2 am-u-md-2 am-u-sm-3">广告图片</label>
                                     <div class="am-u-lg-10 am-u-md-10 am-u-sm-9 product">
                                         <a href="javascript:;" class="file">+添加图片
-                                            <input type="file" class="" id="product-image" name="image[]" onchange="selectImage(this, '.product')">
+                                            <input type="file" class="" id="product-image" name="file" onchange="selectImage(this, '.product')">
                                         </a>
                                         <span class="image-remark">建议尺寸:1204*1204像素，仅支持gif,jpeg,png,bmp 4种格式，大小不超过3.0M</span>
                                     </div>
@@ -143,6 +143,7 @@ function selectImage(file) {
     reader.readAsDataURL(file.files[0]);
     adData = new FormData()
     adData.append('ad_image_file', file.files[0])
+    console.log(adData)
     $(".product .file").hide()
 }
 
@@ -239,7 +240,7 @@ $(".create-ad-btn").on("click", function () {
     let pkgList = $(".package-box .package").length
     let pkgArr = []
     for (let j = 0; j < pkgList; j++) {
-        pkgArr[j] = $(".package-box .package:eq("+ j +") .package-code").text()
+        pkgArr[j] = $(".package-box .package:eq("+ j +")").attr("data-value")
     }
 
     if (adName == '' || adName == null) {
