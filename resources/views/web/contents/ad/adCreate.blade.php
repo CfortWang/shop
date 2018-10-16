@@ -45,7 +45,7 @@
                                 <div class="form-group clear-fix">
                                     <label class="am-u-lg-2 am-u-md-2 am-u-sm-3">关联喜豆码</label>
                                     <div class="am-u-lg-4 am-u-md-5 am-u-sm-6 am-u-end">
-                                        <select class="pkg-data" multiple data-am-selected="{maxHeight: 100}"></select>
+                                        <select class="pkg-data" name="pkgList[]" multiple data-am-selected="{maxHeight: 100}"></select>
                                     </div>
                                 </div>
                                 <div class="am-u-lg-10 am-u-md-10 am-u-sm-9 am-u-end package-box"></div>
@@ -241,6 +241,7 @@ $(".create-ad-btn").on("click", function () {
     for (let j = 0; j < pkgList; j++) {
         pkgArr[j] = $(".package-box .package:eq("+ j +") .package-code").text()
     }
+
     if (adName == '' || adName == null) {
         alert("广告标题不能为空")
         return false
@@ -257,14 +258,18 @@ $(".create-ad-btn").on("click", function () {
         alert("广告跳转链接不能为空")
         return false
     }
-    
+    console.log(pkgArr)
     adData.append("title", adName)
     adData.append("start_date", adStartDate)
     adData.append("end_date", adEndDate)
     adData.append("landing_url", adLandingUrl)
-    adData.append("pkg_list", pkgArr)
+
+    for (let i = 0; i < pkgArr.length; i++) {
+        adData.append("pkg_list[]", pkgArr[i])
+    }
 
     createAd(adData)
+    adData = new FormData()
 })
 
 </script>
