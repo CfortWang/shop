@@ -56,7 +56,7 @@ class MessageController extends Controller
     public function create(Request $request)
     {
         $buyer_id = $this->buyer_id;
-        $input=Input::only('content','message_type','object_type','send_at');
+        $input=Input::only('content','message_type','object_type','send_at','phone_num');
         $message =  $messages = [
             "required" => ":attribute ".trans('common.verification.cannotEmpty'),
         ];
@@ -84,9 +84,9 @@ class MessageController extends Controller
         $res = ShopMessage::create($data);
         $phone_num = $input['phone_num'];
         if($data['message_type']&&count($phone_num)){
+            $phone_num = array_unique($phone_num);
             foreach ($phone_num as $key => $value) {
                 $phone_user['phone_num'] = $value;
-                // $phone_user['user_id'] = ;
                 $phone_user['shop_message_id'] = $res->id;
                 ShopMessageUser::create($phone_user);
             }
