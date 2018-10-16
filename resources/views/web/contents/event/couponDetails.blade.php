@@ -399,7 +399,8 @@ var drawData = function () {
                 $('#days').attr("disabled", false)
             } else {
                 $("input[type=text][name=start_at]").val(resData.start_at)
-                $("input[type=text][name=expired_at]").val(resData.expired_at)
+                // $("input[type=text][name=expired_at]").val(resData.expired_at)
+                $('.expired-time').datepicker('setValue', resData.expired_at)
                 $('.effect-time, .expired-time').attr("disabled", false)
                 $('#days').attr("disabled", true)
             }
