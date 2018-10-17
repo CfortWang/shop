@@ -16,12 +16,9 @@ class LoginMiddleware
      */
     public function handle($request, Closure $next)
     {
-        // dd($request->session()->get('buyer'));
-        // dd(Session::all());
-        // if ($request->session()->has('buyer') === false) {
-        //     return redirect()->route('login');
-        // }
-        // dd($request->session()->get('buyer'));
+        if ($request->session()->has('buyer') === false) {
+            return redirect()->route('login');
+        }
         App::setLocale('zh');
         return $next($request);
     }

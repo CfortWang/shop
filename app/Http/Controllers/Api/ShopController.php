@@ -28,13 +28,12 @@ use Illuminate\Support\Facades\DB;
 
 class ShopController extends Controller
 {
-    public function __construct()
+    public function __construct(Request $request)
     {
         $this->buyer_id = 14;
     }
 
     public function info(Request $request){
-        $seq = $request->session()->get('buyer.seq');
         $buyer = $this->buyer_id;
         $items = Buyer::where('Buyer.seq',$buyer) 
                     ->leftJoin('ShopImageFile as F','F.seq', '=', 'Buyer.shop_logo_image_file')
@@ -65,7 +64,6 @@ class ShopController extends Controller
     }
 
     public function modify(Request $request){
-        $seq = $request->session()->get('buyer.seq');
         $seq = $this->buyer_id;
         $input = Input::only([
             'name',
@@ -168,7 +166,6 @@ class ShopController extends Controller
 
     public function deleteImage(Request $request)
     {
-        $buyer = $request->session()->get('buyer.seq');
         $buyer = $this->buyer_id;
         $input = Input::only([
             'image_type',
@@ -489,7 +486,7 @@ class ShopController extends Controller
     }
     public function couponStatus(Request $request)
     {
-        $buyer_id = 14;
+        $buyer_id = $this->buyer_id;
         $input=Input::only('id','status');
         $message = [
             "required" => ":attribute ".trans('common.verification.cannotEmpty'),
