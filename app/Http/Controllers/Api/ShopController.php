@@ -49,6 +49,14 @@ class ShopController extends Controller
                     'F.url')
                     ->orderBy('ShopDetailImage.order_num','desc')
                     ->get();
+        if($items['open_time']){
+            $time = explode(':',$items['open_time']);
+            $items['open_time'] = $time[0].':'.$time[1];
+        }
+        if($items['close_time']){
+            $time = explode(':',$items['close_time']);
+            $items['close_time'] = $time[0].':'.$time[1];
+        }
         $items['detailImage']=$data;
         if(empty($items)){
             return $this->responseNotFound('No data','');
