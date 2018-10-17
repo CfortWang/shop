@@ -66,6 +66,7 @@ class ShopController extends Controller
 
     public function modify(Request $request){
         $seq = $request->session()->get('buyer.seq');
+        $seq = $this->buyer_id;
         $input = Input::only([
             'name',
             'buyer_category',
@@ -125,81 +126,26 @@ class ShopController extends Controller
             $shopLogoImage = FileHelper::shopLogoImage($logo);
             $shopLogoImage = ShopImageFile::create($shopLogoImage);
             $Buyer->shop_logo_image_file = $shopLogoImage->seq;
+        }else if(!$Buyer->shop_logo_image_file){
+            return $this->responseBadRequest('Upload logo first', 403);//error code 400,403
         }
-        $detailImage1 = $request->file('cropped_detail_image_1');
-        $detailImage2 = $request->file('cropped_detail_image_2');
-        $detailImage3 = $request->file('cropped_detail_image_3');
-        $detailImage4 = $request->file('cropped_detail_image_4');
-        $detailImage5 = $request->file('cropped_detail_image_5');
-        if($detailImage1){
-            $oldShopDetailImage = ShopDetailImage::where('buyer', $Buyer->seq)
-            ->where('order_num', 1)
-            ->delete();
-            $shopDetailImage = FileHelper::shopDetailImage($detailImage1);
-            $shopDetailImage = ShopImageFile::create($shopDetailImage);
-            ShopDetailImage::create([
-                'type'             => 'event',
-                'order_num'        => 1,
-                'buyer'            => $Buyer->seq,
-                'shop_image_file'  => $shopDetailImage->seq
-            ]);
+        for ($i=1; $i < 6; $i++) { 
+            $a = 'detailImage'.$i;
+            $$a = $request->file('cropped_detail_image_'.$i);
+            if($$a){
+                $oldShopDetailImage = ShopDetailImage::where('buyer', $Buyer->seq)
+                    ->where('order_num', 1)
+                    ->delete();
+                $shopDetailImage = FileHelper::shopDetailImage($$a);
+                $shopDetailImage = ShopImageFile::create($shopDetailImage);
+                ShopDetailImage::create([
+                    'type'             => 'event',
+                    'order_num'        => $i,
+                    'buyer'            => $Buyer->seq,
+                    'shop_image_file'  => $shopDetailImage->seq
+                ]);
+            }
         }
-        if($detailImage2){
-            $oldShopDetailImage = ShopDetailImage::where('buyer', $Buyer->seq)
-            ->where('order_num', 2)
-            ->delete();
-            $shopDetailImage = FileHelper::shopDetailImage($detailImage2);
-            $shopDetailImage = ShopImageFile::create($shopDetailImage);
-            ShopDetailImage::create([
-                'type'             => 'event',
-                'order_num'        => 2,
-                'buyer'            => $Buyer->seq,
-                'shop_image_file'  => $shopDetailImage->seq
-            ]);
-        }
-        if($detailImage3){
-            $oldShopDetailImage = ShopDetailImage::where('buyer', $Buyer->seq)
-            ->where('order_num', 3)
-            ->delete();
-            $shopDetailImage = FileHelper::shopDetailImage($detailImage3);
-            $shopDetailImage = ShopImageFile::create($shopDetailImage);
-            ShopDetailImage::create([
-                'type'             => 'event',
-                'order_num'        => 3,
-                'buyer'            => $Buyer->seq,
-                'shop_image_file'  => $shopDetailImage->seq
-            ]);
-        }
-        if($detailImage4){
-            $oldShopDetailImage = ShopDetailImage::where('buyer', $Buyer->seq)
-            ->where('order_num', 4)
-            ->delete();
-            $shopDetailImage = FileHelper::shopDetailImage($detailImage4);
-            $shopDetailImage = ShopImageFile::create($shopDetailImage);
-            ShopDetailImage::create([
-                'type'             => 'event',
-                'order_num'        => 4,
-                'buyer'            => $Buyer->seq,
-                'shop_image_file'  => $shopDetailImage->seq
-            ]);
-        }
-        if($detailImage5){
-            $oldShopDetailImage = ShopDetailImage::where('buyer', $Buyer->seq)
-            ->where('order_num', 5)
-            ->delete();
-            $shopDetailImage = FileHelper::shopDetailImage($detailImage5);
-            $shopDetailImage = ShopImageFile::create($shopDetailImage);
-            ShopDetailImage::create([
-                'type'             => 'event',
-                'order_num'        => 5,
-                'buyer'            => $Buyer->seq,
-                'shop_image_file'  => $shopDetailImage->seq
-            ]);
-        }
-        // else if(!$Buyer->shop_logo_image_file){
-        //     return $this->responseBadRequest('Upload logo first', 403);//error code 400,403
-        // }
-
         $Buyer->name = $input['name'];
         $Buyer->branch_name = $input['branch_name'];
         $Buyer->buyer_category = $input['buyer_category'];
