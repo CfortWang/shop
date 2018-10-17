@@ -936,7 +936,7 @@ input:-moz-placeholder {
 
 .form-group .timepicker{
     width: 20%;
-    min-width: 200px;
+    min-width: 180px;
     display: inline-block;
 }
 

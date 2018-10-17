@@ -42,7 +42,7 @@ class ShopController extends Controller
                     ->leftJoin('Area as A','A.seq', '=', 'Buyer.area')
                     ->leftJoin('City as C','C.seq', '=', 'Buyer.city')
                     ->select('Buyer.name as shop_name','Buyer.phone_num',
-                    'Buyer.open_time','Buyer.close_time','Buyer.province','p.name as province_name','A.name as city_name','C.name as area_name','Buyer.city','Buyer.area','Buyer.address_detail','F.url','Buyer.lat','Buyer.buyer_category','Buyer.lng')
+                    'Buyer.open_time','Buyer.close_time','Buyer.province','p.name as province_name','A.name as area_name','C.name as city_name','Buyer.city','Buyer.area','Buyer.address_detail','F.url','Buyer.lat','Buyer.buyer_category','Buyer.lng')
                     ->first();
         $data=ShopDetailImage:: where('buyer',$buyer)
                     ->leftJoin('ShopImageFile as F','F.seq', '=', 'ShopDetailImage.shop_image_file')
