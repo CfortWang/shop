@@ -38,8 +38,11 @@ class ShopController extends Controller
         $buyer = $this->buyer_id;
         $items = Buyer::where('Buyer.seq',$buyer) 
                     ->leftJoin('ShopImageFile as F','F.seq', '=', 'Buyer.shop_logo_image_file')
+                    ->leftJoin('Province as p','p.seq', '=', 'Buyer.province')
+                    ->leftJoin('Area as A','A.seq', '=', 'Buyer.area')
+                    ->leftJoin('City as C','C.seq', '=', 'Buyer.city')
                     ->select('Buyer.name as shop_name','Buyer.phone_num',
-                    'Buyer.open_time','Buyer.close_time','Buyer.province','Buyer.city','Buyer.area','Buyer.address_detail','F.url','Buyer.lat','Buyer.buyer_category','Buyer.lng')
+                    'Buyer.open_time','Buyer.close_time','Buyer.province','p.name as province_name','A.name as city_name','C.name as area_name','Buyer.city','Buyer.area','Buyer.address_detail','F.url','Buyer.lat','Buyer.buyer_category','Buyer.lng')
                     ->first();
         $data=ShopDetailImage:: where('buyer',$buyer)
                     ->leftJoin('ShopImageFile as F','F.seq', '=', 'ShopDetailImage.shop_image_file')
