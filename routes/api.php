@@ -52,6 +52,10 @@ Route::group(['namespace' => 'Api'], function() {
     //common
     Route::group(['prefix'  => 'common'], function() {
         Route::get('/pkgList',                 'AdController@pkgList');//喜豆码列表
+        Route::get('/country',                 'CommonController@country');//喜豆码列表
+        Route::get('/province/{seq}',                 'CommonController@province');//喜豆码列表
+        Route::get('/city/{seq}',                 'CommonController@city');//喜豆码列表
+        Route::get('/area/{seq}',                 'CommonController@area');//喜豆码列表
     });
     //shop
     Route::group(['prefix'  => 'shop'], function() {
