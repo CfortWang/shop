@@ -93,7 +93,7 @@ class ShopController extends Controller
             'cropped_detail_image_4',
             'cropped_detail_image_5'
         ]);
-
+// dd($input);
         $validator = Validator::make($input,[
             'name'                   => 'required|string|min:1',
             'buyer_category'         => 'nullable|integer|min:1',
@@ -153,19 +153,15 @@ class ShopController extends Controller
             }
         }
         $Buyer->name = $input['name'];
-        $Buyer->branch_name = $input['branch_name'];
         $Buyer->buyer_category = $input['buyer_category'];
         $Buyer->phone_num = $input['phone_num'];
-        $Buyer->homepage_url = $input['homepage_url'];
         $Buyer->open_time = $input['open_time'];
         $Buyer->close_time = $input['close_time'];
-        $Buyer->open_close_remark = $input['time_remark'];
         $Buyer->country = $input['country'];
         $Buyer->province = $input['province'];
         $Buyer->city = $input['city'];
         $Buyer->area = $input['area'];
         $Buyer->address_detail = $input['address_detail'];
-        $Buyer->description = $input['description'];
         $Buyer->lat = $input['lat'];
         $Buyer->lng = $input['lng'];
         $Buyer->save();
