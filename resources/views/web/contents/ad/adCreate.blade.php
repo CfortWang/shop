@@ -147,7 +147,7 @@ function selectImage(file) {
     $(".product .file").hide()
 }
 
-function getPkgCode (file) {
+function getPkgCode () {
     $.ajax({
         url: 'http://shop.test/api/adv/pkgList',
         type: 'get',
@@ -163,7 +163,6 @@ function getPkgCode (file) {
             console.log(ex)
         }
     })
-    // console.log(file)
 }
 getPkgCode();
 
