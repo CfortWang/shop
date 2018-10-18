@@ -30,7 +30,7 @@ class ShopController extends Controller
 {
     public function __construct(Request $request)
     {
-        $this->buyer_id = 14;
+        $this->buyer_id = $request->session()->get('buyer.seq');
     }
 
     public function info(Request $request){
