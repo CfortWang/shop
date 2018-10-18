@@ -120,7 +120,7 @@
 <script src="/js/amazeui.datetimepicker.min.js"></script>
 <script type="text/javascript" src="https://webapi.amap.com/maps?v=1.4.6&key=b6f0744f2680a9728fc7fcc2244b0d48&plugin=AMap.Autocomplete"></script> 
 <script>
-$(document).ready(function(){
+// $(document).ready(function(){
     // setPickers();
     var map = new AMap.Map('map',{
         zoom:15,
@@ -153,9 +153,11 @@ $(document).ready(function(){
         map.remove(marker);
         marker.setMap(map);
     }
-})
+    console.log("==")
+// })
 
-function drawData () {
+// function drawData () {
+    console.log("++")
     $.ajax({
         url: 'http://shop.test/api/shop/info',
         type: 'get',
@@ -165,8 +167,8 @@ function drawData () {
             let resData = res.data
             $("input#shop_name").val(resData.shop_name)
             $("input#phone_num").val(resData.phone_num)
-            $("input#open_time").datetimepicker('update', resData.open_time, 'hh:ii')
-            $("input#close_time").datetimepicker('update', resData.close_time)
+            $("input#open_time").val(resData.open_time)
+            $("input#close_time").val(resData.close_time)
             $("input#address_detail").val(resData.address_detail)
             country = 1
             province = resData.province
@@ -175,22 +177,24 @@ function drawData () {
             categoryID = resData.buyer_category
             imageIndex = resData.detailImage.length + 1
 
-            // if(resData.lat&&resData.lng){
-            //     marker = new AMap.Marker({
-            //         position: new AMap.LngLat(resData.lng,resData.lat),
-            //     });
-            //     map.add(marker);
-            //     map.setZoomAndCenter(14, [resData.lng, resData.lat]);
-            // }
+            if(resData.lat&&resData.lng){
+                marker = new AMap.Marker({
+                    position: new AMap.LngLat(resData.lng,resData.lat),
+                });
+                map.add(marker);
+                map.setZoomAndCenter(14, [resData.lng, resData.lat]);
+            }
 
             // 商铺头像
             $(".product .image-remark").hide()
             $(".list .file").hide()
             imageArr = [0,0,0,0,0]
+            var seq = imageIndex - resData.detailImage.length
             for (let i = 0; i < resData.detailImage.length; i++) {
-                var $imgBox = '<div class="selected-image"><div class="delete-image"><img src="/img/main/close.png" alt=""></div><img class="image" alt="" src="' + 'http://' + resData.detailImage[i].url + '"><input class="img-value" type="text" name="image[]" hidden value="' + resData.detailImage[i].url + '"></div>'
+                var $imgBox = '<div class="selected-image" data-seq="'+seq+'"><div class="delete-image"><img src="/img/main/close.png" alt=""></div><img class="image" alt="" src="' + 'http://' + resData.detailImage[i].url + '"><input class="img-value" type="text" name="image[]" hidden value="' + resData.detailImage[i].url + '"></div>'
                 $('.product').append($imgBox)
                 imageArr[i] = 1
+                seq++
             }
             $(".list .image-remark").hide()
             var $imgBox = '<div class="selected-image"><div class="delete-image"><img src="/img/main/close.png" alt=""></div><img class="image" alt="" src="' + resData.url + '"><input class="img-value" type="text" name="logo" hidden value="' + resData.logo + '"></div>'
@@ -200,8 +204,8 @@ function drawData () {
             console.log(ex)
         }
     })
-}
-drawData();
+// }
+// drawData();
 
 getProvince(country);
 getCity(province);
@@ -362,7 +366,8 @@ function selectImage(file) {
             console.log("最多只能选择张图片")
             // return false
         }
-        var $imgBox = '<div class="selected-image"><div class="delete-image"><img src="/img/main/close.png" alt=""></div><img class="image" alt="" src="' +evt.target.result + '"><input class="img-value" type="text" name="image[]" hidden></div>'
+        let seq = imageIndex - 1
+        var $imgBox = '<div class="selected-image" data-seq="'+seq+'"><div class="delete-image"><img src="/img/main/close.png" alt=""></div><img class="image" alt="" src="' +evt.target.result + '"><input class="img-value" type="text" name="image[]" hidden></div>'
         $('.product').append($imgBox)
         image = evt.target.result;
         $('.product .image-remark').hide()
@@ -387,8 +392,8 @@ $(".product").on("click", ".selected-image .delete-image", function () {
         $(".product .image-remark").show()
     }
     $(".product .file").show()
-    imageArr[imageIndex-2] = 0
-    imageIndex--
+    imageIndex = $(this).parent().attr("data-seq")
+    imageArr[imageIndex-1] = 0
 })
 $(".list").on("click", ".selected-image .delete-image", function () {
     $(this).parent().remove()
