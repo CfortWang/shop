@@ -138,8 +138,8 @@ class ShopController extends Controller
             return $this->responseBadRequest('Upload logo first', 403);//error code 400,403
         }
         for ($i=0; $i < count($input['detail_image_array']); $i++) { 
-            if($input['detail_image_array'][$i]==0){
-                ShopDetailImage::where('buyer', $seq)
+            if($input['detail_image_array']==0){
+                ShopDetailImage::where('buyer', $buyer)
                     ->where('order_num',$i+1)
                     ->delete();
             }
@@ -209,9 +209,22 @@ class ShopController extends Controller
                 ->where('seq',$input['detailSeq'] )
                 ->delete();
         } 
-
+        $this->formatImage();
         return $this->responseOK('success','');
     }
+
+    protected function formatImage()
+    {
+        $buyer = $this->buyer_id;
+        $images = ShopDetailImage::where('buyer', $buyer)->orderBy('order_num','asc')->get();
+        $i = 1;
+        foreach ($images as $image) {
+            $image->order_num = $i;
+            $image->save();
+            $i++;
+        }
+    }
+
     public function createCoupon(Request $request){
         $buyer = $this->buyer_id;
         $input=Input::only('coupon_name','quantity','coupon_type','discount_money','discount_percent',
