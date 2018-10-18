@@ -1428,6 +1428,9 @@ input:-webkit-autofill {
     margin-top: 10px;
     display: none;
 }
+.am-selected-status {
+    color: #333;
+}
 
 
 
@@ -1501,11 +1504,57 @@ input:-webkit-autofill {
 
 
 
+/* SHOP */
+#province, #city, #area{
+    /* width: 150px; */
+    appearance:none;
+    -moz-appearance:none;
+    -webkit-appearance: none;
+    background: rgba(255,255,255,1);
+    border: 0.81px solid rgba(221,221,221,1);
+    outline: none;
+    border-radius: 4px;
+    height: 40px;
+    font-size: 14px;
+    width: 80%;
+    color: #333;
+    font-size: 16px;
+    padding-left: 12px;
+}
 
+#address_detail{
+    margin-top: 10px;
+    width: 100%;
+}
 
-
-
-
+#map{
+    min-height:300px;
+}
+#myPageTop {
+    position: absolute;
+    top: -11px;
+    font-size: 14px;
+    background: none 0px 0px repeat scroll rgb(255, 255, 255);
+    border: 1px solid rgb(204, 204, 204);
+    border-image: initial;
+    margin: 10px auto;
+    padding: 6px;
+}
+#myPageTop span{
+    vertical-align: middle;
+}
+.search-div input{
+    display: inline;
+    min-width: 150px;
+    background: rgba(255,255,255,1);
+    border: 0.81px solid rgba(221,221,221,1);
+    border-radius: 4px;
+    font-size: 14px;
+    outline: none;
+}
+.coordinate input{
+    width: auto;
+}
 
 
 

@@ -143,7 +143,6 @@ function selectImage(file) {
     reader.readAsDataURL(file.files[0]);
     adData = new FormData()
     adData.append('ad_image_file', file.files[0])
-    console.log(adData)
     $(".product .file").hide()
 }
 
