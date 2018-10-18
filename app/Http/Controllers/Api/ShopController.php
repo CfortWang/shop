@@ -91,7 +91,8 @@ class ShopController extends Controller
             'cropped_detail_image_2',
             'cropped_detail_image_3',
             'cropped_detail_image_4',
-            'cropped_detail_image_5'
+            'cropped_detail_image_5',
+            'detail_image_array'
         ]);
 
         $validator = Validator::make($input,[
@@ -112,7 +113,8 @@ class ShopController extends Controller
             'cropped_detail_image_2' => 'nullable',
             'cropped_detail_image_3' => 'nullable',
             'cropped_detail_image_4' => 'nullable',
-            'cropped_detail_image_5' => 'nullable'
+            'cropped_detail_image_5' => 'nullable',
+            'detail_image_array'     => 'required|array',
         ]);
         if ($validator->fails()) {
             return $this->responseBadRequest('parameter is invalid', 401);//error code 400,401
@@ -135,12 +137,19 @@ class ShopController extends Controller
         }else if(!$Buyer->shop_logo_image_file){
             return $this->responseBadRequest('Upload logo first', 403);//error code 400,403
         }
+        for ($i=0; $i < count($input['detail_image_array']); $i++) { 
+            if($input['detail_image_array']==0){
+                ShopDetailImage::where('buyer', $buyer)
+                    ->where('order_num',$i+1)
+                    ->delete();
+            }
+        }
         for ($i=1; $i < 6; $i++) { 
             $a = 'detailImage'.$i;
             $$a = $request->file('cropped_detail_image_'.$i);
             if($$a){
                 $oldShopDetailImage = ShopDetailImage::where('buyer', $Buyer->seq)
-                    ->where('order_num', 1)
+                    ->where('order_num', $i)
                     ->delete();
                 $shopDetailImage = FileHelper::shopDetailImage($$a);
                 $shopDetailImage = ShopImageFile::create($shopDetailImage);
