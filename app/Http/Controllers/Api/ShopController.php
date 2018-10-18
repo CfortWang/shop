@@ -47,7 +47,7 @@ class ShopController extends Controller
                     ->leftJoin('ShopImageFile as F','F.seq', '=', 'ShopDetailImage.shop_image_file')
                     ->select('ShopDetailImage.order_num','ShopDetailImage.seq',
                     'F.url')
-                    ->orderBy('ShopDetailImage.order_num','desc')
+                    ->orderBy('ShopDetailImage.order_num','asc')
                     ->get();
         if($items['open_time']){
             $time = explode(':',$items['open_time']);
@@ -138,8 +138,8 @@ class ShopController extends Controller
             return $this->responseBadRequest('Upload logo first', 403);//error code 400,403
         }
         for ($i=0; $i < count($input['detail_image_array']); $i++) { 
-            if($input['detail_image_array']==0){
-                ShopDetailImage::where('buyer', $buyer)
+            if($input['detail_image_array'][$i]==0){
+                ShopDetailImage::where('buyer', $seq)
                     ->where('order_num',$i+1)
                     ->delete();
             }

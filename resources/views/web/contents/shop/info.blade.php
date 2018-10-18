@@ -173,6 +173,7 @@ function drawData () {
             city = resData.city
             area = resData.area
             categoryID = resData.buyer_category
+            imageIndex = resData.detailImage.length + 1
 
             // if(resData.lat&&resData.lng){
             //     marker = new AMap.Marker({
@@ -185,9 +186,11 @@ function drawData () {
             // 商铺头像
             $(".product .image-remark").hide()
             $(".list .file").hide()
+            imageArr = [0,0,0,0,0]
             for (let i = 0; i < resData.detailImage.length; i++) {
-                var $imgBox = '<div class="selected-image"><div class="delete-image"><img src="/img/main/close.png" alt=""></div><img class="image" alt="" src="' + resData.detailImage[i].url + '"><input class="img-value" type="text" name="image[]" hidden value="' + resData.detailImage[i].url + '"></div>'
+                var $imgBox = '<div class="selected-image"><div class="delete-image"><img src="/img/main/close.png" alt=""></div><img class="image" alt="" src="' + 'http://' + resData.detailImage[i].url + '"><input class="img-value" type="text" name="image[]" hidden value="' + resData.detailImage[i].url + '"></div>'
                 $('.product').append($imgBox)
+                imageArr[i] = 1
             }
             $(".list .image-remark").hide()
             var $imgBox = '<div class="selected-image"><div class="delete-image"><img src="/img/main/close.png" alt=""></div><img class="image" alt="" src="' + resData.url + '"><input class="img-value" type="text" name="logo" hidden value="' + resData.logo + '"></div>'
@@ -213,7 +216,6 @@ setTimeout(() => {
     $(".categories .am-selected-list:eq(0)").find("li[data-value = '" + categoryID + "']").addClass("am-checked")
     let cc = $(".categories .am-selected-list").find("li[data-value = '" + categoryID + "']").children("span").text()
     $(".categories .am-selected-status:eq(0)").text(cc)
-
 }, 1000);
 
 function getCategory () {
@@ -287,7 +289,6 @@ function getCity (id) {
                 $(".detail-address #city").append($opts)
             }
             cid = $("select#city").val()
-            console.log("=======" + cid)
         },
         error: function (ex) {
             console.log(ex)
@@ -340,8 +341,12 @@ function selectLogo(file) {
         $('.list .image-remark').hide()
     }
     reader.readAsDataURL(file.files[0]);
-    shopData = new FormData()
-    shopData.append('cropped_logo_image', file.files[0])
+    if (window.shopData) {
+        shopData.append('cropped_logo_image', file.files[0])
+    } else {
+        shopData = new FormData()
+        shopData.append('cropped_logo_image', file.files[0])
+    }
     $(".list .file").hide()
 }
 
@@ -363,8 +368,16 @@ function selectImage(file) {
         $('.product .image-remark').hide()
     }
     reader.readAsDataURL(file.files[0]);
-    shopData = new FormData()
-    shopData.append('cropped_logo_image', file.files[0])
+    console.log(imageIndex)
+    let index = 'cropped_detail_image_' + imageIndex
+    if (window.shopData) {
+        shopData.append(index, file.files[0])
+    } else {
+        shopData = new FormData()
+        shopData.append(index, file.files[0])
+    }
+    imageArr[imageIndex-1] = 1
+    imageIndex++
 }
 
 $(".product").on("click", ".selected-image .delete-image", function () {
@@ -374,6 +387,8 @@ $(".product").on("click", ".selected-image .delete-image", function () {
         $(".product .image-remark").show()
     }
     $(".product .file").show()
+    imageArr[imageIndex-2] = 0
+    imageIndex--
 })
 $(".list").on("click", ".selected-image .delete-image", function () {
     $(this).parent().remove()
@@ -445,8 +460,9 @@ $(".bottom-submit-btn").on("click", function () {
         alert("地点不能为空")
         return false
     }
-
-    shopData = new FormData()
+    if (!window.shopData) {
+        shopData = new FormData()
+    }
     shopData.append("name", shopName)
     shopData.append("phone_num", phoneNum)
     shopData.append("open_time", openTime)
@@ -459,8 +475,9 @@ $(".bottom-submit-btn").on("click", function () {
     shopData.append("address_detail", addressDetail)
     shopData.append("lat", lat)
     shopData.append("lng", lng)
-
-    console.log(shopData)
+    for (let i = 0; i < 5; i++) {
+        shopData.append("detail_image_array[]", imageArr[i])
+    }
 
     modifyInfo(shopData)
     shopData = new FormData()
