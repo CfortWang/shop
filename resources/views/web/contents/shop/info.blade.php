@@ -156,7 +156,7 @@
     console.log("==")
 // })
 
-// function drawData () {
+function drawData () {
     console.log("++")
     $.ajax({
         url: 'http://shop.test/api/shop/info',
@@ -204,8 +204,8 @@
             console.log(ex)
         }
     })
-// }
-// drawData();
+}
+drawData();
 
 getProvince(country);
 getCity(province);
@@ -361,12 +361,19 @@ function selectImage(file) {
     var reader = new FileReader();
     reader.onload = function (evt) {
         var sonNum = $('.product').children().length
+        console.log($($('.product').children())[0].attr("data-seq"))
         if (sonNum > 5) {
             $(".product .file").hide()
             console.log("最多只能选择张图片")
             // return false
         }
+        // for (let i = 0; i < sonNum; i++) {
+        //     nowIndex[i] = $('.product').children()[i].
+        // }
         let seq = imageIndex - 1
+        // if ($.inArray(seq, nowIndex)) {
+        //     seq++
+        // }
         var $imgBox = '<div class="selected-image" data-seq="'+seq+'"><div class="delete-image"><img src="/img/main/close.png" alt=""></div><img class="image" alt="" src="' +evt.target.result + '"><input class="img-value" type="text" name="image[]" hidden></div>'
         $('.product').append($imgBox)
         image = evt.target.result;

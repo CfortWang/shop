@@ -138,8 +138,8 @@ class ShopController extends Controller
             return $this->responseBadRequest('Upload logo first', 403);//error code 400,403
         }
         for ($i=0; $i < count($input['detail_image_array']); $i++) { 
-            if($input['detail_image_array']==0){
-                ShopDetailImage::where('buyer', $buyer)
+            if($input['detail_image_array'][$i]==0){
+                ShopDetailImage::where('buyer', $seq)
                     ->where('order_num',$i+1)
                     ->delete();
             }
