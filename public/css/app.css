@@ -699,7 +699,7 @@ ul.tpl-dropdown-content li>a.tpl-dropdown-content-message:last-child {
     float: left;
     width: 50%;
 }
-.scan-user-table .table-title, #pdd-table .table-title, .coupon-table .table-title, .coupon-details-table .table-title, .pdd .table-title, #ad-table .table-title{
+.scan-user-table .table-title, #pdd-table .table-title, .coupon-table .table-title, .coupon-details-table .table-title, .pdd .table-title, #ad-table .table-title, .code-table .table-title{
     height:64px;
     /* line-height: 64px; */
     display: flex;
@@ -708,7 +708,7 @@ ul.tpl-dropdown-content li>a.tpl-dropdown-content-message:last-child {
     border-radius:5px 5px 0px 0px;
     color: #ffffff;
 }
-.scan-user-table .table-tr, #pdd-table .table-tr, .coupon-table .table-tr, .coupon-details-table .table-tr, .pdd .table-tr, #ad-table .table-tr{
+.scan-user-table .table-tr, #pdd-table .table-tr, .coupon-table .table-tr, .coupon-details-table .table-tr, .pdd .table-tr, #ad-table .table-tr, .code-table .table-tr{
     height: 70px;
 }
 
@@ -1556,14 +1556,69 @@ input:-webkit-autofill {
     width: auto;
 }
 
+.code-tab{
+    width: 20%;
+    min-width: 300px;
+    height: 42px;
+    font-size: 0px;
+    border: 0.81px solid rgba(221,221,221,1);
+    border-radius: 5px;
+}
+.code-tab-item{
+    display: inline-block;
+    height: 40px;
+    line-height: 40px;
+    width: 50%;
+    margin: 0px;
+    font-size: 16px;
+    text-align: center;
+    cursor: pointer;
+}
+.buy-history .table-title > div, .buy-history .table-tr > div{
+    display: inline-block;
+    text-align: center;
+    float: left;
+    width: 25%;
+}
+.my-code .table-title > div, .my-code .table-tr > div{
+    display: inline-block;
+    text-align: center;
+    float: left;
+    width: 20%;
+}
+.my-code{
+    display: none;
+}
 
+.code-details{
+    margin-bottom: 40px;
+    font-size: 14px;
+    font-family: "PingFangSC-Regular";
+    color: #333;
+}
 
-
-
-
-
-
-
+.code-info{
+    text-align: center;
+    height: 40px;
+    line-height: 40px;
+    margin-bottom: 20px;
+}
+.info-title{
+    font-family: "PingFangSC-Light";
+    font-weight: 300;
+    font-size: 14px;
+    margin: 0px;
+}
+.info-content{
+    display: inline;
+    font-family: "PingFangSC-Regular";
+}
+.code-table .table-title > div, .code-table .table-tr > div{
+    display: inline-block;
+    text-align: center;
+    float: left;
+    width: 25%;
+}
 
 
 
