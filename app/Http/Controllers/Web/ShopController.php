@@ -34,7 +34,7 @@ class ShopController extends Controller
   }
 
   public function codeDetails() {
-    return view('web.contents.shop.codeDeteils',[
+    return view('web.contents.shop.codeDetails',[
         'title' => '喜豆码详情',
       ]);
   }

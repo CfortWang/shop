@@ -2,8 +2,6 @@
 @section('title', $title)
 @section('css')
 <link rel="stylesheet" href="/css/app.css">
-<link rel="stylesheet" type="text/css" media="all" href="/css/daterangepicker.css" />
-<link rel="stylesheet" type="text/css" media="all" href="/css/bootstrap-datetimepicker.min.css" />
 @endsection('css')
 @section('content')
 
@@ -13,41 +11,28 @@
                 <div class="am-u-md-12 am-u-sm-12 row-mb scan-user">
                     <div class="tpl-portlet">
                         <div class="tpl-portlet-title">
-                            <ul class="tab">
-                                <li class="tab-item tab-active" data-type="ing">拼豆中</li>
-                                <li class="tab-item" data-type="success">拼豆成功</li>
-                                <li class="tab-item" data-type="fail">拼豆失败</li>
+                            <ul class="code-tab">
+                                <li class="code-tab-item tab-active" data-type="history">购买记录</li>
+                                <li class="code-tab-item" data-type="mine">我的喜豆码</li>
                             </ul>
                         </div>
                         <div class="tpl-echarts" id="pdd-table">
-                            <div class="pdd-ing-table" data-type="ing">
+                            <div class="buy-history" data-type="history">
                                 <div class="table-title clear-fix">
-                                    <div class="ID">手机号</div>
-                                    <div class="nickname">昵称</div>
-                                    <div class="character">拼豆角色</div>
-                                    <div class="pddTime">拼豆发起时间</div>
+                                    <div class="amount">数量</div>
+                                    <div class="pay-way">支付方式</div>
+                                    <div class="active-time">激活时间</div>
+                                    <div class="status">状态</div>
                                 </div>
                                 <div class="table-content"></div>
                             </div>
-                            <div class="pdd-success-table" data-type="success">
+                            <div class="my-code" data-type="mine">
                                 <div class="table-title clear-fix">
-                                    <div class="ID">手机号</div>
-                                    <div class="nickname">昵称</div>
-                                    <div class="character">拼豆角色</div>
-                                    <div class="couponUse">是否使用优惠</div>
-                                    <div class="couponID">	拼豆优惠编码</div>
-                                    <div class="successTime">拼豆成功时间</div>
-                                    <div class="pddTime">拼豆发起时间</div>
-                                </div>
-                                <div class="table-content"></div>
-                            </div>
-                            <div class="pdd-fail-table" data-type="fail">
-                                <div class="table-title clear-fix">
-                                    <div class="ID">手机号</div>
-                                    <div class="nickname">昵称</div>
-                                    <div class="character">拼豆角色</div>
-                                    <div class="failTime">拼豆失败时间</div>
-                                    <div class="pddTime">拼豆发起时间</div>
+                                    <div class="code">喜豆码</div>
+                                    <div class="amount">数量（个）</div>
+                                    <div class="used">已使用（个）</div>
+                                    <div class="active-time">激活时间</div>
+                                    <div class="status">状态</div>
                                 </div>
                                 <div class="table-content"></div>
                             </div>
@@ -69,88 +54,34 @@
 @endsection
 @section('script')
 <script>
-    var limit = 8
-    var type = 'ing'
+    // var limit = 8
+    var type = 'history'
     var page = 1
     var pageCount
-    var drawList = function () {
+    var drawBuyList = function () {
         $.ajax({
-            url: 'http://shop.test/api/customer/pddUserList',
+            url: 'http://shop.test/api/packages/package_sales',
             type: 'get',
             dataType: 'json',
-            data: {
-                type: type,
-                limit: limit,
-                page: page
-            },
             success: function (res) {
                 $(".table-content").empty()
-                if (type == 'ing') {
-                    var selected = $(".pdd-ing-table .table-content")
-                }
-                if (type == 'success') {
-                    var selected = $(".pdd-success-table .table-content")
-                }
-                if (type == 'fail') {
-                    var selected = $(".pdd-fail-table .table-content")
-                }
-                let resData = res.data.data
-                let count = res.data.count
-                pageCount = Math.ceil(count / limit)
-                if (type == 'ing') {
-                    var $tr = '<div class="table-tr"><div class="table-td-id"></div><div class="table-td-nickname"></div><div class="table-td-character"></div><div class="table-td-join"><p class="years"></p><p class="hours"></p></div></div>'
-                }
-                if (type == 'success') {
-                    var $tr = '<div class="table-tr"><div class="table-td-id"></div><div class="table-td-nickname"></div><div class="table-td-character"></div><div class="table-td-coupon-use"></div><div class="table-td-coupon-id"></div><div class="table-td-success"><p class="years"></p><p class="hours"></p></div><div class="table-td-join"><p class="years"></p><p class="hours"></p></div></div>'
-                }
-                if (type == 'fail') {
-                    var $tr = '<div class="table-tr"><div class="table-td-id"></div><div class="table-td-nickname"></div><div class="table-td-character"></div><div class="table-td-fail"><p class="years"></p><p class="hours"></p></div><div class="table-td-join"><p class="years"></p><p class="hours"></p></div></div>'
-                }
+                let resData = res.data
+                var $tr = '<div class="table-tr"><div class="table-td-amount"></div><div class="table-td-payment"></div><div class="table-td-create"><p class="years"></p><p class="hours"></p></div><div class="table-td-status"></div></div>'
                 for (let i = 0; i < resData.length; i++) {
-                    selected.append($tr)
-                    if (resData[i].phone == null || resData[i].phone == '') {
-                        var phone = '——'
-                    } else {
-                        var phone = "+" + resData[i].phone.split('@')[1] + " " + resData[i].phone.split('@')[0]
-                    }
-                    if (resData[i].is_owner) {
-                        var character = "发起拼豆"
-                    } else {
-                        var character = '参与拼豆'
-                    }
-                    let nickname = resData[i].nickname
-                    let joinTimeYears = resData[i].created_at.split(' ')[0]
-                    let joinTimeHours = resData[i].created_at.split(' ')[1]
+                    $(".buy-history .table-content").append($tr)
+                    let amount = resData[i].total_quantity
+                    let payment = resData[i].payment_type
+                    let status = resData[i].status
+                    let activeTimeYear = resData[i].created_at.split(' ')[0]
+                    let activeTimeHour = resData[i].created_at.split(' ')[1]
+                    let id = resData[i].seq
 
-                    if (type == 'success') {
-                        if (resData[i].paid_status == 2) {
-                            var couponUse = "已使用"
-                        } else {
-                            var couponUse = "未使用"
-                        }
-                        let couponID = resData[i].use_code
-                        let successTimeYears = resData[i].updated_at.split(' ')[0]
-                        let successTimeHours = resData[i].updated_at.split(' ')[1]
-                        $(".table-content .table-tr:eq("+ i +") .table-td-coupon-use").text(couponUse)
-                        $(".table-content .table-tr:eq("+ i +") .table-td-coupon-id").text(couponID)
-                        $(".table-content .table-tr:eq("+ i +") .table-td-success .years").text(successTimeYears)
-                        $(".table-content .table-tr:eq("+ i +") .table-td-success .hours").text(successTimeHours)
-                    }
-                    if (type == 'fail') {
-                        let failTimeYears = resData[i].expried_at.split(' ')[0]
-                        let failTimeHours = resData[i].expried_at.split(' ')[1]
-                        $(".table-content .table-tr:eq("+ i +") .table-td-fail .years").text(failTimeYears)
-                        $(".table-content .table-tr:eq("+ i +") .table-td-fail .hours").text(failTimeHours)
-                    }
-                    if (nickname == null || nickname == '') {
-                        nickname = '——'
-                    }
-
-                    $(".table-content .table-tr:eq("+ i +") .table-td-id").text(phone)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-nickname").text(nickname)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-character").text(character)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-join .years").text(joinTimeYears)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-join .hours").text(joinTimeHours)
+                    $(".buy-history .table-content .table-tr:eq("+ i +") .table-td-amount").attr("data-seq", id)
+                    $(".buy-history .table-content .table-tr:eq("+ i +") .table-td-amount").text(amount)
+                    $(".buy-history .table-content .table-tr:eq("+ i +") .table-td-payment").text(payment)
+                    $(".buy-history .table-content .table-tr:eq("+ i +") .table-td-create .years").text(activeTimeYear)
+                    $(".buy-history .table-content .table-tr:eq("+ i +") .table-td-create .hours").text(activeTimeHour)
+                    $(".buy-history .table-content .table-tr:eq("+ i +") .table-td-status").text(status)
                 }
             },
             error: function (ex) {
@@ -158,7 +89,41 @@
             }
         })
     }
-    drawList();
+    drawBuyList();
+
+    var drawCodeList = function () {
+        $.ajax({
+            url: 'http://shop.test/api/packages/my_package',
+            type: 'get',
+            dataType: 'json',
+            success: function (res) {
+                $(".table-content").empty()
+                let resData = res.data
+                var $tr = '<div class="table-tr"><div class="table-td-code"></div><div class="table-td-amount"></div><div class="table-td-used"></div><div class="table-td-create"><p class="years"></p><p class="hours"></p></div><div class="table-td-status"></div></div>'
+                for (let i = 0; i < resData.length; i++) {
+                    $(".my-code .table-content").append($tr)
+                    let code = resData[i].code
+                    let amount = resData[i].total_cnt
+                    let used = resData[i].used_cnt
+                    let status = resData[i].status
+                    let activeTimeYear = resData[i].activated_at.split(' ')[0]
+                    let activeTimeHour = resData[i].activated_at.split(' ')[1]
+                    let id = resData[i].seq
+
+                    $(".my-code .table-content .table-tr:eq("+ i +") .table-td-code").attr("data-seq", id)
+                    $(".my-code .table-content .table-tr:eq("+ i +") .table-td-code").text(code)
+                    $(".my-code .table-content .table-tr:eq("+ i +") .table-td-amount").text(amount)
+                    $(".my-code .table-content .table-tr:eq("+ i +") .table-td-used").text(used)
+                    $(".my-code .table-content .table-tr:eq("+ i +") .table-td-create .years").text(activeTimeYear)
+                    $(".my-code .table-content .table-tr:eq("+ i +") .table-td-create .hours").text(activeTimeHour)
+                    $(".my-code .table-content .table-tr:eq("+ i +") .table-td-status").text(status)
+                }
+            },
+            error: function (ex) {
+                console.log(ex)
+            }
+        })
+    }
 
     $(".page-down").click(function () {
         if (page > 1) {
@@ -179,19 +144,31 @@
         }
     })
 
-    $(".tab-item").on('click', function () {
+    $(".code-tab-item").on('click', function () {
         $(this).addClass("tab-active")
         $(this).siblings().removeClass("tab-active")
         type = $(this).attr("data-type")
-        for (let i = 0; i < 3; i++) {
-            var pddType = $("#pdd-table > div:eq("+ i +")").attr("data-type")
-            if (pddType == type) {
-                $("#pdd-table > div:eq("+ i +")").show()
-            } else {
-                $("#pdd-table > div:eq("+ i +")").hide()
-            }
+        if (type == 'mine') {
+            $(".buy-history").hide()
+            $(".my-code").show()
+            drawCodeList();
+        } else {
+            $(".buy-history").show()
+            $(".my-code").hide()
+            drawBuyList();
         }
-        drawList();
+    })
+
+    $(".buy-history").on('click', ".table-td-amount", function () {
+        let id = $(this).attr("data-seq")
+        console.log(id)
+        window.location.href = 'code/history?id=' + id
+    })
+
+    $(".my-code").on('click', ".table-td-code", function () {
+        let id = $(this).attr("data-seq")
+        console.log(id)
+        window.location.href = 'code/details?id=' + id
     })
 </script>
 @endsection

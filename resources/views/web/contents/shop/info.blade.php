@@ -127,8 +127,7 @@
     });
     var clickEventListener = map.on('click', function(e) {
         document.getElementById("lnglat").value = e.lnglat.getLng() + ',' + e.lnglat.getLat();
-        $('#lat').val(e.lnglat.getLat());
-        $('#lng').val(e.lnglat.getLng());
+        console.log(e.lnglat.getLng() + ',' + e.lnglat.getLat())
         addMarker(e.lnglat);
     });
     var auto = new AMap.Autocomplete({
@@ -153,11 +152,9 @@
         map.remove(marker);
         marker.setMap(map);
     }
-    console.log("==")
 // })
 
 function drawData () {
-    console.log("++")
     $.ajax({
         url: 'http://shop.test/api/shop/info',
         type: 'get',
@@ -170,6 +167,7 @@ function drawData () {
             $("input#open_time").val(resData.open_time)
             $("input#close_time").val(resData.close_time)
             $("input#address_detail").val(resData.address_detail)
+            $("input#lnglat").val(resData.lng + ',' + resData.lat)
             country = 1
             province = resData.province
             city = resData.city
@@ -361,26 +359,26 @@ function selectImage(file) {
     var reader = new FileReader();
     reader.onload = function (evt) {
         var sonNum = $('.product').children().length
-        console.log($($('.product').children())[0].attr("data-seq"))
         if (sonNum > 5) {
             $(".product .file").hide()
             console.log("最多只能选择张图片")
             // return false
         }
-        // for (let i = 0; i < sonNum; i++) {
-        //     nowIndex[i] = $('.product').children()[i].
-        // }
+        let nowIndex = []
+        for (let i = 0; i < sonNum - 2; i++) {
+            nowIndex[i] = parseInt($($('.product').children()[i+2]).attr("data-seq"))
+        }
         let seq = imageIndex - 1
-        // if ($.inArray(seq, nowIndex)) {
-        //     seq++
-        // }
+
+        if (nowIndex.indexOf(seq) >= 0) {
+            seq++
+        }
         var $imgBox = '<div class="selected-image" data-seq="'+seq+'"><div class="delete-image"><img src="/img/main/close.png" alt=""></div><img class="image" alt="" src="' +evt.target.result + '"><input class="img-value" type="text" name="image[]" hidden></div>'
         $('.product').append($imgBox)
         image = evt.target.result;
         $('.product .image-remark').hide()
     }
     reader.readAsDataURL(file.files[0]);
-    console.log(imageIndex)
     let index = 'cropped_detail_image_' + imageIndex
     if (window.shopData) {
         shopData.append(index, file.files[0])
@@ -389,6 +387,9 @@ function selectImage(file) {
         shopData.append(index, file.files[0])
     }
     imageArr[imageIndex-1] = 1
+    if (imageArr[imageIndex]) {
+        imageIndex++
+    }
     imageIndex++
 }
 
@@ -400,7 +401,9 @@ $(".product").on("click", ".selected-image .delete-image", function () {
     }
     $(".product .file").show()
     imageIndex = $(this).parent().attr("data-seq")
+    console.log(imageIndex)
     imageArr[imageIndex-1] = 0
+    console.log(imageArr)
 })
 $(".list").on("click", ".selected-image .delete-image", function () {
     $(this).parent().remove()
@@ -449,8 +452,8 @@ $(".bottom-submit-btn").on("click", function () {
     let cityID = $("#city").val()
     let areaID = $("#area").val()
     let addressDetail = $("#address_detail").val()
-    let lat = $("#lnglat").val().split(',')[0]
-    let lng = $("#lnglat").val().split(',')[1]
+    let lng = $("#lnglat").val().split(',')[0]
+    let lat = $("#lnglat").val().split(',')[1]
 
     if (shopName == '' || shopName == null) {
         alert("商家名称不能为空")
