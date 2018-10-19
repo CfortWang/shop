@@ -27,7 +27,6 @@ class PackagesController extends Controller
     public function packageSales(Request $request)
     {
         $buyer = $request->session()->get('buyer.seq');
-        $buyer=1;
         $limit=$request->input('limit')?$request->input('limit'):20;
         $page=$request->input('page')?$request->input('page'):1;
         $searchValue = $request->input('value');
@@ -54,7 +53,6 @@ class PackagesController extends Controller
     {
         $seq=$request->input('seq');
         $buyer = $request->session()->get('buyer.seq');
-        $buyer=1;
         $Q35Sales = Q35Sales::where('buyer',$buyer)
                             ->where('seq',$seq)
                             ->select('buyer','sales_partner','total_sales_price','total_quantity','total_shipping_price','total_price','payment_type',
@@ -89,7 +87,6 @@ class PackagesController extends Controller
     public function salesItem(Request $request)
     {
         $buyer = $request->session()->get('buyer.seq');
-        $buyer=14;
         $limit=$request->input('limit')?$request->input('limit'):20;
         $page=$request->input('page')?$request->input('page'):1;
         $seq=$request->input('seq');
@@ -122,7 +119,6 @@ class PackagesController extends Controller
     public function itemDetail(Request $request)
     {
         $buyer = $request->session()->get('buyer.seq');
-        $buyer=14;
         $seq=$request->input('seq');
         $Q35SalesItem = Q35SalesItem::where('buyer',$buyer)
                                     ->where('q35sales',$seq);
@@ -252,14 +248,13 @@ class PackagesController extends Controller
     public function myPackageList(Request $request)
     {
         $buyer = $request->session()->get('buyer.seq');
-        $buyer=1;
         $limit = $request->input('limit')?$request->input('limit'):20;
         $page = $request->input('page')?$request->input('page'):1;
         $packages = Q35Sales::where('buyer',$buyer)
-        ->where('status', 'completed')
-        ->where('pay_status', 'paid')
-        ->select('seq')
-        ->get();
+            ->where('status', 'completed')
+            ->where('pay_status', 'paid')
+            ->select('seq')
+            ->get();
         $packages = $packages->map(function($package){
             return $package->seq;
         });
@@ -317,7 +312,6 @@ class PackagesController extends Controller
     public function codeList(Request $request)
     {
         $buyer = $request->session()->get('buyer.seq');
-        $buyer=1;
         $limit = $request->input('limit')?$request->input('limit'):20;
         $page = $request->input('page')?$request->input('page'):1;
         $seq = $request->input('seq');
@@ -339,24 +333,24 @@ class PackagesController extends Controller
                 ->limit($limit)
                 ->offset(($page-1)*$limit) 
                 ->get();
-    
-        return $this->responseok('',$items);
+        $data['data'] = $items;
+        $data['count'] = $count;
+        return $this->responseok('',$data);
     }
     public function myPackageDetail(Request $request)
    {
-    // $buyer = $request->session()->get('buyer.seq');
-    $buyer=1;
-    $seq = $request->input('seq');
-    $package = Q35Package::where('seq', $seq)->select('seq','q35sales','code','type','start_q35code','end_q35code','status','total_cnt','used_cnt','sold_at','activated_at')->first();
-    if(empty($package)){
-        return $this->responseBadRequest('seq is error');//
-    }
-    $checkBuyer = Q35Sales::where('seq', $package->q35sales)->first();
+        $buyer = $request->session()->get('buyer.seq');
+        $seq = $request->input('seq');
+        $package = Q35Package::where('seq', $seq)->select('seq','q35sales','code','type','start_q35code','end_q35code','status','total_cnt','used_cnt','sold_at','activated_at')->first();
+        if(empty($package)){
+            return $this->responseBadRequest('seq is error');//
+        }
+        $checkBuyer = Q35Sales::where('seq', $package->q35sales)->first();
 
-    if ($buyer !== $checkBuyer->buyer) {
-      return $this->responseBadRequest('Wrong Request', 401);//error code 400,401
-    }
-    return $this->responseok('',$package);
+        if ($buyer !== $checkBuyer->buyer) {
+            return $this->responseBadRequest('Wrong Request', 401);//error code 400,401
+        }
+        return $this->responseok('',$package);
    }
     public function codeActivation(Request $request)
     {
@@ -392,4 +386,5 @@ class PackagesController extends Controller
         
         return $this->responseOK('success', $package);
     }
+
 }
