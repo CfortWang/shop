@@ -10,7 +10,7 @@
                 <div class="row">
                     <div class="am-u-lg-4 am-u-md-4 am-u-sm-12 code-info">
                         <label class="info-title">喜豆码编码：</label>
-                        <div class="info-content" id="coding">dsadasdf飞洒发生</div>
+                        <div class="info-content" id="coding"></div>
                     </div>
                     <div class="am-u-lg-4 am-u-md-4 am-u-sm-12 code-info">
                         <label class="info-title">总码数：</label>
@@ -58,15 +58,15 @@
                 <div class="row">
                     <div class="am-u-md-12 am-u-sm-12 row-mb pdd">
                         <div class="tpl-portlet-title">
-                            <div class="search-box">
+                            <!-- <div class="search-box">
                                 <input type="text" class="search-input" name="search" placeholder="请输入喜豆码编码查找">
                                 <button class="search-btn">搜索</button>
-                            </div>
+                            </div> -->
                             <div class="status-filter">
                                 <select data-am-selected="{btnStyle: 'secondary'}">
-                                    <option class="qq" value="processed"></option>
-                                    <option value="registered"></option>
-                                    <option value="overed"></option>
+                                    <option value="all">所有</option>
+                                    <option value="activated">已激活</option>
+                                    <option value="used">已使用</option>
                                 </select>
                             </div>
                         </div>
@@ -160,31 +160,26 @@
             },
             success: function (res) {
                 $(".table-content").empty()
-                let resData = res.data
-                // let count = res.data.count
-                // pageCount = Math.ceil(count / limit)
-                var $tr = '<div class="table-tr clear-fix"><div class="table-td-code"></div><div class="table-td-active"><p class="years"></p><p class="hours"></p></div><div class="table-td-use"><p class="years"></p><p class="hours"></p></div><div class="table-td-status"></div></div>'
+                let resData = res.data.data
+                let count = res.data.count
+                pageCount = Math.ceil(count / limit)
+                var $tr = '<div class="table-tr clear-fix"><div class="table-td-code"></div><div class="table-td-active"></div><div class="table-td-used"></div><div class="table-td-status"></div></div>'
                 for (let i = 0; i < resData.length; i++) {
                     $('.table-content').append($tr)
                     let code = resData[i].code
-                    let activeTimeYears = resData[i].activated_at.split(' ')[0]
-                    let activeTimeHours = resData[i].activated_at.split(' ')[1]
+                    let activeTime = resData[i].activated_at
                     let status = resData[i].status
                     let id = resData[i].seq
 
                     if (resData[i].used_at == '' || resData[i].used_at == null) {
-                        var useTimeYears = "——"
-                        var useTimeHours = "——"
+                        var useTime = "——"
                     } else {
-                        var useTimeYears = resData[i].used_at.split(' ')[0]
-                        var useTimeHours = resData[i].used_at.split(' ')[1]
+                        var useTime = resData[i].used_at
                     }
 
                     $(".table-content .table-tr:eq("+ i +") .table-td-code").text(code)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-active .years").text(activeTimeYears)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-active .hours").text(activeTimeHours)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-used .years").text(useTimeYears)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-used .hours").text(useTimeYears)
+                    $(".table-content .table-tr:eq("+ i +") .table-td-active").text(activeTime)
+                    $(".table-content .table-tr:eq("+ i +") .table-td-used").text(useTime)
                     $(".table-content .table-tr:eq("+ i +") .table-td-status").text(status)
                 }
             },
@@ -196,14 +191,17 @@
     drawList();
 
 
-    $(".search-btn").on("click", function () {
-        keyword = $(".search-input").val()
-        drawList();
-        $(".search-input").val("")
-    })
+    // $(".search-btn").on("click", function () {
+    //     keyword = $(".search-input").val()
+    //     drawList();
+    //     $(".search-input").val("")
+    // })
 
     $("body").on("click", ".am-selected-list > li", function () {
         selectStatus = $(this).attr("data-value")
+        if (selectStatus == 'all') {
+            selectStatus = ''
+        }
         drawList();
     })
 

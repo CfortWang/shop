@@ -99,10 +99,10 @@ class PackagesController extends Controller
         // $salesItemseq = null;
         // $columnArray = array('code','type', 'start_q35code', 'end_q35code', 'status');
         $items = Q35Package::join('Q35SalesItem as SI', 'SI.seq', '=', 'Q35Package.q35sales_item')
-        ->where('SI.q35sales', $seq)
-        ->where('SI.type', $request->type);
+        // ->where('SI.q35sales', $seq)
+            ->where('SI.type', $request->type);
         if ($searchValue) {
-             $items=$items->where('seq', $searchValue);
+            $items=$items->where('seq', $searchValue);
         }
         if($request->status){
             $items =  $items->where('status',$request->status);
@@ -113,7 +113,9 @@ class PackagesController extends Controller
                 ->limit($limit)  
                 ->offset(($page-1)*$limit) 
                 ->get();
-        return $this->responseOk('',$items);
+        $data['data'] = $items;
+        $data['count'] = $count;
+        return $this->responseOk('',$data);
     }
     //喜豆码物流状态
     public function itemDetail(Request $request)

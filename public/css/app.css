@@ -1620,8 +1620,24 @@ input:-webkit-autofill {
     width: 25%;
 }
 
-
-
+.cashout{
+    position: absolute;
+    right: 20px;
+}
+.cashout-title{
+    font-size: 16px;
+    margin-bottom: 10px;
+}
+.am-popup .form-group .form-control {
+    width: 100%;
+}
+.cashout-btn-box{
+    margin: 20px 20px 0px 0px;
+    text-align: right;
+}
+button:focus{
+    outline: none;
+}
 
 
 

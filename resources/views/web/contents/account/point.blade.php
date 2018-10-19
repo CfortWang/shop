@@ -2,42 +2,30 @@
 @section('title', $title)
 @section('css')
 <link rel="stylesheet" href="/css/app.css">
-<link rel="stylesheet" type="text/css" media="all" href="/css/daterangepicker.css" />
-<link rel="stylesheet" type="text/css" media="all" href="/css/bootstrap-datetimepicker.min.css" />
 @endsection('css')
 @section('content')
     <div class="tpl-page-container tpl-page-header-fixed">
         <div class="tpl-content-wrapper">
-            <div class="row">
-                <div class="am-u-md-12 am-u-sm-12 row-mb pdd">
-                    <div class="tpl-portlet">
+        <div class="tpl-portlet">
+                <div class="row">
+                    <div class="am-u-md-12 am-u-sm-12 row-mb pdd">
                         <div class="tpl-portlet-title">
-                            <div class="search-box">
-                                <input type="text" class="search-input" name="search" placeholder="请输入手机号查找">
+                            <!-- <div class="search-box">
+                                <input type="text" class="search-input" name="search" placeholder="请输入喜豆码编码查找">
                                 <button class="search-btn">搜索</button>
-                            </div>
-                            <!-- <select data-am-selected>
-                                <option value="1" selected>进行中</option>
-                                <option value="2">未开始</option>
-                                <option value="3">已结束</option>
-                            </select> -->
-                            <div class="create-pdd">
-                                <span>新建拼豆豆</span>
+                            </div> -->
+
+                            <div class="center-caption">
+                                <span>积分列表</span>
                             </div>
                         </div>
-                        <div class="tpl-echarts" id="coupon-table">
-                            <div class="coupon-table">
+                        <div class="tpl-echarts" id="code-table">
+                            <div class="code-table">
                                 <div class="table-title clear-fix">
-                                    <div class="name">优惠券名称</div>
-                                    <div class="worth">价值</div>
-                                    <div class="condition">领取限制</div>
-                                    <div class="effective">有效期</div>
-                                    <div class="getTimes">领取人数/次</div>
-                                    <div class="use">已使用</div>
-                                    <div class="getRate">领取率</div>
-                                    <div class="useRate">使用率</div>
-                                    <div class="status">状态</div>
-                                    <div class="operating">操作</div>
+                                    <div class="details">详情描述</div>
+                                    <div class="integral">积分</div>
+                                    <div class="remainder">剩余积分</div>
+                                    <div class="create-time">创建时间</div>
                                 </div>
                                 <div class="table-content"></div>
                             </div>
@@ -59,62 +47,38 @@
 @endsection
 @section('script')
 <script>
-    var limit = 8
-    var type = 'scan'
     var page = 1
+    var limit = 8
     var pageCount
     var drawList = function () {
         $.ajax({
-            url: 'http://shop.test/api/customer/scannedUserList',
+            url: 'http://shop.test/api/account/scoreList',
             type: 'get',
             dataType: 'json',
             data: {
-                type: type,
                 limit: limit,
                 page: page
             },
             success: function (res) {
+                console.log(res)
                 $(".table-content").empty()
-                let resData = res.data.scanUserList
-                console.log(resData)
+                let resData = res.data.data
                 let count = res.data.count
                 pageCount = Math.ceil(count / limit)
-                console.log(pageCount)
-                var $tr = '<div class="table-tr clear-fix"><div class="table-td-id"></div><div class="table-td-nickname"></div><div class="table-td-sex"></div><div class="table-td-age"></div><div class="table-td-first"><p class="years"></p><p class="hours"></p></div><div class="table-td-last"><p class="years"></p><p class="hours"></p></div><div class="table-td-frequency"></div><div class="table-td-count"></div><div class="see-more">查看更多</div></div>'
+                var $tr = '<div class="table-tr"><div class="table-td-details"></div><div class="table-td-integral"></div><div class="table-td-remainder"></div><div class="table-td-create"></div></div>'
                 for (let i = 0; i < resData.length; i++) {
-                    $('.table-content').append($tr)
-                    if (resData[i].id == null || resData[i].id == '') {
-                        var id = '——'
-                    } else {
-                        var id = "+" + resData[i].id.split('@')[1] + " " + resData[i].id.split('@')[0]
-                    }
-                    let seq = resData[i].user
-                    let nickname = resData[i].nickname
-                    let gender = resData[i].gender
-                    let age = resData[i].age
-                    let firstTimeYears = resData[i].firstTime.split(' ')[0]
-                    let firstTimeHours = resData[i].firstTime.split(' ')[1]
-                    let endTimeYears = resData[i].endTime.split(' ')[0]
-                    let endTimeHours = resData[i].endTime.split(' ')[1]
-                    let percent = resData[i].rate
-                    let count = resData[i].scannedCount
-                    if (gender == null || gender == '') {
-                        gender = '——'
-                    }
-                    if (nickname == null || nickname == '') {
-                        nickname = '——'
-                    }
-                    $(".table-content .table-tr:eq("+ i +")").attr('data-seq', seq)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-id").text(id)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-nickname").text(nickname)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-sex").text(gender)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-age").text(age)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-first .years").text(firstTimeYears)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-first .hours").text(firstTimeHours)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-last .years").text(endTimeYears)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-last .hours").text(endTimeHours)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-frequency").text(percent)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-count").text(count)
+                    $(".code-table .table-content").append($tr)
+                    let details = resData[i].description
+                    let usedPoint = resData[i].signed_point
+                    let leftPoint = resData[i].remain_point
+                    let createTime = resData[i].created_at
+                    let id = resData[i].seq
+
+                    // $(".code-table .table-content .table-tr:eq("+ i +") .table-td-code").attr("data-seq", id)
+                    $(".code-table .table-content .table-tr:eq("+ i +") .table-td-details").text(details)
+                    $(".code-table .table-content .table-tr:eq("+ i +") .table-td-integral").text(usedPoint)
+                    $(".code-table .table-content .table-tr:eq("+ i +") .table-td-remainder").text(leftPoint)
+                    $(".code-table .table-content .table-tr:eq("+ i +") .table-td-create ").text(createTime)
                 }
             },
             error: function (ex) {
@@ -122,7 +86,7 @@
             }
         })
     }
-    // drawList();
+    drawList();
 
     $(".page-down").click(function () {
         if (page > 1) {

@@ -53,7 +53,7 @@ class AccountInfoController extends Controller
     {
         $seq = $request->session()->get('buyer.seq');
         $seq=14;
-        $limit = $request->input('limit',20);
+        $limit = $request->input('limit',10);
         $page = $request->input('page',1);
         $searchValue = $request->input('search');
         $items = BuyerPoint::where('buyer', $seq);
@@ -76,8 +76,9 @@ class AccountInfoController extends Controller
                 ->limit($limit)
                 ->offset(($page-1)*$limit) 
                 ->get();
-        
-        return $this->response4DataTables($items,$count,1);
+        $data['data'] = $items;
+        $data['count'] = $count;
+        return $this->responseOK('',$data);
     }
     public function modify(Request $request){
         $seq = $request->session()->get('buyer.seq');
@@ -202,11 +203,11 @@ class AccountInfoController extends Controller
             return $this->responseNotFound('no buyer');
         }
 
-        if (parseInt($request->input('modal_amount')) < 20000) {
+        if (intval($request->input('modal_amount')) < 20000) {
             return $this->responseNotFound("提现金额不能低于20000");
         }
 
-        if (parseInt($request->input('modalAmount')) > parseInt($buyer['point'])) {
+        if (intval($request->input('modalAmount')) > intval($buyer['point'])) {
             return $this->responseNotFound("喜豆点不足");
         }
        
