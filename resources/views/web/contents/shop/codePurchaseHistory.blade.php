@@ -63,9 +63,9 @@
                                 <button class="search-btn">搜索</button>
                             </div> -->
                             <ul class="tab">
-                                <li class="tab-item tab-active" data-type="history">面对面交易</li>
-                                <li class="tab-item" data-type="mine">合伙人发货</li>
-                                <li class="tab-item" data-type="mine">总部发货</li>
+                                <li class="tab-item tab-active" data-type="direct">面对面交易</li>
+                                <li class="tab-item" data-type="shipping">合伙人发货</li>
+                                <li class="tab-item" data-type="hq_shipping">总部发货</li>
                             </ul>
                             <div class="status-filter">
                                 <select data-am-selected="{btnStyle: 'secondary'}"></select>

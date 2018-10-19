@@ -99,7 +99,7 @@ class PackagesController extends Controller
         // $salesItemseq = null;
         // $columnArray = array('code','type', 'start_q35code', 'end_q35code', 'status');
         $items = Q35Package::join('Q35SalesItem as SI', 'SI.seq', '=', 'Q35Package.q35sales_item')
-        // ->where('SI.q35sales', $seq)
+            ->where('SI.q35sales', $seq)
             ->where('SI.type', $request->type);
         if ($searchValue) {
             $items=$items->where('seq', $searchValue);
