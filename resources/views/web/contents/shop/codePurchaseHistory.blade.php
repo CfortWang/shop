@@ -68,7 +68,13 @@
                                 <li class="tab-item" data-type="hq_shipping">总部发货</li>
                             </ul>
                             <div class="status-filter">
-                                <select data-am-selected="{btnStyle: 'secondary'}"></select>
+                                <select data-am-selected="{btnStyle: 'secondary'}">
+                                    <option value="registered">registered</option>
+                                    <option value="out">out</option>
+                                    <option value="sold">sold</option>
+                                    <option value="activated">activated</option>
+                                    <option value="loss">loss</option>
+                                </select>
                             </div>
                         </div>
                         <div class="tpl-echarts" id="code-table">
@@ -144,6 +150,7 @@
     }
     drawInfo();
 
+    var type = 'direct'
     var limit = 8
     var page = 1
     var pageCount
@@ -157,37 +164,30 @@
             data: {
                 limit: limit,
                 page: page,
+                type: type,
                 seq: seq,
                 status: selectStatus
             },
             success: function (res) {
+                console.log(res)
                 $(".table-content").empty()
-                let resData = res.data
-                // let count = res.data.count
-                // pageCount = Math.ceil(count / limit)
-                var $tr = '<div class="table-tr clear-fix"><div class="table-td-code"></div><div class="table-td-active"><p class="years"></p><p class="hours"></p></div><div class="table-td-used"><p class="years"></p><p class="hours"></p></div><div class="table-td-status"></div></div>'
+                let resData = res.data.data
+                let count = res.data.count
+                pageCount = Math.ceil(count / limit)
+                var $tr = '<div class="table-tr clear-fix"><div class="table-td-code"></div><div class="table-td-type"></div><div class="table-td-start"></div><div class="table-td-end"></div><div class="table-td-status"></div></div>'
                 for (let i = 0; i < resData.length; i++) {
                     $('.table-content').append($tr)
                     let code = resData[i].code
-                    let activeTimeYears = resData[i].activated_at.split(' ')[0]
-                    let activeTimeHours = resData[i].activated_at.split(' ')[1]
+                    let type = resData[i].type
+                    let startCode = resData[i].start_q35code
+                    let endCode = resData[i].end_q35code
                     let status = resData[i].status
-                    let id = resData[i].seq
-                    console.log(resData[i].used_at)
-
-                    if (resData[i].used_at == '' || resData[i].used_at == null) {
-                        var useTimeYears = "——"
-                        var useTimeHours = "——"
-                    } else {
-                        var useTimeYears = resData[i].used_at.split(' ')[0]
-                        var useTimeHours = resData[i].used_at.split(' ')[1]
-                    }
+                    // let id = resData[i].seq
 
                     $(".table-content .table-tr:eq("+ i +") .table-td-code").text(code)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-active .years").text(activeTimeYears)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-active .hours").text(activeTimeHours)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-used .years").text(useTimeYears)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-used .hours").text(useTimeHours)
+                    $(".table-content .table-tr:eq("+ i +") .table-td-type").text(type)
+                    $(".table-content .table-tr:eq("+ i +") .table-td-start").text(startCode)
+                    $(".table-content .table-tr:eq("+ i +") .table-td-end").text(endCode)
                     $(".table-content .table-tr:eq("+ i +") .table-td-status").text(status)
                 }
             },
@@ -196,13 +196,20 @@
             }
         })
     }
-    // drawList();
+    drawList();
 
 
-    $(".search-btn").on("click", function () {
-        keyword = $(".search-input").val()
+    // $(".search-btn").on("click", function () {
+    //     keyword = $(".search-input").val()
+    //     drawList();
+    //     $(".search-input").val("")
+    // })
+
+    $(".tab-item").on('click', function () {
+        $(this).addClass("tab-active")
+        $(this).siblings().removeClass("tab-active")
+        type = $(this).attr("data-type")
         drawList();
-        $(".search-input").val("")
     })
 
     $("body").on("click", ".am-selected-list > li", function () {

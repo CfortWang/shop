@@ -105,7 +105,7 @@ class PackagesController extends Controller
             $items=$items->where('seq', $searchValue);
         }
         if($request->status){
-            $items =  $items->where('status',$request->status);
+            $items =  $items->where('Q35Package.status',$request->status);
         }
         $count = $items->count();
         $items = $items->select('Q35Package.code', 'Q35Package.type', 'Q35Package.start_q35code', 'Q35Package.end_q35code', 'Q35Package.status', 'Q35Package.seq')
