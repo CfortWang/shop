@@ -162,7 +162,6 @@ class AccountInfoController extends Controller
         ->limit($limit)
         ->get();
 
-        return $this->response4DataTables($items, $recordsTotal, $recordsFiltered);
         $return['data'] = $buyer;
         $return['count'] = $recordsTotal;
         return $this->responseOK('success', $return);
