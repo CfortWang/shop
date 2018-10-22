@@ -116,31 +116,15 @@ class AccountInfoController extends Controller
         $limit = $request->input('limit',20);
         $page = $request->input('page',1);
         $searchValue = $request->input('search');
-        // $status = $request->status;
-        // $orderColumnsNo = $request->order[0]['column'];
-        // $orderType = $request->order[0]['dir'];
-        // $columnArray = [
-        //     'BuyerCashOutRequest.amount',
-        //     'Buyer.id',
-        //     'B.name_'.$lang.' as bank_name',
-        //     'BuyerCashOutRequest.account_holder',
-        //     'BuyerCashOutRequest.account_number',
-        //     'BuyerCashOutRequest.created_at',
-        //     'BuyerCashOutRequest.status'
-        // ];
         $items = BuyerCashOutRequest::leftJoin('Bank as B', 'B.seq', '=', 'BuyerCashOutRequest.bank')
         ->leftJoin('Buyer', 'Buyer.seq', '=', 'BuyerCashOutRequest.buyer')
         ->where('Buyer.seq', $seq);
-        // if ($status != '' && $status != null) {
-        //     $items = $items->where('BuyerCashOutRequest.status', $status);
-        // }
         $recordsTotal = $items->count();
         if (!empty($searchValue)) {
             $items = $items->where(function ($query) use ($searchValue) {
                 $query
                 ->where('BuyerCashOutRequest.amount', 'like', '%'.$searchValue.'%')
                 ->orWhere('Buyer.id', 'like', '%'.$searchValue.'%')
-                // ->orWhere('B.name_'.$lang, 'like', '%'.$searchValue.'%')
                 ->orWhere('BuyerCashOutRequest.account_holder', 'like', '%'.$searchValue.'%')
                 ->orWhere('BuyerCashOutRequest.account_number', 'like', '%'.$searchValue.'%');
             });
@@ -157,8 +141,7 @@ class AccountInfoController extends Controller
             'BuyerCashOutRequest.status',
             'BuyerCashOutRequest.seq'
         )
-        // ->orderBy($columnArray[$orderColumnsNo], $orderType)
-        ->offset($page)
+        ->offset(($page-1)*$limit)
         ->limit($limit)
         ->get();
 
@@ -168,9 +151,9 @@ class AccountInfoController extends Controller
     }
     public function showBuyerInfo(Request $request)
     {
-        // $seq = $request->session()->get('buyer.seq');
+        $seq = $request->session()->get('buyer.seq');
         // $lang = $request->session()->get('bw.locale');
-        $seq=14;
+        // $seq=14;
         $buyer = Buyer::where('seq',$seq)->select('bank','bank_account_owner','bank_account','point')->first();
         $lang='zh';
         if(!$buyer){
@@ -188,9 +171,8 @@ class AccountInfoController extends Controller
    
     public function requestCash(Request $request)
     {
-        // $seq = $request->session()->get('buyer.seq');
+        $seq = $request->session()->get('buyer.seq');
         // $lang = $request->session()->get('bw.locale');
-        $seq=14;
         $lang='zh';
         $input = Input::only([  
             'modal_amount'
