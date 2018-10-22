@@ -207,7 +207,7 @@ class AccountInfoController extends Controller
             return $this->responseNotFound("提现金额不能低于20000");
         }
 
-        if (intval($request->input('modalAmount')) > intval($buyer['point'])) {
+        if (intval($request->input('modal_amount')) > intval($buyer['point'])) {
             return $this->responseNotFound("喜豆点不足");
         }
        
@@ -224,8 +224,6 @@ class AccountInfoController extends Controller
         $buyer->point = $buyer->point - $amount;
         $buyer->total_point_out = $buyer->total_point_out + $amount;
         $buyer->save();
-
-        // dd($buyer->bank_account_owner);
 
         $cashoutRequest = BuyerCashOutRequest::create([
             'amount'          => $amount,
