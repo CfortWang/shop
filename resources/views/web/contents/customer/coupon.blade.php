@@ -30,6 +30,10 @@
                                 </div>
                                 <div class="table-content"></div>
                             </div>
+                            <div class="no-data">
+                                <img src="/img/main/no-data.png" alt="">
+                                <div>暂无数据</div>
+                            </div>
                             <div class="pagination">
                                 <div class="page-down">
                                     <img src="/img/main/icon_page_left.png" alt="">
@@ -63,45 +67,51 @@
             success: function (res) {
                 $(".table-content").empty()
                 let resData = res.data.data
-                console.log(resData)
                 let count = res.data.count
-                pageCount = Math.ceil(count / limit)
-                var $tr = '<div class="table-tr"><div class="table-td-id"></div><div class="table-td-nickname"></div><div class="table-td-frequency"></div><div class="table-td-coupon-use"></div><div class="table-td-coupon-id"></div><div class="table-td-get"><p class="years"></p><p class="hours"></p></div><div class="table-td-use"><p class="years"></p><p class="hours"></p></div></div>'
-                for (let i = 0; i < resData.length; i++) {
-                    $(".table-content").append($tr)
-                    if (resData[i].id == null || resData[i].id == '') {
-                        var phone = '——'
-                    } else {
-                        var phone = "+" + resData[i].id.split('@')[1] + " " + resData[i].id.split('@')[0]
+                if (count) {
+                    $(".no-data").hide()
+                    $(".pagination").show()
+                    pageCount = Math.ceil(count / limit)
+                    var $tr = '<div class="table-tr"><div class="table-td-id"></div><div class="table-td-nickname"></div><div class="table-td-frequency"></div><div class="table-td-coupon-use"></div><div class="table-td-coupon-id"></div><div class="table-td-get"><p class="years"></p><p class="hours"></p></div><div class="table-td-use"><p class="years"></p><p class="hours"></p></div></div>'
+                    for (let i = 0; i < resData.length; i++) {
+                        $(".table-content").append($tr)
+                        if (resData[i].id == null || resData[i].id == '') {
+                            var phone = '——'
+                        } else {
+                            var phone = "+" + resData[i].id.split('@')[1] + " " + resData[i].id.split('@')[0]
+                        }
+                        let seq = resData[i].user
+                        let nickname = resData[i].nickname
+                        let frequency = resData[i].user_count
+                        let couponUse = resData[i].status
+                        let couponID = resData[i].use_code
+                        let getTimeYears = resData[i].created_at.split(' ')[0]
+                        let getTimeHours = resData[i].created_at.split(' ')[1]
+                        let useTimeYears = resData[i].used_at.split(' ')[0]
+                        let useTimeHours = resData[i].used_at.split(' ')[1]
+                        if (nickname == null || nickname == '') {
+                            nickname = '——'
+                        }
+                        if (couponUse == null || couponUse == '') {
+                            couponUse = '——'
+                        }
+                        if (couponID == null || couponID == '') {
+                            couponID = '——'
+                        }
+                        $(".table-content .table-tr:eq("+ i +")").attr('data-seq', seq)
+                        $(".table-content .table-tr:eq("+ i +") .table-td-id").text(phone)
+                        $(".table-content .table-tr:eq("+ i +") .table-td-nickname").text(nickname)
+                        $(".table-content .table-tr:eq("+ i +") .table-td-frequency").text(frequency)
+                        $(".table-content .table-tr:eq("+ i +") .table-td-coupon-use").text(couponUse)
+                        $(".table-content .table-tr:eq("+ i +") .table-td-coupon-id").text(couponID)
+                        $(".table-content .table-tr:eq("+ i +") .table-td-get .years").text(getTimeYears)
+                        $(".table-content .table-tr:eq("+ i +") .table-td-get .hours").text(getTimeHours)
+                        $(".table-content .table-tr:eq("+ i +") .table-td-use .years").text(useTimeYears)
+                        $(".table-content .table-tr:eq("+ i +") .table-td-use .hours").text(useTimeHours)
                     }
-                    let seq = resData[i].user
-                    let nickname = resData[i].nickname
-                    let frequency = resData[i].user_count
-                    let couponUse = resData[i].status
-                    let couponID = resData[i].use_code
-                    let getTimeYears = resData[i].created_at.split(' ')[0]
-                    let getTimeHours = resData[i].created_at.split(' ')[1]
-                    let useTimeYears = resData[i].used_at.split(' ')[0]
-                    let useTimeHours = resData[i].used_at.split(' ')[1]
-                    if (nickname == null || nickname == '') {
-                        nickname = '——'
-                    }
-                    if (couponUse == null || couponUse == '') {
-                        couponUse = '——'
-                    }
-                    if (couponID == null || couponID == '') {
-                        couponID = '——'
-                    }
-                    $(".table-content .table-tr:eq("+ i +")").attr('data-seq', seq)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-id").text(phone)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-nickname").text(nickname)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-frequency").text(frequency)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-coupon-use").text(couponUse)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-coupon-id").text(couponID)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-get .years").text(getTimeYears)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-get .hours").text(getTimeHours)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-use .years").text(useTimeYears)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-use .hours").text(useTimeHours)
+                } else {
+                    $(".no-data").show()
+                    $(".pagination").hide()
                 }
             },
             error: function (ex) {

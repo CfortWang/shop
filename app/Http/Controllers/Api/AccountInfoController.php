@@ -162,7 +162,7 @@ class AccountInfoController extends Controller
         ->limit($limit)
         ->get();
 
-        $return['data'] = $buyer;
+        $return['data'] = $items;
         $return['count'] = $recordsTotal;
         return $this->responseOK('success', $return);
     }

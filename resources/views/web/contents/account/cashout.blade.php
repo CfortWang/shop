@@ -28,6 +28,10 @@
                                 </div>
                                 <div class="table-content"></div>
                             </div>
+                            <div class="no-data">
+                                <img src="/img/main/no-data.png" alt="">
+                                <div>暂无数据</div>
+                            </div>
                             <div class="pagination">
                                 <div class="page-down">
                                     <img src="/img/main/icon_page_left.png" alt="">
@@ -107,30 +111,37 @@
             success: function (res) {
                 $(".table-content").empty()
                 let resData = res.data.data
-                // let count = res.data.count
-                // pageCount = Math.ceil(count / limit)
-                var $tr = '<div class="table-tr clear-fix"><div class="table-td-amount"></div><div class="table-td-shopid"></div><div class="table-td-bank"></div><div class="table-td-owner"></div><div class="table-td-bankid"></div><div class="table-td-sign"><p class="years"></p><p class="hours"></p></div><div class="table-td-status"></div></div>'
-                for (let i = 0; i < resData.length; i++) {
-                    $('.table-content').append($tr)
-                    // let seq = resData[i].seq
-                    let amount = resData[i].amount
-                    let shopID = resData[i].id
-                    let bankName = resData[i].bank_name
-                    let owner = resData[i].account_holder
-                    let bankID = resData[i].account_number
-                    let signYears = resData[i].created_at.split(' ')[0]
-                    let signHours = resData[i].created_at.split(' ')[1]
-                    let status = resData[i].status
-                    
-                    // $(".table-content .table-tr:eq("+ i +")").attr('data-seq', seq)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-amount").text(amount)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-shopid").text(shopID)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-bank").text(bankName)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-owner").text(owner)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-bankid").text(bankID)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-sign .years").text(signYears)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-sign .hours").text(signHours)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-status").text(status)
+                let count = res.data.count
+                if (count) {
+                    $(".no-data").hide()
+                    $(".pagination").show()
+                    pageCount = Math.ceil(count / limit)
+                    var $tr = '<div class="table-tr clear-fix"><div class="table-td-amount"></div><div class="table-td-shopid"></div><div class="table-td-bank"></div><div class="table-td-owner"></div><div class="table-td-bankid"></div><div class="table-td-sign"><p class="years"></p><p class="hours"></p></div><div class="table-td-status"></div></div>'
+                    for (let i = 0; i < resData.length; i++) {
+                        $('.table-content').append($tr)
+                        // let seq = resData[i].seq
+                        let amount = resData[i].amount
+                        let shopID = resData[i].id
+                        let bankName = resData[i].bank_name
+                        let owner = resData[i].account_holder
+                        let bankID = resData[i].account_number
+                        let signYears = resData[i].created_at.split(' ')[0]
+                        let signHours = resData[i].created_at.split(' ')[1]
+                        let status = resData[i].status
+                        
+                        // $(".table-content .table-tr:eq("+ i +")").attr('data-seq', seq)
+                        $(".table-content .table-tr:eq("+ i +") .table-td-amount").text(amount)
+                        $(".table-content .table-tr:eq("+ i +") .table-td-shopid").text(shopID)
+                        $(".table-content .table-tr:eq("+ i +") .table-td-bank").text(bankName)
+                        $(".table-content .table-tr:eq("+ i +") .table-td-owner").text(owner)
+                        $(".table-content .table-tr:eq("+ i +") .table-td-bankid").text(bankID)
+                        $(".table-content .table-tr:eq("+ i +") .table-td-sign .years").text(signYears)
+                        $(".table-content .table-tr:eq("+ i +") .table-td-sign .hours").text(signHours)
+                        $(".table-content .table-tr:eq("+ i +") .table-td-status").text(status)
+                    }
+                } else {
+                    $(".no-data").show()
+                    $(".pagination").hide()
                 }
             },
             error: function (ex) {

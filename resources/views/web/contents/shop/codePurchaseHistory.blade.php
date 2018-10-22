@@ -88,6 +88,10 @@
                                 </div>
                                 <div class="table-content"></div>
                             </div>
+                            <div class="no-data">
+                                <img src="/img/main/no-data.png" alt="">
+                                <div>暂无数据</div>
+                            </div>
                             <div class="pagination">
                                 <div class="page-down">
                                     <img src="/img/main/icon_page_left.png" alt="">
@@ -169,26 +173,32 @@
                 status: selectStatus
             },
             success: function (res) {
-                console.log(res)
                 $(".table-content").empty()
                 let resData = res.data.data
                 let count = res.data.count
-                pageCount = Math.ceil(count / limit)
-                var $tr = '<div class="table-tr clear-fix"><div class="table-td-code"></div><div class="table-td-type"></div><div class="table-td-start"></div><div class="table-td-end"></div><div class="table-td-status"></div></div>'
-                for (let i = 0; i < resData.length; i++) {
-                    $('.table-content').append($tr)
-                    let code = resData[i].code
-                    let type = resData[i].type
-                    let startCode = resData[i].start_q35code
-                    let endCode = resData[i].end_q35code
-                    let status = resData[i].status
-                    // let id = resData[i].seq
+                if (count) {
+                    $(".no-data").hide()
+                    $(".pagination").show()
+                    pageCount = Math.ceil(count / limit)
+                    var $tr = '<div class="table-tr clear-fix"><div class="table-td-code"></div><div class="table-td-type"></div><div class="table-td-start"></div><div class="table-td-end"></div><div class="table-td-status"></div></div>'
+                    for (let i = 0; i < resData.length; i++) {
+                        $('.table-content').append($tr)
+                        let code = resData[i].code
+                        let type = resData[i].type
+                        let startCode = resData[i].start_q35code
+                        let endCode = resData[i].end_q35code
+                        let status = resData[i].status
+                        // let id = resData[i].seq
 
-                    $(".table-content .table-tr:eq("+ i +") .table-td-code").text(code)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-type").text(type)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-start").text(startCode)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-end").text(endCode)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-status").text(status)
+                        $(".table-content .table-tr:eq("+ i +") .table-td-code").text(code)
+                        $(".table-content .table-tr:eq("+ i +") .table-td-type").text(type)
+                        $(".table-content .table-tr:eq("+ i +") .table-td-start").text(startCode)
+                        $(".table-content .table-tr:eq("+ i +") .table-td-end").text(endCode)
+                        $(".table-content .table-tr:eq("+ i +") .table-td-status").text(status)
+                    }
+                } else {
+                    $(".no-data").show()
+                    $(".pagination").hide()
                 }
             },
             error: function (ex) {

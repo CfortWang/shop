@@ -29,6 +29,10 @@
                                 </div>
                                 <div class="table-content"></div>
                             </div>
+                            <div class="no-data">
+                                <img src="/img/main/no-data.png" alt="">
+                                <div>暂无数据</div>
+                            </div>
                             <div class="pagination">
                                 <div class="page-down">
                                     <img src="/img/main/icon_page_left.png" alt="">
@@ -64,21 +68,28 @@
                 $(".table-content").empty()
                 let resData = res.data.data
                 let count = res.data.count
-                pageCount = Math.ceil(count / limit)
-                var $tr = '<div class="table-tr"><div class="table-td-details"></div><div class="table-td-integral"></div><div class="table-td-remainder"></div><div class="table-td-create"></div></div>'
-                for (let i = 0; i < resData.length; i++) {
-                    $(".code-table .table-content").append($tr)
-                    let details = resData[i].description
-                    let usedPoint = resData[i].signed_point
-                    let leftPoint = resData[i].remain_point
-                    let createTime = resData[i].created_at
-                    let id = resData[i].seq
-
-                    // $(".code-table .table-content .table-tr:eq("+ i +") .table-td-code").attr("data-seq", id)
-                    $(".code-table .table-content .table-tr:eq("+ i +") .table-td-details").text(details)
-                    $(".code-table .table-content .table-tr:eq("+ i +") .table-td-integral").text(usedPoint)
-                    $(".code-table .table-content .table-tr:eq("+ i +") .table-td-remainder").text(leftPoint)
-                    $(".code-table .table-content .table-tr:eq("+ i +") .table-td-create ").text(createTime)
+                if (count) {
+                    $(".no-data").hide()
+                    $(".pagination").show()
+                    pageCount = Math.ceil(count / limit)
+                    var $tr = '<div class="table-tr"><div class="table-td-details"></div><div class="table-td-integral"></div><div class="table-td-remainder"></div><div class="table-td-create"></div></div>'
+                    for (let i = 0; i < resData.length; i++) {
+                        $(".code-table .table-content").append($tr)
+                        let details = resData[i].description
+                        let usedPoint = resData[i].signed_point
+                        let leftPoint = resData[i].remain_point
+                        let createTime = resData[i].created_at
+                        let id = resData[i].seq
+    
+                        // $(".code-table .table-content .table-tr:eq("+ i +") .table-td-code").attr("data-seq", id)
+                        $(".code-table .table-content .table-tr:eq("+ i +") .table-td-details").text(details)
+                        $(".code-table .table-content .table-tr:eq("+ i +") .table-td-integral").text(usedPoint)
+                        $(".code-table .table-content .table-tr:eq("+ i +") .table-td-remainder").text(leftPoint)
+                        $(".code-table .table-content .table-tr:eq("+ i +") .table-td-create ").text(createTime)
+                    }
+                } else {
+                    $(".no-data").show()
+                    $(".pagination").hide()
                 }
             },
             error: function (ex) {

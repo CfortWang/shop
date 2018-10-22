@@ -70,43 +70,49 @@
                 let resData = res.data.scanUserList
                 console.log(resData)
                 let count = res.data.count
-                pageCount = Math.ceil(count / limit)
-                console.log(pageCount)
-                var $tr = '<div class="table-tr clear-fix"><div class="table-td-id"></div><div class="table-td-nickname"></div><div class="table-td-sex"></div><div class="table-td-age"></div><div class="table-td-first"><p class="years"></p><p class="hours"></p></div><div class="table-td-last"><p class="years"></p><p class="hours"></p></div><div class="table-td-frequency"></div><div class="table-td-count"></div><div class="see-more">查看更多</div></div>'
-                for (let i = 0; i < resData.length; i++) {
-                    $('.table-content').append($tr)
-                    if (resData[i].id == null || resData[i].id == '') {
-                        var id = '——'
-                    } else {
-                        var id = "+" + resData[i].id.split('@')[1] + " " + resData[i].id.split('@')[0]
+                if (count) {
+                    $(".no-data").hide()
+                    $(".pagination").show()
+                    pageCount = Math.ceil(count / limit)
+                    var $tr = '<div class="table-tr clear-fix"><div class="table-td-id"></div><div class="table-td-nickname"></div><div class="table-td-sex"></div><div class="table-td-age"></div><div class="table-td-first"><p class="years"></p><p class="hours"></p></div><div class="table-td-last"><p class="years"></p><p class="hours"></p></div><div class="table-td-frequency"></div><div class="table-td-count"></div><div class="see-more">查看更多</div></div>'
+                    for (let i = 0; i < resData.length; i++) {
+                        $('.table-content').append($tr)
+                        if (resData[i].id == null || resData[i].id == '') {
+                            var id = '——'
+                        } else {
+                            var id = "+" + resData[i].id.split('@')[1] + " " + resData[i].id.split('@')[0]
+                        }
+                        let seq = resData[i].user
+                        let nickname = resData[i].nickname
+                        let gender = resData[i].gender
+                        let age = resData[i].age
+                        let firstTimeYears = resData[i].firstTime.split(' ')[0]
+                        let firstTimeHours = resData[i].firstTime.split(' ')[1]
+                        let endTimeYears = resData[i].endTime.split(' ')[0]
+                        let endTimeHours = resData[i].endTime.split(' ')[1]
+                        let percent = resData[i].rate
+                        let count = resData[i].scannedCount
+                        if (gender == null || gender == '') {
+                            gender = '——'
+                        }
+                        if (nickname == null || nickname == '') {
+                            nickname = '——'
+                        }
+                        $(".table-content .table-tr:eq("+ i +")").attr('data-seq', seq)
+                        $(".table-content .table-tr:eq("+ i +") .table-td-id").text(id)
+                        $(".table-content .table-tr:eq("+ i +") .table-td-nickname").text(nickname)
+                        $(".table-content .table-tr:eq("+ i +") .table-td-sex").text(gender)
+                        $(".table-content .table-tr:eq("+ i +") .table-td-age").text(age)
+                        $(".table-content .table-tr:eq("+ i +") .table-td-first .years").text(firstTimeYears)
+                        $(".table-content .table-tr:eq("+ i +") .table-td-first .hours").text(firstTimeHours)
+                        $(".table-content .table-tr:eq("+ i +") .table-td-last .years").text(endTimeYears)
+                        $(".table-content .table-tr:eq("+ i +") .table-td-last .hours").text(endTimeHours)
+                        $(".table-content .table-tr:eq("+ i +") .table-td-frequency").text(percent)
+                        $(".table-content .table-tr:eq("+ i +") .table-td-count").text(count)
                     }
-                    let seq = resData[i].user
-                    let nickname = resData[i].nickname
-                    let gender = resData[i].gender
-                    let age = resData[i].age
-                    let firstTimeYears = resData[i].firstTime.split(' ')[0]
-                    let firstTimeHours = resData[i].firstTime.split(' ')[1]
-                    let endTimeYears = resData[i].endTime.split(' ')[0]
-                    let endTimeHours = resData[i].endTime.split(' ')[1]
-                    let percent = resData[i].rate
-                    let count = resData[i].scannedCount
-                    if (gender == null || gender == '') {
-                        gender = '——'
-                    }
-                    if (nickname == null || nickname == '') {
-                        nickname = '——'
-                    }
-                    $(".table-content .table-tr:eq("+ i +")").attr('data-seq', seq)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-id").text(id)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-nickname").text(nickname)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-sex").text(gender)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-age").text(age)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-first .years").text(firstTimeYears)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-first .hours").text(firstTimeHours)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-last .years").text(endTimeYears)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-last .hours").text(endTimeHours)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-frequency").text(percent)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-count").text(count)
+                } else {
+                    $(".no-data").show()
+                    $(".pagination").hide()
                 }
             },
             error: function (ex) {

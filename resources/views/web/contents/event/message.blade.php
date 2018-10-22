@@ -32,6 +32,10 @@
                                 </div>
                                 <div class="table-content"></div>
                             </div>
+                            <div class="no-data">
+                                <img src="/img/main/no-data.png" alt="">
+                                <div>暂无数据</div>
+                            </div>
                             <div class="pagination">
                                 <div class="page-down">
                                     <img src="/img/main/icon_page_left.png" alt="">
@@ -80,47 +84,52 @@
             success: function (res) {
                 $(".table-content").empty()
                 let resData = res.data.data
-                console.log(resData)
                 let count = res.data.count
-                pageCount = Math.ceil(count / limit)
-                console.log(pageCount)
-                var $tr = $('.hide').html();
-                for (let i = 0; i < resData.length; i++) {
-                    $('.table-content').append($tr)
-                    let content = resData[i].content
-                    let object = resData[i].object
-                    let sendAt = resData[i].sendAt
-                    let status = resData[i].status
-                    let messageStatus = resData[i].messageStatus
-                    let remark = resData[i].remark
-                    let id = resData[i].id
-                    if (sendAt == null || sendAt == '') {
-                        sendAt = '立即发送'
-                    }
-                    var operate = '';
-                    if(messageStatus==0){
-                        operate+='<a class="modify">修改</a> ';
-                        operate+='<a class="delete">删除</a>';
-                    }else if(messageStatus==1){
-                        // operate+='<a>发送</a> ';
-                        operate+='<a class="delete">删除</a>';
-                    }else if(messageStatus==2){
-                        operate+='<a class="modify">修改</a> ';
-                        operate+='<a class="delete">删除</a>';
-                        $(".table-content .table-tr:eq("+ i +") .status-remark").text(remark)
-                    }
-                    else if(messageStatus==3){
-                        operate+='--';
-                    }
+                if (count) {
+                    $(".no-data").hide()
+                    $(".pagination").show()
+                    pageCount = Math.ceil(count / limit)
+                    var $tr = $('.hide').html();
+                    for (let i = 0; i < resData.length; i++) {
+                        $('.table-content').append($tr)
+                        let content = resData[i].content
+                        let object = resData[i].object
+                        let sendAt = resData[i].sendAt
+                        let status = resData[i].status
+                        let messageStatus = resData[i].messageStatus
+                        let remark = resData[i].remark
+                        let id = resData[i].id
+                        if (sendAt == null || sendAt == '') {
+                            sendAt = '立即发送'
+                        }
+                        var operate = '';
+                        if(messageStatus==0){
+                            operate+='<a class="modify">修改</a> ';
+                            operate+='<a class="delete">删除</a>';
+                        }else if(messageStatus==1){
+                            // operate+='<a>发送</a> ';
+                            operate+='<a class="delete">删除</a>';
+                        }else if(messageStatus==2){
+                            operate+='<a class="modify">修改</a> ';
+                            operate+='<a class="delete">删除</a>';
+                            $(".table-content .table-tr:eq("+ i +") .status-remark").text(remark)
+                        }
+                        else if(messageStatus==3){
+                            operate+='--';
+                        }
 
-                    $(".table-content .table-tr:eq("+ i +") .table-td-content").text(content)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-object").text(object)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-sendAt").text(sendAt)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-status .status").text(status)
-                    
-                    $(".table-content .table-tr:eq("+ i +") .table-td-count").text(count)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-operate").html(operate);
-                    $(".table-content .table-tr:eq("+ i +") .table-td-operate").attr({"data-id": id, "data-status": messageStatus})
+                        $(".table-content .table-tr:eq("+ i +") .table-td-content").text(content)
+                        $(".table-content .table-tr:eq("+ i +") .table-td-object").text(object)
+                        $(".table-content .table-tr:eq("+ i +") .table-td-sendAt").text(sendAt)
+                        $(".table-content .table-tr:eq("+ i +") .table-td-status .status").text(status)
+                        
+                        $(".table-content .table-tr:eq("+ i +") .table-td-count").text(count)
+                        $(".table-content .table-tr:eq("+ i +") .table-td-operate").html(operate);
+                        $(".table-content .table-tr:eq("+ i +") .table-td-operate").attr({"data-id": id, "data-status": messageStatus})
+                    }
+                } else {
+                    $(".no-data").show()
+                    $(".pagination").hide()
                 }
             },
             error: function (ex) {

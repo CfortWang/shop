@@ -36,6 +36,10 @@
                                 </div>
                                 <div class="table-content"></div>
                             </div>
+                            <div class="no-data">
+                                <img src="/img/main/no-data.png" alt="">
+                                <div>暂无数据</div>
+                            </div>
                             <div class="pagination">
                                 <div class="page-down">
                                     <img src="/img/main/icon_page_left.png" alt="">
@@ -66,22 +70,29 @@
             success: function (res) {
                 $(".table-content").empty()
                 let resData = res.data
-                var $tr = '<div class="table-tr"><div class="table-td-amount"></div><div class="table-td-payment"></div><div class="table-td-create"><p class="years"></p><p class="hours"></p></div><div class="table-td-status"></div></div>'
-                for (let i = 0; i < resData.length; i++) {
-                    $(".buy-history .table-content").append($tr)
-                    let amount = resData[i].total_quantity
-                    let payment = resData[i].payment_type
-                    let status = resData[i].status
-                    let activeTimeYear = resData[i].created_at.split(' ')[0]
-                    let activeTimeHour = resData[i].created_at.split(' ')[1]
-                    let id = resData[i].seq
-
-                    $(".buy-history .table-content .table-tr:eq("+ i +") .table-td-amount").attr("data-seq", id)
-                    $(".buy-history .table-content .table-tr:eq("+ i +") .table-td-amount").text(amount)
-                    $(".buy-history .table-content .table-tr:eq("+ i +") .table-td-payment").text(payment)
-                    $(".buy-history .table-content .table-tr:eq("+ i +") .table-td-create .years").text(activeTimeYear)
-                    $(".buy-history .table-content .table-tr:eq("+ i +") .table-td-create .hours").text(activeTimeHour)
-                    $(".buy-history .table-content .table-tr:eq("+ i +") .table-td-status").text(status)
+                if (resData.length) {
+                    $(".no-data").hide()
+                    $(".pagination").show()
+                    var $tr = '<div class="table-tr"><div class="table-td-amount"></div><div class="table-td-payment"></div><div class="table-td-create"><p class="years"></p><p class="hours"></p></div><div class="table-td-status"></div></div>'
+                    for (let i = 0; i < resData.length; i++) {
+                        $(".buy-history .table-content").append($tr)
+                        let amount = resData[i].total_quantity
+                        let payment = resData[i].payment_type
+                        let status = resData[i].status
+                        let activeTimeYear = resData[i].created_at.split(' ')[0]
+                        let activeTimeHour = resData[i].created_at.split(' ')[1]
+                        let id = resData[i].seq
+    
+                        $(".buy-history .table-content .table-tr:eq("+ i +") .table-td-amount").attr("data-seq", id)
+                        $(".buy-history .table-content .table-tr:eq("+ i +") .table-td-amount").text(amount)
+                        $(".buy-history .table-content .table-tr:eq("+ i +") .table-td-payment").text(payment)
+                        $(".buy-history .table-content .table-tr:eq("+ i +") .table-td-create .years").text(activeTimeYear)
+                        $(".buy-history .table-content .table-tr:eq("+ i +") .table-td-create .hours").text(activeTimeHour)
+                        $(".buy-history .table-content .table-tr:eq("+ i +") .table-td-status").text(status)
+                    }
+                } else {
+                    $(".no-data").show()
+                    $(".pagination").hide()
                 }
             },
             error: function (ex) {
@@ -99,24 +110,31 @@
             success: function (res) {
                 $(".table-content").empty()
                 let resData = res.data
-                var $tr = '<div class="table-tr"><div class="table-td-code"></div><div class="table-td-amount"></div><div class="table-td-used"></div><div class="table-td-create"><p class="years"></p><p class="hours"></p></div><div class="table-td-status"></div></div>'
-                for (let i = 0; i < resData.length; i++) {
-                    $(".my-code .table-content").append($tr)
-                    let code = resData[i].code
-                    let amount = resData[i].total_cnt
-                    let used = resData[i].used_cnt
-                    let status = resData[i].status
-                    let activeTimeYear = resData[i].activated_at.split(' ')[0]
-                    let activeTimeHour = resData[i].activated_at.split(' ')[1]
-                    let id = resData[i].seq
+                if (resData.length) {
+                    $(".no-data").hide()
+                    $(".pagination").show()
+                    var $tr = '<div class="table-tr"><div class="table-td-code"></div><div class="table-td-amount"></div><div class="table-td-used"></div><div class="table-td-create"><p class="years"></p><p class="hours"></p></div><div class="table-td-status"></div></div>'
+                    for (let i = 0; i < resData.length; i++) {
+                        $(".my-code .table-content").append($tr)
+                        let code = resData[i].code
+                        let amount = resData[i].total_cnt
+                        let used = resData[i].used_cnt
+                        let status = resData[i].status
+                        let activeTimeYear = resData[i].activated_at.split(' ')[0]
+                        let activeTimeHour = resData[i].activated_at.split(' ')[1]
+                        let id = resData[i].seq
 
-                    $(".my-code .table-content .table-tr:eq("+ i +") .table-td-code").attr("data-seq", id)
-                    $(".my-code .table-content .table-tr:eq("+ i +") .table-td-code").text(code)
-                    $(".my-code .table-content .table-tr:eq("+ i +") .table-td-amount").text(amount)
-                    $(".my-code .table-content .table-tr:eq("+ i +") .table-td-used").text(used)
-                    $(".my-code .table-content .table-tr:eq("+ i +") .table-td-create .years").text(activeTimeYear)
-                    $(".my-code .table-content .table-tr:eq("+ i +") .table-td-create .hours").text(activeTimeHour)
-                    $(".my-code .table-content .table-tr:eq("+ i +") .table-td-status").text(status)
+                        $(".my-code .table-content .table-tr:eq("+ i +") .table-td-code").attr("data-seq", id)
+                        $(".my-code .table-content .table-tr:eq("+ i +") .table-td-code").text(code)
+                        $(".my-code .table-content .table-tr:eq("+ i +") .table-td-amount").text(amount)
+                        $(".my-code .table-content .table-tr:eq("+ i +") .table-td-used").text(used)
+                        $(".my-code .table-content .table-tr:eq("+ i +") .table-td-create .years").text(activeTimeYear)
+                        $(".my-code .table-content .table-tr:eq("+ i +") .table-td-create .hours").text(activeTimeHour)
+                        $(".my-code .table-content .table-tr:eq("+ i +") .table-td-status").text(status)
+                    }
+                } else {
+                    $(".no-data").show()
+                    $(".pagination").hide()
                 }
             },
             error: function (ex) {
