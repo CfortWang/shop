@@ -32,7 +32,15 @@ $(function() {
     // ==========================
 
     $('.tpl-left-nav-link-list').on('click', function() {
-        $(this).siblings('.tpl-left-nav-sub-menu').slideToggle(80).end().find('.tpl-left-nav-more-ico').toggleClass('tpl-left-nav-more-ico-rotate');
+        // $(this).siblings('.tpl-left-nav-sub-menu').slideToggle(80).end().find('.tpl-left-nav-more-ico').toggleClass('tpl-left-nav-more-ico-rotate');
+        $(this).parent().children('.tpl-left-nav-sub-menu').slideToggle(80).show()
+        $(this).parent().siblings().children('.tpl-left-nav-sub-menu').slideToggle(80).hide()
+    })
+    $(".tpl-left-nav-sub-menu li a").each(function () {
+        if($(this)[0].href==String(window.location)){
+            $(this).addClass("side-active");
+            $(this).parent().parent().show()
+        }
     })
     // ==========================
     // 头部导航隐藏菜单

@@ -131,7 +131,7 @@
                             <div class="form-title">优惠券基本规则</div>
                             <div class="choose-time">
                                 <div class="form-group clear-fix">
-                                    <div class="am-u-lg-2 am-u-md-4 am-u-sm-6 coupon-title">发放总量</div>
+                                    <div class="am-u-lg-2 am-u-md-4 am-u-sm-6 coupon-title">每人限领</div>
                                     <div class="am-u-lg-10 am-u-md-8 am-u-sm-6 has-remark">
                                         <select name="limit_count" id="limit_count" data-am-selected>
                                             <option value="0">不限张</option>

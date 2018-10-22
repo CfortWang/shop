@@ -186,9 +186,13 @@
                 modal_amount: amount
             },
             success: function (res) {
-                var $modal = $('#my-popup');
-                $modal.modal('close');
-                alert("提现成功")
+                if (res.code == 200) {
+                    var $modal = $('#my-popup');
+                    $modal.modal('close');
+                    alert("提现成功")
+                } else {
+                    alert(res.message)
+                }
             },
             error: function (ex) {
                 console.log(ex)
