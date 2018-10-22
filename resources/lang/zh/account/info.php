@@ -1,0 +1,30 @@
+<?php
+return array
+(
+    'title'  => '商家信息',
+    'title2' =>'用户信息',
+    'name'   => '商家名称',
+    'code'   => '喜豆码',
+    'select' => [
+        'country'   => '国家',
+        'province'  => '省',
+        'city'      => '市',
+        'area'      => '区',
+    ],
+    'branch_name'   => '分店名称',
+    'category'      => '分类',
+    'telephone'     => '电话号码',
+    'home_page'     => '链接地址',
+    'address'       => '详细地址',
+    'logo'          => '商铺头像',
+    'detailImage'    => '详情图片',
+    'description'   => '详情描述',
+    'loaction'      => '地点',
+    'openTime'    => '开始时间',
+    'closeTime'   => '结束时间',
+    'timeRemark'  => '时间描述',
+    'noImage'     => '没有注册商标图片.',
+    'selectFile'  => '上传',
+    'changeFile'  => '修改',
+    'removeFile'  => '删除',
+);
