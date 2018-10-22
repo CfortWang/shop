@@ -110,10 +110,8 @@ class AccountInfoController extends Controller
     }
     public function cashList(Request $request)
     {
-        // $lang = $request->session()->get('bw.locale');
-        // $seq = $request->session()->get('buyer.seq');
+        $seq = $request->session()->get('buyer.seq');
         $lang='zh';
-        $seq=14;
         $buyer = Buyer::find($seq);
         $limit = $request->input('limit',20);
         $page = $request->input('page',1);
@@ -165,6 +163,9 @@ class AccountInfoController extends Controller
         ->get();
 
         return $this->response4DataTables($items, $recordsTotal, $recordsFiltered);
+        $return['data'] = $buyer;
+        $return['count'] = $recordsTotal;
+        return $this->responseOK('success', $return);
     }
     public function showBuyerInfo(Request $request)
     {
