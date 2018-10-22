@@ -99,7 +99,7 @@ class AccountInfoController extends Controller
         $AccountInfoDetail->bank_account_owner = $request->input('bank_account_owner');
         
         $AccountInfoDetail->save();
-        return $this->responseOK('정보가 수정되었습니다.',$AccountInfoDetail);
+        return $this->responseOK('Success',1);
     }
 
     public function bankList(Request $request){
