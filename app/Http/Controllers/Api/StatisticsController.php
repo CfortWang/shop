@@ -18,8 +18,9 @@ use App\Models\PhoneNumCertification;
 
 class StatisticsController extends Controller
 {
-    public function __construct()
+    public function __construct(Request $request)
     {
+        $this->buyer_id = $request->session()->get('buyer.seq');
     }
 
     public function all(Request $request)
@@ -139,6 +140,8 @@ class StatisticsController extends Controller
                     break;
             }
         }
+        $orignData = [];
+        $item = '';
         if($female['value']){
             $item[] = '女';
             $orignData[] = $female;
@@ -179,7 +182,7 @@ class StatisticsController extends Controller
 
     protected function getTime()
     {
-        $seq = $request->session()->get('buyer.seq');
+        $seq = $this->buyer_id;
         $sql = DB::raw('DATE_FORMAT(created_at,"%H") as name');
         $data = UserScanLog::where('buyer',$seq)
             ->groupBy('name')
@@ -189,6 +192,7 @@ class StatisticsController extends Controller
                 DB::raw('COUNT(user) as value'),
             ]);
         $title= '时间分布';
+        $item = [];
         foreach($data as $key => $value){
             $item[] = $value['name'] ;
         }
@@ -200,7 +204,7 @@ class StatisticsController extends Controller
 
     protected function getProvince()
     {
-        $seq = $request->session()->get('buyer.seq');
+        $seq = $this->buyer_id;
         $data = UserScanLog::where('UserScanLog.buyer',$seq)
             ->leftJoin('User as u','u.seq','=','UserScanLog.user')
             ->leftJoin('Province as p','p.seq','=','u.province')
@@ -209,7 +213,7 @@ class StatisticsController extends Controller
                 'p.name',
                 DB::raw('COUNT(UserScanLog.user) as value'),
             ]);
-
+        $item = [];
         foreach($data as $key => $value){
             if($value['name']){
                 $item[] = $value['name'] ;
@@ -230,6 +234,7 @@ class StatisticsController extends Controller
         $unknown['name'] = '未知';
         $unknown['value'] = 0;
         $item = [];
+        $data = [];
         foreach ($orign as $key => $value) {
             if(isset($value['birthday'])){
                 $year = Carbon::parse($value['birthday']);
@@ -283,6 +288,8 @@ class StatisticsController extends Controller
                     break;
             }
         }
+        $orignData = [];
+        $item = [];
         if($no['value']){
             $item[] = '未婚';
             $orignData[] = $no;

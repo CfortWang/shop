@@ -26,8 +26,7 @@ class CustomerController extends Controller
     }
     //扫描用户列表
     public function scannedUserList(Request $request){
-        // $buyer = $request->session()->get('buyer.seq');
-        $buyer=1;
+        $buyer = $request->session()->get('buyer.seq');
         $limit = $request->input('limit')?$request->input('limit'):20;
         $page = $request->input('page')?$request->input('page'):1;
         $searchValue = $request->input('phoneNum');
