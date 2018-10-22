@@ -42,6 +42,10 @@
                                 </div>
                                 <div class="table-content"></div>
                             </div>
+                            <div class="no-data">
+                                <img src="/img/main/no-data.png" alt="">
+                                <div>暂无数据</div>
+                            </div>
                             <div class="pagination">
                                 <div class="page-down">
                                     <img src="/img/main/icon_page_left.png" alt="">
@@ -78,67 +82,72 @@
             },
             success: function (res) {
                 $(".table-content").empty()
-                console.log(selectStatus)
                 let resData = res.data.data
-                console.log(resData)
                 let count = res.data.count
-                pageCount = Math.ceil(count / limit)
-                var $tr = '<div class="table-tr clear-fix"><div class="table-td-name"></div><div class="table-td-price"><p class="new-price"></p><p class="old-price"></p></div><div class="table-td-condition"><p class="new-price"></p><p class="old-price"></p></div><div class="table-td-effective"></div><div class="table-td-getTimes"></div><div class="table-td-used"></div><div class="table-td-getRate"></div><div class="table-td-useRate"></div><div class="table-td-status"></div><div class="operating"><span class="shelf"></span><span class="delete"></span><span class="obtained"></span><span class="modify" style="display:none">&nbsp;&nbsp;&nbsp;&nbsp;修改</span></div></div>'
-                for (let i = 0; i < resData.length; i++) {
-                    $('.table-content').append($tr)
-                    let couponName = resData[i].coupon_name
-                    let newPrice = resData[i].value
-                    let oldPrice = resData[i].limit_money
-                    let limitCount = resData[i].limit_count
-                    let reserve = "库存：" + resData[i].reserve
-                    let effective = resData[i].period_time
-                    let peopleCount = resData[i].peopleCount
-                    let receiveCount = resData[i].receiveCount
-                    let useCount = resData[i].usedCount
-                    let receive = resData[i].receiving_rate
-                    let use = resData[i].used_rate
-                    let status = resData[i].status
-                    let statusValue = resData[i].statusValue
-                    let id = resData[i].id
+                if (count) {
+                    $(".no-data").hide()
+                    $(".pagination").show()
+                    pageCount = Math.ceil(count / limit)
+                    var $tr = '<div class="table-tr clear-fix"><div class="table-td-name"></div><div class="table-td-price"><p class="new-price"></p><p class="old-price"></p></div><div class="table-td-condition"><p class="new-price"></p><p class="old-price"></p></div><div class="table-td-effective"></div><div class="table-td-getTimes"></div><div class="table-td-used"></div><div class="table-td-getRate"></div><div class="table-td-useRate"></div><div class="table-td-status"></div><div class="operating"><span class="shelf"></span><span class="delete"></span><span class="obtained"></span><span class="modify" style="display:none">&nbsp;&nbsp;&nbsp;&nbsp;修改</span></div></div>'
+                    for (let i = 0; i < resData.length; i++) {
+                        $('.table-content').append($tr)
+                        let couponName = resData[i].coupon_name
+                        let newPrice = resData[i].value
+                        let oldPrice = resData[i].limit_money
+                        let limitCount = resData[i].limit_count
+                        let reserve = "库存：" + resData[i].reserve
+                        let effective = resData[i].period_time
+                        let peopleCount = resData[i].peopleCount
+                        let receiveCount = resData[i].receiveCount
+                        let useCount = resData[i].usedCount
+                        let receive = resData[i].receiving_rate
+                        let use = resData[i].used_rate
+                        let status = resData[i].status
+                        let statusValue = resData[i].statusValue
+                        let id = resData[i].id
 
-                    if (oldPrice == '' || oldPrice == null) {
-                        oldPrice = "最低消费：—"
-                    } else {
-                        oldPrice = "最低消费：" + oldPrice
-                    }
+                        if (oldPrice == '' || oldPrice == null) {
+                            oldPrice = "最低消费：—"
+                        } else {
+                            oldPrice = "最低消费：" + oldPrice
+                        }
 
-                    if (peopleCount == '' || peopleCount == null) {
-                        peopleCount = '-'
-                    }
-                    if (receiveCount == '' || receiveCount == null) {
-                        receiveCount = '-'
-                    }
-                    let statistics = peopleCount + '/' + receiveCount
+                        if (peopleCount == '' || peopleCount == null) {
+                            peopleCount = '-'
+                        }
+                        if (receiveCount == '' || receiveCount == null) {
+                            receiveCount = '-'
+                        }
+                        let statistics = peopleCount + '/' + receiveCount
 
 
-                    if (statusValue == 'processed') {
-                        $(".table-content .table-tr:eq("+ i +") .operating .obtained").text("下架")
-                    }
-                    if (statusValue == "registered") {
-                        $(".table-content .table-tr:eq("+ i +") .operating .shelf").text("上架")
-                        $(".table-content .table-tr:eq("+ i +") .operating .modify").css("display", 'inline')
-                    }
-                    if (statusValue == "overed") {
-                        $(".table-content .table-tr:eq("+ i +") .operating .delete").text("删除")
-                    }
-                    $(".table-content .table-tr:eq("+ i +") .operating").attr({"data-id": id, "data-status": statusValue})
-                    $(".table-content .table-tr:eq("+ i +") .table-td-name").text(couponName)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-price .new-price").text(newPrice)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-price .old-price").text(oldPrice)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-condition .new-price").text(limitCount)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-condition .old-price").text(reserve)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-effective").text(effective)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-getTimes").text(statistics)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-used").text(useCount)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-getRate").text(receive)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-useRate").text(use)
-                    $(".table-content .table-tr:eq("+ i +") .table-td-status").text(status)
+                        if (statusValue == 'processed') {
+                            $(".table-content .table-tr:eq("+ i +") .operating .obtained").text("下架")
+                        }
+                        if (statusValue == "registered") {
+                            $(".table-content .table-tr:eq("+ i +") .operating .shelf").text("上架")
+                            $(".table-content .table-tr:eq("+ i +") .operating .modify").css("display", 'inline')
+                        }
+                        if (statusValue == "overed") {
+                            $(".table-content .table-tr:eq("+ i +") .operating .delete").text("删除")
+                        }
+                        $(".table-content .table-tr:eq("+ i +") .operating").attr({"data-id": id, "data-status": statusValue})
+                        $(".table-content .table-tr:eq("+ i +") .table-td-name").text(couponName)
+                        $(".table-content .table-tr:eq("+ i +") .table-td-price .new-price").text(newPrice)
+                        $(".table-content .table-tr:eq("+ i +") .table-td-price .old-price").text(oldPrice)
+                        $(".table-content .table-tr:eq("+ i +") .table-td-condition .new-price").text(limitCount)
+                        $(".table-content .table-tr:eq("+ i +") .table-td-condition .old-price").text(reserve)
+                        $(".table-content .table-tr:eq("+ i +") .table-td-effective").text(effective)
+                        $(".table-content .table-tr:eq("+ i +") .table-td-getTimes").text(statistics)
+                        $(".table-content .table-tr:eq("+ i +") .table-td-used").text(useCount)
+                        $(".table-content .table-tr:eq("+ i +") .table-td-getRate").text(receive)
+                        $(".table-content .table-tr:eq("+ i +") .table-td-useRate").text(use)
+                        $(".table-content .table-tr:eq("+ i +") .table-td-status").text(status)
 
+                    }
+                } else {
+                    $(".no-data").show()
+                    $(".pagination").hide()
                 }
             },
             error: function (ex) {
