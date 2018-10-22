@@ -23,9 +23,8 @@ class AdController extends Controller
    
     public function adList(Request $request)
     {
-        // $seq = $request->session()->get('buyer.seq');
-        // $input=Input::only('limit','page');
-        $seq=14;
+        $seq = $request->session()->get('buyer.seq');
+        $input=Input::only('limit','page');
         $limit = $request->input('limit')?$request->input('limit'):20;
         $page = $request->input('page')?$request->input('page'):1;
         $count = ShopAD::where('buyer',$seq)->get();
@@ -60,7 +59,7 @@ class AdController extends Controller
     }
     //广告上下架
     public function adStatus(Request $request){
-        $buyer=14;
+        $buyer = $request->session()->get('buyer.seq');
         $Input=Input::only('seq','status');
         // $validator = Validator::make(['seq' => $seq,'status'=>$status],[
         //     'status'  ='requried|in:registered,activated,stopped',
@@ -96,7 +95,6 @@ class AdController extends Controller
     public function detail(Request $request)
     {
         $buyer = $request->session()->get('buyer.seq');
-        $buyer=14;
         $seq=$request->input('seq');
         $item = ShopAD::where('ShopAD.seq',$seq)->where('buyer',$buyer)
                         ->leftJoin('ShopImageFile as F','F.seq', '=', 'ShopAD.shop_image_file')
@@ -115,7 +113,6 @@ class AdController extends Controller
     public function createAd(Request $request)
     {
         $buyer = $request->session()->get('buyer.seq');
-        $buyer=14;
         $input = Input::only('title', 'landing_url' , 'ad_image_file','start_date','end_date', 'pkg_list');
         $message = array(
             "required" => ":attribute ".trans('common.verification.cannotEmpty'),
@@ -185,7 +182,6 @@ class AdController extends Controller
     public function modifyAd(Request $request)
     {
         $buyer = $request->session()->get('buyer.seq');
-        $buyer=14;
         $input = Input::only('id','title', 'landing_url' , 'ad_image_file', 'pkg_list','start_date','end_date','is_code_modify');
         $message = array(
             "required" => ":attribute ".trans('common.verification.cannotEmpty'),

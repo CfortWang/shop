@@ -22,7 +22,7 @@ class GroupOnController extends Controller
 {
     public function __construct()
     {
-        $this->buyer_id = 1;
+        $this->buyer_id =  $request->session()->get('buyer.seq');
     }
 
     public function list(Request $request)

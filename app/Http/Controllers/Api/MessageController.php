@@ -18,7 +18,7 @@ class MessageController extends Controller
 {
     public function __construct()
     {
-        $this->buyer_id = 1;
+        $this->buyer_id = $request->session()->get('buyer.seq');
         // $this->lang = 
         $this->objectType[0]['zh'] = '手机号';
         $this->objectType[1]['zh'] = '沉默用户';

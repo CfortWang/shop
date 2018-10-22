@@ -21,8 +21,7 @@ class AccountInfoController extends Controller
      //账号基本信息
     public function detail(Request $request)
     {
-        // $seq = $request->session()->get('buyer.seq');
-        $seq=14;
+        $seq = $request->session()->get('buyer.seq');
         $data= Buyer::where('seq', $seq)
         // ->join('PartnerAccount as p', 'p.seq', '=', 'Buyer.sales_partner')
         ->select([
@@ -52,7 +51,6 @@ class AccountInfoController extends Controller
     public function scoreList(Request $request)
     {
         $seq = $request->session()->get('buyer.seq');
-        $seq=14;
         $limit = $request->input('limit',10);
         $page = $request->input('page',1);
         $searchValue = $request->input('search');
@@ -89,6 +87,16 @@ class AccountInfoController extends Controller
             'bank_account_owner',
             ]
         );
+        $validator = Validator::make($input, [
+            'rep_name'        => 'required|string',
+            'bank_seq'        => 'required|integer',
+            'bank_account'    => 'required|string',
+            'bank_account_owner' => 'required|string'
+        ]);
+
+        if ($validator->fails()) {
+            return $this->responseBadRequest('parameter is invalid', 401);//error 400, 401
+        }
         $AccountInfoDetail = Buyer::find($seq);
         if(empty($AccountInfoDetail)){
             return $this->responseNotFound('No data','','');
@@ -153,7 +161,6 @@ class AccountInfoController extends Controller
     {
         $seq = $request->session()->get('buyer.seq');
         // $lang = $request->session()->get('bw.locale');
-        // $seq=14;
         $buyer = Buyer::where('seq',$seq)->select('bank','bank_account_owner','bank_account','point')->first();
         $lang='zh';
         if(!$buyer){

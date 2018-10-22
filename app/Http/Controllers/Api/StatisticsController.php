@@ -24,7 +24,7 @@ class StatisticsController extends Controller
 
     public function all(Request $request)
     {
-        $seq = 1;
+        $seq = $request->session()->get('buyer.seq');
        
          $return['tomorrowNew'] = UserScanLog::where('UserScanLog.buyer',$seq)
             ->leftJoin('User as a','a.seq','=','UserScanLog.user')
@@ -44,7 +44,7 @@ class StatisticsController extends Controller
 
     public function newCustomer(Request $request)
     {
-        $seq  = 1;
+        $seq  = $request->session()->get('buyer.seq');
         $input = Input::only('startDate', 'endDate', 'dateSpan');
 
         $validator = Validator::make($input, [
@@ -97,7 +97,7 @@ class StatisticsController extends Controller
 
     public function analysis(Request $request)
     {
-        $seq = 1;
+        $seq = $request->session()->get('buyer.seq');
         $orign = UserScanLog::where('buyer',$seq)
             ->leftJoin('User as a','a.seq','=','UserScanLog.user')
             // ->where('created_at', '<=', $endDate)
@@ -179,7 +179,7 @@ class StatisticsController extends Controller
 
     protected function getTime()
     {
-        $seq = 2;
+        $seq = $request->session()->get('buyer.seq');
         $sql = DB::raw('DATE_FORMAT(created_at,"%H") as name');
         $data = UserScanLog::where('buyer',$seq)
             ->groupBy('name')
@@ -200,7 +200,7 @@ class StatisticsController extends Controller
 
     protected function getProvince()
     {
-        $seq = 2;
+        $seq = $request->session()->get('buyer.seq');
         $data = UserScanLog::where('UserScanLog.buyer',$seq)
             ->leftJoin('User as u','u.seq','=','UserScanLog.user')
             ->leftJoin('Province as p','p.seq','=','u.province')
@@ -359,7 +359,7 @@ class StatisticsController extends Controller
 
     public function active(Request $request)
     {
-        $seq  = 1;
+        $seq  = $request->session()->get('buyer.seq');
         $input = Input::only('startDate', 'endDate', 'dateSpan');
 
         $validator = Validator::make($input, [
@@ -411,7 +411,7 @@ class StatisticsController extends Controller
     }
     public function silence(Request $request)
     {
-        $seq  = 1;
+        $seq  = $request->session()->get('buyer.seq');
         $input = Input::only('startDate', 'endDate', 'dateSpan');
 
         $validator = Validator::make($input, [
@@ -464,7 +464,7 @@ class StatisticsController extends Controller
 
     public function frequency(Request $request)
     {
-        $seq  = 1;
+        $seq  = $request->session()->get('buyer.seq');
         $input = Input::only('startDate', 'endDate', 'dateSpan');
 
         $validator = Validator::make($input, [
@@ -517,7 +517,7 @@ class StatisticsController extends Controller
 
     public function list(Request $request)
     {
-        $seq = 1;
+        $seq = $request->session()->get('buyer.seq');
         $type = $request->input('type');
         $startDate = Carbon::createFromFormat('Y-m-d',$request->input('startDate'));
         $endDate = Carbon::createFromFormat('Y-m-d',$request->input('endDate'));
@@ -576,7 +576,7 @@ class StatisticsController extends Controller
 
     public function detail(Request $request)
     {
-        $seq = 1;
+        $seq = $request->session()->get('buyer.seq');
         $limit = $request->input('limit',20);
         $page = $request->input('page',1);
         $date = $request->input('date');

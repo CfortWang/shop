@@ -84,8 +84,7 @@ class CustomerController extends Controller
         return $this->responseOk('',$newData);
     }
     public function scannedUserDetail(Request $request){
-       // $buyer = $request->session()->get('buyer.seq');
-        $buyer=1;
+       $buyer = $request->session()->get('buyer.seq');
         $limit = $request->input('limit',20);
         $page = $request->input('page',1);
         $input=Input::only('seq');
@@ -128,8 +127,7 @@ class CustomerController extends Controller
     }
     //拼豆豆中用户
     public function pddUserList(Request $request){
-        // $buyer=$request->session()->get('buyer.seq'); 
-        $buyer=1;
+        $buyer=$request->session()->get('buyer.seq'); 
         $limit = $request->input('limit',20);
         $page = $request->input('page',1);
         $input=Input::only('type');
@@ -210,8 +208,7 @@ class CustomerController extends Controller
     }
      //领取优惠券用户列表
      public function couponUserList(Request $request){
-        // $buyer=$request->session()->get('buyer.seq');
-        $buyer=1;
+        $buyer=$request->session()->get('buyer.seq');
         // $user=$request->input('user');
         $limit = $request->input('limit',10);
         $page = $request->input('page',1);
@@ -259,10 +256,9 @@ class CustomerController extends Controller
     }
     //领取优惠券详细列表
     public function couponDetailUserList(Request $request){
-        // $buyer=$request->session()->get('buyer.seq');
+        $buyer=$request->session()->get('buyer.seq');
         $limit = $request->input('limit',10);
         $page = $request->input('page',1);
-        $buyer=1;
         $input=Input::only('user');
         $message = array(
             "required" => ":attribute ".trans('common.verification.cannotEmpty'),
