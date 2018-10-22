@@ -46,6 +46,10 @@
                                 </div>
                                 <div class="table-content"></div>
                             </div>
+                            <div class="no-data">
+                                <img src="/img/main/no-data.png" alt="">
+                                <div>暂无数据</div>
+                            </div>
                             <div class="pagination">
                                 <div class="page-down">
                                     <img src="/img/main/icon_page_left.png" alt="">
@@ -184,16 +188,22 @@
                 success: function (res) {
                     $(".table-content").empty()
                     let resData = res.data.data
-                    console.log(resData)
                     let count = res.data.count
-                    pageCount = Math.ceil(count / limit)
-                    var $tr = '<div class="table-tr clear-fix"><div class="table-td-date"></div><div class="table-td-count"></div></div>'
-                    for (let i = 0; i < resData.length; i++) {
-                        $('.table-content').append($tr)
-                        let date = resData[i].date
-                        let count = resData[i].value
-                        $(".table-content .table-tr:eq("+ i +") .table-td-date").text(date)
-                        $(".table-content .table-tr:eq("+ i +") .table-td-count").text(count)
+                    if (count) {
+                        $(".no-data").hide()
+                        $(".pagination").show()
+                        pageCount = Math.ceil(count / limit)
+                        var $tr = '<div class="table-tr clear-fix"><div class="table-td-date"></div><div class="table-td-count"></div></div>'
+                        for (let i = 0; i < resData.length; i++) {
+                            $('.table-content').append($tr)
+                            let date = resData[i].date
+                            let count = resData[i].value
+                            $(".table-content .table-tr:eq("+ i +") .table-td-date").text(date)
+                            $(".table-content .table-tr:eq("+ i +") .table-td-count").text(count)
+                        }
+                    } else {
+                        $(".no-data").show()
+                        $(".pagination").hide()
                     }
                 },
                 error: function (ex) {

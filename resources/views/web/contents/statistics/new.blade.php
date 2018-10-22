@@ -10,7 +10,7 @@
     <div class="tpl-page-container tpl-page-header-fixed">
         <div class="tpl-content-wrapper">
             <div class="row">
-                <div class="am-u-md-12 am-u-sm-12 row-mb">
+                <div class="am-u-lg-12 am-u-sm-12 row-mb">
                     <div class="tpl-portlet">
                         <div class="tpl-portlet-title">
                             <div class="tpl-caption">
@@ -35,7 +35,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="am-u-lg-8 am-u-md-8 am-u-sm-12 row-mb">
+                <div class="am-u-lg-8 am-u-md-12 am-u-sm-12 row-mb">
                     <div class="tpl-portlet">
                         <div class="tpl-portlet-title">
                             <div class="tpl-caption font-green ">
@@ -55,7 +55,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="am-u-lg-4 am-u-md-4 am-u-sm-12 row-mb new">
+                <div class="am-u-lg-4 am-u-md-12 am-u-sm-12 row-mb new">
                     <div class="tpl-portlet">
                         <div class="tpl-portlet-title center">
                             <div class="center-caption">
@@ -72,6 +72,7 @@
                             </div>
                             <div class="no-data">
                                 <img src="/img/main/no-data.png" alt="">
+                                <div>暂无数据</div>
                             </div>
                             <div class="pagination">
                                 <div class="page-down">

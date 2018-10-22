@@ -45,13 +45,11 @@
                                     <div class="count">活跃用户数</div>
                                     <div class="percentage">新用户占比</div>
                                 </div>
-                                <div class="table-content">
-                                    <div class="table-tr clear-fix">
-                                        <div class="table-td-date">2019-09-09</div>
-                                        <div class="table-td-count">1000</div>
-                                        <div class="table-td-percent">0.00%</div>
-                                    </div>
-                                </div>
+                                <div class="table-content"></div>
+                            </div>
+                            <div class="no-data">
+                                <img src="/img/main/no-data.png" alt="">
+                                <div>暂无数据</div>
                             </div>
                             <div class="pagination">
                                 <div class="page-down">
@@ -191,18 +189,24 @@
                 success: function (res) {
                     $(".table-content").empty()
                     let resData = res.data.data
-                    console.log(resData)
                     let count = res.data.count
-                    pageCount = Math.ceil(count / limit)
-                    var $tr = '<div class="table-tr clear-fix"><div class="table-td-date"></div><div class="table-td-count"></div><div class="table-td-percent"></div></div>'
-                    for (let i = 0; i < resData.length; i++) {
-                        $('.table-content').append($tr)
-                        let date = resData[i].date
-                        let count = resData[i].value
-                        let percent = resData[i].rate
-                        $(".table-content .table-tr:eq("+ i +") .table-td-date").text(date)
-                        $(".table-content .table-tr:eq("+ i +") .table-td-count").text(count)
-                        $(".table-content .table-tr:eq("+ i +") .table-td-percent").text(percent)
+                    if (count) {
+                        $(".no-data").hide()
+                        $(".pagination").show()
+                        pageCount = Math.ceil(count / limit)
+                        var $tr = '<div class="table-tr clear-fix"><div class="table-td-date"></div><div class="table-td-count"></div><div class="table-td-percent"></div></div>'
+                        for (let i = 0; i < resData.length; i++) {
+                            $('.table-content').append($tr)
+                            let date = resData[i].date
+                            let count = resData[i].value
+                            let percent = resData[i].rate
+                            $(".table-content .table-tr:eq("+ i +") .table-td-date").text(date)
+                            $(".table-content .table-tr:eq("+ i +") .table-td-count").text(count)
+                            $(".table-content .table-tr:eq("+ i +") .table-td-percent").text(percent)
+                        } 
+                    } else {
+                        $(".no-data").show()
+                        $(".pagination").hide()
                     }
                 },
                 error: function (ex) {

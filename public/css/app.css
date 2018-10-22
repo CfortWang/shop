@@ -567,7 +567,7 @@ ul.tpl-dropdown-content li>a.tpl-dropdown-content-message:last-child {
     margin: 40px 50px;
 }
 
-@media screen and (min-width: 1280px) {
+@media screen and (min-width: 1024px) {
     .new{
         width: 30.5%;
     }
@@ -667,6 +667,13 @@ ul.tpl-dropdown-content li>a.tpl-dropdown-content-message:last-child {
 .no-data{
     text-align: center;
     display: none;
+    font-family: "PingFangSC-Light";
+    color: #ddd;
+    font-size: 22px;
+    font-weight: 300;
+    max-width: 500px;
+    margin: 0px auto;
+    margin-top: 20px;
 }
 .no-data img{
     width: 50%;
