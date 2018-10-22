@@ -33,7 +33,7 @@
                                 <div class="form-group clear-fix">
                                     <label class="am-u-lg-2 am-u-md-2 am-u-sm-3">银行</label>
                                     <div class="am-u-lg-4 am-u-md-5 am-u-sm-6 am-u-end bank">
-                                        <select class="pkg-data" name="bank" data-am-selected="{maxHeight: 100}"></select>
+                                        <select class="pkg-data" id="bank_seq" name="bank_seq" data-am-selected="{maxHeight: 100}"></select>
                                     </div>
                                 </div>
                                 <div class="form-group clear-fix">
@@ -52,6 +52,7 @@
                         </div>
                     </div>
                 </div>
+                <div class="modify-btn">保存修改</div>
             </form>
         </div>
     </div>
@@ -71,7 +72,7 @@ var drawData = function () {
             $("#rep_phone_num").val(resData.rep_phone_num)
             $("#rep_name").val(resData.rep_name)
             $("#partner_id").val(resData.partner_id)
-            $("#bank").val(resData.bank)
+            $("#bank_seq").val(resData.bank)
             $("#bank_account").val(resData.bank_account)
             $("#bank_account_owner").val(resData.bank_account_owner)
             bankId = resData.bank
@@ -108,6 +109,31 @@ var getBank = function () {
 }
 getBank();
 
-$("input, select").attr("disabled", true)
+var modifyInfo = function () {
+    $.ajax({
+        url: 'http://shop.test/api/account/modify',
+        type: 'post',
+        dataType: 'json',
+        data: {
+            rep_name: $("#rep_name").val(),
+            bank_account_owner: $("#bank_account_owner").val(),
+            bank_seq: $("#bank_seq").val(),
+            bank_account: $("#bank_account").val()
+        },
+        success: function (res) {
+            console.log(res)
+        },
+        error: function (ex) {
+            console.log(ex)
+        }
+    })
+}
+
+$("input#rep_phone_num, input#partner_id").attr("disabled", true)
+
+$(".modify-btn").on("click", function () {
+    modifyInfo();
+})
+
 </script>
 @endsection

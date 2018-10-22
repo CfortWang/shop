@@ -83,8 +83,8 @@
                                     </div>
                                 </div>
                                 <div class="cashout-btn-box">
-                                    <button type="button" class="am-btn am-btn-primary sign-up">申请</button>
-                                    <button type="button" class="am-btn am-btn-warning" data-am-modal="{target: '#my-popup'}">取消</button>
+                                    <button type="button" class="am-btn am-btn-primary am-radius sign-up">申请</button>
+                                    <button type="button" class="am-btn am-btn-warning am-radius" data-am-modal="{target: '#my-popup'}">取消</button>
                                 </div>
                             </div>
                         </div>
