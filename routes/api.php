@@ -23,6 +23,7 @@ Route::group(['namespace' => 'Api'], function() {
         Route::post('/sendCode',       'LoginController@sendCode');
         Route::post('/code',           'LoginController@code');
     });
+    Route::get('/logout',               'LoginController@logout');
     Route::group(['prefix'  => 'statistics'], function() {
         Route::get('/new',           'StatisticsController@newCustomer');
         Route::get('/analysis',                       'StatisticsController@analysis');
@@ -56,6 +57,7 @@ Route::group(['namespace' => 'Api'], function() {
         Route::get('/province/{seq}',                 'CommonController@province');//喜豆码列表
         Route::get('/city/{seq}',                 'CommonController@city');//喜豆码列表
         Route::get('/area/{seq}',                 'CommonController@area');//喜豆码列表
+        Route::post('/set_locale',                 'CommonController@setlocale');//喜豆码列表
     });
     //shop
     Route::group(['prefix'  => 'shop'], function() {

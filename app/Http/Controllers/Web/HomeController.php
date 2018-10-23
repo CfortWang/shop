@@ -17,7 +17,6 @@ class HomeController extends Controller
 
   public function index()
   {
-    App::setLocale('zh');
     return view('web.contents.home.index',[
         'title' => 'Home page',
       ]);

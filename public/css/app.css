@@ -556,6 +556,7 @@ ul.tpl-dropdown-content li>a.tpl-dropdown-content-message:last-child {
 }
 .exit{
     float: right;
+    cursor: pointer;
 }
 .exit span{
     vertical-align: middle;

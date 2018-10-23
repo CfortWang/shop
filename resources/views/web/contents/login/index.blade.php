@@ -1,6 +1,7 @@
 <html>
 	<head>
-		<title></title>
+		<title>喜豆商家营销管理后台</title>
+		<link rel="icon" href="/img/logo.ico" type="image/x-icon">
 	<style>
 		body{
 			background:white;

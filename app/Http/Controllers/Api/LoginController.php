@@ -109,4 +109,9 @@ class LoginController extends Controller
             return $this->responseServerError(trans('login.messageSendFailed'), $result);
         }
     }
+
+    public function logout(Request $request)
+    {
+        $request->session()->flush();
+    }
 }

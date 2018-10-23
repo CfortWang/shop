@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api;
 
 use Validator;
+use App;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
@@ -24,7 +25,6 @@ class CommonController extends Controller
     public function country(Request $request)
     {
         $lang = $request->session()->get('locale');
-        $lang = 'zh';
         $data = Country::select('seq', 'calling_code', 'name_'.$lang.' as name')->orderBy('seq', 'asc')->get();
         if($data){
             return $this->responseOK('success', $data);
@@ -63,4 +63,24 @@ class CommonController extends Controller
         }
     }
 
+    public function setLocale(Request $request)
+    {
+        $input = Input::only('locale');
+
+        $validator = Validator::make($input, [
+            'locale'   => 'required'
+        ]);
+
+        if ($validator->fails()) {
+            return $this->responseBadRequest('Bad Request', 401);
+        }
+
+        $locale = $request->input('locale');
+        $request->session()->put('locale', $locale);
+        App::setLocale($locale);
+
+        return $this->responseOk('locale set success',[
+          'localeResult'   => $locale
+        ]);
+    }
 }

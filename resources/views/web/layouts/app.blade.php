@@ -10,7 +10,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="renderer" content="webkit">
     <meta http-equiv="Cache-Control" content="no-siteapp" />
-    <!-- <link rel="icon" type="image/png" href="i/favicon.png"> -->
+    <link rel="icon" href="/img/logo.ico" type="image/x-icon">
     <!-- <link rel="apple-touch-icon-precomposed" href="i/app-icon72x72@2x.png"> -->
     <!-- <meta name="apple-mobile-web-app-title" content="Amaze UI" /> -->
     <link rel="stylesheet" href="/css/amazeui.min.css" />
@@ -164,10 +164,10 @@
                     <div class="language-item">
                         <img src="/img/main/icon_global.png" alt="">
                         <div class="lang-selected">
-                            <select name="" id="">
-                                <option value="1">zh-中国</option>
-                                <option value="2">zh-中国</option>
-                                <option value="3">zh-中国</option>
+                            <select name="lang" id="lang">
+                                <option value="zh">zh-中国</option>
+                                <option value="en">en-English</option>
+                                <option value="ko">ko-Korea</option>
                             </select>
                         </div>
                         <img src="/img/main/icon_right.png" alt="">
@@ -183,6 +183,51 @@
             <script src="/js/amazeui.min.js"></script>
             <script src="/js/iscroll.js"></script>
             <script src="/js/app.js"></script>
+            <script>
+                $('#lang').change(function(e) {
+                    var locale = $('#lang').val();
+                    $.ajax({
+                        url: '/api/common/set_locale',
+                        data: {
+                            'locale' : locale
+                        },
+                        dataType: 'json',
+                        type: 'POST',
+                        success: function(data){
+                            location.reload();
+                        },
+                        error: function(data) {
+                            // var httpStatus = data.status;
+                            // var detailStatus = data.responseJSON.status;
+
+                            // if (httpStatus === 400 && detailStatus === 401) {
+                            //     bootbox.alert(localeWrongReq); 
+                            // } else {
+                            //     bootbox.alert(serverErrReq); 
+                            // }
+                        }
+                    });
+                });
+                $('.exit').click(function(){
+                    $.ajax({
+                        url: '/api/logout/',
+                        type: 'GET',
+                        success: function(data){
+                            location.reload();
+                        },
+                        // error: function(data) {
+                        //     var httpStatus = data.status;
+                        //     var detailStatus = data.responseJSON.status;
+
+                        //     if (httpStatus === 400 && detailStatus === 401) {
+                        //         bootbox.alert(localeWrongReq); 
+                        //     } else {
+                        //         bootbox.alert(serverErrReq); 
+                        //     }
+                        // }
+                    });
+                })
+            </script>
             @yield('script')
         </div>
     </div>
