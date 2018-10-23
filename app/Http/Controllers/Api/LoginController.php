@@ -114,4 +114,6 @@ class LoginController extends Controller
     {
         $request->session()->flush();
     }
+
+    
 }

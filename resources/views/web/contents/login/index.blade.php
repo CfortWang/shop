@@ -151,7 +151,7 @@
 				type: 'post',
 				success: function(response){
 					// console.log(123123);
-					window.location.href="http://shop.test" 
+					window.location.href="/" 
 				},
 				error: function(e) {
 					console.log(e);

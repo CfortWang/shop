@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\DB;
 use App\Helpers\SendCodeHelper;
 use Validator;
 use Hash;
+use App;
 
 use Carbon\Carbon;
 use App\Models\UserScanLog;

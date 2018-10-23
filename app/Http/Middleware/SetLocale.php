@@ -19,9 +19,9 @@ class SetLocale
         $locale = $request->session()->get('locale');
         if ($locale === null) {
             $request->session()->put('locale', 'zh');
-        } else {
-            App::setLocale($locale);
-        }
+            $locale = 'zh';
+        } 
+        App::setLocale($locale);
         return $next($request);
     }
 }

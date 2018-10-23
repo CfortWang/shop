@@ -165,9 +165,9 @@
                         <img src="/img/main/icon_global.png" alt="">
                         <div class="lang-selected">
                             <select name="lang" id="lang">
-                                <option value="zh">zh-中国</option>
-                                <option value="en">en-English</option>
-                                <option value="ko">ko-Korea</option>
+                                <option value="zh" {{App::getLocale() === 'zh' ? 'selected':null}}>zh - 中國</option>
+                                <option value="en" {{App::getLocale() === 'en' ? 'selected':null}}>en - English</option>
+                                <option value="ko" {{App::getLocale() === 'ko' ? 'selected':null}}>ko - 한국어</option>
                             </select>
                         </div>
                         <img src="/img/main/icon_right.png" alt="">

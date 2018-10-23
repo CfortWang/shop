@@ -57,7 +57,7 @@ Route::group(['namespace' => 'Api'], function() {
         Route::get('/province/{seq}',                 'CommonController@province');//喜豆码列表
         Route::get('/city/{seq}',                 'CommonController@city');//喜豆码列表
         Route::get('/area/{seq}',                 'CommonController@area');//喜豆码列表
-        Route::post('/set_locale',                 'CommonController@setlocale');//喜豆码列表
+        Route::post('/set_locale',                 'CommonController@setLocale');//喜豆码列表
     });
     //shop
     Route::group(['prefix'  => 'shop'], function() {

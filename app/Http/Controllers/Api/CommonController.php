@@ -78,9 +78,8 @@ class CommonController extends Controller
         $locale = $request->input('locale');
         $request->session()->put('locale', $locale);
         App::setLocale($locale);
-
         return $this->responseOk('locale set success',[
-          'localeResult'   => $locale
+          'localeResult'   => App::getLocale()
         ]);
     }
 }
