@@ -181,7 +181,7 @@
             </div>
         </div>
             <script src="/js/jquery-2.1.1.js"></script>
-            <script src="/js/amazeui.min.js"></script>
+            <!-- <script src="/js/amazeui.min.js"></script> -->
             <script src="/js/iscroll.js"></script>
             <script src="/js/toastr.min.js"></script>
             <script src="/js/app.js"></script>

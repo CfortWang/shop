@@ -654,7 +654,7 @@
     </div>
 @endsection
 @section('script')
-    <script src="/js/echarts.min.js"></script>
+    <!-- <script src="/js/echarts.min.js"></script> -->
     <script src="/js/moment.min.js"></script>
     <script src="/js/daterangepicker.js"></script>
     <script>
