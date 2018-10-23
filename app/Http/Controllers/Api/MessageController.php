@@ -25,6 +25,7 @@ class MessageController extends Controller
         $this->objectType[2]['zh'] = '拼豆成功未使用用户';
         $this->objectType[3]['zh'] = '领取优惠券未使用用户';
         $this->objectType[4]['zh'] = '拼豆失败用户';
+        $this->objectType[5]['zh'] = '未知';
         $this->messageStatus[0]['zh'] = '未审核';
         $this->messageStatus[1]['zh'] = '已审核';
         $this->messageStatus[2]['zh'] = '审核被拒';
