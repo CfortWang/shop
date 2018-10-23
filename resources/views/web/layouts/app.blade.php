@@ -183,8 +183,8 @@
         </div>
             <!-- <script src="/js/jquery-2.1.1.js"></script> -->
             <!-- <script src="/js/amazeui.min.js"></script> -->
-            <script src="https://cdn.bootcss.com/amazeui/2.7.2/js/amazeui.min.js"></script>
             <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
+            <script src="https://cdn.bootcss.com/amazeui/2.7.2/js/amazeui.min.js"></script>
             <script src="/js/iscroll.js"></script>
             <script src="/js/toastr.min.js"></script>
             <script src="/js/app.js"></script>
