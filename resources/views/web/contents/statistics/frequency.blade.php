@@ -14,14 +14,14 @@
                     <div class="tpl-portlet">
                         <div class="tpl-portlet-title">
                             <div class="tpl-caption font-green ">
-                                <span> 扫码频率</span>
+                                <span> @lang('statistics.scan_frequency.scan_frequency')</span>
                             </div>
                             <input type="text" id="config-demo" class="form-control" style="max-width:320px;display:inline-block;margin:4px">
                             <div class="actions">
                                 <ul class="actions-btn">
-                                    <li class="dateSpan blue blue-on" data-span="hour">小时</li>
-                                    <li class="dateSpan blue" data-span="day">天</li>
-                                    <li class="dateSpan blue" data-span="week">周</li>
+                                    <li class="dateSpan blue blue-on" data-span="hour">@lang('statistics.hour')</li>
+                                    <li class="dateSpan blue" data-span="day">@lang('statistics.day')</li>
+                                    <li class="dateSpan blue" data-span="week">@lang('statistics.week')</li>
                                 </ul>
                             </div>
                         </div>
@@ -35,14 +35,14 @@
                     <div class="tpl-portlet">
                         <div class="tpl-portlet-title center">
                             <div class="center-caption">
-                                <span>平均扫码数</span>
+                                <span>@lang('statistics.scan_frequency.average_code_number')</span>
                             </div>
                         </div>
                         <div class="" id="tpl-echarts-C">
                             <div class="frequency-table">
                                 <div class="table-title clear-fix">
-                                    <div class="date">日期</div>
-                                    <div class="count">平均扫码数（天）</div>
+                                    <div class="date">@lang('statistics.silent_user.date')</div>
+                                    <div class="count">@lang('statistics.scan_frequency.average_code_number')</div>
                                 </div>
                                 <div class="table-content"></div>
                             </div>

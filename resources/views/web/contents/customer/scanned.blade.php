@@ -14,22 +14,22 @@
                                 <span>用户列表</span>
                             </div> -->
                             <div class="search-box">
-                                <input type="text" class="search-input" name="search" placeholder="请输入手机号查找">
-                                <button class="search-btn">搜索</button>
+                                <input type="text" class="search-input" name="search" placeholder="@lang('customer/scanned.search_by_phone_num')">
+                                <button class="search-btn">@lang('customer/scanned.search')</button>
                             </div>
 
                         </div>
                         <div class="tpl-echarts" id="tpl-echarts-C">
                             <div class="scan-user-table">
                                 <div class="table-title clear-fix">
-                                    <div class="ID">手机号</div>
-                                    <div class="nickname">昵称</div>
-                                    <div class="sex">性别</div>
-                                    <div class="age">年龄</div>
-                                    <div class="first-scan">首次扫码时间</div>
-                                    <div class="last-scan">	最后一次扫码时间</div>
-                                    <div class="frequency">扫码频率(月)</div>
-                                    <div class="scan-count">扫码总次数</div>
+                                    <div class="ID">@lang('customer/scanned.phone_num')</div>
+                                    <div class="nickname">@lang('customer/scanned.search_by_phone_num')</div>
+                                    <div class="sex">@lang('customer/scanned.gender')</div>
+                                    <div class="age">@lang('customer/scanned.age')</div>
+                                    <div class="first-scan">@lang('customer/scanned.first_scan_time')</div>
+                                    <div class="last-scan">	@lang('customer/scanned.last_scan_time')</div>
+                                    <div class="frequency">@lang('customer/scanned.scan_frequency_by_month')</div>
+                                    <div class="scan-count">@lang('customer/scanned.total_scan_code')</div>
                                 </div>
                                 <div class="table-content"></div>
                             </div>

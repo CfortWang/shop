@@ -19,9 +19,9 @@
                             <input type="text" id="config-demo" class="form-control" style="max-width:320px;display:inline-block;margin:4px">
                             <div class="actions">
                                 <ul class="actions-btn">
-                                    <li class="dateSpan blue blue-on" data-span="hour">小时</li>
-                                    <li class="dateSpan blue" data-span="day">天</li>
-                                    <li class="dateSpan blue" data-span="week">周</li>
+                                    <li class="dateSpan blue blue-on" data-span="hour">@lang('statistics.hour')</li>
+                                    <li class="dateSpan blue" data-span="day">@lang('statistics.day')</li>
+                                    <li class="dateSpan blue" data-span="week">@lang('statistics.week')</li>
                                 </ul>
                             </div>
                         </div>
@@ -41,8 +41,8 @@
                         <div class="tpl-echarts" id="tpl-echarts-C">
                             <div class="silence-table">
                                 <div class="table-title clear-fix">
-                                    <div class="date">日期</div>
-                                    <div class="count">沉默用户数</div>
+                                    <div class="date">@lang('statistics.silent_user.date')</div>
+                                    <div class="count">@lang('statistics.silent_user.silent_users')</div>
                                 </div>
                                 <div class="table-content"></div>
                             </div>

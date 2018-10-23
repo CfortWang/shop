@@ -12,8 +12,8 @@
                     <div class="tpl-portlet">
                         <div class="tpl-portlet-title">
                             <div class="search-box">
-                                <input type="text" class="search-input" name="search" placeholder="请输入优惠券名称查找">
-                                <button class="search-btn">搜索</button>
+                                <input type="text" class="search-input" name="search" placeholder="@lang('event/coupon.list.search_text')">
+                                <button class="search-btn">@lang('event/coupon.list.search_button')</button>
                             </div>
                             <div class="status-filter">
                                 <select data-am-selected="{btnStyle: 'secondary'}">
@@ -23,22 +23,22 @@
                                 </select>
                             </div>
                             <div class="create-pdd">
-                                <span>新建优惠券</span>
+                                <span>@lang('event/coupon.list.new_coupon')</span>
                             </div>
                         </div>
                         <div class="tpl-echarts" id="coupon-table">
                             <div class="coupon-table">
                                 <div class="table-title clear-fix">
-                                    <div class="name">优惠券名称</div>
-                                    <div class="worth">价值</div>
-                                    <div class="condition">领取限制</div>
-                                    <div class="effective">有效期</div>
-                                    <div class="getTimes">领取人数/次</div>
-                                    <div class="use">已使用</div>
-                                    <div class="getRate">领取率</div>
-                                    <div class="useRate">使用率</div>
-                                    <div class="status">状态</div>
-                                    <div class="operating">操作</div>
+                                    <div class="name">@lang('event/coupon.list.coupon_name')</div>
+                                    <div class="worth">@lang('event/coupon.list.price')</div>
+                                    <div class="condition">@lang('event/coupon.list.receive_limit')</div>
+                                    <div class="effective">@lang('event/coupon.list.effective_at')</div>
+                                    <div class="getTimes">@lang('event/coupon.list.receive_people')</div>
+                                    <div class="use">@lang('event/coupon.list.used')</div>
+                                    <div class="getRate">@lang('event/coupon.list.receive_rate')</div>
+                                    <div class="useRate">@lang('event/coupon.list.use_rate')</div>
+                                    <div class="status">@lang('event/coupon.list.status')</div>
+                                    <div class="operating">@lang('event/coupon.list.action')</div>
                                 </div>
                                 <div class="table-content"></div>
                             </div>

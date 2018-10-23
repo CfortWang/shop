@@ -17,18 +17,18 @@
                         <div class="tpl-portlet-title">
                             <div class="create-message-div">
                                 <div class="create-message">
-                                    <span>新建消息通知</span>
+                                    <span>@lang('event/notice.list.new_message')</span>
                                 </div>
                             </div>
                         </div>
                         <div class="tpl-echarts" id="table">
                             <div class="table">
                                 <div class="table-title clear-fix">
-                                    <div class="content">推送内容</div>
-                                    <div class="user">群发用户</div>
-                                    <div class="date">发送时间</div>
-                                    <div class="status">状态</div>
-                                    <div class="operate">操作</div>
+                                    <div class="content">@lang('event/notice.list.push_content')</div>
+                                    <div class="user">@lang('event/notice.list.mass_user')</div>
+                                    <div class="date">@lang('event/notice.list.send_time')</div>
+                                    <div class="status">@lang('event/notice.list.status')</div>
+                                    <div class="operate">@lang('event/notice.list.action')</div>
                                 </div>
                                 <div class="table-content"></div>
                             </div>
