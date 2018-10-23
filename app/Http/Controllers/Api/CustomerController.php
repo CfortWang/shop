@@ -21,7 +21,7 @@ use Illuminate\Support\Carbon;
 
 class CustomerController extends Controller
 {
-    public function __construct()
+    public function __construct(Request $request)
     {
     }
     //扫描用户列表

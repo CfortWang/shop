@@ -141,7 +141,7 @@ class StatisticsController extends Controller
             }
         }
         $orignData = [];
-        $item = '';
+        $item = [];
         if($female['value']){
             $item[] = '女';
             $orignData[] = $female;

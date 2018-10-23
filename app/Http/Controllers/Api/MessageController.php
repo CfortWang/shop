@@ -16,7 +16,7 @@ use App\Models\ShopMessageUser;
 
 class MessageController extends Controller
 {
-    public function __construct()
+    public function __construct(Request $request)
     {
         $this->buyer_id = $request->session()->get('buyer.seq');
         // $this->lang = 
