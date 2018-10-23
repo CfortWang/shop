@@ -4,8 +4,10 @@
 <link rel="stylesheet" href="/css/app.css">
 <link rel="stylesheet" type="text/css" media="all" href="/css/daterangepicker.css" />
 @endsection('css')
+@section('nav')
+<span>数据/新增扫码用户</span>
+@endsection('nav')
 @section('content')
-
     <div class="tpl-page-container tpl-page-header-fixed">
         <div class="tpl-content-wrapper">
             <div class="row">

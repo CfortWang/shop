@@ -4,6 +4,10 @@
 <link rel="stylesheet" href="/css/app.css">
 <link rel="stylesheet" type="text/css" media="all" href="/css/daterangepicker.css" />
 @endsection('css')
+@section('nav')
+<span>数据/平均扫描频率</span>
+@endsection('nav')
+
 @section('content')
 
     <div class="tpl-page-container tpl-page-header-fixed">

@@ -3,6 +3,9 @@
 @section('css')
 <link rel="stylesheet" href="/css/app.css">
 @endsection('css')
+@section('nav')
+<span>商家信息/喜豆码购买记录</span>
+@endsection('nav')
 @section('content')
     <div class="tpl-page-container tpl-page-header-fixed">
         <div class="tpl-content-wrapper">

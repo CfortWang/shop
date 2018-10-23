@@ -61,15 +61,31 @@ class LoginController extends Controller
         if ($validator->fails()) {
             return $this->responseBadRequest('Bad Request');
         }
-        $loginID  = $request->input('phone');
-        $loginPW = $request->input('password');
-        $buyer = Buyer::where('rep_phone_num', $loginID)->first();
-        if (empty($buyer)){
-            return $this->responseBadRequest('ID can not be find.', 101);
-        } 
-        if (!Hash::check($loginPW, $buyer->password)){
-            return $this->responseBadRequest('Incorrect Password', 102);
+        if($request->input('password')!==$request->input('repeatPassword')){
+            return $this->responseBadRequest('password not match');
         }
+        $loginID  = $request->input('phone');
+        $code = $request->input('code');
+        $password = $request->input('password');
+        $buyer = Buyer::where('rep_phone_num', '100')->first();
+        // if (empty($buyer)){
+        //     return $this->responseBadRequest('ID can not be find.', 101);
+        // } 
+        // if (!Hash::check($loginPW, $buyer->password)){
+        //     return $this->responseBadRequest('Incorrect Password', 102);
+        // }
+        $cert = PhoneNumCertification::where('phone_num', $loginID)
+            ->where('type','shop_find_pw')
+            ->orderBy('created_at', 'desc')
+            ->first();
+        if (empty($cert)){
+            return $this->responseNotFound('code error');
+        } 
+        if ($cert->code != $code) {
+            return $this->responseBadRequest('code error');
+        }
+        $buyer->password =  password_hash($password, PASSWORD_BCRYPT);
+        $buyer->save();
         $request->session()->put('buyer.seq', $buyer->seq);
         $request->session()->put('buyer.id', $buyer->rep_phone_num);
         return $this->responseOk('access success');
@@ -88,9 +104,9 @@ class LoginController extends Controller
         }
         $phone = $input['phone'];
         $buyer = Buyer::where('rep_phone_num', $phone)->first();
-        if (empty($buyer)){
-            return $this->responseBadRequest('ID can not be find.', 101);
-        }
+        // if (empty($buyer)){
+        //     return $this->responseBadRequest('ID can not be find.', 101);
+        // }
         $country_calling_code = 86;
         $country_seq = 1;
         $code = rand(100000, 999999);
