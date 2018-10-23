@@ -31,7 +31,7 @@
                                     <div class="frequency">@lang('customer/scanned.scan_frequency_by_month')</div>
                                     <div class="scan-count">@lang('customer/scanned.total_scan_code')</div>
                                 </div>
-                                <div class="table-content"></div>
+                                <div class="table-content pointer"></div>
                             </div>
                             <div class="no-data">
                                 <img src="/img/main/no-data.png" alt="">

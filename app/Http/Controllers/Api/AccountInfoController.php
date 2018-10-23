@@ -117,6 +117,7 @@ class AccountInfoController extends Controller
     }
     public function cashList(Request $request)
     {
+        $lang = $request->session()->get('locale');
         $seq = $request->session()->get('buyer.seq');
         $buyer = Buyer::find($seq);
         $limit = $request->input('limit',20);
@@ -158,7 +159,7 @@ class AccountInfoController extends Controller
     public function showBuyerInfo(Request $request)
     {
         $seq = $request->session()->get('buyer.seq');
-        // $lang = $request->session()->get('locale');
+        $lang = $request->session()->get('locale');
         $buyer = Buyer::where('seq',$seq)->select('bank','bank_account_owner','bank_account','point')->first();
         if(!$buyer){
             return $this->responseNotFound('can not find the buyer', 401);//error code 404,401
@@ -176,7 +177,7 @@ class AccountInfoController extends Controller
     public function requestCash(Request $request)
     {
         $seq = $request->session()->get('buyer.seq');
-        // $lang = $request->session()->get('locale');
+        $lang = $request->session()->get('locale');
         $input = Input::only([  
             'modal_amount'
             ]

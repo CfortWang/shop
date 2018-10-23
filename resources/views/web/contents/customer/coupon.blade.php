@@ -26,7 +26,7 @@
                                     <div class="getTime">@lang('customer/coupon.receive_time')</div>
                                     <div class="useTime">@lang('customer/coupon.used_time')</div>
                                 </div>
-                                <div class="table-content"></div>
+                                <div class="table-content pointer"></div>
                             </div>
                             <div class="no-data">
                                 <img src="/img/main/no-data.png" alt="">
