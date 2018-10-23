@@ -4,6 +4,9 @@
 <link rel="stylesheet" href="/css/app.css">
 <link rel="stylesheet" href="/css/amazeui.datetimepicker.css">
 @endsection('css')
+@section('nav')
+<span>商家信息/基本信息</span>
+@endsection('nav')
 @section('content')
 <div class="tpl-page-container tpl-page-header-fixed">
     <div class="tpl-content-wrapper">
