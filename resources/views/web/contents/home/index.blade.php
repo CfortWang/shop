@@ -19,9 +19,9 @@
                             <input type="text" id="config-demo" class="form-control" style="max-width:320px;display:inline-block;margin:4px">
                             <div class="actions">
                                 <ul class="actions-btn">
-                                    <li class="dateSpan blue blue-on" data-span="hour">小时</li>
-                                    <li class="dateSpan blue" data-span="day">天</li>
-                                    <li class="dateSpan blue" data-span="week">周</li>
+                                    <li class="dateSpan blue blue-on" data-span="hour">@lang('statistics.hour')</li>
+                                    <li class="dateSpan blue" data-span="day">@lang('statistics.day')</li>
+                                    <li class="dateSpan blue" data-span="week">@lang('statistics.week')</li>
                                 </ul>
                             </div>
                         </div>
@@ -39,8 +39,8 @@
                             </div>
                             <div class="actions">
                                 <ul class="actions-btn">
-                                    <li class="purple-on">天</li>
-                                    <li class="green">周</li>
+                                    <li class="purple-on">@lang('statistics.day')</li>
+                                    <li class="green">@lang('statistics.week')</li>
                                 </ul>
                             </div>
                         </div>

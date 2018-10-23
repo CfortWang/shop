@@ -14,22 +14,22 @@
                     <div class="tpl-portlet">
                         <div class="tpl-portlet-title">
                             <div class="tpl-caption">
-                                <span> 昨日核心指标</span>
-                                <p class="tpl-remark">本页面根据昨日数据计算,并非实时数据</p>
+                                <span> @lang('statistics.new.yesterday_indicator')</span>
+                                <p class="tpl-remark">@lang('statistics.new.not_real-time_data')</p>
                             </div>
                         </div>
                         <!--此部分数据请在 js文件夹下中的 app.js 中的 “百度图表A” 处修改数据 插件使用的是 百度echarts-->
                         <div class="tpl-echarts-A" id="tpl-echarts-A">
                             <div class="new-user">
-                                <span class="user-type">新增扫码用户</span>
+                                <span class="user-type"> @lang('statistics.new.new_scanned_users')</span>
                                 <p class="user-amount"></p>
                             </div>
                             <div class="yesterday-user">
-                                <span class="user-type">昨日扫码用户</span>
+                                <span class="user-type"> @lang('statistics.new.scanned_users_yesterday')</span>
                                 <p class="user-amount"></p>
                             </div>
                             <div class="user-count">
-                                <span class="user-type">累计扫码用户</span>
+                                <span class="user-type"> @lang('statistics.new.all_user')</span>
                                 <p class="user-amount"></p>
                             </div>
                         </div>
@@ -39,14 +39,14 @@
                     <div class="tpl-portlet">
                         <div class="tpl-portlet-title">
                             <div class="tpl-caption font-green ">
-                                <span> 昨日扫码用户</span>
+                                <span>  @lang('statistics.new.scanned_users_yesterday')</span>
                             </div>
                             <input type="text" id="config-demo" class="form-control" style="max-width:320px;display:inline-block;margin:4px">
                             <div class="actions">
                                 <ul class="actions-btn">
-                                    <li class="dateSpan blue blue-on" data-span="hour">小时</li>
-                                    <li class="dateSpan blue" data-span="day">天</li>
-                                    <li class="dateSpan blue" data-span="week">周</li>
+                                    <li class="dateSpan blue blue-on" data-span="hour">@lang('statistics.hour')</li>
+                                    <li class="dateSpan blue" data-span="day">@lang('statistics.day')</li>
+                                    <li class="dateSpan blue" data-span="week">@lang('statistics.week')</li>
                                 </ul>
                             </div>
                         </div>
@@ -59,13 +59,13 @@
                     <div class="tpl-portlet">
                         <div class="tpl-portlet-title center">
                             <div class="center-caption">
-                                <span>新增扫码用户</span>
+                                <span>@lang('statistics.new.new_scanned_users')</span>
                             </div>
                         </div>
                         <div class="tpl-echarts" id="tpl-echarts-C">
                             <div class="user-table">
                                 <div class="table-title clear-fix">
-                                    <div class="date">日期</div>
+                                    <div class="date">@lang('statistics.active_user.date')</div>
                                     <div class="count">新增用户</div>
                                 </div>
                                 <div class="table-content"></div>

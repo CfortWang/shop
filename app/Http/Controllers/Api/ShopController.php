@@ -65,8 +65,7 @@ class ShopController extends Controller
     }
 
     public function category(Request $request){
-        $lang = $request->session()->get('bw.locale');
-        $lang="zh";
+        $lang = $request->session()->get('locale');
         $data = ShopCategory::select('seq', 'name_'.$lang.' as name')->orderBy('seq', 'asc')->get();
         return $this->responseOK('Ok',$data);
     }

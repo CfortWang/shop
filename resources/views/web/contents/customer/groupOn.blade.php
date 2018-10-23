@@ -14,40 +14,40 @@
                     <div class="tpl-portlet">
                         <div class="tpl-portlet-title">
                             <ul class="tab">
-                                <li class="tab-item tab-active" data-type="ing">拼豆中</li>
-                                <li class="tab-item" data-type="success">拼豆成功</li>
-                                <li class="tab-item" data-type="fail">拼豆失败</li>
+                                <li class="tab-item tab-active" data-type="ing">@lang('customer/groupon.grouponing')</li>
+                                <li class="tab-item" data-type="success">@lang('customer/groupon.groupon_success')</li>
+                                <li class="tab-item" data-type="fail">@lang('customer/groupon.groupon_failed')</li>
                             </ul>
                         </div>
                         <div class="tpl-echarts" id="pdd-table">
                             <div class="pdd-ing-table" data-type="ing">
                                 <div class="table-title clear-fix">
-                                    <div class="ID">手机号</div>
-                                    <div class="nickname">昵称</div>
-                                    <div class="character">拼豆角色</div>
-                                    <div class="pddTime">拼豆发起时间</div>
+                                    <div class="ID">@lang('customer/groupon.phone_num')</div>
+                                    <div class="nickname">@lang('customer/groupon.nickname')</div>
+                                    <div class="character">@lang('customer/groupon.groupon_role')</div>
+                                    <div class="pddTime">@lang('customer/groupon.groupon_start_time')</div>
                                 </div>
                                 <div class="table-content"></div>
                             </div>
                             <div class="pdd-success-table" data-type="success">
                                 <div class="table-title clear-fix">
-                                    <div class="ID">手机号</div>
-                                    <div class="nickname">昵称</div>
-                                    <div class="character">拼豆角色</div>
-                                    <div class="couponUse">是否使用优惠</div>
-                                    <div class="couponID">	拼豆优惠编码</div>
-                                    <div class="successTime">拼豆成功时间</div>
-                                    <div class="pddTime">拼豆发起时间</div>
+                                    <div class="ID">@lang('customer/groupon.phone_num')</div>
+                                    <div class="nickname">@lang('customer/groupon.nickname')</div>
+                                    <div class="character">@lang('customer/groupon.groupon_role')</div>
+                                    <div class="couponUse">@lang('customer/groupon.is_groupon_used')</div>
+                                    <div class="couponID">	@lang('customer/groupon.groupon_coupon_code')</div>
+                                    <div class="successTime">@lang('customer/groupon.groupon_success_time')</div>
+                                    <div class="pddTime">@lang('customer/groupon.groupon_start_time')</div>
                                 </div>
                                 <div class="table-content"></div>
                             </div>
                             <div class="pdd-fail-table" data-type="fail">
                                 <div class="table-title clear-fix">
-                                    <div class="ID">手机号</div>
-                                    <div class="nickname">昵称</div>
-                                    <div class="character">拼豆角色</div>
-                                    <div class="failTime">拼豆失败时间</div>
-                                    <div class="pddTime">拼豆发起时间</div>
+                                    <div class="ID">@lang('customer/groupon.phone_num')</div>
+                                    <div class="nickname">@lang('customer/groupon.nickname')</div>
+                                    <div class="character">@lang('customer/groupon.groupon_role')</div>
+                                    <div class="failTime">@lang('customer/groupon.groupon_failed_time')</div>
+                                    <div class="pddTime">@lang('customer/groupon.groupon_start_time')</div>
                                 </div>
                                 <div class="table-content"></div>
                             </div>

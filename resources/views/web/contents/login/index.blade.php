@@ -1,6 +1,7 @@
 <html>
 	<head>
-		<title></title>
+		<title>喜豆商家营销管理后台</title>
+		<link rel="icon" href="/img/logo.ico" type="image/x-icon">
 	<style>
 		body{
 			background:white;
@@ -150,7 +151,7 @@
 				type: 'post',
 				success: function(response){
 					// console.log(123123);
-					window.location.href="http://shop.test" 
+					window.location.href="/" 
 				},
 				error: function(e) {
 					console.log(e);

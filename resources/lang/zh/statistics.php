@@ -38,7 +38,7 @@ return array
     'silent_user' => [
         'date' => '日期',
         'silent_users' => '沉默用户数',
-    ]
+    ],
     'scan_frequency' => [
         'scan_frequency' => '扫码频率',
         'average_code_number' => '平均扫码数',

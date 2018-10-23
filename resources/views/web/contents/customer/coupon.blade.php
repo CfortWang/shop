@@ -14,19 +14,19 @@
                     <div class="tpl-portlet">
                         <div class="tpl-portlet-title center">
                             <div class="center-caption">
-                                <span>用户列表</span>
+                                <span>@lang('customer/coupon.use_list')</span>
                             </div>
                         </div>
                         <div class="tpl-echarts" id="coupon-table">
                             <div class="coupon-table">
                                 <div class="table-title clear-fix">
-                                    <div class="phone">手机号</div>
-                                    <div class="nickname">昵称</div>
-                                    <div class="frequency">领取次数</div>
-                                    <div class="couponUse">是否使用</div>
-                                    <div class="couponID">优惠券码</div>
-                                    <div class="getTime">领券时间</div>
-                                    <div class="useTime">使用时间</div>
+                                    <div class="phone">@lang('customer/coupon.phone_num')</div>
+                                    <div class="nickname">@lang('customer/coupon.nickname')</div>
+                                    <div class="frequency">@lang('customer/coupon.receive_number')</div>
+                                    <div class="couponUse">@lang('customer/coupon.is_used')</div>
+                                    <div class="couponID">@lang('customer/coupon.coupon_code')</div>
+                                    <div class="getTime">@lang('customer/coupon.receive_time')</div>
+                                    <div class="useTime">@lang('customer/coupon.used_time')</div>
                                 </div>
                                 <div class="table-content"></div>
                             </div>

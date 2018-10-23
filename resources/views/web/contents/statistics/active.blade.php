@@ -19,9 +19,9 @@
                             <input type="text" id="config-demo" class="form-control" style="max-width:320px;display:inline-block;margin:4px">
                             <div class="actions">
                                 <ul class="actions-btn">
-                                    <li class="dateSpan blue blue-on" data-span="hour">小时</li>
-                                    <li class="dateSpan blue" data-span="day">天</li>
-                                    <li class="dateSpan blue" data-span="week">周</li>
+                                    <li class="dateSpan blue blue-on" data-span="hour">@lang('statistics.hour')</li>
+                                    <li class="dateSpan blue" data-span="day">@lang('statistics.day')</li>
+                                    <li class="dateSpan blue" data-span="week">@lang('statistics.week')</li>
                                 </ul>
                             </div>
                         </div>
@@ -35,15 +35,15 @@
                     <div class="tpl-portlet">
                         <div class="tpl-portlet-title center">
                             <div class="center-caption">
-                                <span>活跃用户</span>
+                                <span>@lang('statistics.new.active_user')</span>
                             </div>
                         </div>
                         <div class="tpl-echarts" id="tpl-echarts-C">
                             <div class="active-table">
                                 <div class="table-title clear-fix">
-                                    <div class="date">日期</div>
-                                    <div class="count">活跃用户数</div>
-                                    <div class="percentage">新用户占比</div>
+                                    <div class="date">@lang('statistics.active_user.date')</div>
+                                    <div class="count">@lang('statistics.active_user.active_users')</div>
+                                    <div class="percentage">@lang('statistics.active_user.new_user_ratio')</div>
                                 </div>
                                 <div class="table-content"></div>
                             </div>

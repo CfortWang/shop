@@ -13,15 +13,15 @@
                 <div class="tpl-portlet">
                     <div class="tpl-portlet-title center">
                         <div class="center-caption">
-                            <span>活跃用户</span>
+                            <span>@lang('statistics.new.active_user')</span>
                         </div>
                     </div>
                     <div class="detail-page" id="tpl-echarts-C">
                         <div class="active-table">
                             <div class="table-title clear-fix">
-                                <div class="user-id">用户ID</div>
-                                <div class="user-name">用户昵称</div>
-                                <div class="scan-time">上次扫码时间</div>
+                                <div class="user-id">@lang('statistics.user_id')</div>
+                                <div class="user-name">@lang('statistics.nickname')</div>
+                                <div class="scan-time">@lang('statistics.last_scanned_time')</div>
                             </div>
                             <div class="table-content"></div>
                         </div>

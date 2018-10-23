@@ -19,7 +19,6 @@ class LoginMiddleware
         if ($request->session()->has('buyer') === false) {
             return redirect()->route('login');
         }
-        App::setLocale('zh');
         return $next($request);
     }
 }

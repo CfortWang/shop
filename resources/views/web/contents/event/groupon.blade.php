@@ -13,26 +13,26 @@
                     <div class="tpl-portlet">
                         <div class="tpl-portlet-title">
                             <div class="search-box">
-                                <input type="text" class="search-input" name="search" placeholder="请输入商品名称查找">
-                                <button class="search-btn">搜索</button>
+                                <input type="text" class="search-input" name="search" placeholder="@lang('event/groupon.list.search_by_product_name')">
+                                <button class="search-btn">@lang('event/groupon.list.search')</button>
                             </div>
                             <div class="create-pdd">
-                                <span>新建拼豆豆</span>
+                                <span>@lang('event/groupon.list.new_groupon')</span>
                             </div>
                         </div>
                         <div class="tpl-echarts" id="coupon-table">
                             <div class="coupon-table">
                                 <div class="table-title clear-fix">
-                                    <div class="name">拼豆商品名称</div>
-                                    <div class="price">价格</div>
-                                    <div class="effective">有效期</div>
-                                    <div class="organize">发起拼豆人数</div>
-                                    <div class="join">参与人数</div>
-                                    <div class="success">拼豆成功人数</div>
-                                    <div class="used">消费人数</div>
-                                    <div class="notUse">拼成功未消费人数</div>
-                                    <div class="useRate">使用率</div>
-                                    <div class="operating">操作</div>
+                                    <div class="name">@lang('event/groupon.list.groupon_product_name')</div>
+                                    <div class="price">@lang('event/groupon.list.price')</div>
+                                    <div class="effective">@lang('event/groupon.list.expired_time')</div>
+                                    <div class="organize">@lang('event/groupon.list.initiate_number')</div>
+                                    <div class="join">@lang('event/groupon.list.join_number')</div>
+                                    <div class="success">@lang('event/groupon.list.success_number')</div>
+                                    <div class="used">@lang('event/groupon.list.used_number')</div>
+                                    <div class="notUse">@lang('event/groupon.list.not_used_number')</div>
+                                    <div class="useRate">@lang('event/groupon.list.use_rate')</div>
+                                    <div class="operating">@lang('event/groupon.list.action')</div>
                                 </div>
                                 <div class="table-content"></div>
                             </div>
