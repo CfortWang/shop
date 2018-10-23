@@ -120,8 +120,8 @@
 				<div class="top-img"><img src="img/logo.png"></div>
 				<div class="top-text">喜豆商家营销管理后台</div>
 			</div>
-			<form>
-				<input type="text" placeholder="输入手机号" name="phone"/>
+			<form id="login_by_code">
+				<input type="text" placeholder="输入手机号" name="phone" id="phone_1"/>
 				<div class="code-div">
 					<button type="button" class="code-button">获取验证码</button>
 					<input type="text" placeholder="输入验证码" name="code"/>
@@ -135,30 +135,73 @@
 		</div>
 		<script src="js/jquery-2.1.1.js"></script>
 		<script>
-		$('.foget').click(function(){
-			$('.reset').show();
-			$('.login').hide();
-		})
-		$('.login_submit').click(function(){
-			console.log(1);
-			$.ajax({
-				url: "{{ url('/api/login') }}",
-				dataType: 'json',
-				data:{
-					phone:$('#phone').val(),
-					password:$('#password').val()
-				},
-				type: 'post',
-				success: function(response){
-					// console.log(123123);
-					window.location.href="/" 
-				},
-				error: function(e) {
-					console.log(e);
-				}
-			}).always(function(){
-			});
-		})
+			$('.foget').click(function(){
+				$('.reset').show();
+				$('.login').hide();
+			})
+			$('.login_submit').click(function(){
+				$.ajax({
+					url: "{{ url('/api/login') }}",
+					dataType: 'json',
+					data:{
+						phone:$('#phone').val(),
+						password:$('#password').val()
+					},
+					type: 'post',
+					success: function(response){
+						if(response.code== 200){
+							window.location.href="/" 
+						}else{
+							console.error(response.message);
+						} 
+					},
+					error: function(e) {
+						console.log(e);
+					}
+				}).always(function(){
+				});
+			})
+			$('.reset_submit').click(function(){
+				$.ajax({
+					url: "{{ url('/api/login/code') }}",
+					dataType: 'json',
+					data:$('#login_by_code').serialize(),
+					type: 'post',
+					success: function(response){
+						if(response.code== 200){
+							window.location.href="/" 
+						}else{
+							console.error(response.message);
+						}
+					},
+					error: function(e) {
+						console.log(e);
+					}
+				}).always(function(){
+				});
+			})
+			$('.code-button').click(function(){
+				$.ajax({
+					url: "{{ url('/api/login/sendCode') }}",
+					dataType: 'json',
+					data:{
+						phone:$('#phone_1').val(),
+					},
+					type: 'post',
+					success: function(response){
+						if(response.code == '200'){
+							console.log('send success');
+						}else{
+							console.error(response.message);
+						}
+						// window.location.href="/" 
+					},
+					error: function(e) {
+						console.log(e);
+					}
+				}).always(function(){
+				});
+			})
 		</script>
 	</body>
 </html>
