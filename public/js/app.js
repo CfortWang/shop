@@ -75,7 +75,7 @@ $(function() {
             drawList();
             $(".page-number").text(page)
         } else {
-            console.log("当前已是第一页")
+            toastr.error("当前已是第一页")
         }
     })
     $(".page-up").click(function () {
@@ -84,7 +84,7 @@ $(function() {
             drawList();
             $(".page-number").text(page)
         } else {
-            console.log("已无更多数据")
+            toastr.error("已无更多数据")
         }
     })
 
