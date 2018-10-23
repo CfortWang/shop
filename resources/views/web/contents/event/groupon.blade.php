@@ -2,6 +2,7 @@
 @section('title', $title)
 @section('css')
 <link rel="stylesheet" href="/css/app.css">
+<link rel="stylesheet" href="/css/toastr.min.css">
 <link rel="stylesheet" type="text/css" media="all" href="/css/daterangepicker.css" />
 @endsection('css')
 @section('content')
@@ -40,6 +41,19 @@
                                 <div>暂无数据</div>
                             </div>
                         </div>
+                        <div class="am-modal am-modal-confirm" tabindex="-1" id="my-confirm">
+                            <div class="am-modal-dialog">
+                                <div class="am-modal-hd">
+                                    <img src="/img/main/icon_warning.png" alt="">
+                                    <span>确定下架该拼豆豆?</span>
+                                </div>
+                                <div class="am-modal-bd">拼豆豆下架后,买家无法再参与该拼豆豆；买家之前已领到的优惠,在有效期内可继续使用。</div>
+                                <div class="am-modal-footer">
+                                    <span class="am-modal-btn give-up-btn" data-am-modal-cancel>取消</span>
+                                    <span class="am-modal-btn ensure-btn" data-am-modal-confirm>确定</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -47,6 +61,7 @@
     </div>
 @endsection
 @section('script')
+<script src="/js/toastr.min.js"></script>
 <script>
     var pageCount
     var keyword = ''
@@ -121,7 +136,7 @@
             },
             success: function (res) {
                 if (res.code != 200) {
-                    console.log(res.message);
+                    toastr.error(res.message)
                 } else {
                     if (that.parent().attr("data-status") == 0) {
                         that.parent().attr("data-status", 1)
@@ -130,6 +145,7 @@
                         that.parent().attr("data-status", 0)
                         that.text("下架")
                     }
+                    toastr.success(res.message)
                 }
             },
             error: function (ex) {
@@ -147,17 +163,45 @@
     $(".create-pdd").on("click", function () {
         window.location.href = "/event/groupon/create"
     })
+    toastr.options = {
+        closeButton: false,
+        debug: false,
+        progressBar: false,
+        positionClass: "toast-top-center",
+        onclick: null,
+        showDuration: "300",
+        hideDuration: "1000",
+        timeOut: "1500",
+        extendedTimeOut: "1000",
+        showEasing: "swing",
+        hideEasing: "linear",
+        showMethod: "fadeIn",
+        hideMethod: "fadeOut"
+    };
 
     $(".table-content").on("click", ".table-tr .operating .obtained, .table-tr .operating .shelf", function () {
         var id = $(this).parent().attr("data-id")
         var status = $(this).parent().attr("data-status")
         var that = $(this)
-        changeStatus(id, status, that);
+        if (status == 0) {
+            $('#my-confirm').modal({
+                relatedTarget: this,
+                onConfirm: function(options) {
+                    console.log(status)
+                    changeStatus(id, status, that);
+                },
+                // closeOnConfirm: false,
+                onCancel: function() {}
+            });
+        } else {
+            changeStatus(id, status, that);
+        }
     })
 
     $(".table-content").on("click", ".table-tr .operating .modify", function () {
         var id = $(this).parent().attr("data-id")
         window.location.href = '/event/groupon/details?id=' + id
     })
+    
 </script>
 @endsection

@@ -1,6 +1,7 @@
 @extends('web.layouts.app')
 @section('title', $title)
 @section('css')
+<link rel="stylesheet" href="/css/toastr.min.css">
 <link rel="stylesheet" href="/css/app.css">
 <link rel="stylesheet" type="text/css" media="all" href="/css/daterangepicker.css" />
 @endsection('css')
@@ -56,6 +57,19 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="am-modal am-modal-confirm" tabindex="-1" id="my-confirm">
+                            <div class="am-modal-dialog">
+                                <div class="am-modal-hd">
+                                    <img src="/img/main/icon_warning.png" alt="">
+                                    <span>确定下架该优惠券?</span>
+                                </div>
+                                <div class="am-modal-bd">优惠券下架后,买家无法再领取该优惠券；买家之前已领到的优惠券,在有效期内可继续使用。</div>
+                                <div class="am-modal-footer">
+                                    <span class="am-modal-btn give-up-btn" data-am-modal-cancel>取消</span>
+                                    <span class="am-modal-btn ensure-btn" data-am-modal-confirm>确定</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -63,12 +77,13 @@
     </div>
 @endsection
 @section('script')
+<script src="/js/toastr.min.js"></script>
 <script>
     var limit = 8
     var page = 1
     var pageCount
     var keyword = ''
-    var selectStatus = ''
+    var selectStatus = 'processed'
     var drawList = function () {
         $.ajax({
             url: 'http://shop.test/api/shop/couponList',
@@ -163,7 +178,6 @@
             type: 'get',
             dataType: 'json',
             success: function (res) {
-                console.log(res)
                 let resData = res.data
                 for (let i = 0; i < 3; i++) {
                     $(".status-filter select option:eq("+ i +")").text(resData[i].value)
@@ -188,7 +202,7 @@
             success: function (res) {
                 let resData = res.data
                 if (res.code != 200) {
-                    console.log(res.message);
+                    toastr.error(res.message)
                 } else {
                     if (that.parent().attr("data-status") == "registered") {
                         that.parent().attr("data-status", "processed")
@@ -201,6 +215,7 @@
                         that.parent().children(".modify").css("display", "inline")
                         that.text("上架")
                     }
+                    toastr.success(res.message)
                 }
             },
             error: function (ex) {
@@ -232,6 +247,22 @@
         })
     }
 
+    toastr.options = {
+        closeButton: false,
+        debug: false,
+        progressBar: false,
+        positionClass: "toast-top-center",
+        onclick: null,
+        showDuration: "300",
+        hideDuration: "1000",
+        timeOut: "1500",
+        extendedTimeOut: "1000",
+        showEasing: "swing",
+        hideEasing: "linear",
+        showMethod: "fadeIn",
+        hideMethod: "fadeOut"
+    };
+
     $(".search-btn").on("click", function () {
         keyword = $(".search-input").val()
         drawList();
@@ -249,9 +280,21 @@
 
     $(".table-content").on("click", ".table-tr .operating .obtained, .table-tr .operating .shelf", function () {
         var id = $(this).parent().attr("data-id")
+        console.log(id)
         var status = $(this).parent().attr("data-status")
         var that = $(this)
-        changeStatus(id, status, that);
+        if (status == 'processed') {
+            $('#my-confirm').modal({
+                relatedTarget: this,
+                onConfirm: function(options) {
+                    changeStatus(id, status, that);
+                },
+                // closeOnConfirm: false,
+                onCancel: function() {}
+            });
+        } else {
+            changeStatus(id, status, that);
+        }
     })
 
     $(".table-content").on("click", ".table-tr .operating .delete", function () {

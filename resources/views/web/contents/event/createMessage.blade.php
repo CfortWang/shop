@@ -188,15 +188,20 @@ $('.effect-time').datetimepicker({
 });
 
 $(".bottom-submit-btn").on("click", function () {
-    var aa = $("#submit").serialize()
-    // $("#submit").submit();
     $.ajax({
         type: "POST",
         dataType: 'JSON',
         url: $("#submit").attr('action'),
         data: $("#submit").serialize(),
         success: function(data, status, x) {
-            console.log(data);
+            if(data.code == 200){
+                toastr.success("提交成功")
+                setTimeout(() => {
+                    window.location.href = '/event/message'
+                }, 1500);
+            } else {
+                toastr.error(data.message);
+            }
             console.log(status);
         }
     });

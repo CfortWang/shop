@@ -771,11 +771,27 @@ $(".customize").on("click", ".customize-time .operating .delete", function () {
 })
 
 $(".bottom-submit-btn").on("click", function () {
-    $("#submit").submit()
+    $.ajax({
+        type: "POST",
+        dataType: 'JSON',
+        url: $("#submit").attr('action'),
+        data: $("#submit").serialize(),
+        success: function(data, status, x) {
+            if(data.code == 200){
+                toastr.success("修改成功")
+                setTimeout(() => {
+                    window.location.href = '/event/groupon'
+                }, 1500);
+            } else {
+                toastr.error(data.message);
+            }
+            console.log(status);
+        }
+    });
 })
 
 $(".bottom-reset-btn").on("click", function () {
-    window.location.href = '/event/groupon/create'
+    window.location.href = window.location.href
 })
 
 $('.start-hours, .end-hours').datetimepicker({

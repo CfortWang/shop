@@ -16,6 +16,7 @@
     <link rel="stylesheet" href="/css/amazeui.min.css" />
     <link rel="stylesheet" href="/css/admin.css">
     <link rel="stylesheet" href="/css/app.css">
+    <link rel="stylesheet" href="/css/toastr.min.css">
     @yield('css')
 </head>
 <body>
@@ -182,6 +183,7 @@
             <script src="/js/jquery-2.1.1.js"></script>
             <script src="/js/amazeui.min.js"></script>
             <script src="/js/iscroll.js"></script>
+            <script src="/js/toastr.min.js"></script>
             <script src="/js/app.js"></script>
             @yield('script')
         </div>

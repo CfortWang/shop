@@ -1685,6 +1685,32 @@ button:focus{
     outline: none;
 }
 
+.am-modal-dialog{
+    border-radius: 5px;
+}
+.am-modal-hd img {
+    vertical-align: middle;
+}
+.am-modal-hd span {
+    vertical-align: middle;
+}
+.am-modal-bd{
+    font-size: 1.4rem;
+    font-weight: 300;
+}
+@media only screen and (min-width: 641px){
+    .am-modal-dialog {
+        width: 360px;
+    }
+}
+.ensure-btn{
+    color: #57A0FF;
+}
+.give-up-btn{
+    color: #999999;
+}
+
+
 
 
 

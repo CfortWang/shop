@@ -842,15 +842,20 @@ $(".customize").on("click", ".customize-time .operating .delete", function () {
 })
 
 $(".bottom-submit-btn").on("click", function () {
-    var aa = $("#submit").serialize()
-    // $("#submit").submit();
     $.ajax({
         type: "POST",
         dataType: 'JSON',
         url: $("#submit").attr('action'),
         data: $("#submit").serialize(),
         success: function(data, status, x) {
-            console.log(data);
+            if(data.code == 200){
+                toastr.success("修改成功")
+                setTimeout(() => {
+                    window.location.href = '/event/coupon'
+                }, 1500);
+            } else {
+                toastr.error(data.message);
+            }
             console.log(status);
         }
     });
