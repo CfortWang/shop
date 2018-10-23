@@ -45,66 +45,54 @@
 @endsection
 
 @section('script')
-    <script>
-        function getArgs () {
-            var url = location.search
-            var args = {}
-            if (url.indexOf("?") != -1) {
-                var str = url.substr(1)
-                var strs = str.split("&")
-                for (let i = 0; i < strs.length; i++) {
-                    args[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1])
-                }
-            }
-            return args
-        }
-        var args = getArgs()
-        var seq = args['seq']
-        var limit = args['limit']
-        var page = args['page']
-        var pageCount
-        var drawList = function () {
-            $.ajax({
-                url: '/api/customer/scannedUserDetail',
-                type: 'get',
-                dataType: 'json',
-                data: {
-                    seq: seq,
-                    limit: limit,
-                    page: page
-                },
-                success: function (res) {
-                    console.log(res)
-                    $(".table-content").empty()
-                    let resData = res.data.list
-                    console.log(resData)
-                    let count = res.data.count
-                    pageCount = Math.ceil(count / limit)
-                    var $tr = '<div class="table-tr clear-fix"><div class="table-td-id"></div><div class="table-td-name"></div><div class="table-td-time"></div></div>'
-                    for (let i = 0; i < resData.length; i++) {
-                        $('.table-content').append($tr)
-                        let userID = resData[i].seq
-                        let userName = resData[i].nickname
-                        let scanTime = resData[i].created_at
-                        if (userID == null || userID == '') {
-                            userID = '——'
-                        }
-                        if (userName == null || userName == '') {
-                            userName = '——'
-                        }
-                        if (scanTime == null || scanTime == '') {
-                            scanTime = '——'
-                        }
-                        $(".table-content .table-tr:eq("+ i +") .table-td-id").text(userID)
-                        $(".table-content .table-tr:eq("+ i +") .table-td-name").text(userName)
-                        $(".table-content .table-tr:eq("+ i +") .table-td-time").text(scanTime)
+<script>
+    var args = getArgs()
+    var seq = args['seq']
+    var limit = args['limit']
+    var page = args['page']
+    var pageCount
+    var drawList = function () {
+        $.ajax({
+            url: '/api/customer/scannedUserDetail',
+            type: 'get',
+            dataType: 'json',
+            data: {
+                seq: seq,
+                limit: limit,
+                page: page
+            },
+            success: function (res) {
+                console.log(res)
+                $(".table-content").empty()
+                let resData = res.data.list
+                console.log(resData)
+                let count = res.data.count
+                pageCount = Math.ceil(count / limit)
+                var $tr = '<div class="table-tr clear-fix"><div class="table-td-id"></div><div class="table-td-name"></div><div class="table-td-time"></div></div>'
+                for (let i = 0; i < resData.length; i++) {
+                    $('.table-content').append($tr)
+                    let userID = resData[i].seq
+                    let userName = resData[i].nickname
+                    let scanTime = resData[i].created_at
+                    if (userID == null || userID == '') {
+                        userID = '——'
                     }
-                },
-                error: function (ex) {
-                    console.log(ex)
+                    if (userName == null || userName == '') {
+                        userName = '——'
+                    }
+                    if (scanTime == null || scanTime == '') {
+                        scanTime = '——'
+                    }
+                    $(".table-content .table-tr:eq("+ i +") .table-td-id").text(userID)
+                    $(".table-content .table-tr:eq("+ i +") .table-td-name").text(userName)
+                    $(".table-content .table-tr:eq("+ i +") .table-td-time").text(scanTime)
                 }
-            })
-        }
-        drawList();
-    </script>
+            },
+            error: function (ex) {
+                console.log(ex)
+            }
+        })
+    }
+    drawList();
+</script>
 @endsection

@@ -43,6 +43,19 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="am-modal am-modal-confirm" tabindex="-1" id="my-confirm">
+                            <div class="am-modal-dialog">
+                                <div class="am-modal-hd">
+                                    <img src="/img/main/icon_warning.png" alt="">
+                                    <span>确定下架该广告?</span>
+                                </div>
+                                <div class="am-modal-bd">广告下架后将无法被用户查看，请谨慎操作！</div>
+                                <div class="am-modal-footer">
+                                    <span class="am-modal-btn give-up-btn" data-am-modal-cancel>取消</span>
+                                    <span class="am-modal-btn ensure-btn" data-am-modal-confirm>确定</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -123,7 +136,7 @@
             success: function (res) {
                 console.log(res)
                 if (res.code != 200) {
-                    alert(res.message);
+                    toastr.error(res.message);
                 } else {
                     if (that.parent().attr("data-status") == 0) {
                         that.parent().attr("data-status", 1)
@@ -132,6 +145,7 @@
                         that.parent().attr("data-status", 0)
                         that.text("下架")
                     }
+                    toastr.success(res.message)
                 }
             },
             error: function (ex) {
@@ -148,7 +162,20 @@
         var id = $(this).parent().attr("data-id")
         var status = $(this).parent().attr("data-status")
         var that = $(this)
-        changeStatus(id, status, that);
+        if (status == 0) {
+            $('#my-confirm').modal({
+                relatedTarget: this,
+                onConfirm: function(options) {
+                    let that = $(this.relatedTarget)
+                    let id = that.parent().attr("data-id")
+                    changeStatus(id, status, that);
+                },
+                // closeOnConfirm: false,
+                onCancel: function() {}
+            });
+        } else {
+            changeStatus(id, status, that);
+        }
     })
 
     // 修改
