@@ -17,7 +17,7 @@
                         <div class="tpl-echarts" id="ad-table">
                             <div class="ad-table">
                                 <div class="table-title clear-fix">
-                                    <div class="title">优惠券名称</div>
+                                    <div class="title">广告名称</div>
                                     <div class="uv">UV（总查看人数）</div>
                                     <div class="pv">PV（总查看数)</div>
                                     <div class="time">投放时间</div>
@@ -136,25 +136,6 @@
             }
         })
     }
-
-    $(".page-down").click(function () {
-        if (page > 1) {
-            page--
-            drawList();
-            $(".page-number").text(page)
-        } else {
-            console.log("当前已是第一页")
-        }
-    })
-    $(".page-up").click(function () {
-        if (page < pageCount) {
-            page++;
-            drawList();
-            $(".page-number").text(page)
-        } else {
-            console.log("已无更多数据")
-        }
-    })
 
     $(".create-ad").on("click", function () {
         window.location.href = "/ad/create"

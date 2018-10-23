@@ -216,25 +216,6 @@
         }
         drawList();
 
-        $(".page-down").click(function () {
-            if (page > 1) {
-                page--
-                drawList();
-                $(".page-number").text(page)
-            } else {
-                console.log("当前已是第一页")
-            }
-        })
-        $(".page-up").click(function () {
-            if (page < pageCount) {
-                page++;
-                drawList();
-                $(".page-number").text(page)
-            } else {
-                console.log("已无更多数据")
-            }
-        })
-
         $(".table-content").on('click', '.table-tr', function () {
             let type = 'active'
             let time = $(this).children()[0]
