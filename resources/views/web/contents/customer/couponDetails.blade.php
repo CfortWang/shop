@@ -65,7 +65,7 @@
     var pageCount
     var drawList = function () {
         $.ajax({
-            url: 'http://shop.test/api/customer/couponDetailUserList',
+            url: '/api/customer/couponDetailUserList',
             type: 'get',
             dataType: 'json',
             data: {

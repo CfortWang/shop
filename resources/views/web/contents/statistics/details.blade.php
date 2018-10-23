@@ -64,7 +64,7 @@
         var pageCount
         var drawList = function () {
             $.ajax({
-                url: 'http://shop.test/api/statistics/detail',
+                url: '/api/statistics/detail',
                 type: 'get',
                 dataType: 'json',
                 data: {

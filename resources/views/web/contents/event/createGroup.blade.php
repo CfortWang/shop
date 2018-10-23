@@ -439,7 +439,7 @@ function selectImage(file, selector) {
 
 function upLoadImage (file, kind) {
     $.ajax({
-        url: 'http://shop.test/api/event/upload',
+        url: '/api/event/upload',
         type: 'post',
         dataType: 'json',
         data: file,

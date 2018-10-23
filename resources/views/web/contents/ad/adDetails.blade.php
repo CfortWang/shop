@@ -84,7 +84,7 @@ $("input[type=text][name=id]").val(args['id'])
 tim = ''
 var drawData = function () {
     $.ajax({
-        url: 'http://shop.test/api/adv/adDetail',
+        url: '/api/adv/adDetail',
         type: 'get',
         dataType: 'json',
         data: {
@@ -205,7 +205,7 @@ function selectImage(file) {
 
 function getPkgCode (file) {
     $.ajax({
-        url: 'http://shop.test/api/adv/pkgList',
+        url: '/api/adv/pkgList',
         type: 'get',
         dataType: 'json',
         success: function (res) {
@@ -296,7 +296,7 @@ $(".package-box").on("click", ".delete-pkg", function () {
 
 function modifyAD (adInfo) {
     $.ajax({
-        url: 'http://shop.test/api/adv/modifyAd',
+        url: '/api/adv/modifyAd',
         type: 'post',
         dataType: 'json',
         data: adInfo,

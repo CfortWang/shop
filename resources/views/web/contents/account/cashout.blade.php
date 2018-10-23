@@ -101,7 +101,7 @@
     var pageCount
     var drawList = function () {
         $.ajax({
-            url: 'http://shop.test/api/account/cashList',
+            url: '/api/account/cashList',
             type: 'get',
             dataType: 'json',
             data: {
@@ -172,7 +172,7 @@
 
     var getCashoutInfo = function () {
         $.ajax({
-            url: 'http://shop.test/api/account/showBuyerInfo',
+            url: '/api/account/showBuyerInfo',
             type: 'get',
             dataType: 'json',
             success: function (res) {
@@ -190,7 +190,7 @@
     
     var Cashout = function (amount) {
         $.ajax({
-            url: 'http://shop.test/api/account/requestCash',
+            url: '/api/account/requestCash',
             type: 'post',
             dataType: 'json',
             data: {

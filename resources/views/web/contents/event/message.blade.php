@@ -46,6 +46,19 @@
                                 </div>
                             </div>
                         </div>
+                        <div class="am-modal am-modal-confirm" tabindex="-1" id="my-confirm">
+                            <div class="am-modal-dialog">
+                                <div class="am-modal-hd">
+                                    <img src="/img/main/icon_warning.png" alt="">
+                                    <span>确定删除该通知?</span>
+                                </div>
+                                <div class="am-modal-bd">消息通知删除后无法找回，请谨慎操作。</div>
+                                <div class="am-modal-footer">
+                                    <span class="am-modal-btn give-up-btn" data-am-modal-cancel>取消</span>
+                                    <span class="am-modal-btn ensure-btn" data-am-modal-confirm>确定</span>
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
@@ -73,7 +86,7 @@
     var pageCount
     var drawList = function () {
         $.ajax({
-            url: 'http://shop.test/api/event/message',
+            url: '/api/event/message',
             type: 'get',
             dataType: 'json',
             data: {
@@ -141,15 +154,15 @@
 
     var deleteMessage = function (event1, that) {
         $.ajax({
-            url: 'http://shop.test/api/event/deleteMessage/' + event1,
+            url: '/api/event/deleteMessage/' + event1,
             type: 'put',
             dataType: 'json',
             success: function (res) {
-                if (res.code != 200) {
-                    console.log(res.message);
-                } else {
+                if (res.code == 200) {
                     drawList();
-                    alert(res.message);
+                    toastr.success(res.message);
+                } else {
+                    toastr.error(res.message);
                 }
 
             },
@@ -185,7 +198,14 @@
     $(".table-content").on("click", ".table-tr .table-td-operate .delete", function () {
         var id = $(this).parent().attr("data-id")
         var that = $(this)
-        deleteMessage(id, that);
+        $('#my-confirm').modal({
+            relatedTarget: this,
+            onConfirm: function(options) {
+                deleteMessage(id, that);
+            },
+            // closeOnConfirm: false,
+            onCancel: function() {}
+        });
     })
 
     $(".table-content").on("click", ".table-tr .table-td-operate .modify", function () {

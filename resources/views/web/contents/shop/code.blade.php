@@ -64,7 +64,7 @@
     var pageCount
     var drawBuyList = function () {
         $.ajax({
-            url: 'http://shop.test/api/packages/package_sales',
+            url: '/api/packages/package_sales',
             type: 'get',
             dataType: 'json',
             success: function (res) {
@@ -104,7 +104,7 @@
 
     var drawCodeList = function () {
         $.ajax({
-            url: 'http://shop.test/api/packages/my_package',
+            url: '/api/packages/my_package',
             type: 'get',
             dataType: 'json',
             success: function (res) {

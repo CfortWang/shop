@@ -296,7 +296,7 @@ tim = ''
 $("input[type=text][name=id]").val(args['id'])
 var drawData = function () {
     $.ajax({
-        url: 'http://shop.test/api/event/groupon/' + args['id'],
+        url: '/api/event/groupon/' + args['id'],
         type: 'get',
         dataType: 'json',
         success: function (res) {
@@ -559,7 +559,7 @@ function selectImage(file, selector) {
 
 function upLoadImage (file, kind) {
     $.ajax({
-        url: 'http://shop.test/api/event/upload?type=groupon',
+        url: '/api/event/upload?type=groupon',
         type: 'post',
         dataType: 'json',
         data: file,

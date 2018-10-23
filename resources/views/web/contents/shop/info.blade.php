@@ -156,7 +156,7 @@
 
 function drawData () {
     $.ajax({
-        url: 'http://shop.test/api/shop/info',
+        url: '/api/shop/info',
         type: 'get',
         dataType: 'json',
         async: false,
@@ -222,7 +222,7 @@ setTimeout(() => {
 
 function getCategory () {
     $.ajax({
-        url: 'http://shop.test/api/shop/category',
+        url: '/api/shop/category',
         type: 'get',
         dataType: 'json',
         success: function (res) {
@@ -241,7 +241,7 @@ getCategory();
 
 function getCountry () {
     $.ajax({
-        url: 'http://shop.test/api/common/country',
+        url: '/api/common/country',
         type: 'get',
         dataType: 'json',
         success: function (res) {
@@ -259,7 +259,7 @@ function getCountry () {
 
 function getProvince (id) {
     $.ajax({
-        url: 'http://shop.test/api/common/province/' + id,
+        url: '/api/common/province/' + id,
         type: 'get',
         dataType: 'json',
         success: function (res) {
@@ -279,7 +279,7 @@ function getProvince (id) {
 
 function getCity (id) {
     $.ajax({
-        url: 'http://shop.test/api/common/city/' + id,
+        url: '/api/common/city/' + id,
         type: 'get',
         dataType: 'json',
         async: false,
@@ -300,7 +300,7 @@ function getCity (id) {
 
 function getArea (id) {
     $.ajax({
-        url: 'http://shop.test/api/common/area/' + id,
+        url: '/api/common/area/' + id,
         type: 'get',
         dataType: 'json',
         success: function (res) {
@@ -425,7 +425,7 @@ $("select#city").change(function () {
 
 function modifyInfo (adInfo) {
     $.ajax({
-        url: 'http://shop.test/api/shop/modify',
+        url: '/api/shop/modify',
         type: 'post',
         dataType: 'json',
         data: adInfo,

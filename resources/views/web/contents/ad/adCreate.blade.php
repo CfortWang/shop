@@ -148,7 +148,7 @@ function selectImage(file) {
 
 function getPkgCode () {
     $.ajax({
-        url: 'http://shop.test/api/adv/pkgList',
+        url: '/api/adv/pkgList',
         type: 'get',
         dataType: 'json',
         success: function (res) {
@@ -214,7 +214,7 @@ $(".package-box").on("click", ".delete-pkg", function () {
 
 function createAd (adInfo) {
     $.ajax({
-        url: 'http://shop.test/api/adv/createAd',
+        url: '/api/adv/createAd',
         type: 'post',
         dataType: 'json',
         data: adInfo,

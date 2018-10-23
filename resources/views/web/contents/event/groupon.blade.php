@@ -2,7 +2,6 @@
 @section('title', $title)
 @section('css')
 <link rel="stylesheet" href="/css/app.css">
-<link rel="stylesheet" href="/css/toastr.min.css">
 <link rel="stylesheet" type="text/css" media="all" href="/css/daterangepicker.css" />
 @endsection('css')
 @section('content')
@@ -61,13 +60,12 @@
     </div>
 @endsection
 @section('script')
-<script src="/js/toastr.min.js"></script>
 <script>
     var pageCount
     var keyword = ''
     var drawList = function () {
         $.ajax({
-            url: 'http://shop.test/api/event/groupon',
+            url: '/api/event/groupon',
             type: 'get',
             dataType: 'json',
             data: {
@@ -127,7 +125,7 @@
 
     var changeStatus = function (event1, event2, that) {
         $.ajax({
-            url: 'http://shop.test/api/event/status',
+            url: '/api/event/status',
             type: 'put',
             dataType: 'json',
             data: {
@@ -163,21 +161,6 @@
     $(".create-pdd").on("click", function () {
         window.location.href = "/event/groupon/create"
     })
-    toastr.options = {
-        closeButton: false,
-        debug: false,
-        progressBar: false,
-        positionClass: "toast-top-center",
-        onclick: null,
-        showDuration: "300",
-        hideDuration: "1000",
-        timeOut: "1500",
-        extendedTimeOut: "1000",
-        showEasing: "swing",
-        hideEasing: "linear",
-        showMethod: "fadeIn",
-        hideMethod: "fadeOut"
-    };
 
     $(".table-content").on("click", ".table-tr .operating .obtained, .table-tr .operating .shelf", function () {
         var id = $(this).parent().attr("data-id")

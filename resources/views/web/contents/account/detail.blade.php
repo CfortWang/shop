@@ -62,7 +62,7 @@
 
 var drawData = function () {
     $.ajax({
-        url: 'http://shop.test/api/account/detail',
+        url: '/api/account/detail',
         type: 'get',
         async: false,
         dataType: 'json',
@@ -86,7 +86,7 @@ drawData();
 
 var getBank = function () {
     $.ajax({
-        url: 'http://shop.test/api/account/bank-list',
+        url: '/api/account/bank-list',
         type: 'get',
         dataType: 'json',
             success: function (res) {
@@ -111,7 +111,7 @@ getBank();
 
 var modifyInfo = function () {
     $.ajax({
-        url: 'http://shop.test/api/account/modify',
+        url: '/api/account/modify',
         type: 'post',
         dataType: 'json',
         data: {

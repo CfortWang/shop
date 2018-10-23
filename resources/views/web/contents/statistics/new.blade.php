@@ -133,7 +133,7 @@
 
         var getYesterday = function () {
             $.ajax({
-                url: 'http://shop.test/api/statistics/all',
+                url: '/api/statistics/all',
                 type: 'get',
                 dataType: 'json',
                 success: function (res) {
@@ -157,7 +157,7 @@
         var pageCount
         var drawList = function () {
             $.ajax({
-                url: 'http://shop.test/api/statistics/list',
+                url: '/api/statistics/list',
                 type: 'get',
                 dataType: 'json',
                 data: {

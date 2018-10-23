@@ -53,7 +53,7 @@
     var pageCount
     var drawList = function () {
         $.ajax({
-            url: 'http://shop.test/api/adv/list',
+            url: '/api/adv/list',
             type: 'get',
             dataType: 'json',
             data: {
@@ -110,7 +110,7 @@
 
     var changeStatus = function (event1, event2, that) {
         $.ajax({
-            url: 'http://shop.test/api/adv/adStatus',
+            url: '/api/adv/adStatus',
             type: 'post',
             dataType: 'json',
             data: {

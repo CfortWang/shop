@@ -79,7 +79,7 @@
     var pageCount
     var drawList = function () {
         $.ajax({
-            url: 'http://shop.test/api/customer/pddUserList',
+            url: '/api/customer/pddUserList',
             type: 'get',
             dataType: 'json',
             data: {

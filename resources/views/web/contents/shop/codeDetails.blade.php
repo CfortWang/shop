@@ -119,7 +119,7 @@
 
     var drawInfo = function () {
         $.ajax({
-            url: 'http://shop.test/api/packages/my_package/myPackageDetail',
+            url: '/api/packages/my_package/myPackageDetail',
             type: 'get',
             dataType: 'json',
             data: {
@@ -153,7 +153,7 @@
     var selectStatus = ''
     var drawList = function () {
         $.ajax({
-            url: 'http://shop.test/api/packages/my_package/codeDetailList',
+            url: '/api/packages/my_package/codeDetailList',
             type: 'get',
             dataType: 'json',
             data: {

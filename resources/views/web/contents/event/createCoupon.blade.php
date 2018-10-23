@@ -471,7 +471,7 @@ function selectImage(file) {
 
 function upLoadImage (file) {
     $.ajax({
-        url: 'http://shop.test/api/event/upload?type=coupon',
+        url: '/api/event/upload?type=coupon',
         type: 'post',
         dataType: 'json',
         data: file,
@@ -500,7 +500,7 @@ $(".product").on("click", ".selected-image .delete-image", function () {
 
 function getPkgCode (file) {
     $.ajax({
-        url: 'http://shop.test/api/adv/pkgList',
+        url: '/api/adv/pkgList',
         type: 'get',
         dataType: 'json',
         success: function (res) {

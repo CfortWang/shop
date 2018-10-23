@@ -119,7 +119,7 @@ $("input[type=text][name=id]").val(args['id'])
 tim = ''
 var drawData = function () {
     $.ajax({
-        url: 'http://shop.test/api/event/message/' + args['id'],
+        url: '/api/event/message/' + args['id'],
         type: 'get',
         dataType: 'json',
         success: function (res) {
