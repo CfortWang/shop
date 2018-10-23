@@ -13,7 +13,8 @@
     <link rel="icon" href="/img/logo.ico" type="image/x-icon">
     <!-- <link rel="apple-touch-icon-precomposed" href="i/app-icon72x72@2x.png"> -->
     <!-- <meta name="apple-mobile-web-app-title" content="Amaze UI" /> -->
-    <link rel="stylesheet" href="/css/amazeui.min.css" />
+    <!-- <link rel="stylesheet" href="/css/amazeui.min.css" /> -->
+    <link href="https://cdn.bootcss.com/amazeui/2.7.2/css/amazeui.min.css" rel="stylesheet">
     <link rel="stylesheet" href="/css/admin.css">
     <link rel="stylesheet" href="/css/app.css">
     <link rel="stylesheet" href="/css/toastr.min.css">
@@ -180,8 +181,10 @@
                 @yield('content')
             </div>
         </div>
-            <script src="/js/jquery-2.1.1.js"></script>
+            <!-- <script src="/js/jquery-2.1.1.js"></script> -->
             <!-- <script src="/js/amazeui.min.js"></script> -->
+            <script src="https://cdn.bootcss.com/amazeui/2.7.2/js/amazeui.min.js"></script>
+            <script src="https://cdn.bootcss.com/jquery/3.3.1/jquery.min.js"></script>
             <script src="/js/iscroll.js"></script>
             <script src="/js/toastr.min.js"></script>
             <script src="/js/app.js"></script>

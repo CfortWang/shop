@@ -655,6 +655,7 @@
 @endsection
 @section('script')
     <!-- <script src="/js/echarts.min.js"></script> -->
+    <script src="https://cdn.bootcss.com/echarts/4.2.0-rc.1/echarts.simple.min.js"></script>
     <script src="/js/moment.min.js"></script>
     <script src="/js/daterangepicker.js"></script>
     <script>
