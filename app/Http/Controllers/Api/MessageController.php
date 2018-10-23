@@ -130,7 +130,6 @@ class MessageController extends Controller
             $data->send_at = $input['send_at'];
         }
         $res = $data->save();
-        $phone_num = $input['phone_num'];
         if($data['object_type']==0&&$input['is_phone_num_modify']){
             ShopMessageUser::where('shop_message_id',$id)->delete();
             $phone_num = $input['phone_num'];
