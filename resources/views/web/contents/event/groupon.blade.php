@@ -2,7 +2,6 @@
 @section('title', $title)
 @section('css')
 <link rel="stylesheet" href="/css/app.css">
-<link rel="stylesheet" type="text/css" media="all" href="/css/daterangepicker.css" />
 @endsection('css')
 @section('content')
     <div class="tpl-page-container tpl-page-header-fixed">
@@ -170,7 +169,8 @@
             $('#my-confirm').modal({
                 relatedTarget: this,
                 onConfirm: function(options) {
-                    console.log(status)
+                    let that = $(this.relatedTarget)
+                    let id = that.parent().attr("data-id")
                     changeStatus(id, status, that);
                 },
                 // closeOnConfirm: false,

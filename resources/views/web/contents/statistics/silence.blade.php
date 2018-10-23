@@ -3,7 +3,6 @@
 @section('css')
 <link rel="stylesheet" href="/css/app.css">
 <link rel="stylesheet" type="text/css" media="all" href="/css/daterangepicker.css" />
-<link rel="stylesheet" type="text/css" media="all" href="/css/bootstrap-datetimepicker.min.css" />
 @endsection('css')
 @section('content')
 
@@ -212,25 +211,6 @@
             })
         }
         drawList();
-
-        $(".page-down").click(function () {
-            if (page > 1) {
-                page--
-                drawList();
-                $(".page-number").text(page)
-            } else {
-                console.log("当前已是第一页")
-            }
-        })
-        $(".page-up").click(function () {
-            if (page < pageCount) {
-                page++;
-                drawList();
-                $(".page-number").text(page)
-            } else {
-                console.log("已无更多数据")
-            }
-        })
 
         $(".table-content").on('click', '.table-tr', function () {
             let type = 'silence'

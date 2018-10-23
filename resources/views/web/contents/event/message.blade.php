@@ -172,25 +172,6 @@
         })
     }
 
-    $(".page-down").click(function () {
-        if (page > 1) {
-            page--
-            drawList();
-            $(".page-number").text(page)
-        } else {
-            console.log("当前已是第一页")
-        }
-    })
-    $(".page-up").click(function () {
-        if (page < pageCount) {
-            page++;
-            drawList();
-            $(".page-number").text(page)
-        } else {
-            console.log("已无更多数据")
-        }
-    })
-
     $('.create-message').click(function() {
         window.location.href = "/event/message/create"
     })
@@ -201,6 +182,8 @@
         $('#my-confirm').modal({
             relatedTarget: this,
             onConfirm: function(options) {
+                let that = $(this.relatedTarget)
+                let id = that.parent().attr("data-id")
                 deleteMessage(id, that);
             },
             // closeOnConfirm: false,

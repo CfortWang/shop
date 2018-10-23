@@ -3,7 +3,6 @@
 @section('css')
 <link rel="stylesheet" href="/css/app.css">
 <link rel="stylesheet" type="text/css" media="all" href="/css/daterangepicker.css" />
-<link rel="stylesheet" type="text/css" media="all" href="/css/bootstrap-datetimepicker.min.css" />
 @endsection('css')
 @section('content')
 
