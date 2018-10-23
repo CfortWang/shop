@@ -201,6 +201,8 @@
         $('#my-confirm').modal({
             relatedTarget: this,
             onConfirm: function(options) {
+                let that = $(this.relatedTarget)
+                let id = that.parent().attr("data-id")
                 deleteMessage(id, that);
             },
             // closeOnConfirm: false,

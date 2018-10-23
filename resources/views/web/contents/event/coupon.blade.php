@@ -84,7 +84,7 @@
     var selectStatus = 'processed'
     var drawList = function () {
         $.ajax({
-            url: '/api/shop/couponList',
+            url: 'http://shop.test/api/shop/couponList',
             type: 'get',
             dataType: 'json',
             data: {
@@ -172,7 +172,7 @@
 
     var getStatus = function () {
         $.ajax({
-            url: '/api/shop/statusList',
+            url: 'http://shop.test/api/shop/statusList',
             type: 'get',
             dataType: 'json',
             success: function (res) {
@@ -190,7 +190,7 @@
 
     var changeStatus = function (event1, event2, that) {
         $.ajax({
-            url: '/api/shop/couponStatus',
+            url: 'http://shop.test/api/shop/couponStatus',
             type: 'put',
             dataType: 'json',
             data: {
@@ -224,7 +224,7 @@
 
     var deleteCoupon = function (event1, event2, that) {
         $.ajax({
-            url: '/api/shop/deleteCoupon',
+            url: 'http://shop.test/api/shop/deleteCoupon',
             type: 'delete',
             dataType: 'json',
             data: {
@@ -285,6 +285,8 @@
             $('#my-confirm').modal({
                 relatedTarget: this,
                 onConfirm: function(options) {
+                    let that = $(this.relatedTarget)
+                    let id = that.parent().attr("data-id")
                     changeStatus(id, status, that);
                 },
                 // closeOnConfirm: false,

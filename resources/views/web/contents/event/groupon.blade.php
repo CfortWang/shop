@@ -170,7 +170,8 @@
             $('#my-confirm').modal({
                 relatedTarget: this,
                 onConfirm: function(options) {
-                    console.log(status)
+                    let that = $(this.relatedTarget)
+                    let id = that.parent().attr("data-id")
                     changeStatus(id, status, that);
                 },
                 // closeOnConfirm: false,
