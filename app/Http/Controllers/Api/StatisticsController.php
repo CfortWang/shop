@@ -103,6 +103,8 @@ class StatisticsController extends Controller
         $orign = UserScanLog::where('UserScanLog.buyer',$seq)
             ->leftJoin('User as a','a.seq','=','UserScanLog.user')
             ->select('a.gender','a.birthday','a.is_married','a.created_at','UserScanLog.created_at as create_at_1')
+            ->groupBy('a.gender','a.birthday','a.is_married','a.created_at')
+            ->orderBy('id','desc')
             ->get();
         $data[1] = $this->getGender($orign);
         $data[2] = $this->getAge($orign);
@@ -179,7 +181,7 @@ class StatisticsController extends Controller
     {
         $seq = $this->buyer_id;
         $sql = DB::raw('DATE_FORMAT(created_at,"%H") as name');
-        $data = UserScanLog::where('buyer',$seq)
+        $data = UserScanLog::where('UserScanLog.buyer',$seq)
             ->groupBy('name')
             ->orderBy('name', 'ASC')
             ->get([
@@ -189,7 +191,8 @@ class StatisticsController extends Controller
         $title= '时间分布';
         $item = [];
         foreach($data as $key => $value){
-            $item[] = $value['name'] ;
+            $item[] = ($value['name']+8)%24;
+            $data[$key]['name'] = ($data[$key]['name']+8)%24;
         }
         $return['title'] = '时间分布';
         $return['data'] = $data;
@@ -204,8 +207,10 @@ class StatisticsController extends Controller
             ->leftJoin('User as u','u.seq','=','UserScanLog.user')
             ->leftJoin('Province as p','p.seq','=','u.province')
             ->groupBy('p.name')
+            ->distinct('UserScanLog.user')
             ->get([
                 'p.name',
+                'UserScanLog.user',
                 DB::raw('COUNT(UserScanLog.user) as value'),
             ]);
         $item = [];
@@ -237,7 +242,7 @@ class StatisticsController extends Controller
                 if($different>8){
                     $different = 8;
                 }
-                $data[$different]['name'] = isset($data[$different]['value'])?:$item[] = $arnge[$different];
+                $data[$different]['name'] = $item[] = $arnge[$different];
                 $data[$different]['value'] = isset($data[$different]['value'])?$data[$different]['value']+1:1;
             }else{
                 if($unknown['value']==0){
