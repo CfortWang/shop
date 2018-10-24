@@ -157,7 +157,7 @@
                                         <span>固定日期</span>
                                     </label>
                                     <span class="time-kind">生效时间：</span>
-                                    <input type="text" class="effect-time" autocomplete="off" name="effective_start_at" id="effective_starts" data-am-datepicker placeholder="请选择日期">
+                                    <input type="text" class="effect-time" autocomplete="off" name="effective_start_at" id="effective_start_at" data-am-datepicker placeholder="请选择日期">
                                     <span class="time-kind">过期时间：</span>
                                     <input type="text" class="expired-time" autocomplete="off" name="effective_end_at" id="effective_end_at" data-am-datepicker placeholder="请选择日期">
                                     
