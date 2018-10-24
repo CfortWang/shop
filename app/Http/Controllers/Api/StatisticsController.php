@@ -103,6 +103,7 @@ class StatisticsController extends Controller
         $orign = UserScanLog::where('UserScanLog.buyer',$seq)
             ->leftJoin('User as a','a.seq','=','UserScanLog.user')
             ->select('a.gender','a.birthday','a.is_married','a.created_at','UserScanLog.created_at as create_at_1')
+            ->groupBy('a.gender','a.birthday','a.is_married','a.created_at')
             ->get();
         $data[1] = $this->getGender($orign);
         $data[2] = $this->getAge($orign);
