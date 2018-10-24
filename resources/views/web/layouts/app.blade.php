@@ -22,10 +22,10 @@
 </head>
 <body>
 <div>
-    <!-- <header class="am-topbar am-topbar-inverse admin-header">
+    <header class="am-topbar am-topbar-inverse admin-header">
         <div class="am-topbar-brand">
             <a href="javascript:;" class="tpl-logo">
-                <img src="img/logo.png" alt="">
+                <img src="/img/logo.png" alt="">
             </a>
         </div>
         <div class="am-icon-list tpl-header-nav-hover-ico am-fl am-margin-right">
@@ -33,7 +33,7 @@
         <div class="am-collapse am-topbar-collapse" id="topbar-collapse">
            
         </div>
-    </header> -->
+    </header>
     <div class="page-content">
         <div class="empty"></div>
         <div class="tpl-left-nav tpl-left-nav-hover">

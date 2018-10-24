@@ -86,7 +86,7 @@
     var selectStatus = 'processed'
     var drawList = function () {
         $.ajax({
-            url: 'http://shop.test/api/shop/couponList',
+            url: '/api/shop/couponList',
             type: 'get',
             dataType: 'json',
             data: {
@@ -174,7 +174,7 @@
 
     var getStatus = function () {
         $.ajax({
-            url: 'http://shop.test/api/shop/statusList',
+            url: '/api/shop/statusList',
             type: 'get',
             dataType: 'json',
             success: function (res) {
@@ -192,7 +192,7 @@
 
     var changeStatus = function (event1, event2, that) {
         $.ajax({
-            url: 'http://shop.test/api/shop/couponStatus',
+            url: '/api/shop/couponStatus',
             type: 'put',
             dataType: 'json',
             data: {
@@ -226,7 +226,7 @@
 
     var deleteCoupon = function (event1, event2, that) {
         $.ajax({
-            url: 'http://shop.test/api/shop/deleteCoupon',
+            url: '/api/shop/deleteCoupon',
             type: 'delete',
             dataType: 'json',
             data: {
