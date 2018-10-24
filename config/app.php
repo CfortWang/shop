@@ -79,7 +79,6 @@ return [
     */
 
     'locale' => 'en',
-    'locales' => ['en' => 'English', 'zh' => 'Chinese', 'jp' => 'Japanese'],
     /*
     |--------------------------------------------------------------------------
     | Application Fallback Locale

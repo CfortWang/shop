@@ -7,9 +7,7 @@
 @section('nav')
 <span>数据/平均扫描频率</span>
 @endsection('nav')
-
 @section('content')
-
     <div class="tpl-page-container tpl-page-header-fixed">
         <div class="tpl-content-wrapper">
             <div class="row">
