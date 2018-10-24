@@ -1716,7 +1716,9 @@ button:focus{
     color: #57A0FF;
     cursor: pointer;
 }
-
+.pointer .table-tr{
+    cursor: pointer;
+}
 
 
 
