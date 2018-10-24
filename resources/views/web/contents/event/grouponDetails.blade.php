@@ -631,9 +631,6 @@ setTimeout(() => {
     i = pro
     j = rem
     k = tim
-    console.log(pro)
-    console.log(rem)
-    console.log(tim)
 }, 2000);
 function addPackageInfo () {
     var packageName = $("#package-name").val()

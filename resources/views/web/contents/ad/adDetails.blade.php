@@ -179,7 +179,7 @@ function selectImage(file) {
     reader.onload = function (evt) {
         var sonNum = $('.product').children().length
         if (sonNum > 2) {
-            console.log("最多只能选择1张图片")
+            toastr.error("最多只能选择1张图片")
             return false
         }
         var $imgBox = '<div class="selected-image"><div class="delete-image"><img src="/img/main/close.png" alt=""></div><img class="image" alt="" src="' +evt.target.result + '"><input class="img-value" type="text" name="image[]" hidden></div>'

@@ -421,11 +421,11 @@ function selectImage(file, selector) {
     reader.onload = function (evt) {
         var sonNum = $(selector).children().length
         if (selector == '.product' && sonNum > 16) {
-            console.log("最多只能选择15张图片")
+            toastr.error("最多只能选择15张图片")
             return false
         }
         if (selector == '.list' && sonNum > 2) {
-            console.log("最多只能选择1张图片")
+            toastr.error("最多只能选择1张图片")
             return false
         }
         var $imgBox = '<div class="selected-image"><div class="delete-image"><img src="/img/main/close.png" alt=""></div><img class="image" alt="" src="' +evt.target.result + '"><input class="img-value" type="text" name="image[]" hidden></div>'
@@ -457,12 +457,10 @@ function upLoadImage (file, kind) {
                         if(percent <= 100) {
                             // $("#J_progress_bar").progress('set progress', percent);
                             $("#percentage").text('已上传：'+percent+'%');
-                            console.log("1")
                         }
                         if(percent >= 100) {
                             $("#percentage").text('文件上传完毕，请等待...');
                             // $("#percentage").addClass('success');
-                            console.log("2")
                         }
                     }
                 }, false);

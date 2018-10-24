@@ -355,7 +355,7 @@
 					type: 'post',
 					success: function(response){
 						if(response.code == '200'){
-							console.log('send success');
+							toastr.success('send success');
 							$(".code-button").attr("disabled", true);
 							$(".get-code").text("重新获取")
 							timeLeft = 5

@@ -234,10 +234,10 @@
             },
             success: function (res) {
                 if (res.code != 200) {
-                    console.log(res.message);
+                    toastr.error(res.message);
                 } else {
                     drawList();
-                    toastr.error(res.message);
+                    toastr.success(res.message);
                 }
 
             },
