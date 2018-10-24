@@ -242,7 +242,7 @@ class StatisticsController extends Controller
                 if($different>8){
                     $different = 8;
                 }
-                $data[$different]['name'] = isset($data[$different]['value'])?:$item[] = $arnge[$different];
+                $data[$different]['name'] = $item[] = $arnge[$different];
                 $data[$different]['value'] = isset($data[$different]['value'])?$data[$different]['value']+1:1;
             }else{
                 if($unknown['value']==0){
