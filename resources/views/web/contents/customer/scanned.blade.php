@@ -58,18 +58,18 @@
 @section('script')
 <script>
     var limit = 8
-    var type = 'scan'
     var page = 1
     var pageCount
+    var phoneNum = ''
     var drawList = function () {
         $.ajax({
             url: '/api/customer/scannedUserList',
             type: 'get',
             dataType: 'json',
             data: {
-                type: type,
                 limit: limit,
-                page: page
+                page: page,
+                phoneNum: phoneNum
             },
             success: function (res) {
                 $(".table-content").empty()
@@ -133,6 +133,15 @@
         let detailLimit = 8
         let detailPage = 1
         window.location.href = '/customer/scanned/details?seq=' + seq + '&limit=' + detailLimit + '&page=' + detailPage
+    })
+    
+    $(".search-btn").on("click", function () {
+        phoneNum = $(".search-input").val()
+        if (phoneNum == '' || phoneNum == null) {
+            toastr.error("请输入手机号码搜索")
+        } else {
+            drawList();
+        }
     })
 </script>
 @endsection
