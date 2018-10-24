@@ -594,6 +594,7 @@ ul.tpl-dropdown-content li>a.tpl-dropdown-content-message:last-child {
     display: inline-block;
     /* margin-right: 150px; */
     text-align: center;
+    margin-bottom: 10px;
 }
 .user-type{
     font-size:18px;
@@ -3284,6 +3285,7 @@ header{
         display: inline-block;
         margin: 0px 10px;
         vertical-align: middle;
+        font-size: 18px;
     }
     .tpl-echarts-A{
         padding: 10px 15px;
@@ -3303,5 +3305,8 @@ header{
     }
     .tpl-logo img {
         height: 40px;
+    }
+    .tpl-portlet-title{
+        display: block;
     }
 }
