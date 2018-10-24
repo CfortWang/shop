@@ -1730,6 +1730,18 @@ button:focus{
     cursor: pointer;
 }
 
+.empty-header{
+    height: 50px;
+    width: 100%;
+    display: none;
+}
+header{
+    display: none;
+}
+
+
+
+
 
 
 
@@ -3256,9 +3268,18 @@ button:focus{
     .empty{
         display: none;
     }
+    .contain .header{
+        display: none;
+    }
+    header{
+        display: block;
+    }
 }
 
 @media only screen and (max-width: 641px){
+    .empty-header{
+        display: block;
+    }
     .user-amount{
         display: inline-block;
         margin: 0px 10px;
@@ -3269,5 +3290,18 @@ button:focus{
     }
     .row-mb{
         margin-bottom: 20px;
+    }
+    .tpl-left-nav-item .nav-link{
+        padding: 15px 15px 15px 60px;
+    }
+    .am-topbar-brand, .am-topbar {
+        min-height: 50px;
+        line-height: 50px;
+    }
+    .tpl-logo {
+        padding-left: 0px;
+    }
+    .tpl-logo img {
+        height: 40px;
     }
 }
