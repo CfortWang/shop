@@ -378,16 +378,13 @@ var drawData = function () {
             }
 
             // 优惠有效期
-            for (let i = 0; i < 2; i++) {
-                if ($("input[type=radio][name=coupon_date_type]:eq("+ i +")").val() == resData.coupon_date_type) {
-                    $("input[type=radio][name=coupon_date_type]:eq("+ i +")").attr("checked", 'checked')
-                }
-            }
             if (resData.coupon_date_type) {
+                $("input[type=radio][name=coupon_date_type]:eq(1)").attr("checked", 'checked')
                 $("input[type=number][name=days]").val(resData.days)
                 $('.effect-time, .expired-time').attr("disabled", true)
                 $('#days').attr("disabled", false)
             } else {
+                $("input[type=radio][name=coupon_date_type]:eq(0)").attr("checked", 'checked')
                 $("input[type=text][name=start_at]").datepicker('setValue', resData.start_at)
                 $("input[type=text][name=expired_at]").datepicker('setValue', resData.expired_at)
                 $('.effect-time, .expired-time').attr("disabled", false)
@@ -397,10 +394,13 @@ var drawData = function () {
             // 优惠有效时段
             for (let i = 0; i < 2; i++) {
                 if ($("input[type=radio][name=available_time_type]:eq("+ i +")").val() == resData.available_time_type) {
-                    $("input[type=radio][name=available_time_type]:eq("+ i +")").attr("checked", 'checked')
+                    
                 }
             }
+
+            tim = resData.time_limit.length
             if (resData.available_time_type) {
+                $("input[type=radio][name=available_time_type]:eq(1)").attr("checked", 'checked')
                 for (let j = 0; j < 5; j++) {
                     for (let i = 0; i < 5; i++) {
                         if ($("input[type=checkbox][name='available_time[]']:eq("+ i +")").val() == resData.available_time[j]) {
@@ -414,21 +414,27 @@ var drawData = function () {
                 if (resData.is_festival) {
                     $("input[type=checkbox][name='is_festival']").attr("checked", 'checked')
                 }
-                tim = resData.time_limit.length
                 for (let i = 0; i < resData.time_limit.length; i++) {
                     let startTime = 'time_limit[' + i + '][start_at]'
                     let endTime = 'time_limit[' + i + '][end_at]'
                     let time = resData.time_limit
                     var $customizeTime = '<div class="customize-time"><div class="add-time-text"><span class="customize-time-text">' + time[i].start_at + '</span><span>&nbsp;-&nbsp;</span><span class="customize-time-text">' + time[i].end_at + '</span></div><div class="add-time-box"><input type="text" class="add-start-hours" value="' + time[i].start_at + '" name="' + startTime + '"><span>&nbsp;-&nbsp;</span><input type="text" class="add-end-hours" value="' + time[i].end_at + '" name="' + endTime + '"></div><div class="operating"><div class="motify" onclick="modifyCustomize(this)">修改</div><div class="save" onclick="saveCustomize(this)">保存</div><div class="delete">删除</div></div></div>'
                     $(".customize").append($customizeTime)
+                    $('.add-start-hours, .add-end-hours').datetimepicker({
+                        format: 'hh:ii',
+                        autoclose: true,
+                        todayHighlight: true,
+                        startView: 'hour'
+                    });
                 }
                 if ($(".customize-time").length >= 3) {
                     $(".hours-choose .add-time").hide()
                     $(".section-time .start-hours, .section-time .end-hours").attr("disabled", true)
                 }
             } else {
-                $("input[type=text][name=start_at]").val(resData.start_at)
-                $("input[type=text][name=expired_at]").val(resData.expired_at)
+                $("input[type=radio][name=available_time_type]:eq(0)").attr("checked", 'checked')
+                // $("input[type=text][name=start_at]").val(resData.start_at)
+                // $("input[type=text][name=expired_at]").val(resData.expired_at)
                 $('.sectiom-time').find("input").attr("disabled", true)
                 $('.sectiom-time #timeRadio2').attr("disabled", false)
             }

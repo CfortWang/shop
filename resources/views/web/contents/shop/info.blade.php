@@ -162,7 +162,6 @@ function drawData () {
         url: '/api/shop/info',
         type: 'get',
         dataType: 'json',
-        async: false,
         success: function (res) {
             let resData = res.data
             $("input#shop_name").val(resData.shop_name)
@@ -171,6 +170,13 @@ function drawData () {
             $("input#close_time").val(resData.close_time)
             $("input#address_detail").val(resData.address_detail)
             $("input#lnglat").val(resData.lng + ',' + resData.lat)
+
+            let $province = '<option>' + resData.province_name + '</option>'
+            let $city = '<option>' + resData.city_name + '</option>'
+            let $area = '<option>' + resData.area_name + '</option>'
+            $("select#province").append($province)
+            $("select#city").append($city)
+            $("select#area").append($area)
             country = 1
             province = resData.province
             city = resData.city
@@ -208,20 +214,35 @@ function drawData () {
 }
 drawData();
 
-getProvince(country);
-getCity(province);
-getArea(city);
 setTimeout(() => {
-    $("select#province").find("option[value = "+province+"]").attr("selected","selected")
+    getProvince(country, province)
+    getCity(province)
+    getArea(city)
+    // $("select#province").find("option[value = '"+province+"']").attr("selected","selected")
     $("select#city").find("option[value = '"+city+"']").attr("selected","selected")
     $("select#area").find("option[value = '"+area+"']").attr("selected","selected")
-    $("select#categories").find("option[value = "+categoryID+"]").attr("selected","selected")
 
+    $("select#categories").find("option[value = "+categoryID+"]").attr("selected","selected")
     $(".categories .am-selected-list li").removeClass("am-checked")
     $(".categories .am-selected-list:eq(0)").find("li[data-value = '" + categoryID + "']").addClass("am-checked")
     let cc = $(".categories .am-selected-list").find("li[data-value = '" + categoryID + "']").children("span").text()
     $(".categories .am-selected-status:eq(0)").text(cc)
-}, 1000);
+}, 2000);
+
+// getProvince(country);
+// getCity(province);
+// getArea(city);
+// setTimeout(() => {
+//     $("select#province").find("option[value = "+province+"]").attr("selected","selected")
+//     $("select#city").find("option[value = '"+city+"']").attr("selected","selected")
+//     $("select#area").find("option[value = '"+area+"']").attr("selected","selected")
+//     $("select#categories").find("option[value = "+categoryID+"]").attr("selected","selected")
+
+//     $(".categories .am-selected-list li").removeClass("am-checked")
+//     $(".categories .am-selected-list:eq(0)").find("li[data-value = '" + categoryID + "']").addClass("am-checked")
+//     let cc = $(".categories .am-selected-list").find("li[data-value = '" + categoryID + "']").children("span").text()
+//     $(".categories .am-selected-status:eq(0)").text(cc)
+// }, 1000);
 
 function getCategory () {
     $.ajax({
@@ -260,7 +281,7 @@ function getCountry () {
     })
 }
 
-function getProvince (id) {
+function getProvince (id, province) {
     $.ajax({
         url: '/api/common/province/' + id,
         type: 'get',
@@ -272,6 +293,7 @@ function getProvince (id) {
                 let $opts = '<option value="' + resData[i].seq + '"> ' + resData[i].name + ' </option>'
                 $(".detail-address #province").append($opts)
             }
+            $("select#province").find("option[value = '"+province+"']").attr("selected","selected")
         },
         error: function (ex) {
             console.log(ex)
@@ -435,7 +457,7 @@ function modifyInfo (adInfo) {
         processData: false,
         contentType: false,
         success: function (res) {
-            console.log(res)
+            toastr.success(res.message)
         },
         error: function (ex) {
             console.log(ex)
@@ -459,23 +481,23 @@ $(".bottom-submit-btn").on("click", function () {
     let lat = $("#lnglat").val().split(',')[1]
 
     if (shopName == '' || shopName == null) {
-        alert("商家名称不能为空")
+        toastr.error("商家名称不能为空")
         return false
     }
     if (phoneNum == '' || phoneNum == null) {
-        alert("电话号码不能为空")
+        toastr.error("电话号码不能为空")
         return false
     }
     if (openTime == '' || openTime == null) {
-        alert("开始营业时间不能为空")
+        toastr.error("开始营业时间不能为空")
         return false
     }
     if (closeTime == '' || closeTime == null) {
-        alert("结束营业时间不能为空")
+        toastr.error("结束营业时间不能为空")
         return false
     }
     if (lat == '' || lat == null) {
-        alert("地点不能为空")
+        toastr.error("请选择地点")
         return false
     }
     if (!window.shopData) {

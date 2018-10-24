@@ -1464,7 +1464,7 @@ input:-webkit-autofill {
 
 
 /* AD */
-.ad-title{
+.tpl-portlet .ad-title{
     justify-content: flex-end;
 }
 
@@ -1529,8 +1529,11 @@ input:-webkit-autofill {
     line-height: 70px;
     border-radius: 5px;
     cursor: pointer;
+    float: right;
 }
+.create-ad {
 
+}
 
 
 /* SHOP */

@@ -157,9 +157,9 @@
                                         <span>固定日期</span>
                                     </label>
                                     <span class="time-kind">生效时间：</span>
-                                    <input type="text" class="effect-time" autocomplete="off" name="effective_start_at" data-am-datepicker placeholder="请选择日期">
+                                    <input type="text" class="effect-time" autocomplete="off" name="effective_start_at" id="effective_starts" data-am-datepicker placeholder="请选择日期">
                                     <span class="time-kind">过期时间：</span>
-                                    <input type="text" class="expired-time" autocomplete="off" name="effective_end_at" data-am-datepicker placeholder="请选择日期">
+                                    <input type="text" class="expired-time" autocomplete="off" name="effective_end_at" id="effective_end_at" data-am-datepicker placeholder="请选择日期">
                                     
                                 </div>
                                 <div class="fixed-time-option2">
@@ -168,7 +168,7 @@
                                         <label for="effectRadio2" class="time-radio"></label>
                                         <span>拼豆成功后当日开始</span>
                                     </label>
-                                    <input type="number" name="effective_days" id="" class="effective-days" placeholder="请输入天数">
+                                    <input type="number" name="effective_days" id="effective_days" class="effective-days" placeholder="请输入天数">
                                     <span>天内有效</span>
                                     <span class="effective-remark">(生效天数必须在1-365之间)</span>
                                 </div>
@@ -294,8 +294,8 @@ var drawData = function () {
             $("input#title").val(resData.title)
             $("input#old-price").val(resData.price)
             $("input#new-price").val(resData.discounted_price)
-            $("input#pdd-startDate").val(resData.open_time)
-            $("input#pdd-endDate").val(resData.close_time)
+            $("input#pdd-startDate").datepicker('setValue', resData.open_time)
+            $("input#pdd-endDate").datepicker('setValue', resData.close_time)
             for (let i = 0; i < 3; i++) {
                 if ($("input[type=radio][name=continued_time]:eq("+ i +")").val() == resData.continued_time) {
                     $("input[type=radio][name=continued_time]:eq("+ i +")").attr("checked", 'checked')
@@ -324,30 +324,29 @@ var drawData = function () {
 
             rem = resData.remark.length
             for (let i = 0; i < resData.remark.length; i++) {
-                let remark = resData.remark
-                let remarkContent = 'remark[' + i + ']'
-                var $remark = '<div class="pdd-table-tr clear-fix remark-tr"><div class="am-u-lg-5 am-u-md-5 am-u-sm-6"><div class="package-info">' + remark[i] + '</div><input type="text" class="form-control" value="'+ remark[i] +'" name="' + remarkContent + '"></div><div class="am-u-lg-7 am-u-md-7 am-u-sm-6 am-u-end"><div class="operating"><div class="motify" onclick="modify(this, 1)">修改</div><div class="save" onclick="save(this, 1)">保存</div><div class="delete">删除</div></div></div></div>'
-                $(".remark-data").append($remark)
-            }
-
-            for (let i = 0; i < 2; i++) {
-                if ($("input[type=radio][name=is_effective_fixed]:eq("+ i +")").val() == resData.is_effective_fixed) {
-                    $("input[type=radio][name=is_effective_fixed]:eq("+ i +")").attr("checked", 'checked')
+                if (resData.remark[0]) {
+                    let remark = resData.remark
+                    let remarkContent = 'remark[' + i + ']'
+                    var $remark = '<div class="pdd-table-tr clear-fix remark-tr"><div class="am-u-lg-5 am-u-md-5 am-u-sm-6"><div class="package-info">' + remark[i] + '</div><input type="text" class="form-control" value="'+ remark[i] +'" name="' + remarkContent + '"></div><div class="am-u-lg-7 am-u-md-7 am-u-sm-6 am-u-end"><div class="operating"><div class="motify" onclick="modify(this, 1)">修改</div><div class="save" onclick="save(this, 1)">保存</div><div class="delete">删除</div></div></div></div>'
+                    $(".remark-data").append($remark)
                 }
             }
+
             if (resData.is_effective_fixed) {
+                $("input[type=radio][name=is_effective_fixed]:eq(1)").attr("checked", 'checked')
+                $('#effective_start_at, #effective_end_at').attr("disabled", true)
+                $('#effective_days').attr("disabled", false)
+                $("input[type=number][name=effective_days]").val(resData.effective_days)
+            } else {
+                $("input[type=radio][name=is_effective_fixed]:eq(0)").attr("checked", 'checked')
+                $('#effective_days').attr("disabled", true)
                 $("input[type=text][name=effective_start_at]").val(resData.effective_start_at)
                 $("input[type=text][name=effective_end_at]").val(resData.effective_end_at)
-            } else {
-                $("input[type=number][name=effective_days]").val(resData.effective_days)
             }
-
-            for (let i = 0; i < 2; i++) {
-                if ($("input[type=radio][name=is_usetime_limit]:eq("+ i +")").val() == resData.is_usetime_limit) {
-                    $("input[type=radio][name=is_usetime_limit]:eq("+ i +")").attr("checked", 'checked')
-                }
-            }
+            
+            tim = resData.time_limit.length
             if (resData.is_usetime_limit) {
+                $("input[type=radio][name=is_usetime_limit]:eq(1)").attr("checked", 'checked')
                 for (let j = 0; j < 5; j++) {
                     for (let i = 0; i < 5; i++) {
                         if ($("input[type=checkbox][name='days[]']:eq("+ i +")").val() == resData.days[j]) {
@@ -361,18 +360,27 @@ var drawData = function () {
                 if (resData.is_festival) {
                     $("input[type=checkbox][name='is_festival']").attr("checked", 'checked')
                 }
-                tim = resData.time_limit.length
                 for (let i = 0; i < resData.time_limit.length; i++) {
                     let startTime = 'time_limit[' + i + '][start_at]'
                     let endTime = 'time_limit[' + i + '][end_at]'
                     let time = resData.time_limit
                     var $customizeTime = '<div class="customize-time"><div class="add-time-text"><span class="customize-time-text">' + time[i].start_at + '</span><span>&nbsp;-&nbsp;</span><span class="customize-time-text">' + time[i].end_at + '</span></div><div class="add-time-box"><input type="text" class="add-start-hours" value="' + time[i].start_at + '" name="' + startTime + '"><span>&nbsp;-&nbsp;</span><input type="text" class="add-end-hours" value="' + time[i].end_at + '" name="' + endTime + '"></div><div class="operating"><div class="motify" onclick="modifyCustomize(this)">修改</div><div class="save" onclick="saveCustomize(this)">保存</div><div class="delete">删除</div></div></div>'
                     $(".customize").append($customizeTime)
+                    $('.add-start-hours, .add-end-hours').datetimepicker({
+                        format: 'hh:ii',
+                        autoclose: true,
+                        todayHighlight: true,
+                        startView: 'hour'
+                    });
                 }
                 if ($(".customize-time").length >= 3) {
                     $(".hours-choose .add-time").hide()
                     $(".section-time .start-hours, .section-time .end-hours").attr("disabled", true)
                 }
+            } else {
+                $("input[type=radio][name=is_usetime_limit]:eq(0)").attr("checked", 'checked')
+                $('.section-time').find("input").attr("disabled", true)
+                $('.section-time #timeRadio2').attr("disabled", false)
             }
 
             $(".rule-text").val(resData.rule)
@@ -623,7 +631,10 @@ setTimeout(() => {
     i = pro
     j = rem
     k = tim
-}, 1000);
+    console.log(pro)
+    console.log(rem)
+    console.log(tim)
+}, 2000);
 function addPackageInfo () {
     var packageName = $("#package-name").val()
     var packageAmount = $("#package-amount").val()
@@ -701,18 +712,18 @@ $('input[type=radio][name=is_usetime_limit]').change(function() {
     }
 })
 
-var k = 0
 function addCustomize () {
     let startHours = $(".start-hours").val()
     let endHours = $(".end-hours").val()
     if (startHours == '' || startHours == null) {
-        alert("开始时间不能为空")
+        toastr.error("开始时间不能为空")
         return false
     }
     if (endHours == '' || endHours == null) {
-        alert("结束时间不能为空")
+        toastr.error("结束时间不能为空")
         return false
     }
+    console.log(k)
     let startTime = 'time_limit[' + k + '][start_at]'
     let endTime = 'time_limit[' + k + '][end_at]'
     k++
