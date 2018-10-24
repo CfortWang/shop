@@ -182,7 +182,7 @@
                                             <span>有效期内任意时间段可用</span>
                                         </label>
                                     </div>
-                                    <div class="sectiom-time">
+                                    <div class="section-time">
                                         <label for="timeRadio2" class="label-radio">
                                             <input type="radio" id="timeRadio2" value="1" hidden name="available_time_type">
                                             <label for="timeRadio2" class="time-radio"></label>
@@ -592,8 +592,8 @@ $('input[type=radio][name=coupon_date_type]').change(function() {
 
 $('#discount_percent, #max_discount_money, #limit_money').attr("disabled", true)
 $('.fixed-time-option2 .effective-days').attr("disabled", true)
-$('.sectiom-time').find("input").attr("disabled", true)
-$('.sectiom-time #timeRadio2').attr("disabled", false)
+$('.section-time').find("input").attr("disabled", true)
+$('.section-time #timeRadio2').attr("disabled", false)
 
 
 $('input[type=radio][name=available_time_type]').change(function() {

@@ -182,7 +182,7 @@
                                             <span>有效期内任意时间段可用</span>
                                         </label>
                                     </div>
-                                    <div class="sectiom-time">
+                                    <div class="section-time">
                                         <label for="timeRadio2" class="label-radio">
                                             <input type="radio" id="timeRadio2" value="1" hidden name="available_time_type">
                                             <label for="timeRadio2" class="time-radio"></label>
@@ -435,8 +435,8 @@ var drawData = function () {
                 $("input[type=radio][name=available_time_type]:eq(0)").attr("checked", 'checked')
                 // $("input[type=text][name=start_at]").val(resData.start_at)
                 // $("input[type=text][name=expired_at]").val(resData.expired_at)
-                $('.sectiom-time').find("input").attr("disabled", true)
-                $('.sectiom-time #timeRadio2').attr("disabled", false)
+                $('.section-time').find("input").attr("disabled", true)
+                $('.section-time #timeRadio2').attr("disabled", false)
             }
 
             // 优惠使用条件
@@ -770,8 +770,8 @@ $('input[type=radio][name=coupon_date_type]').change(function() {
 
 // $('#discount_percent, #max_discount_money, #limit_money').attr("disabled", true)
 // $('.fixed-time-option2 .effective-days').attr("disabled", true)
-// $('.sectiom-time').find("input").attr("disabled", true)
-// $('.sectiom-time #timeRadio2').attr("disabled", false)
+// $('.section-time').find("input").attr("disabled", true)
+// $('.section-time #timeRadio2').attr("disabled", false)
 
 
 $('input[type=radio][name=available_time_type]').change(function() {
@@ -805,6 +805,11 @@ function addCustomize () {
     $(".start-hours").val("")
     $(".end-hours").val("")
 
+    if ($(".customize-time").length >= 3) {
+        $(".hours-choose .add-time").hide()
+        $(".section-time .start-hours, .section-time .end-hours").attr("disabled", true)
+    }
+
     $('.add-start-hours, .add-end-hours').datetimepicker({
         format: 'hh:ii',
         autoclose: true,
@@ -834,6 +839,8 @@ function saveCustomize (that) {
 }
 
 $(".customize").on("click", ".customize-time .operating .delete", function () {
+    $(".hours-choose .add-time").show()
+    $(".section-time .start-hours, .section-time .end-hours").attr("disabled", false)
     $(this).parent().parent().remove()
 })
 
