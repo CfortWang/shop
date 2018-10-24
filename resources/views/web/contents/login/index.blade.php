@@ -114,7 +114,7 @@
 		.tip-container{
 			position: fixed;
 			z-index: 999;
-			pointer-events: none;
+			/* pointer-events: none; */
 			left: 0;
 			top: 20%;
 			width: 100%;
@@ -150,6 +150,15 @@
 			line-height: 20px;
 			margin-left: 15px;
 		}
+		button[disabled]{
+			cursor: not-allowed;
+			/* pointer-events: none; */
+			border-color: transparent;
+			cursor: not-allowed;
+			opacity: .7;
+			-webkit-box-shadow: none;
+			box-shadow: none;
+		}
 	</style>
 	</head>
 	<body>
@@ -158,7 +167,7 @@
 		</div>
 		<div class="tip-container">
 			<div class="tip-error">
-				<img src="/img/main/icon_error.png"/>
+				<img src="/img/main/icon_error.png">
 				<span class="tip-error-msg"></span>
 			</div>
 		</div>
@@ -196,18 +205,34 @@
 			<form id="login_by_code">
 				<div class="form-group">
 					<input type="text" placeholder="输入手机号" name="phone" id="phone_1"/>
+					<div class="validator">
+						<img src="/img/main/icon_warning.png" alt="">
+						<span class="validator-text"></span>
+					</div>
 				</div>
 				<div class="form-group">
 					<div class="code-div">
-						<button type="button" class="code-button">获取验证码</button>
+						<button type="button" class="code-button"><span class="count-down"></span><span class="get-code">获取验证码</span></button>
 						<input type="text" placeholder="输入验证码" name="code" id="validator_code"/>
+					</div>
+					<div class="validator">
+						<img src="/img/main/icon_warning.png" alt="">
+						<span class="validator-text"></span>
 					</div>
 				</div>
 				<div class="form-group">
 					<input type="password" placeholder="设置新密码" name="password" id="password1"/>
+					<div class="validator">
+						<img src="/img/main/icon_warning.png" alt="">
+						<span class="validator-text"></span>
+					</div>
 				</div>
 				<div class="form-group">
 					<input type="password" placeholder="再次确认新密码" name="repeatPassword" id="re_password1"/>
+					<div class="validator">
+						<img src="/img/main/icon_warning.png" alt="">
+						<span class="validator-text"></span>
+					</div>
 				</div>
 				<button class="login_button reset_submit" type="button">登录</button>
 			</form>
@@ -217,11 +242,24 @@
 		<script src="js/jquery-2.1.1.js"></script>
 		<script>
 			function showErrorMsg (e) {
-				$(".tip-error").text(e)
+				$(".tip-error .tip-error-msg").text(e)
 				$(".tip-container").fadeIn()
 				setTimeout(function () {
 					$(".tip-container").fadeOut()
 				}, 2000)
+			}
+			function timer () {
+				if (timeLeft) {
+					var seconds = parseInt(timeLeft % 60) < 10 ? '0' + parseInt(timeLeft % 60) : parseInt(timeLeft % 60)
+					var minutes = parseInt((timeLeft / 60) % 60) < 10 ? '0' + parseInt((timeLeft / 60) % 60) : parseInt((timeLeft / 60) % 60)
+					var leftDate = minutes + ':' + seconds
+					$(".count-down").text(leftDate + "后")
+					timeLeft--
+				} else {
+					clearInterval(clearTimer)
+					$(".count-down").text("")
+					$(".code-button").attr("disabled", false);
+				}
 			}
 			$('.foget').click(function(){
 				$('.reset').show();
@@ -260,7 +298,35 @@
 				});
 			})
 			$('.reset_submit').click(function(){
+				if ($("#phone_1").val() == null || $("#phone_1").val() == '') {
+					$("#phone_1").siblings(".validator").show().children('.validator-text').text("手机号不能为空")
+					return false;
+				}
+				$("#phone_1").siblings(".validator").hide()
+
+				if ($("#validator_code").val() == null || $("#validator_code").val() == '') {
+					$("#validator_code").parent().siblings(".validator").show().children('.validator-text').text("验证码不能为空")
+					return false;
+				}
+				$("#validator_code").parent().siblings(".validator").hide()
+
+				if ($("#password1").val() == null || $("#password1").val() == '') {
+					$("#password1").siblings(".validator").show().children('.validator-text').text("密码不能为空")
+					return false;
+				}
+				$("#password1").siblings(".validator").hide()
 				
+				if ($("#re_password1").val() == null || $("#re_password1").val() == '') {
+					$("#re_password1").siblings(".validator").show().children('.validator-text').text("请确认密码")
+					return false;
+				}
+				$("#re_password1").siblings(".validator").hide()
+
+				if ($("#re_password1").val() != $("#password1").val()) {
+					$("#re_password1").siblings(".validator").show().children('.validator-text').text("两次输入密码不一致")
+					return false;
+				}
+				$("#re_password1").siblings(".validator").hide()
 				$.ajax({
 					url: "{{ url('/api/login/code') }}",
 					dataType: 'json',
@@ -270,7 +336,7 @@
 						if(response.code== 200){
 							window.location.href="/" 
 						}else{
-							console.error(response.message);
+							showErrorMsg(response.message);
 						}
 					},
 					error: function(e) {
@@ -290,8 +356,12 @@
 					success: function(response){
 						if(response.code == '200'){
 							console.log('send success');
+							$(".code-button").attr("disabled", true);
+							$(".get-code").text("重新获取")
+							timeLeft = 5
+							clearTimer = setInterval("timer()", 1000)
 						}else{
-							console.error(response.message);
+							showErrorMsg(response.message);
 						}
 						// window.location.href="/" 
 					},
