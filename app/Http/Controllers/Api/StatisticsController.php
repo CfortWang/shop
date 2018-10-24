@@ -642,7 +642,6 @@ class StatisticsController extends Controller
                     ->count();
                 break;
             default:
-                # code...
                 break;
         }
         

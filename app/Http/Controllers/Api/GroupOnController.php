@@ -355,8 +355,10 @@ class GroupOnController extends Controller
             for ($i=1; $i < 4; $i++) { 
                 if($data['time_limit'.$i.'_end_at']){
                     unset($limit);
-                    $limit['start_at'] = $data['time_limit'.$i.'_start_at'];
-                    $limit['end_at'] = $data['time_limit'.$i.'_end_at'];
+                    $time = explode(':',$data['time_limit'.$i.'_start_at']);
+                    $limit['start_at'] = $time[0].':'.$time[1];
+                    $time = explode(':',$data['time_limit'.$i.'_end_at']);
+                    $limit['end_at'] = $time[0].':'.$time[1];
                     $time_limit[] = $limit;
                 }else{
                     break;
