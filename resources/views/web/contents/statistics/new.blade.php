@@ -21,17 +21,17 @@
                         </div>
                         <!--此部分数据请在 js文件夹下中的 app.js 中的 “百度图表A” 处修改数据 插件使用的是 百度echarts-->
                         <div class="tpl-echarts-A" id="tpl-echarts-A">
-                            <div class="new-user">
+                            <div class="am-u-lg-4 am-u-md-4 am-u-sm-12 new-user">
                                 <span class="user-type"> @lang('statistics.new.new_scanned_users')</span>
-                                <p class="user-amount"></p>
+                                <span class="user-amount"></span>
                             </div>
-                            <div class="yesterday-user">
+                            <div class="am-u-lg-4 am-u-md-4 am-u-sm-12 yesterday-user">
                                 <span class="user-type"> @lang('statistics.new.scanned_users_yesterday')</span>
-                                <p class="user-amount"></p>
+                                <span class="user-amount"></span>
                             </div>
-                            <div class="user-count">
+                            <div class="am-u-lg-4 am-u-md-4 am-u-sm-12 user-count">
                                 <span class="user-type"> @lang('statistics.new.all_user')</span>
-                                <p class="user-amount"></p>
+                                <span class="user-amount"></span>
                             </div>
                         </div>
                     </div>
