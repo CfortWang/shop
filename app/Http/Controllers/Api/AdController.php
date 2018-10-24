@@ -82,7 +82,7 @@ class AdController extends Controller
         $type=$request->input('status');
         $ShopAd=ShopAd::where('seq',$seq)->where('buyer',$buyer)->first();
         if(empty($ShopAd)){
-           return $this->responseBadRequest('seq is error');
+           return $this->responseBadRequest('没有相关数据');
         }
         if($type == 0){
          $ShopAd->status="stopped";
@@ -106,7 +106,7 @@ class AdController extends Controller
                                 ->get();
         $item['pkgList']=$pkgList;
         if(empty($item)){
-            return $this->responseNotFound('seq is error');
+            return $this->responseNotFound('没有数据');
         }
         return $this->responseOk('', $item);
     }
@@ -139,7 +139,7 @@ class AdController extends Controller
         }
         $exits = ShopAD::where('buyer', $buyer)->where('title',$title)->first();
         if($exits){
-            return $this->responseBadRequest('already exist title', 401);//error code 409,401
+            return $this->responseBadRequest('标题已存在', 401);//error code 409,401
         }
         $image = $request->file('ad_image_file');
         // list($imageWidth, $imageHeight) = getimagesize($image);
@@ -203,7 +203,7 @@ class AdController extends Controller
         $id=$request->input('id');
         $ShopAD=ShopAd::where('seq',$id)->where('buyer',$buyer)->first();
         if(empty($ShopAD)){
-           return $this->responseBadRequest('There is no data');
+           return $this->responseBadRequest('没有数据');
         }
         $start_date=$request->input('start_date');
         $end_date=$request->input('end_date');
@@ -213,7 +213,7 @@ class AdController extends Controller
         $title=$request->input('title');
         $exitTitle=ShopAd::where('title',$title)->where('seq','!=',$id)->first();
         if($exitTitle){
-            return $this->responseBadRequest('already exist title', 401);//error code 409,401
+            return $this->responseBadRequest('标题已存在', 401);//error code 409,401
         }
        
         $adImage = $request->file('ad_image_file');
@@ -227,7 +227,7 @@ class AdController extends Controller
             $ShopAD->shop_image_file = $adImage->seq;
           
         }else if(!$ShopAD->shop_image_file){
-            return $this->responseBadRequest('Upload picture first', 403);//error code 400,403
+            return $this->responseBadRequest('请上传图片', 403);//error code 400,403
         }
         $ShopAD->title = $title;
         $ShopAD->start_date=$start_date;
@@ -304,7 +304,7 @@ class AdController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->responseBadRequest('parameter is invalid', 401);//error 400, 401
+            return $this->responseBadRequest('参数错误', 401);//error 400, 401
         }
 
         $adSeq = $input['shop_seq'];
@@ -312,13 +312,13 @@ class AdController extends Controller
         $shopAD = ShopAD::find($adSeq);
 
         if (empty($shopAD)) {
-            return $this->responseNotFound('No data', 401);//error 404, 401
+            return $this->responseNotFound('没有数据', 401);//error 404, 401
         }
 
         if ($status === 'activated') {
             $shop2Pkg = Shop2Q35Package::where('shop_ad', $adSeq)->get();
             if (count($shop2Pkg) === 0) {
-                return $this->responseNotFound('No Pkg', 402);//error 404, 402
+                return $this->responseNotFound('没有喜豆码', 402);//error 404, 402
             }
         }
 

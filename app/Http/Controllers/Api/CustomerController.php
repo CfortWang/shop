@@ -76,7 +76,7 @@ class CustomerController extends Controller
             $data[]=$list;
         }
         if(empty($data)){
-            return $this->responseBadRequest('there is no data');
+            return $this->responseBadRequest('没有数据');
         }
         $newData['scanUserList']=$data;
         $newData['count']=$count;
@@ -111,7 +111,7 @@ class CustomerController extends Controller
                             ->offset(($page-1)*$limit) 
                             ->get()->toArray();
         if(empty($veriSeq)){
-            return $this->responseBadRequest('seq is error');  
+            return $this->responseBadRequest('没有数据');  
         }
         $user=User::where('seq',$seq)->select("nickname",'id')->first();
         foreach($veriSeq as $k=>$v){

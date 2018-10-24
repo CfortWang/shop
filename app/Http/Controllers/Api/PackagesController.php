@@ -59,7 +59,7 @@ class PackagesController extends Controller
                             'pay_status','status')
                             ->first();
         if(empty($Q35Sales)){
-            return $this->responseNotFound('There is no seq');
+            return $this->responseNotFound('没有数据');
         }
         $sales = SalesPartner::where('seq',$Q35Sales->sales_partner)->select('partner_account')->first();
         $partner_id = PartnerAccount::where('seq',$sales->partner_account)->select('id')->first();
@@ -68,7 +68,7 @@ class PackagesController extends Controller
         $Q35Sales->buyer_id = $buyerId->id;
         
         if (empty($Q35Sales)){
-            return $this->responseNotFound('There is no data');//error code 404,401
+            return $this->responseNotFound('没有数据');//error code 404,401
         }else{
             $data['buyer']= $buyerId->id;
             $data['sales_partner']= $partner_id->id;
@@ -129,7 +129,7 @@ class PackagesController extends Controller
         }
         $Q35SalesItem = $Q35SalesItem->select('quantity','shipping_status')->first();
         if (empty($Q35SalesItem)){
-            return $this->responseNotFound('There is no data', 401);//error code 404,401
+            return $this->responseNotFound('没有数据', 401);//error code 404,401
         }else{
             return $this->responseOK('success',$Q35SalesItem);
         }
@@ -145,7 +145,7 @@ class PackagesController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->responseBadRequest('parameter is invalid');
+            return $this->responseBadRequest('参数错误');
         }
 
         $Q35SalesItem = Q35SalesItem::where('buyer',$buyer)
@@ -153,7 +153,7 @@ class PackagesController extends Controller
                                     ->where('shipping_status','shipping')
                                     ->first();
         if (empty($Q35SalesItem)) {
-            return $this->responseNotFound('No data');
+            return $this->responseNotFound('没有数据');
         }
 
         $Q35SalesItem->shipping_status = 'completed';
@@ -229,12 +229,12 @@ class PackagesController extends Controller
             'id'           => 'required|string|min:1',
         ]);
         if ($validator->fails()) {
-            return $this->responseBadRequest('Wrong Request', 401);//error code 400,401
+            return $this->responseBadRequest('错误的请求', 401);//error code 400,401
         }
         $Buyer  = Buyer::where('seq',$buyer)->first();
 
         if (empty($Buyer)) {
-            return $this->responseNotFound('No data', 401);//error code 404,401
+            return $this->responseNotFound('没有数据', 401);//error code 404,401
         }
 
         $BuyingRequest = BuyingRequest::create([
@@ -282,19 +282,19 @@ class PackagesController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->responseBadRequest('parameter is invalid');
+            return $this->responseBadRequest('参数错误');
         }
 
         $Q35Sales = Q35Sales::find($seq);
 
         if (empty($Q35Sales)) {
-            return $this->responseNotFound('No data');
+            return $this->responseNotFound('没有数据');
         }
 
         $Q35SalesItem = Q35SalesItem::where('q35sales', $seq)->get();
 
         if ($Q35SalesItem->count() === 0) {
-            return $this->responseNotFound('No data');
+            return $this->responseNotFound('没有数据');
         }
 
         $Q35Sales->refund_status = 'requested';
@@ -345,12 +345,12 @@ class PackagesController extends Controller
         $seq = $request->input('seq');
         $package = Q35Package::where('seq', $seq)->select('seq','q35sales','code','type','start_q35code','end_q35code','status','total_cnt','used_cnt','sold_at','activated_at')->first();
         if(empty($package)){
-            return $this->responseBadRequest('seq is error');//
+            return $this->responseBadRequest('没有数据');//
         }
         $checkBuyer = Q35Sales::where('seq', $package->q35sales)->first();
 
         if ($buyer !== $checkBuyer->buyer) {
-            return $this->responseBadRequest('Wrong Request', 401);//error code 400,401
+            return $this->responseBadRequest('参数错误', 401);//error code 400,401
         }
         return $this->responseok('',$package);
    }
@@ -366,7 +366,7 @@ class PackagesController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->responseBadRequest('Wrong Request', 401);//error code 400,401
+            return $this->responseBadRequest('参数错误', 401);//error code 400,401
         }
 
         $package = Q35Package::find($input['pkg_seq']);
@@ -374,7 +374,7 @@ class PackagesController extends Controller
         $salesCheck = Q35Sales::find($package->q35sales);
 
         if ($buyer !== $salesCheck->buyer) {
-            return $this->responseBadRequest('Wrong Request', 401);//error code 400,401
+            return $this->responseBadRequest('参数错误', 401);//error code 400,401
         }
         
         $package->status = 'activated';

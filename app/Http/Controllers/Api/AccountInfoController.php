@@ -35,6 +35,9 @@ class AccountInfoController extends Controller
             'sales_partner'
         ])
         ->first();
+        if (empty($data)) {
+            return $this->responseNotFound('商家不存在');
+        }
         $PartnerAccount=PartnerAccount::where('seq',$data->sales_partner)->select('id')->first();
         $list['rep_name'] =$data['rep_name'];
         $list['rep_phone_num'] =$data['rep_phone_num'];
@@ -42,10 +45,7 @@ class AccountInfoController extends Controller
         $list['bank_account'] =$data['bank_account'];
         $list['bank_account_owner'] =$data['bank_account_owner'];
         $list['partner_id'] =$PartnerAccount['id'];
-        if (empty($data)) {
-            return $this->responseNotFound('There is no buyer.');
-        }
-        return $this->responseOK('Success.', $list);
+        return $this->responseOK('成功.', $list);
     }
     //积分列表
     public function scoreList(Request $request)
@@ -95,11 +95,11 @@ class AccountInfoController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->responseBadRequest('parameter is invalid', 401);//error 400, 401
+            return $this->responseBadRequest('参数错误', 401);//error 400, 401
         }
         $AccountInfoDetail = Buyer::find($seq);
         if(empty($AccountInfoDetail)){
-            return $this->responseNotFound('No data','','');
+            return $this->responseNotFound('没有数据','','');
         }
         $AccountInfoDetail->rep_name = $request->input('rep_name');
         $AccountInfoDetail->bank = $request->input('bank_seq');
@@ -162,11 +162,11 @@ class AccountInfoController extends Controller
         $lang = $request->session()->get('locale');
         $buyer = Buyer::where('seq',$seq)->select('bank','bank_account_owner','bank_account','point')->first();
         if(!$buyer){
-            return $this->responseNotFound('can not find the buyer', 401);//error code 404,401
+            return $this->responseNotFound('商家不存在', 401);//error code 404,401
         }
 
         if (!$buyer->bank || !$buyer->bank_account_owner || !$buyer->bank_account) {
-            return $this->responseBadRequest('there is no bank information', 401);//error code 400,401
+            return $this->responseBadRequest('没有银行信息', 401);//error code 400,401
         } 
        $bankName = Bank::select('name_'.$lang.' as bank_name')->where('name_'.$lang,'!=',null)->where('seq', $buyer->bank)->first();
        $buyer['bankName']=$bankName['bank_name'];
@@ -222,6 +222,6 @@ class AccountInfoController extends Controller
             'buyer_point'     => $buyerPoint->seq
         ]);
 
-        return $this->responseOK('Cash out request success', $cashoutRequest);
+        return $this->responseOK('提现成功', $cashoutRequest);
     }
 }

@@ -59,7 +59,7 @@ class ShopController extends Controller
         }
         $items['detailImage']=$data;
         if(empty($items)){
-            return $this->responseNotFound('No data','');
+            return $this->responseNotFound('没有数据','');
         }
         return $this->responseOK('Ok',$items);
     }
@@ -116,7 +116,7 @@ class ShopController extends Controller
             'detail_image_array'     => 'required|array',
         ]);
         if ($validator->fails()) {
-            return $this->responseBadRequest('parameter is invalid', 401);//error code 400,401
+            return $this->responseBadRequest('参数错误', 401);//error code 400,401
         }
 
         $Buyer = Buyer::where('seq', $seq)->first();
@@ -188,7 +188,7 @@ class ShopController extends Controller
             'detailSeq'              => 'nullable'
         ]);
         if ($validator->fails()) {
-            return $this->responseBadRequest('parameter is invalid', 401);//error code 400,401
+            return $this->responseBadRequest('参数错误', 401);//error code 400,401
         }
         $Buyer = Buyer::where('seq', $buyer)->first();
         if (empty($Buyer)){
@@ -293,20 +293,20 @@ class ShopController extends Controller
         if($couponType == 0){
              //面值
             if(empty($discountMoney)){
-                return $this->responseNotFound(trans('shop.verification.emptyDiscountMoney'));
+                return $this->responseNotFound(trans('shop\createCoupon.verification.emptyDiscountMoney'));
             }
         }
         if($couponType == 1){
              //折扣率
             if(empty($discountPercent)){
-                return $this->responseNotFound(trans('shop.verification.emptyDiscountPercent'));
+                return $this->responseNotFound(trans('shop\createCoupon.verification.emptyDiscountPercent'));
             }
             //最大优惠
             if(empty($maxDiscountMoney)){
-                return $this->responseNotFound(trans('shop.verification.emptyMaxDiscountMoney'));
+                return $this->responseNotFound(trans('shop\createCoupon.verification.emptyMaxDiscountMoney'));
            }
            if($discountPercent<1 || $discountPercent>9.9){
-            return $this->responseNotFound(trans('shop.verification.discountPercentError'));
+            return $this->responseNotFound(trans('shop\createCoupon.verification.discountPercentError'));
            }
         }
         //验证使用门槛类型
@@ -315,30 +315,30 @@ class ShopController extends Controller
         }
         if($limitType == 1){
             if(empty($limitMoney)){
-                return $this->responseNotFound(trans('shop.verification.emptyLimitMoney'));
+                return $this->responseNotFound(trans('shop\createCoupon.verification.emptyLimitMoney'));
             }
             if($limitMoney <= 0){
-                return $this->responseNotFound(trans('shop.verification.limitMoneyError'));
+                return $this->responseNotFound(trans('shop\createCoupon.verification.limitMoneyError'));
             }
         }
         //验证优惠券有效期
         if( $couponDateType == 0){
            if(empty($startAt)){
-                return $this->responseNotFound(trans('shop.verification.emptyStartAt'));
+                return $this->responseNotFound(trans('shop\createCoupon.verification.emptyStartAt'));
             }
             if(empty($expiredAt)){
-                return $this->responseNotFound(trans('shop.verification.emptyExpiredAt'));
+                return $this->responseNotFound(trans('shop\createCoupon.verification.emptyExpiredAt'));
             }
             if($startAt >= $expiredAt){
-                return $this->responseNotFound(trans('shop.verification.timeError'));
+                return $this->responseNotFound(trans('shop\createCoupon.verification.timeError'));
             }
         }
         if($couponDateType == 1){
             if(empty($days)){
-                return $this->responseNotFound(trans('shop.verification.emptyDays'));
+                return $this->responseNotFound(trans('shop\createCoupon.verification.emptyDays'));
             }  
             if($days<1 || $days>365){
-                return $this->responseNotFound(trans('shop.verification.daysError'));
+                return $this->responseNotFound(trans('shop\createCoupon.verification.daysError'));
             }   
         }
         //验证有效时间段
@@ -347,7 +347,7 @@ class ShopController extends Controller
          }
         if ($availableTimeType == 1){
             if(empty($availableTime)){
-                return $this->responseNotFound(trans('shop.verification.emptyAvailableTime'));
+                return $this->responseNotFound(trans('shop\createCoupon.verification.emptyAvailableTime'));
             }else{
                 $availableTime = implode('',$availableTime);
             }
@@ -365,7 +365,7 @@ class ShopController extends Controller
         //验证优惠使用条件
         if ( $isSpecialGoods == 1){
             if(empty($goodsName)){
-                return $this->responseNotFound(trans('shop.verification.emptyGoodsName'));
+                return $this->responseNotFound(trans('shop\createCoupon.verification.emptyGoodsName'));
             }
         }
         $data['coupon_name'] = $couponName;
@@ -428,7 +428,7 @@ class ShopController extends Controller
         $items=$items->orderBy('id','desc')->limit($limit)->offset(($page-1)*$limit)->get();
         $length=count($items);
         if ( $length == 0){
-            return $this->responseNotFound('no data');
+            return $this->responseNotFound('没有数据');
         }
         foreach($items as $k=>$v){
             $data['id']=$v['id'];
@@ -528,7 +528,7 @@ class ShopController extends Controller
         $status = $input['status'];
         $shopCoupon = ShopCoupon::where('id',$id)->where('buyer_id',$buyer_id)->first();
         if(empty($shopCoupon)){
-            return $this->responseBadRequest('id is error',401);
+            return $this->responseBadRequest('参数错误',401);
         }
         if($status == 'processed'){
             $shopCoupon->status="registered";
@@ -542,7 +542,7 @@ class ShopController extends Controller
         $id = $request->input('id');
         $shopCoupon=ShopCoupon::where('id',$id)->first();
         if(empty($shopCoupon)){
-            return $this->responseBadRequest('id is error');
+            return $this->responseBadRequest('参数错误');
         }
         $shopCoupon->delete();
         return $this->responseOk('删除成功');
@@ -554,7 +554,7 @@ class ShopController extends Controller
         $id = $request->input('id');
         $item = ShopCoupon::where('shop_coupon.id',$id)->where('buyer_id',$buyer)->first();
         if(empty($item)){
-            return $this->responseNotFound('id is error');
+            return $this->responseNotFound('参数错误');
         }else{
             $item['limit_type'] = $item['limit_money']?1:0;
             $item['start_at'] =  Carbon::parse($item['start_at'])->toDateString();
@@ -646,7 +646,7 @@ class ShopController extends Controller
         $id = $request->input('id');
         $item = ShopCoupon::where('shop_coupon.id',$id)->where('buyer_id',$buyer)->first();
         if(empty($item)){
-            return $this->responseNotFound('id is error');
+            return $this->responseNotFound('参数错误');
         }
         $couponName = $request->input('coupon_name');
         $quantity = $request->input('quantity');
@@ -677,20 +677,20 @@ class ShopController extends Controller
         if($couponType == 0){
              //面值
             if(empty($discountMoney)){
-                return $this->responseNotFound(trans('shop.verification.emptyDiscountMoney'));
+                return $this->responseNotFound(trans('shop\createCoupon.verification.emptyDiscountMoney'));
             }
         }
         if($couponType == 1){
              //折扣率
             if(empty($discountPercent)){
-                return $this->responseNotFound(trans('shop.verification.emptyDiscountPercent'));
+                return $this->responseNotFound(trans('shop\createCoupon.verification.emptyDiscountPercent'));
             }
             //最大优惠
             if(empty($maxDiscountMoney)){
-                return $this->responseNotFound(trans('shop.verification.emptyMaxDiscountMoney'));
+                return $this->responseNotFound(trans('shop\createCoupon.verification.emptyMaxDiscountMoney'));
            }
            if($discountPercent<1 || $discountPercent>9.9){
-            return $this->responseNotFound(trans('shop.verification.discountPercentError'));
+            return $this->responseNotFound(trans('shop\createCoupon.verification.discountPercentError'));
            }
         }
         //验证使用门槛类型
@@ -699,30 +699,30 @@ class ShopController extends Controller
         }
         if($limitType == 1){
             if(empty($limitMoney)){
-                return $this->responseNotFound(trans('shop.verification.emptyLimitMoney'));
+                return $this->responseNotFound(trans('shop\createCoupon.verification.emptyLimitMoney'));
             }
             if($limitMoney <= 0){
-                return $this->responseNotFound(trans('shop.verification.limitMoneyError'));
+                return $this->responseNotFound(trans('shop\createCoupon.verification.limitMoneyError'));
             }
         }
         //验证优惠券有效期
         if( $couponDateType == 0){
            if(empty($startAt)){
-                return $this->responseNotFound(trans('shop.verification.emptyStartAt'));
+                return $this->responseNotFound(trans('shop\createCoupon.verification.emptyStartAt'));
             }
             if(empty($expiredAt)){
-                return $this->responseNotFound(trans('shop.verification.emptyExpiredAt'));
+                return $this->responseNotFound(trans('shop\createCoupon.verification.emptyExpiredAt'));
             }
             if($startAt >= $expiredAt){
-                return $this->responseNotFound(trans('shop.verification.timeError'));
+                return $this->responseNotFound(trans('shop\createCoupon.verification.timeError'));
             }
         }
         if($couponDateType == 1){
             if(empty($days)){
-                return $this->responseNotFound(trans('shop.verification.emptyDays'));
+                return $this->responseNotFound(trans('shop\createCoupon.verification.emptyDays'));
             }  
             if($days<1 || $days>365){
-                return $this->responseNotFound(trans('shop.verification.daysError'));
+                return $this->responseNotFound(trans('shop\createCoupon.verification.daysError'));
             }   
         }
         //验证有效时间段
@@ -731,7 +731,7 @@ class ShopController extends Controller
          }
         if ($availableTimeType == 1){
             if(empty($availableTime)){
-                return $this->responseNotFound(trans('shop.verification.emptyAvailableTime'));
+                return $this->responseNotFound(trans('shop\createCoupon.verification.emptyAvailableTime'));
             }else{
                 $availableTime = implode('',$availableTime);
             }
@@ -763,7 +763,7 @@ class ShopController extends Controller
         //验证优惠使用条件
         if ( $isSpecialGoods == 1){
             if(empty($goodsName)){
-                return $this->responseNotFound(trans('shop.verification.emptyGoodsName'));
+                return $this->responseNotFound(trans('shop\createCoupon.verification.emptyGoodsName'));
             }
         }
        

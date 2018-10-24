@@ -30,21 +30,21 @@ class LoginController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->responseBadRequest('Bad Request');
+            return $this->responseBadRequest('错误的请求');
         }
         $loginID  = $request->input('phone');
         $loginPW = $request->input('password');
         $buyer = Buyer::where('rep_phone_num', $loginID)->first();
         if (empty($buyer)){
-            return $this->responseBadRequest('ID can not be find.', 101);
+            return $this->responseBadRequest('账户不存在.', 101);
         } 
         if (!Hash::check($loginPW, $buyer->password)){
-            return $this->responseBadRequest('Incorrect Password', 102);
+            return $this->responseBadRequest('密码错误', 102);
         }
         $request->session()->put('buyer.seq', $buyer->seq);
         $request->session()->put('buyer.id', $buyer->rep_phone_num);
         // dd(Session::all());
-        return $this->responseOk('access success');
+        return $this->responseOk('登陆成功');
     }
 
     public function code(Request $request)
@@ -59,36 +59,30 @@ class LoginController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->responseBadRequest('Bad Request');
+            return $this->responseBadRequest('错误的请求');
         }
         if($request->input('password')!==$request->input('repeatPassword')){
-            return $this->responseBadRequest('password not match');
+            return $this->responseBadRequest('密码不匹配');
         }
         $loginID  = $request->input('phone');
         $code = $request->input('code');
         $password = $request->input('password');
         $buyer = Buyer::where('rep_phone_num', '100')->first();
-        // if (empty($buyer)){
-        //     return $this->responseBadRequest('ID can not be find.', 101);
-        // } 
-        // if (!Hash::check($loginPW, $buyer->password)){
-        //     return $this->responseBadRequest('Incorrect Password', 102);
-        // }
         $cert = PhoneNumCertification::where('phone_num', $loginID)
             ->where('type','shop_find_pw')
             ->orderBy('created_at', 'desc')
             ->first();
         if (empty($cert)){
-            return $this->responseNotFound('code error');
+            return $this->responseNotFound('验证码错误');
         } 
         if ($cert->code != $code) {
-            return $this->responseBadRequest('code error');
+            return $this->responseBadRequest('验证码错误');
         }
         $buyer->password =  password_hash($password, PASSWORD_BCRYPT);
         $buyer->save();
         $request->session()->put('buyer.seq', $buyer->seq);
         $request->session()->put('buyer.id', $buyer->rep_phone_num);
-        return $this->responseOk('access success');
+        return $this->responseOk('登陆成功');
     }
 
     public function sendCode(Request $request)
@@ -100,13 +94,13 @@ class LoginController extends Controller
         ]);
 
         if ($validator->fails()) {
-            return $this->responseBadRequest('Bad Request');
+            return $this->responseBadRequest('错误的请求');
         }
         $phone = $input['phone'];
         $buyer = Buyer::where('rep_phone_num', $phone)->first();
-        // if (empty($buyer)){
-        //     return $this->responseBadRequest('ID can not be find.', 101);
-        // }
+        if (empty($buyer)){
+            return $this->responseBadRequest('账户不存在', 101);
+        }
         $country_calling_code = 86;
         $country_seq = 1;
         $code = rand(100000, 999999);
@@ -120,9 +114,9 @@ class LoginController extends Controller
                 'type'          => $type,
                 'calling_code'  => $country_calling_code,
             ]);
-            return $this->responseOk(trans('login.messageSendSuccess'));
+            return $this->responseOk('验证码发送成功');
         } else {
-            return $this->responseServerError(trans('login.messageSendFailed'), $result);
+            return $this->responseServerError('验证码发送失败-101', $result);
         }
     }
 

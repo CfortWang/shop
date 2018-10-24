@@ -121,7 +121,7 @@ class MessageController extends Controller
         $id  = $input['id'];
         $data = ShopMessage::where('id',$id)->where('buyer_id',$buyer_id)->first();
         if(empty($data)){
-            return $this->responseBadRequest('No data');
+            return $this->responseBadRequest('没有数据');
         }
         $data->content = $input['content'];
         $data->message_type = $input['message_type'];
@@ -172,7 +172,7 @@ class MessageController extends Controller
         $buyer_id = $this->buyer_id;
         $data = ShopMessage::where('id',$id)->where('buyer_id',$buyer_id)->first();
         if(empty($data)){
-            return $this->responseBadRequest('No data');
+            return $this->responseBadRequest('没有数据');
         }
         $res = ShopMessage::where('id',$id)->where('buyer_id',$buyer_id)->delete();
         return $this->responseOk('',$res);
