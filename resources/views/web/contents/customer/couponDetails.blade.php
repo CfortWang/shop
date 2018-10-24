@@ -46,18 +46,7 @@
 @endsection
 @section('script')
 <script>
-    function getArgs () {
-        var url = location.search
-        var args = {}
-        if (url.indexOf("?") != -1) {
-            var str = url.substr(1)
-            var strs = str.split("&")
-            for (let i = 0; i < strs.length; i++) {
-                args[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1])
-            }
-        }
-        return args
-    }
+
     var args = getArgs()
     var seq = args['seq']
     var limit = args['limit']

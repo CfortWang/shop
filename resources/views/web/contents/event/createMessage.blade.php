@@ -47,10 +47,10 @@
                                         </label>
                                         <div class="am-u-lg-10 am-u-md-8 am-u-sm-6">
                                             <select name="object_type" id="object_type3" data-am-selected>
-                                                <option value="2">沉默用户</option>
-                                                <option value="3">拼豆成功未使用用户</option>
-                                                <option value="4">领取优惠券未使用用户</option>
-                                                <option value="5">拼豆失败用户</option>
+                                                <option value="1">沉默用户</option>
+                                                <option value="2">拼豆成功未使用用户</option>
+                                                <option value="3">领取优惠券未使用用户</option>
+                                                <option value="4">拼豆失败用户</option>
                                             </select>
                                         </div>
                                     </div>

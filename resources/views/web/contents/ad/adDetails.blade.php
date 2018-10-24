@@ -69,19 +69,6 @@
 @section('script')
 <script src="/js/amazeui.datetimepicker.min.js"></script>
 <script>
-
-var getArgs = function () {
-    var url = location.search
-    var args = {}
-    if (url.indexOf("?") != -1) {
-        var str = url.substr(1)
-        var strs = str.split("&")
-        for (let i = 0; i < strs.length; i++) {
-            args[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1])
-        }
-    }
-    return args
-}
 var args = getArgs();
 $("input[type=text][name=id]").val(args['id'])
 tim = ''
@@ -306,7 +293,10 @@ function modifyAD (adInfo) {
         processData: false,
         contentType: false,
         success: function (res) {
-            console.log(res)
+            toastr.success("修改成功")
+            setTimeout(() => {
+                window.location.href = '/ad/adList'
+            }, 1500);
         },
         error: function (ex) {
             console.log(ex)

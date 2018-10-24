@@ -43,8 +43,8 @@
                                 <div class="page-up">
                                     <img src="/img/main/icon_page_right.png" alt="">
                                 </div>
-                                <button type="button" class="am-btn am-btn-secondary am-radius cashout" data-am-modal="{target: '#my-popup'}">提现</button>
                             </div>
+                            <button type="button" class="am-btn am-btn-secondary am-radius cashout" data-am-modal="{target: '#my-popup'}">提现</button>
                         </div>
                         <div class="am-popup" id="my-popup">
                             <div class="am-popup-inner">

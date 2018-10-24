@@ -46,7 +46,7 @@
                                     <div class="count">@lang('statistics.active_user.active_users')</div>
                                     <div class="percentage">@lang('statistics.active_user.new_user_ratio')</div>
                                 </div>
-                                <div class="table-content"></div>
+                                <div class="table-content pointer"></div>
                             </div>
                             <div class="no-data">
                                 <img src="/img/main/no-data.png" alt="">

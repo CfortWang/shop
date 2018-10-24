@@ -75,7 +75,7 @@
                 if (resData.length) {
                     $(".no-data").hide()
                     $(".pagination").show()
-                    var $tr = '<div class="table-tr"><div class="table-td-amount"></div><div class="table-td-payment"></div><div class="table-td-create"><p class="years"></p><p class="hours"></p></div><div class="table-td-status"></div></div>'
+                    var $tr = '<div class="table-tr"><div class="table-td-amount with-color"></div><div class="table-td-payment"></div><div class="table-td-create"><p class="years"></p><p class="hours"></p></div><div class="table-td-status"></div></div>'
                     for (let i = 0; i < resData.length; i++) {
                         $(".buy-history .table-content").append($tr)
                         let amount = resData[i].total_quantity
@@ -115,7 +115,7 @@
                 if (resData.length) {
                     $(".no-data").hide()
                     $(".pagination").show()
-                    var $tr = '<div class="table-tr"><div class="table-td-code"></div><div class="table-td-amount"></div><div class="table-td-used"></div><div class="table-td-create"><p class="years"></p><p class="hours"></p></div><div class="table-td-status"></div></div>'
+                    var $tr = '<div class="table-tr"><div class="table-td-code with-color"></div><div class="table-td-amount"></div><div class="table-td-used"></div><div class="table-td-create"><p class="years"></p><p class="hours"></p></div><div class="table-td-status"></div></div>'
                     for (let i = 0; i < resData.length; i++) {
                         $(".my-code .table-content").append($tr)
                         let code = resData[i].code

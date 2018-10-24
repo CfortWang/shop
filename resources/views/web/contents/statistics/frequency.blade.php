@@ -45,7 +45,7 @@
                                     <div class="date">@lang('statistics.silent_user.date')</div>
                                     <div class="count">@lang('statistics.scan_frequency.average_code_number')</div>
                                 </div>
-                                <div class="table-content"></div>
+                                <div class="table-content pointer"></div>
                             </div>
                             <div class="no-data">
                                 <img src="/img/main/no-data.png" alt="">
