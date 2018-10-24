@@ -319,19 +319,19 @@ $(".bottom-submit-btn").on("click", function () {
     }
 
     if (adName == '' || adName == null) {
-        alert("广告标题不能为空")
+        toastr.error("广告标题不能为空")
         return false
     }
     if (adStartDate == '' || adStartDate == null) {
-        alert("广告投放开始时间不能为空")
+        toastr.error("广告投放开始时间不能为空")
         return false
     }
     if (adEndDate == '' || adEndDate == null) {
-        alert("广告投放结束时间不能为空")
+        toastr.error("广告投放结束时间不能为空")
         return false
     }
     if (adLandingUrl == '' || adLandingUrl == null) {
-        alert("广告跳转链接不能为空")
+        toastr.error("广告跳转链接不能为空")
         return false
     }
     if (isImageModify == 0) {

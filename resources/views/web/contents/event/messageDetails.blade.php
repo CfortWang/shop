@@ -251,7 +251,7 @@ setTimeout(() => {
 function addPhoneNum () {
     let phoneNum = $(".start-hours").val()
     if (phoneNum == '' || phoneNum == null) {
-        alert("手机号码不能为空")
+        toastr.error("手机号码不能为空")
         return false
     }
     let phoneName = 'phone_num[' + k + ']'

@@ -434,7 +434,7 @@ var checkout = $('.expired-time').datepicker({
 // 判定成团人数
 $(".group-size").blur(function () {
     if ($(this).val() > 20) {
-        alert("成团人数不得超过20人")
+        toastr.error("成团人数不得超过20人")
     }
 })
 
@@ -444,7 +444,7 @@ $(".effective-days").blur(function () {
     if ($(this).val() == null || $(this).val() == '') {
     } else {
         if ($(this).val() > 365 || $(this).val() < 1) {
-            alert("生效天数不合法")
+            toastr.error("生效天数不合法")
         }
     }
 })
@@ -610,11 +610,11 @@ function addCustomize () {
     let startHours = $(".start-hours").val()
     let endHours = $(".end-hours").val()
     if (startHours == '' || startHours == null) {
-        alert("开始时间不能为空")
+        toastr.error("开始时间不能为空")
         return false
     }
     if (endHours == '' || endHours == null) {
-        alert("结束时间不能为空")
+        toastr.error("结束时间不能为空")
         return false
     }
     let startTime = 'time_limit[' + k + '][start_at]'

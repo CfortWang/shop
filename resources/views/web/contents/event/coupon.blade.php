@@ -237,7 +237,7 @@
                     console.log(res.message);
                 } else {
                     drawList();
-                    alert(res.message);
+                    toastr.error(res.message);
                 }
 
             },

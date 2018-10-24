@@ -790,11 +790,11 @@ function addCustomize () {
     let startHours = $(".start-hours").val()
     let endHours = $(".end-hours").val()
     if (startHours == '' || startHours == null) {
-        alert("开始时间不能为空")
+        toastr.error("开始时间不能为空")
         return false
     }
     if (endHours == '' || endHours == null) {
-        alert("结束时间不能为空")
+        toastr.error("结束时间不能为空")
         return false
     }
     let startTime = 'time_limit[' + k + '][start_at]'

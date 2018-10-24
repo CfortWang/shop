@@ -513,7 +513,7 @@ var checkout = $('.expired-time').datepicker({
 // 判定成团人数
 $(".group-size").blur(function () {
     if ($(this).val() > 20) {
-        alert("成团人数不得超过20人")
+        toastr.error("成团人数不得超过20人")
     }
 })
 
@@ -523,7 +523,7 @@ $(".effective-days").blur(function () {
     if ($(this).val() == null || $(this).val() == '') {
     } else {
         if ($(this).val() > 365 || $(this).val() < 1) {
-            alert("生效天数不合法")
+            toastr.error("生效天数不合法")
         }
     }
 })
@@ -536,11 +536,11 @@ function selectImage(file, selector) {
     reader.onload = function (evt) {
         var sonNum = $(selector).children().length
         if (selector == '.product' && sonNum > 16) {
-            console.log("最多只能选择15张图片")
+            toastr.error("最多只能选择15张图片")
             return false
         }
         if (selector == '.list' && sonNum > 2) {
-            console.log("最多只能选择1张图片")
+            toastr.error("最多只能选择1张图片")
             return false
         }
         var $imgBox = '<div class="selected-image"><div class="delete-image"><img src="/img/main/close.png" alt=""></div><img class="image" alt="" src="' +evt.target.result + '"><input class="img-value" type="text" name="image[]" hidden></div>'
@@ -640,23 +640,23 @@ function addPackageInfo () {
     var packageAmount = $("#package-amount").val()
     var packagePrice = $("#package-price").val()
     if (packageName == '' || packageName == null) {
-        alert("套餐内容不能为空")
+        toastr.error("套餐内容不能为空")
         return false;
     }
     if (packageAmount == '' || packageAmount == null) {
-        alert("套餐数量不能为空")
+        toastr.error("套餐数量不能为空")
         return false;
     }
     if (packageAmount < 1) {
-        alert("套餐数量必须大于1")
+        toastr.error("套餐数量必须大于1")
         return false;
     }
     if (packagePrice == '' || packagePrice == null) {
-        alert("套餐价格不能为空")
+        toastr.error("套餐价格不能为空")
         return false;
     }
     if (packagePrice < 0) {
-        alert("套餐价格不能小于0")
+        toastr.error("套餐价格不能小于0")
         return false;
     }
     let productName = 'product[' + i + '][name]'
@@ -681,7 +681,7 @@ $(".remark-data").on("click", ".pdd-table-tr .operating .delete", function () {
 function addRemarkInfo () {
     let remarkData = $("#package-remark").val()
     if (remarkData == '' || remarkData == null) {
-        alert("备注内容不能为空")
+        toastr.error("备注内容不能为空")
         return false;
     }
     let remarkContent = 'remark[' + j + ']'

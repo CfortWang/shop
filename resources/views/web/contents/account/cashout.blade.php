@@ -184,9 +184,9 @@
                 if (res.code == 200) {
                     var $modal = $('#my-popup');
                     $modal.modal('close');
-                    alert("提现成功")
+                    toastr.success("提现成功")
                 } else {
-                    alert(res.message)
+                    toastr.error(res.message)
                 }
             },
             error: function (ex) {
