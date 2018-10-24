@@ -115,10 +115,10 @@
                     }
                     for (let i = 0; i < resData.length; i++) {
                         selected.append($tr)
-                        if (resData[i].phone == null || resData[i].phone == '') {
-                            var phone = '——'
+                        if (resData[i].id == null || resData[i].id == '') {
+                            var id = '——'
                         } else {
-                            var phone = "+" + resData[i].phone.split('@')[1] + " " + resData[i].phone.split('@')[0]
+                            var id = "+" + resData[i].id.split('@')[1] + " " + resData[i].id.split('@')[0]
                         }
                         if (resData[i].is_owner) {
                             var character = "发起拼豆"
@@ -153,7 +153,7 @@
                             nickname = '——'
                         }
 
-                        $(".table-content .table-tr:eq("+ i +") .table-td-id").text(phone)
+                        $(".table-content .table-tr:eq("+ i +") .table-td-id").text(id)
                         $(".table-content .table-tr:eq("+ i +") .table-td-nickname").text(nickname)
                         $(".table-content .table-tr:eq("+ i +") .table-td-character").text(character)
                         $(".table-content .table-tr:eq("+ i +") .table-td-join .years").text(joinTimeYears)

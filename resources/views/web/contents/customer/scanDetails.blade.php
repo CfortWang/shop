@@ -70,7 +70,7 @@
                 var $tr = '<div class="table-tr clear-fix"><div class="table-td-id"></div><div class="table-td-name"></div><div class="table-td-time"></div></div>'
                 for (let i = 0; i < resData.length; i++) {
                     $('.table-content').append($tr)
-                    let userID = resData[i].seq
+                    let userID = resData[i].id
                     let userName = resData[i].nickname
                     let scanTime = resData[i].created_at
                     if (userID == null || userID == '') {
