@@ -344,8 +344,13 @@ class GroupOnController extends Controller
             if($data['is_usetime_limit']){
                 $data['days'] = str_split($data['days_limit']);
             }
-            $data['remark'] = explode('孻孼孽孾',$data['remark']);
-
+            if($data['remark']){
+                $remark = explode('孻孼孽孾',$data['remark']);
+            }else{
+                $remark = [];
+            }
+            $data['remark'] = $remark;
+            
             $time_limit = [];
             for ($i=1; $i < 4; $i++) { 
                 if($data['time_limit'.$i.'_end_at']){

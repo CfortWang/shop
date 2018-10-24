@@ -100,14 +100,10 @@ class StatisticsController extends Controller
     public function analysis(Request $request)
     {
         $seq = $request->session()->get('buyer.seq');
-        $orign = UserScanLog::where('buyer',$seq)
+        $orign = UserScanLog::where('UserScanLog.buyer',$seq)
             ->leftJoin('User as a','a.seq','=','UserScanLog.user')
-            // ->where('created_at', '<=', $endDate)
-            // ->where('created_at', '>=', $startDate)
-            ->select('a.gender','a.birthday','a.is_married','a.created_at')
-            ->distinct()
+            ->select('a.gender','a.birthday','a.is_married','a.created_at','UserScanLog.created_at as create_at_1')
             ->get();
-            
         $data[1] = $this->getGender($orign);
         $data[2] = $this->getAge($orign);
         $data[3] = $this->getMarrige($orign);
@@ -143,18 +139,12 @@ class StatisticsController extends Controller
         }
         $orignData = [];
         $item = [];
-        if($female['value']){
-            $item[] = '女';
-            $orignData[] = $female;
-        }
-        if($male['value']){
-            $item[] = '男';
-            $orignData[] = $male;
-        }
-        if($unknown['value']){
-            $item[] = '未知';
-            $orignData[] = $unknown;
-        }
+        $item[] = '女';
+        $orignData[] = $female;
+        $item[] = '男';
+        $orignData[] = $male;
+        $item[] = '未知';
+        $orignData[] = $unknown;
         $data['title'] = '性别比例';
         $data['data'] = $orignData;
         $data['item'] = $item;
@@ -163,15 +153,19 @@ class StatisticsController extends Controller
 
     protected function getNew($orign)
     {
-        // foreach($orign as $key => $value){
-
-        // }
-        $man['name'] = '新用户';
-        $man['value'] = 12;
-        $woman['name'] = '旧用户';
-        $woman['value'] = 23;
-        $data[] = $man;
-        $data[] = $woman;
+        $new['name'] = '新用户';
+        $new['value'] = 0;
+        $old['name'] = '旧用户';
+        $old['value'] = 0;
+        foreach($orign as $key => $value){
+            if((strtotime($value['created_at_1'])-strtotime($value['created_at']))<24*60*60){
+                $new['value'] = $new['value'] + 1;
+            }else{
+                $old['value'] = $old['value'] + 1;
+            }
+        }
+        $data[] = $new;
+        $data[] = $old;
         $item[] = '新用户';
         $item[] = '旧用户';
         $return['title'] = '新用户比例';
@@ -291,22 +285,12 @@ class StatisticsController extends Controller
         }
         $orignData = [];
         $item = [];
-        if($no['value']){
-            $item[] = '未婚';
-            $orignData[] = $no;
-        }
-        if($married['value']){
-            $item[] = '已婚';
-            $orignData[] = $married;
-        }
-        if($loving['value']){
-            $item[] = '热恋中';
-            $orignData[] = $loving;
-        }
-        if($unknown['value']){
-            $item[] = '未知';
-            $orignData[] = $unknown;
-        }
+        $item[] = '已婚';
+        $orignData[] = $married;
+        $item[] = '热恋中';
+        $orignData[] = $loving;
+        $item[] = '未知';
+        $orignData[] = $unknown;
         $data['title'] = '婚姻状态';
         $data['data'] = $orignData;
         $data['item'] = $item;
