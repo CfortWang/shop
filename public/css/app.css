@@ -43,8 +43,8 @@ a:hover {
 }
 
 .am-topbar-brand {
-    height: 75px;
-    line-height: 75px;
+    height: 15px;
+    line-height: 15px;
 }
 
 .am-topbar {
@@ -567,7 +567,11 @@ ul.tpl-dropdown-content li>a.tpl-dropdown-content-message:last-child {
     padding: 0px;
     margin: 40px 50px;
 }
-
+@media screen and (max-width: 640px) {
+    .content-outer > div{
+        margin: 10px 10px;
+    }
+}
 @media screen and (min-width: 1024px) {
     .new{
         width: 30.5%;
