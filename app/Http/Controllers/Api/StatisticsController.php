@@ -230,7 +230,7 @@ class StatisticsController extends Controller
 
     protected function getAge($orign)
     {
-        $arnge = ['0-10','10-20','20-30','30-40','40-50','50-60','60-70','80_90','90以上'];
+        $arnge = ['0-10','10-20','20-30','30-40','40-50','50-60','60-70','80-90','90以上'];
         $unknown['name'] = '未知';
         $unknown['value'] = 0;
         $item = [];
@@ -238,7 +238,7 @@ class StatisticsController extends Controller
         foreach ($orign as $key => $value) {
             if(isset($value['birthday'])){
                 $year = Carbon::parse($value['birthday']);
-                $different = (Carbon::now()->year - $year->year)%10;
+                $different = (Carbon::now()->year - $year->year)/10;
                 if($different>8){
                     $different = 8;
                 }
