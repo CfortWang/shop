@@ -19,7 +19,7 @@
                             <div class="form-group clear-fix">
                                 <label class="am-u-lg-2 am-u-md-2 am-u-sm-3">优惠券名称</label>
                                 <div class="am-u-lg-10 am-u-md-10 am-u-sm-9">
-                                    <input type="text" class="form-control" id="coupon_name" name="coupon_name" placeholder="最多可输入10个字符" maxlength="10">
+                                    <input type="text" class="form-control" id="coupon_name" name="coupon_name" placeholder="最多可输入20个字符" maxlength="20">
                                 </div>
                             </div>
                             <div class="form-group clear-fix">

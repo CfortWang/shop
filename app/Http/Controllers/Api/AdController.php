@@ -123,7 +123,7 @@ class AdController extends Controller
             'ad_image_file'   => 'required|image',
             'start_date'      => 'required|string',
             'end_date'        => 'required|string',
-            'landing_url'     => 'required|string',
+            'landing_url'     => 'nullable|string',
             'pkg_list'        => 'nullable'
         ],$message);
         if ($validator->fails()) {
@@ -132,6 +132,7 @@ class AdController extends Controller
         }  
         $title = $request->input('title');
         $landingUrl = $request->input('landing_url');
+        $landingUrl = $landingUrl?$landingUrl:'';
         $start_date=$request->input('start_date');
         $end_date=$request->input('end_date');
         if($start_date >= $end_date){
@@ -189,7 +190,7 @@ class AdController extends Controller
         $validator = Validator::make($input, [
             'title'           => 'required',
             'ad_image_file'   => 'nullable|image',
-            'landing_url'     => 'required|string',
+            'landing_url'     => 'nullable|string',
             'start_date'      => 'required|date',
             'end_date'        => 'required|date',
             'pkg_list'        => 'nullable',
@@ -229,10 +230,12 @@ class AdController extends Controller
         }else if(!$ShopAD->shop_image_file){
             return $this->responseBadRequest('请上传图片', 403);//error code 400,403
         }
+        $landingUrl = $request->input('landing_url');
+        $landingUrl = $landingUrl?$landingUrl:'';
         $ShopAD->title = $title;
         $ShopAD->start_date=$start_date;
         $ShopAD->end_date=$end_date;      
-        $ShopAD->landing_url = $request->input('landing_url');
+        $ShopAD->landing_url = $landingUrl;
         $ShopAD->save();
 
         $pkgSeqList = $request->input('pkg_list');
