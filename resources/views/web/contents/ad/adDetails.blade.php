@@ -330,10 +330,10 @@ $(".bottom-submit-btn").on("click", function () {
         toastr.error("广告投放结束时间不能为空")
         return false
     }
-    if (adLandingUrl == '' || adLandingUrl == null) {
-        toastr.error("广告跳转链接不能为空")
-        return false
-    }
+    // if (adLandingUrl == '' || adLandingUrl == null) {
+    //     toastr.error("广告跳转链接不能为空")
+    //     return false
+    // }
     if (isImageModify == 0) {
         adData = new FormData()
     }
