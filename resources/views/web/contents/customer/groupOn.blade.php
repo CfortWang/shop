@@ -104,17 +104,16 @@
                     $(".no-data").hide()
                     $(".pagination").show()
                     pageCount = Math.ceil(count / limit)
+                    if (type == 'ing') {
+                        var $tr = '<div class="table-tr"><div class="table-td-id"></div><div class="table-td-nickname"></div><div class="table-td-character"></div><div class="table-td-join"><p class="years"></p><p class="hours"></p></div></div>'
+                    }
+                    if (type == 'success') {
+                        var $tr = '<div class="table-tr"><div class="table-td-id"></div><div class="table-td-nickname"></div><div class="table-td-character"></div><div class="table-td-coupon-use"></div><div class="table-td-coupon-id"></div><div class="table-td-success"><p class="years"></p><p class="hours"></p></div><div class="table-td-join"><p class="years"></p><p class="hours"></p></div></div>'
+                    }
+                    if (type == 'fail') {
+                        var $tr = '<div class="table-tr"><div class="table-td-id"></div><div class="table-td-nickname"></div><div class="table-td-character"></div><div class="table-td-fail"><p class="years"></p><p class="hours"></p></div><div class="table-td-join"><p class="years"></p><p class="hours"></p></div></div>'
+                    }
                     for (let i = 0; i < resData.length; i++) {
-                        if (type == 'ing') {
-                            var $tr = '<div class="table-tr"><div class="table-td-id"></div><div class="table-td-nickname"></div><div class="table-td-character"></div><div class="table-td-join"><p class="years"></p><p class="hours"></p></div></div>'
-                        }
-                        if (type == 'success') {
-                            var $tr = '<div class="table-tr"><div class="table-td-id"></div><div class="table-td-nickname"></div><div class="table-td-character"></div><div class="table-td-coupon-use"></div><div class="table-td-coupon-id"></div><div class="table-td-success"><p class="years"></p><p class="hours"></p></div><div class="table-td-join"><p class="years"></p><p class="hours"></p></div></div>'
-                        }
-                        if (type == 'fail') {
-                            var $tr = '<div class="table-tr"><div class="table-td-id"></div><div class="table-td-nickname"></div><div class="table-td-character"></div><div class="table-td-fail"><p class="years"></p><p class="hours"></p></div><div class="table-td-join"><p class="years"></p><p class="hours"></p></div></div>'
-                        }
-
                         selected.append($tr)
                         if (resData[i].phone == null || resData[i].phone == '') {
                             var phone = '——'
