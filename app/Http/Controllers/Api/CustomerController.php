@@ -141,17 +141,26 @@ class CustomerController extends Controller
             return $this->responseBadRequest($message);
         } 
         $type=$request->input('type');
+        $status = 0;
         if($type == 'ing'){
-            $count=GrouponRecord::where('p.buyer_id',$buyer)
-            ->where('g.groupon_status',1)
+            $status = 1;
+        }
+        if($type == 'success'){
+            $status = 2;  
+        }
+        if($type == 'fail'){
+            $status = 3;  
+        }
+        $count=GrouponRecord::where('p.buyer_id',$buyer)
+            ->where('g.groupon_status',$status)
             ->leftJoin('groupon as g','g.id','=','groupon_record.groupon_id')
             ->leftJoin('groupon_product as p','p.id','=','g.groupon_product_id')
             ->leftJoin('User as u','u.seq','=','groupon_record.user_id')
             ->select('u.id as phone','u.nickname','groupon_record.is_owner','g.created_at')
             ->get();
-            $count=count($count);
-            $items=GrouponRecord::where('p.buyer_id',$buyer)
-            ->where('g.groupon_status',1)
+        $count=count($count);
+        $items=GrouponRecord::where('p.buyer_id',$buyer)
+            ->where('g.groupon_status',$status)
             ->leftJoin('groupon as g','g.id','=','groupon_record.groupon_id')
             ->leftJoin('groupon_product as p','p.id','=','g.groupon_product_id')
             ->leftJoin('User as u','u.seq','=','groupon_record.user_id')
@@ -159,48 +168,6 @@ class CustomerController extends Controller
             ->limit($limit)
             ->offset(($page-1)*$limit) 
             ->get();
-             
-        }
-        if($type == 'success'){
-                $count=GrouponRecord::where('p.buyer_id',$buyer)
-                ->where('g.groupon_status',2)
-                ->leftJoin('groupon as g','g.id','=','groupon_record.groupon_id')
-                ->leftJoin('groupon_product as p','p.id','=','g.groupon_product_id')
-                ->leftJoin('User as u','u.seq','=','groupon_record.user_id')
-                ->select('u.id as phone','u.nickname','groupon_record.is_owner',
-                'groupon_record.use_code', 'groupon_record.paid_status','g.created_at','g.updated_at')
-                ->get();
-                $count=count($count);
-                $items=GrouponRecord::where('p.buyer_id',$buyer)
-                ->where('g.groupon_status',2)
-                ->leftJoin('groupon as g','g.id','=','groupon_record.groupon_id')
-                ->leftJoin('groupon_product as p','p.id','=','g.groupon_product_id')
-                ->leftJoin('User as u','u.seq','=','groupon_record.user_id')
-                ->select('u.id as phone','u.nickname','groupon_record.is_owner',
-                'groupon_record.use_code', 'groupon_record.paid_status','g.created_at','g.updated_at')
-                ->limit($limit)
-                ->offset(($page-1)*$limit) 
-                ->get();
-        }
-        if($type == 'fail'){
-                $count=GrouponRecord::where('p.buyer_id',$buyer)
-                ->where('g.groupon_status',3)
-                ->leftJoin('groupon as g','g.id','=','groupon_record.groupon_id')
-                ->leftJoin('groupon_product as p','p.id','=','g.groupon_product_id')
-                ->leftJoin('User as u','u.seq','=','groupon_record.user_id')
-                ->select('u.id','u.nickname','groupon_record.is_owner','g.created_at','g.expried_at')
-                ->get();
-                $count=count($count);
-                $items=GrouponRecord::where('p.buyer_id',$buyer)
-                ->where('g.groupon_status',3)
-                ->leftJoin('groupon as g','g.id','=','groupon_record.groupon_id')
-                ->leftJoin('groupon_product as p','p.id','=','g.groupon_product_id')
-                ->leftJoin('User as u','u.seq','=','groupon_record.user_id')
-                ->select('u.id','u.nickname','groupon_record.is_owner','g.created_at','g.expried_at')
-                ->limit($limit)
-                ->offset(($page-1)*$limit) 
-                ->get();
-        }
         $newdata['count']=$count;
         $newdata['data']=$items;
         return $this->responseOk('', $newdata);
