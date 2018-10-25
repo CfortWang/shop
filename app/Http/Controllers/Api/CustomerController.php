@@ -164,7 +164,8 @@ class CustomerController extends Controller
             ->leftJoin('groupon as g','g.id','=','groupon_record.groupon_id')
             ->leftJoin('groupon_product as p','p.id','=','g.groupon_product_id')
             ->leftJoin('User as u','u.seq','=','groupon_record.user_id')
-            ->select('u.id as phone','u.nickname','groupon_record.is_owner','g.created_at')
+             ->select('u.id as phone','u.nickname','groupon_record.is_owner',
+                'groupon_record.use_code', 'groupon_record.paid_status','g.created_at','g.updated_at','g.expried_at')
             ->limit($limit)
             ->offset(($page-1)*$limit) 
             ->get();
