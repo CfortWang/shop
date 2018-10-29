@@ -207,7 +207,14 @@
                 pkg_seq: seq
             },
             success: function (res) {
-                console.log(res)
+                if (res.code == 200) {
+                    toastr.success("激活成功")
+                    setTimeout(() => {
+                        window.location.href = window.location.href
+                    }, 1000);
+                } else {
+                    toastr.error(res.message)
+                }
             },
             error: function (ex) {
                 console.log(ex)
