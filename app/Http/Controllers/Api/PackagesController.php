@@ -62,7 +62,7 @@ class PackagesController extends Controller
             return $this->responseNotFound('没有数据');
         }
         $Q35SalesItem = Q35SalesItem::where('buyer',$buyer)
-                                    ->where('q35sales',$seq);
+                                    ->where('q35sales',$seq)
                                     ->where('shipping_status','shipping')
                                     ->first();
         $data['shipping_status'] = 'requested';
