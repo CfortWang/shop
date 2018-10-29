@@ -104,6 +104,7 @@
                                     <img src="/img/main/icon_page_right.png" alt="">
                                 </div>
                             </div>
+                            <button type="button" class="am-btn am-btn-secondary am-radius cashout" style="display: none" data-am-modal="{target: '#my-popup'}">接收</button>
                         </div>
                     </div>
                 </div>
@@ -137,6 +138,11 @@
                 $("#payment").text(resData.payment_type)
                 $("#pay-status").text(resData.pay_status)
                 $("#status").text(resData.status)
+                if (resData.shipping_status == 'shipping') {
+                    $(".cashout").show()
+                } else {
+                    $(".cashout").hide()
+                }
             },
             error: function (ex) {
                 console.log(ex)
@@ -199,6 +205,31 @@
     }
     drawList();
 
+    var changeStatus = function (id) {
+        $.ajax({
+            url: '/api/packages/received/' + id,
+            type: 'put',
+            dataType: 'json',
+            success: function (res) {
+                // $(".info-content").empty()
+                console.log(res)
+                // let resData = res.data
+                // $("#shop").text(resData.buyer)
+                // $("#sale-partner").text(resData.sales_partner)
+                // $("#price").text(resData.total_sales_price)
+                // $("#total-num").text(resData.total_quantity)
+                // $("#postage").text(resData.total_shipping_price)
+                // $("#total-money").text(resData.total_price)
+                // $("#payment").text(resData.payment_type)
+                // $("#pay-status").text(resData.pay_status)
+                // $("#status").text(resData.status)
+            },
+            error: function (ex) {
+                console.log(ex)
+            }
+        })
+    }
+
 
     // $(".search-btn").on("click", function () {
     //     keyword = $(".search-input").val()
@@ -216,6 +247,12 @@
     $("body").on("click", ".am-selected-list > li", function () {
         selectStatus = $(this).attr("data-value")
         drawList();
+    })
+
+    $(".cashout").on('click', function () {
+        var args = getArgs();
+        var id = args['id']
+        changeStatus(id)
     })
 </script>
 @endsection
