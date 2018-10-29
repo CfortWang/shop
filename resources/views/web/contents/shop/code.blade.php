@@ -122,8 +122,13 @@
                         let amount = resData[i].total_cnt
                         let used = resData[i].used_cnt
                         let status = resData[i].status
-                        let activeTimeYear = resData[i].activated_at.split(' ')[0]
-                        let activeTimeHour = resData[i].activated_at.split(' ')[1]
+                        if (resData[i].activated_at) {
+                            var activeTimeYear = resData[i].activated_at.split(' ')[0]
+                            var activeTimeHour = resData[i].activated_at.split(' ')[1]
+                        } else {
+                            var activeTimeYear = resData[i].sold_at.split(' ')[0]
+                            var activeTimeHour = resData[i].sold_at.split(' ')[1]
+                        }
                         let id = resData[i].seq
 
                         $(".my-code .table-content .table-tr:eq("+ i +") .table-td-code").attr("data-seq", id)
