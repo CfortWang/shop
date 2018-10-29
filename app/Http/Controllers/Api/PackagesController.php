@@ -377,7 +377,7 @@ class PackagesController extends Controller
             return $this->responseBadRequest('参数错误', 401);//error code 400,401
         }
 
-        $package = Q35Package::find($input['pkg_seq']);
+        $package = Q35Package::where('status','sold')->find($input['pkg_seq']);
 
         $salesCheck = Q35Sales::find($package->q35sales);
 
