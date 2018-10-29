@@ -61,6 +61,14 @@ class PackagesController extends Controller
         if(empty($Q35Sales)){
             return $this->responseNotFound('没有数据');
         }
+        $Q35SalesItem = Q35SalesItem::where('buyer',$buyer)
+                                    ->where('q35sales',$seq);
+                                    ->where('shipping_status','shipping')
+                                    ->first();
+        $data['shipping_status'] = 'requested';
+        if($Q35SalesItem){
+            $data['shipping_status'] = 'shipping';
+        }
         $sales = SalesPartner::where('seq',$Q35Sales->sales_partner)->select('partner_account')->first();
         $partner_id = PartnerAccount::where('seq',$sales->partner_account)->select('id')->first();
         $buyerId = Buyer::where('seq',$Q35Sales->buyer)->select('id')->first();
