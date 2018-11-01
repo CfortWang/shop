@@ -96,6 +96,7 @@
                                     <img src="/img/main/icon_page_right.png" alt="">
                                 </div>
                             </div>
+                            <button type="button" class="am-btn am-btn-secondary am-radius cashout" style="display: none" data-am-modal="{target: '#my-popup'}">激活</button>
                         </div>
                     </div>
                 </div>
@@ -129,6 +130,11 @@
                 $("#code-status").text(resData.status)
                 $("#pay-time").text(resData.sold_at)
                 $("#active-time").text(resData.activated_at)
+                if (resData.status == 'sold') {
+                    $(".cashout").show()
+                } else {
+                    $(".cashout").hide()
+                }
             },
             error: function (ex) {
                 console.log(ex)
@@ -192,6 +198,29 @@
     }
     drawList();
 
+    var Activation = function (seq) {
+        $.ajax({
+            url: '/api/packages/activation',
+            type: 'post',
+            dataType: 'json',
+            data: {
+                pkg_seq: seq
+            },
+            success: function (res) {
+                if (res.code == 200) {
+                    toastr.success("激活成功")
+                    setTimeout(() => {
+                        window.location.href = window.location.href
+                    }, 1000);
+                } else {
+                    toastr.error(res.message)
+                }
+            },
+            error: function (ex) {
+                console.log(ex)
+            }
+        })
+    }
 
     // $(".search-btn").on("click", function () {
     //     keyword = $(".search-input").val()
@@ -205,6 +234,12 @@
             selectStatus = ''
         }
         drawList();
+    })
+
+    $(".cashout").on("click", function () {
+        var args = getArgs()
+        var id = args['id']
+        Activation(id)
     })
 </script>
 @endsection

@@ -211,18 +211,14 @@
             type: 'put',
             dataType: 'json',
             success: function (res) {
-                // $(".info-content").empty()
-                console.log(res)
-                // let resData = res.data
-                // $("#shop").text(resData.buyer)
-                // $("#sale-partner").text(resData.sales_partner)
-                // $("#price").text(resData.total_sales_price)
-                // $("#total-num").text(resData.total_quantity)
-                // $("#postage").text(resData.total_shipping_price)
-                // $("#total-money").text(resData.total_price)
-                // $("#payment").text(resData.payment_type)
-                // $("#pay-status").text(resData.pay_status)
-                // $("#status").text(resData.status)
+                if (res.code == 200) {
+                    toastr.success("接收成功！")
+                    setTimeout(() => {
+                        window.location.href = window.location.href
+                    }, 1000);
+                } else {
+                    toastr.error(res.message)
+                }
             },
             error: function (ex) {
                 console.log(ex)
