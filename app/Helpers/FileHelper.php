@@ -41,11 +41,11 @@ class FileHelper
     }
     public static function groupOnImage($file)
     {
-        return static::uploadImage(static::$groupImagePath, $file,true);
+        return static::uploadImage(static::$groupImagePath, $file);
     }
     public static function couponImage($file)
     {
-        return static::uploadImage(static::$couponImagePath, $file,true);
+        return static::uploadImage(static::$couponImagePath, $file);
     }
     public static function uploadImage($filePath, $file ,$temp=false)
     {
