@@ -359,7 +359,7 @@ var drawData = function () {
             }
             // 渲染商品图
             $(".product .image-remark").hide()
-            var $imgBox = '<div class="selected-image"><div class="delete-image"><img src="/img/main/close.png" alt=""></div><img class="image" alt="" src="' + 'http://' + resData.image + '"><input class="img-value" type="text" name="image" hidden value="' + resData.image + '"></div>'
+            var $imgBox = '<div class="selected-image"><div class="delete-image"><img src="/img/main/close.png" alt=""></div><img class="image" alt="" src="' + resData.image + '"><input class="img-value" type="text" name="image" hidden value="' + resData.image + '"></div>'
             $('.product').append($imgBox)
             $(".product .file").hide()
 
