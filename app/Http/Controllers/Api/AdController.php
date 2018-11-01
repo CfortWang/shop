@@ -160,7 +160,7 @@ class AdController extends Controller
             'shop_image_file'  => $adImage->seq
         ]);
         $pkgSeqList = $request->input('pkg_list');
-        if(count($pkgSeqList)){
+        if(isset($pkgSeqList)&&count($pkgSeqList)){
             $pkgSeqList = array_unique($pkgSeqList);
             $packages = Q35Package::whereIn('seq', $pkgSeqList)->select('start_q35code','end_q35code','seq')->get(); 
             if($packages){
