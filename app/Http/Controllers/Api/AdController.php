@@ -34,6 +34,7 @@ class AdController extends Controller
                 ->limit($limit)
                 ->offset(($page-1)*$limit) 
                 ->get(); 
+        $newData = [];
         foreach($items as $k=>$v){
             $startDate=Carbon::parse($v['start_date'])->toDateTimeString();
             $startDate=strtotime($startDate);
