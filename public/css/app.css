@@ -909,6 +909,9 @@ input:-moz-placeholder {
     /* margin-left: 50%; */
     cursor: pointer;
 }
+.pkg-title{
+    display: none;
+}
 
 .am-selected{
     /* position: absolute;
@@ -1032,7 +1035,7 @@ input[type="number"]{
     cursor: pointer;
 }
 .continued-time > .label-radio{
-    margin-right: 40px;
+    /* margin-right: 40px; */
     height: 40px;
     line-height: 40px;
 }
@@ -3308,5 +3311,100 @@ header{
     }
     .tpl-portlet-title{
         display: block;
+    }
+    #submit .tpl-portlet {
+        padding: 20px 20px;
+        margin-bottom: 20px;
+    }
+    .form-title {
+        font-weight: 400;
+        margin-bottom: 15px;
+        margin-left: 0px;
+        text-align: left;
+    }
+    .form-group{
+        margin-bottom: 10px;
+    }
+    .form-group > label {
+        text-align: left;
+        padding-right: 0px;
+    }
+    .form-group .form-control {
+        width: 100%;
+    }
+    .image-remark, .effective-remark{
+        display: none;
+    }
+    .input-outer{
+        width: 100%;
+    }
+    .package-remark {
+        padding-left: 0px;
+    }
+
+    .dividing{
+        display: none;
+    }
+    .choose-title, .effective-time, .hours-choose{
+        margin-top: 0px;
+        padding-left: 0px;
+    }
+    .fixed-time{
+        padding-left: 0px;
+    }
+    .fixed-time-option1 .label-radio{
+        display: block;
+    }
+    .time-kind{
+        margin-left: 0px;
+    }
+    .effect-time, .expired-time, .effective-days{
+        margin-left: 0px;
+        width: 70%;
+    }
+    .weekends-day {
+        margin-left: 20px;
+        margin-bottom: 5px;
+    }
+    .section-time-weekends{
+        margin-bottom: 15px;
+    }
+    .start-hours, .end-hours, .add-start-hours, .add-end-hours {
+        width: 100%;
+    }
+    .add-time{
+        float: right;
+    }
+    .rule-title {
+        text-align: left;
+        margin-bottom: 10px;
+    }
+    .bottom-btn > div {
+        text-align: center;
+        width: 60%;
+        height: 40px;
+        line-height: 40px;
+    }
+    .bottom-btn > .bottom-reset-btn {
+        margin-top: 20px;
+        margin-left: 0px;
+    }
+    .pdd-table-tr{
+        margin: 0px;
+    }
+    .pdd-table-tr .form-control, .package-remark .form-control {
+        width: 100%;
+    }
+    .remark-tr {
+        padding: 5px 0px;
+    }
+    .remark-tr .operating {
+        margin-left: 10px;
+    }
+    .pdd-table-head{
+        display: none;
+    }
+    .pkg-title{
+        display: inline-block;
     }
 }

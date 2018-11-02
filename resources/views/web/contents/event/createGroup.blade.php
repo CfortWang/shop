@@ -17,14 +17,14 @@
                         <div class="form-container">
                             <div class="form-title">拼豆豆基本信息</div>
                             <div class="form-group clear-fix">
-                                <label class="am-u-lg-2 am-u-md-2 am-u-sm-3">拼豆豆名称</label>
-                                <div class="am-u-lg-10 am-u-md-10 am-u-sm-9">
+                                <label class="am-u-lg-2 am-u-md-2 am-u-sm-12">拼豆豆名称</label>
+                                <div class="am-u-lg-10 am-u-md-10 am-u-sm-12">
                                     <input type="text" class="form-control" id="name" name="title" placeholder="最多可输入20个字符" maxlength="20">
                                 </div>
                             </div>
                             <div class="form-group clear-fix">
-                                <label class="am-u-lg-2 am-u-md-2 am-u-sm-3">原价格</label>
-                                <div class="am-u-lg-10 am-u-md-10 am-u-sm-9 has-remark">
+                                <label class="am-u-lg-2 am-u-md-2 am-u-sm-12">原价格</label>
+                                <div class="am-u-lg-10 am-u-md-10 am-u-sm-12 has-remark">
                                     <div class="input-outer">
                                         <input type="number" class="old-price" id="old-price" name="price" placeholder="输入拼豆商品原价">
                                         <div class="price-unit">元</div>
@@ -33,8 +33,8 @@
                                 </div>
                             </div>
                             <div class="form-group clear-fix">
-                                <label class="am-u-lg-2 am-u-md-2 am-u-sm-3">拼豆后价格</label>
-                                <div class="am-u-lg-10 am-u-md-10 am-u-sm-9 has-remark">
+                                <label class="am-u-lg-2 am-u-md-2 am-u-sm-12">拼豆后价格</label>
+                                <div class="am-u-lg-10 am-u-md-10 am-u-sm-12 has-remark">
                                     <div class="input-outer">
                                         <input type="number" class="new-price" id="new-price" name="discounted_price" placeholder="输入拼豆商品原价">
                                         <div class="price-unit">元</div>
@@ -43,27 +43,27 @@
                                 </div>
                             </div>
                             <div class="form-group clear-fix">
-                                <label class="am-u-lg-2 am-u-md-2 am-u-sm-3">拼豆活动时间</label>
-                                <div class="am-u-lg-10 am-u-md-10 am-u-sm-9">
+                                <label class="am-u-lg-2 am-u-md-2 am-u-sm-12">拼豆活动时间</label>
+                                <div class="am-u-lg-10 am-u-md-10 am-u-sm-12">
                                     <input type="text" class="form-control timepicker" id="pdd-startDate" autocomplete="off" data-am-datepicker name="open_time">
                                     <span>-</span>
                                     <input type="text" class="form-control timepicker" id="pdd-endDate" autocomplete="off" data-am-datepicker name="close_time">
                                 </div>
                             </div>
                             <div class="form-group clear-fix">
-                                <label class="am-u-lg-2 am-u-md-2 am-u-sm-3">拼豆发起后持续时间</label>
-                                <div class="am-u-lg-10 am-u-md-10 am-u-sm-9 continued-time">
-                                    <label for="continue-time1" class="label-radio">
+                                <label class="am-u-lg-2 am-u-md-2 am-u-sm-12">拼豆发起后持续时间</label>
+                                <div class="am-u-lg-10 am-u-md-10 am-u-sm-12 continued-time">
+                                    <label for="continue-time1" class="label-radio am-u-lg-2 am-u-md-3 am-u-sm-4">
                                         <input type="radio" checked hidden id="continue-time1" name="continued_time" value="48">
                                         <label for="continue-time1" class="time-radio"></label>
                                         <span>48小时</span>
                                     </label>
-                                    <label for="continue-time2" class="label-radio">
+                                    <label for="continue-time2" class="label-radio am-u-lg-2 am-u-md-3 am-u-sm-4">
                                         <input type="radio" hidden id="continue-time2" name="continued_time" value="72">
                                         <label for="continue-time2" class="time-radio"></label>
                                         <span>72小时</span>
                                     </label>
-                                    <label for="continue-time3" class="label-radio">
+                                    <label for="continue-time3" class="label-radio am-u-lg-2 am-u-md-3 am-u-sm-4 am-u-end">
                                         <input type="radio" hidden id="continue-time3" name="continued_time" value="120">
                                         <label for="continue-time3" class="time-radio"></label>
                                         <span>120小时</span>
@@ -71,8 +71,8 @@
                                 </div>
                             </div>
                             <div class="form-group clear-fix">
-                                <label class="am-u-lg-2 am-u-md-2 am-u-sm-3">成团人数</label>
-                                <div class="am-u-lg-10 am-u-md-10 am-u-sm-9 has-remark">
+                                <label class="am-u-lg-2 am-u-md-2 am-u-sm-12">成团人数</label>
+                                <div class="am-u-lg-10 am-u-md-10 am-u-sm-12 has-remark">
                                     <div class="input-outer">
                                         <input type="number" class="group-size" id="group-size" name="group_size" placeholder="输入成团人数">
                                     </div>
@@ -80,8 +80,8 @@
                                 </div>
                             </div>
                             <div class="form-group image-group clear-fix">
-                                <label class="am-u-lg-2 am-u-md-2 am-u-sm-3">商品图片</label>
-                                <div class="am-u-lg-10 am-u-md-10 am-u-sm-9 product">
+                                <label class="am-u-lg-2 am-u-md-2 am-u-sm-12">商品图片</label>
+                                <div class="am-u-lg-10 am-u-md-10 am-u-sm-12 product">
                                     <a href="javascript:;" class="file">+添加图片
                                         <input type="file" class="" id="product-image" name="file" onchange="selectImage(this, '.product')">
                                     </a>
@@ -90,8 +90,8 @@
                                 </div>
                             </div>
                             <div class="form-group image-group clear-fix">
-                                <label class="am-u-lg-2 am-u-md-2 am-u-sm-3">列表封面图</label>
-                                <div class="am-u-lg-10 am-u-md-10 am-u-sm-9 list">
+                                <label class="am-u-lg-2 am-u-md-2 am-u-sm-12">列表封面图</label>
+                                <div class="am-u-lg-10 am-u-md-10 am-u-sm-12 list">
                                     <a href="javascript:;" class="file">+添加图片
                                         <input type="file" class="" id="product-image" name="logo_file" onchange="selectImage(this, '.list')">
                                     </a>
@@ -116,25 +116,28 @@
                         </div>
                         <div class="package-data"></div>
                         <div class="pdd-table-tr clear-fix">
-                            <div class="am-u-lg-4 am-u-md-4 am-u-sm-4">
+                            <div class="am-u-lg-4 am-u-md-4 am-u-sm-12">
+                                <div class="pkg-title"> 套餐内容：</div>
                                 <input type="text" class="form-control" id="package-name">
                             </div>
-                            <div class="am-u-lg-2 am-u-md-3 am-u-sm-3">
+                            <div class="am-u-lg-2 am-u-md-3 am-u-sm-12">
+                                <div class="pkg-title"> 份数：</div>
                                 <input type="number" class="form-control" id="package-amount">
                             </div>
-                            <div class="am-u-lg-2 am-u-md-3 am-u-sm-3">
+                            <div class="am-u-lg-2 am-u-md-3 am-u-sm-12">
+                                <div class="pkg-title"> 价格：</div>
                                 <input type="number" class="form-control" id="package-price">
                             </div>
-                            <div class="am-u-lg-4 am-u-md-2 am-u-sm-2 am-u-end sure-add">
+                            <div class="am-u-lg-4 am-u-md-2 am-u-sm-12 am-u-end sure-add">
                                 <div class="sure-add-btn" onclick="addPackageInfo()">确定添加</div>
                             </div>
                         </div>
                         <div class="remark-title">备注:</div>
                         <div class="remark-data"></div>
-                        <div class="am-u-lg-5 am-u-md-5 am-u-sm-6 package-remark">
+                        <div class="am-u-lg-5 am-u-md-5 am-u-sm-12 package-remark">
                             <input type="text" class="form-control" id="package-remark">
                         </div>
-                        <div class="am-u-lg-7 am-u-md-7 am-u-sm-6 am-u-end remark-add">
+                        <div class="am-u-lg-7 am-u-md-7 am-u-sm-12 am-u-end remark-add">
                             <div class="remark-add-btn" onclick="addRemarkInfo()">确定添加</div>
                         </div>
                     </div>
@@ -254,10 +257,10 @@
 
                         <div class="dividing"></div>
                         <div class="use-rule">
-                            <div class="am-u-lg-1 am-u-md-2 am-u-sm-3 rule-title">
+                            <div class="am-u-lg-1 am-u-md-2 am-u-sm-12 rule-title">
                             使用规则
                             </div>
-                            <div class="am-u-lg-11 am-u-md-10 am-u-sm-9 rule-box">
+                            <div class="am-u-lg-11 am-u-md-10 am-u-sm-12 rule-box">
                                 <textarea class="rule-text" name="rule" id="" cols="" rows="" placeholder="多行输入"></textarea>
                             </div>
                         </div>
@@ -554,7 +557,7 @@ function addPackageInfo () {
     let productPrice = 'product[' + i + '][price]'
     let productQuantity = 'product[' + i + '][quantity]'
     i++
-    var $package = '<div class="pdd-table-tr clear-fix"><div class="am-u-lg-4 am-u-md-4 am-u-sm-4"><div class="package-info">'+ packageName +'</div><input type="text" class="form-control" value="'+ packageName +'" name="' + productName + '"></div><div class="am-u-lg-2 am-u-md-3 am-u-sm-3"><div class="package-info">' + packageAmount + '</div><input type="number" class="form-control" value="'+ packageAmount +'" name="' + productQuantity + '"></div><div class="am-u-lg-2 am-u-md-3 am-u-sm-3"><div class="package-info">' + packagePrice + '</div><input type="number" class="form-control" value="'+ packagePrice +'" name="' + productPrice + '"></div><div class="am-u-lg-4 am-u-md-2 am-u-sm-2 am-u-end"><div class="operating"><div class="motify" onclick="modify(this, 3)">修改</div><div class="save" onclick="save(this, 3)">保存</div><div class="delete">删除</div></div></div></div>'
+    var $package = '<div class="pdd-table-tr clear-fix"><div class="am-u-lg-4 am-u-md-4 am-u-sm-12"><div class="pkg-title"> 套餐内容：</div><div class="package-info">'+ packageName +'</div><input type="text" class="form-control" value="'+ packageName +'" name="' + productName + '"></div><div class="am-u-lg-2 am-u-md-3 am-u-sm-12"><div class="pkg-title"> 份数：</div><div class="package-info">' + packageAmount + '</div><input type="number" class="form-control" value="'+ packageAmount +'" name="' + productQuantity + '"></div><div class="am-u-lg-2 am-u-md-3 am-u-sm-12"><div class="pkg-title"> 价格：</div><div class="package-info">' + packagePrice + '</div><input type="number" class="form-control" value="'+ packagePrice +'" name="' + productPrice + '"></div><div class="am-u-lg-4 am-u-md-2 am-u-sm-12 am-u-end"><div class="operating"><div class="motify" onclick="modify(this, 3)">修改</div><div class="save" onclick="save(this, 3)">保存</div><div class="delete">删除</div></div></div></div>'
     $(".package-data").append($package)
     $("#package-name").val("")
     $("#package-amount").val("")
